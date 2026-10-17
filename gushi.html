@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <meta name="theme-color" content="#06121f" />
+  <meta
+    name="description"
+    content="NONONICK — استودیو طراحی سایت، رابط کاربری و تجربه‌های دیجیتال."
+  />
+  <meta name="robots" content="index, follow" />
+  <title>NONONICK | تجربه‌های دیجیتال متفاوت</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Vazirmatn:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --navy-950: #030a12;
+      --navy-900: #06121f;
+      --navy-850: #081a2c;
+      --navy-800: #0b2238;
+      --navy-700: #113553;
+      --blue: #63bbff;
+      --blue-soft: #bde6ff;
+      --white: #f8fbff;
+      --gray-100: #dce7f0;
+      --gray-400: #94a7b8;
+      --gray-500: #71869a;
+      --line: rgba(255, 255, 255, 0.14);
+      --glass: rgba(9, 29, 48, 0.72);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --radius-phone: 42px;
+      --radius-card: 18px;
+      --shadow-phone: 0 35px 95px rgba(0, 0, 0, 0.54);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--navy-950);
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100svh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 82% 8%, rgba(41, 116, 177, 0.34), transparent 28%),
+        radial-gradient(circle at 11% 90%, rgba(12, 82, 137, 0.3), transparent 36%),
+        linear-gradient(135deg, #06121f 0%, #030a12 100%);
+      font-family: "Vazirmatn", Arial, sans-serif;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .site-shell {
+      position: relative;
+      min-height: 100svh;
+      min-height: 100dvh;
+      overflow: hidden;
+    }
+
+    .ambient {
+      position: fixed;
+      z-index: 0;
+      border: 1px solid rgba(106, 191, 255, 0.11);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .ambient-one {
+      width: 58vw;
+      height: 58vw;
+      top: -27vw;
+      right: -17vw;
+    }
+
+    .ambient-two {
+      width: 70vw;
+      height: 70vw;
+      bottom: -43vw;
+      left: -22vw;
+    }
+
+    .desktop-label {
+      position: fixed;
+      z-index: 1;
+      bottom: 36px;
+      left: clamp(25px, 5vw, 80px);
+      width: 240px;
+      color: var(--gray-400);
+      font-size: 12px;
+      line-height: 2;
+      pointer-events: none;
+    }
+
+    .desktop-label strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--white);
+      direction: ltr;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 12px;
+      letter-spacing: 1.8px;
+    }
+
+    .device-stage {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100svh;
+      min-height: 100dvh;
+      padding:
+        calc(20px + var(--safe-top))
+        clamp(20px, 5vw, 90px)
+        calc(20px + var(--safe-bottom));
+    }
+
+    .device-rail {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(20px, 4vw, 72px);
+      direction: ltr;
+      perspective: 1600px;
+    }
+
+    .phone {
+      position: relative;
+      width: min(37vw, 390px);
+      height: min(80vh, 790px);
+      height: min(80dvh, 790px);
+      overflow: hidden;
+      direction: rtl;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-phone);
+      background:
+        linear-gradient(145deg, rgba(17, 49, 78, 0.96), rgba(3, 12, 22, 0.98));
+      box-shadow:
+        var(--shadow-phone),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      transition: transform 0.45s ease, box-shadow 0.45s ease;
+    }
+
+    .phone-home {
+      transform: rotateY(4deg) rotateX(1deg);
+    }
+
+    .phone-feature {
+      transform: rotateY(-4deg) rotateX(1deg);
+    }
+
+    .phone:hover {
+      transform: translateY(-10px) rotateY(0deg) rotateX(0deg);
+      box-shadow:
+        0 48px 110px rgba(0, 0, 0, 0.62),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    .phone-screen {
+      position: relative;
+      height: 100%;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: none;
+      scroll-snap-type: y proximity;
+      padding:
+        calc(19px + var(--safe-top))
+        22px
+        calc(20px + var(--safe-bottom));
+    }
+
+    .phone-screen::-webkit-scrollbar {
+      display: none;
+    }
+
+    .phone-screen > * {
+      scroll-snap-align: start;
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      direction: ltr;
+    }
+
+    .brand-mini,
+    .brand-bottom {
+      direction: ltr;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.8px;
+    }
+
+    .brand-mini {
+      color: rgba(255, 255, 255, 0.94);
+    }
+
+    .menu-button {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      padding: 9px;
+      background: transparent;
+      place-content: center;
+      gap: 4px;
+      border-radius: 12px;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .menu-button:hover,
+    .menu-button:focus-visible {
+      background: rgba(255, 255, 255, 0.09);
+      outline: 0;
+    }
+
+    .menu-button:active {
+      transform: scale(0.92);
+    }
+
+    .menu-button span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      border-radius: 4px;
+      background: white;
+    }
+
+    .home-hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 60%;
+      isolation: isolate;
+    }
+
+    .hero-grid {
+      position: absolute;
+      z-index: -1;
+      top: 8%;
+      left: -38%;
+      width: 106%;
+      aspect-ratio: 1;
+      opacity: 0.44;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(101, 193, 255, 0.58), transparent 8%),
+        repeating-radial-gradient(
+          circle at 50% 50%,
+          rgba(131, 202, 255, 0.24) 0 1px,
+          transparent 2px 14px
+        );
+      filter: blur(0.2px);
+      transform: rotate(-17deg);
+    }
+
+    .eyebrow {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--blue);
+      direction: ltr;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.7px;
+    }
+
+    .main-brand {
+      margin: 0 0 15px;
+      direction: ltr;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(43px, 4.8vw, 61px);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -3.2px;
+    }
+
+    .home-title {
+      max-width: 340px;
+      margin: 0;
+      font-size: clamp(20px, 2.15vw, 28px);
+      font-weight: 600;
+      line-height: 1.72;
+    }
+
+    .home-description {
+      max-width: 320px;
+      margin: 16px 0 0;
+      color: var(--gray-400);
+      font-size: 12px;
+      line-height: 2;
+    }
+
+    .services-preview {
+      position: relative;
+      z-index: 2;
+      padding-top: 14px;
+    }
+
+    .section-label {
+      margin: 0 0 11px;
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .service-thumbnails {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .service-thumb {
+      min-width: 0;
+      padding: 0;
+      overflow: hidden;
+      color: white;
+      text-align: right;
+      background: transparent;
+    }
+
+    .service-art {
+      position: relative;
+      height: 105px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      background: #082039;
+      box-shadow: 0 12px 21px rgba(0, 0, 0, 0.24);
+      transition: transform 0.24s ease, border-color 0.24s ease;
+    }
+
+    .service-thumb:hover .service-art,
+    .service-thumb:focus-visible .service-art {
+      border-color: rgba(126, 204, 255, 0.7);
+      transform: translateY(-4px);
+      outline: none;
+    }
+
+    .service-thumb:active .service-art {
+      transform: scale(0.95);
+    }
+
+    .service-thumb span {
+      display: block;
+      margin-top: 7px;
+      overflow: hidden;
+      font-size: 10px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .art-web::before {
+      position: absolute;
+      inset: 13px 8px 14px;
+      content: "";
+      border-radius: 4px;
+      background:
+        linear-gradient(145deg, #6cc6ff 0%, #1b4f81 48%, #061526 49%);
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 24%,
+        63% 24%,
+        63% 65%,
+        100% 65%,
+        100% 100%,
+        0 100%
+      );
+    }
+
+    .art-web::after {
+      position: absolute;
+      bottom: 20px;
+      left: 14px;
+      width: 35%;
+      height: 4px;
+      content: "";
+      border-radius: 5px;
+      background: #d9f2ff;
+      box-shadow: 0 9px 0 rgba(217, 242, 255, 0.54);
+    }
+
+    .art-ui::before {
+      position: absolute;
+      top: 13px;
+      left: 16%;
+      width: 67%;
+      height: 71%;
+      content: "";
+      border: 2px solid #dff4ff;
+      border-radius: 7px;
+      background:
+        linear-gradient(#3c779f 0 23%, transparent 23%),
+        linear-gradient(90deg, rgba(112, 201, 255, 0.9) 0 42%, transparent 42%);
+      box-shadow: inset 0 -13px rgba(22, 73, 111, 0.85);
+    }
+
+    .art-ui::after {
+      position: absolute;
+      bottom: 19px;
+      left: 29%;
+      width: 42%;
+      height: 7px;
+      content: "";
+      border-radius: 5px;
+      background: #62bbff;
+    }
+
+    .art-admin::before {
+      position: absolute;
+      inset: 14px 10px;
+      content: "";
+      border-radius: 5px;
+      background:
+        linear-gradient(90deg, #63bbff 0 20%, transparent 20% 27%, #254d74 27% 100%);
+    }
+
+    .art-admin::after {
+      position: absolute;
+      top: 28px;
+      right: 13px;
+      width: 43%;
+      height: 5px;
+      content: "";
+      border-radius: 4px;
+      background: #c6edff;
+      box-shadow: 0 13px 0 #64bdff, 0 26px 0 #3c6489;
+    }
+
+    .feature-visual {
+      position: relative;
+      display: grid;
+      min-height: 48%;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .visual-glow {
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      opacity: 0.42;
+      background: #137dcc;
+      filter: blur(60px);
+    }
+
+    .browser-visual {
+      position: relative;
+      z-index: 1;
+      width: 78%;
+      height: 54%;
+      min-height: 175px;
+      padding: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 15px;
+      background:
+        linear-gradient(145deg, rgba(35, 80, 119, 0.92), rgba(5, 18, 32, 0.96));
+      box-shadow:
+        20px 28px 42px rgba(0, 0, 0, 0.44),
+        inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      transform: rotate(-8deg) skewY(2deg);
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 4px;
+      direction: ltr;
+    }
+
+    .browser-dots i {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #b8e2ff;
+    }
+
+    .browser-title-line {
+      width: 52%;
+      height: 6px;
+      margin-top: 22%;
+      border-radius: 8px;
+      background: #e7f8ff;
+    }
+
+    .browser-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.72fr;
+      gap: 8px;
+      height: 50%;
+      margin-top: 11px;
+      direction: ltr;
+    }
+
+    .browser-layout span {
+      display: block;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #6ac5ff, #17466f);
+    }
+
+    .browser-layout span:last-child {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          #35658f 0 7px,
+          transparent 7px 14px
+        );
+    }
+
+    .feature-copy {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .feature-copy h2 {
+      margin: 2px 0 7px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .feature-copy p {
+      margin: 0 0 17px;
+      color: var(--gray-400);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .button-primary,
+    .button-secondary {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.36);
+      border-radius: 11px;
+      font-size: 12px;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .button-primary {
+      border-color: #ecf8ff;
+      color: #09203b;
+      background: #edf8ff;
+      font-weight: 700;
+    }
+
+    .button-secondary {
+      margin-top: 8px;
+      color: white;
+      background: rgba(255, 255, 255, 0.075);
+    }
+
+    .button-primary:hover,
+    .button-secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary:active,
+    .button-secondary:active {
+      transform: scale(0.97);
+    }
+
+    .brand-bottom {
+      margin-top: 18px;
+      color: #c9eaff;
+      text-align: center;
+    }
+
+    .modal-layer {
+      position: fixed;
+      z-index: 100;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(1, 8, 15, 0.73);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .modal-layer.is-open {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: min(480px, 100%);
+      max-height: calc(100dvh - 32px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding:
+        calc(23px + var(--safe-top))
+        20px
+        calc(23px + var(--safe-bottom));
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 80% 0, rgba(46, 125, 187, 0.3), transparent 34%),
+        linear-gradient(145deg, #103351, #061321);
+      box-shadow: 0 36px 100px rgba(0, 0, 0, 0.72);
+      animation: modal-in 0.32s ease both;
+      scrollbar-width: none;
+    }
+
+    .modal-panel::-webkit-scrollbar {
+      display: none;
+    }
+
+    @keyframes modal-in {
+      from {
+        opacity: 0;
+        transform: translateY(22px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-close,
+    .modal-back {
+      min-width: 38px;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .modal-close {
+      float: left;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .modal-back {
+      float: left;
+      margin-left: 8px;
+      padding: 0 11px;
+      font-size: 11px;
+    }
+
+    .modal-close:hover,
+    .modal-back:hover {
+      background: rgba(255, 255, 255, 0.13);
+    }
+
+    .modal-heading {
+      clear: both;
+      margin: 29px 0 13px;
+      font-size: 29px;
+      line-height: 1.5;
+    }
+
+    .modal-intro {
+      margin: 0 0 17px;
+      color: var(--gray-400);
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    .menu-logo {
+      margin: 0;
+      direction: ltr;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 31px;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+    }
+
+    .full-menu {
+      display: grid;
+      gap: 8px;
+      clear: both;
+      padding-top: 25px;
+    }
+
+    .menu-link,
+    .content-card {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .menu-link {
+      width: 100%;
+      padding: 14px;
+      border-radius: 15px;
+      color: white;
+      text-align: right;
+      font-size: 16px;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .menu-link:hover {
+      background: rgba(113, 196, 255, 0.14);
+      transform: translateX(-3px);
+    }
+
+    .cards-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .content-card {
+      width: 100%;
+      padding: 15px;
+      border-radius: 18px;
+      color: white;
+      text-align: right;
+      background:
+        linear-gradient(135deg, rgba(94, 186, 255, 0.15), rgba(255, 255, 255, 0.035));
+      transition: transform 0.22s ease, border-color 0.22s ease;
+    }
+
+    button.content-card:hover {
+      border-color: rgba(115, 198, 255, 0.6);
+      transform: translateY(-3px);
+    }
+
+    .content-card h3 {
+      margin: 0 0 7px;
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .content-card p {
+      margin: 0;
+      color: var(--gray-400);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 13px 0 18px;
+    }
+
+    .service-tag {
+      padding: 6px 10px;
+      border: 1px solid rgba(113, 197, 255, 0.22);
+      border-radius: 50px;
+      color: #c2e8ff;
+      background: rgba(101, 190, 255, 0.1);
+      font-size: 10px;
+    }
+
+    .modal-browser-area {
+      position: relative;
+      display: grid;
+      height: 245px;
+      margin: 9px 0 15px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 20px;
+      background:
+        linear-gradient(145deg, rgba(20, 62, 96, 0.78), rgba(4, 15, 27, 0.82));
+      place-items: center;
+    }
+
+    .modal-browser-area .browser-visual {
+      width: 67%;
+      height: 63%;
+    }
+
+    .project-art {
+      position: relative;
+      height: 108px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      border-radius: 12px;
+      background:
+        linear-gradient(135deg, #09213a, #2279b6 49%, #07121f 50%);
+    }
+
+    .project-art::before {
+      position: absolute;
+      inset: 21px 17px;
+      content: "";
+      border-radius: 6px;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.86) 0 35%,
+          transparent 35% 42%,
+          rgba(255, 255, 255, 0.26) 42%
+        );
+      transform: rotate(-4deg);
+    }
+
+    .project-number {
+      color: var(--blue);
+      direction: ltr;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 11px;
+    }
+
+    .article-art {
+      height: 74px;
+    }
+
+    .article-art::after {
+      position: absolute;
+      top: 17px;
+      right: 16px;
+      width: 49%;
+      height: 5px;
+      content: "";
+      border-radius: 5px;
+      background: white;
+      box-shadow: 0 14px 0 rgba(255, 255, 255, 0.64);
+    }
+
+    .detail-art {
+      height: 235px;
+      margin: 18px 0;
+    }
+
+    .detail-copy {
+      color: var(--gray-100);
+      font-size: 13px;
+      line-height: 2.15;
+    }
+
+    .detail-copy p {
+      margin: 0 0 13px;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 4px;
+    }
+
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 11px;
+      outline: none;
+      color: white;
+      background: rgba(1, 10, 18, 0.34);
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .contact-form textarea {
+      min-height: 105px;
+      resize: vertical;
+    }
+
+    .contact-form input:focus,
+    .contact-form select:focus,
+    .contact-form textarea:focus {
+      border-color: var(--blue);
+      background: rgba(16, 62, 96, 0.32);
+    }
+
+    .contact-form select option {
+      color: #0b1c2c;
+    }
+
+    .form-notice {
+      display: none;
+      margin: 10px 0 0;
+      color: #bde8ff;
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .form-notice.show {
+      display: block;
+    }
+
+    .contact-signature {
+      margin-top: 27px;
+      color: #c8eaff;
+      direction: ltr;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .site-shell {
+        min-height: 100dvh;
+      }
+
+      .ambient,
+      .desktop-label {
+        display: none;
+      }
+
+      .device-stage {
+        display: block;
+        min-height: 100dvh;
+        padding: 0;
+      }
+
+      .device-rail {
+        width: 100%;
+        height: 100dvh;
+        justify-content: flex-start;
+        gap: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        perspective: none;
+      }
+
+      .device-rail::-webkit-scrollbar {
+        display: none;
+      }
+
+      .phone {
+        flex: 0 0 100vw;
+        width: 100vw;
+        height: 100dvh;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+        scroll-snap-align: start;
+      }
+
+      .phone-home,
+      .phone-feature,
+      .phone:hover {
+        transform: none;
+      }
+
+      .phone-home {
+        background:
+          radial-gradient(circle at 74% 8%, rgba(42, 114, 171, 0.32), transparent 28%),
+          linear-gradient(145deg, #103353, #061321 67%);
+      }
+
+      .phone-feature {
+        display: none;
+      }
+
+      .phone-screen {
+        padding-right: 24px;
+        padding-left: 24px;
+      }
+
+      .home-hero {
+        min-height: 62%;
+      }
+
+      .main-brand {
+        font-size: 49px;
+      }
+
+      .home-title {
+        font-size: 23px;
+      }
+
+      .service-art {
+        height: 118px;
+      }
+
+      .modal-layer {
+        padding: 10px;
+      }
+
+      .modal-panel {
+        max-height: calc(100dvh - 20px);
+        border-radius: 27px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .phone-screen {
+        padding-right: 19px;
+        padding-left: 19px;
+      }
+
+      .home-hero {
+        min-height: 58%;
+      }
+
+      .main-brand {
+        font-size: 44px;
+      }
+
+      .home-title {
+        font-size: 20px;
+      }
+
+      .service-art {
+        height: 103px;
+      }
+
+      .home-description {
+        margin-top: 12px;
+        font-size: 11px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="site-shell">
+    <i class="ambient ambient-one"></i>
+    <i class="ambient ambient-two"></i>
+
+    <div class="device-stage">
+      <div class="device-rail" id="deviceRail">
+
+        <!-- First phone: Home -->
+        <section class="phone phone-home" aria-label="صفحه اصلی NONONICK">
+          <div class="phone-screen">
+            <header class="topbar">
+              <button
+                class="menu-button"
+                type="button"
+                data-open="menu"
+                aria-label="باز کردن منو"
+              >
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+
+              <a class="brand-mini" href="#home" aria-label="NONONICK">
+                NONONICK
+              </a>
+            </header>
+
+            <section class="home-hero">
+              <div class="hero-grid" aria-hidden="true"></div>
+
+              <span class="eyebrow">DIGITAL DESIGN STUDIO</span>
+
+              <h1 class="main-brand">NONONICK</h1>
+
+              <h2 class="home-title">
+                تجربه‌های دیجیتال،<br />
+                متفاوت طراحی می‌شوند.
+              </h2>
+
+              <p class="home-description">
+                طراحی سایت، رابط کاربری و تجربه‌های دیجیتال برای برندهایی
+                که می‌خواهند متفاوت دیده شوند.
+              </p>
+            </section>
+
+            <section class="services-preview" aria-labelledby="service-preview-title">
+              <h3 class="section-label" id="service-preview-title">خدمات</h3>
+
+              <div class="service-thumbnails">
+                <button
+                  class="service-thumb"
+                  type="button"
+                  data-service="طراحی سایت"
+                  aria-label="مشاهده خدمت طراحی سایت"
+                >
+                  <div class="service-art art-web"></div>
+                  <span>طراحی سایت</span>
+                </button>
+
+                <button
+                  class="service-thumb"
+                  type="button"
+                  data-service="UI / UX"
+                  aria-label="مشاهده خدمت طراحی رابط کاربری"
+                >
+                  <div class="service-art art-ui"></div>
+                  <span>UI / UX</span>
+                </button>
+
+                <button
+                  class="service-thumb"
+                  type="button"
+                  data-service="پنل ادمین"
+                  aria-label="مشاهده خدمت پنل ادمین"
+                >
+                  <div class="service-art art-admin"></div>
+                  <span>پنل ادمین</span>
+                </button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <!-- Second phone: Selected service -->
+        <section class="phone phone-feature" aria-label="سرویس منتخب NONONICK">
+          <div class="phone-screen">
+            <header class="topbar">
+              <button
+                class="menu-button"
+                type="button"
+                data-open="menu"
+                aria-label="باز کردن منو"
+              >
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+
+              <span class="brand-mini">NONONICK</span>
+            </header>
+
+            <section class="feature-visual" aria-label="نمای گرافیکی طراحی سایت">
+              <i class="visual-glow" aria-hidden="true"></i>
+
+              <div class="browser-visual" aria-hidden="true">
+                <div class="browser-dots">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </div>
+
+                <div class="browser-title-line"></div>
+
+                <div class="browser-layout">
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </section>
+
+            <section class="feature-copy">
+              <span class="eyebrow">SELECTED SERVICE</span>
+
+              <h2>طراحی سایت</h2>
+
+              <p>ساخت تجربه‌ای دیجیتال متناسب با برند شما</p>
+
+              <button
+                class="button-primary"
+                type="button"
+                data-service="طراحی سایت"
+              >
+                مشاهده خدمات
+              </button>
+
+              <button
+                class="button-secondary"
+                type="button"
+                data-open="contact"
+              >
+                شروع پروژه
+              </button>
+
+              <div class="brand-bottom">NONONICK</div>
+            </section>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <aside class="desktop-label" aria-hidden="true">
+      <strong>NONONICK / DIGITAL SPACE</strong>
+      یک محیط دیجیتال برای دیدن، لمس‌کردن و ساختن تجربه‌های وب.
+    </aside>
+  </main>
+
+  <!-- Universal fullscreen content layer -->
+  <div
+    class="modal-layer"
+    id="modalLayer"
+    role="dialog"
+    aria-modal="true"
+    aria-label="محتوای NONONICK"
+    aria-hidden="true"
+  >
+    <section class="modal-panel" id="modalPanel"></section>
+  </div>
+
+  <script>
+    "use strict";
+
+    const services = {
+      "طراحی سایت":
+        "ساخت وب‌سایت‌هایی چشم‌گیر، سریع و متناسب با مسیر واقعی مخاطب و اهداف برند شما.",
+
+      "طراحی سایت فروشگاهی":
+        "فروشگاه‌هایی با مسیر خرید روشن، نمایش محصول دقیق و تجربه‌ای راحت برای مشتری.",
+
+      "طراحی سایت شرکتی":
+        "فضایی منسجم برای معرفی خدمات، توانمندی‌ها، تیم و مسیر ارتباط با کسب‌وکار شما.",
+
+      "سایت شخصی":
+        "روایتی شخصی برای نمایش نمونه‌کار، تخصص، فکر و مسیر منحصربه‌فرد شما.",
+
+      "لندینگ پیج":
+        "صفحه‌هایی متمرکز که مخاطب را از دیدن تا اقدام، با یک پیام روشن همراه می‌کنند.",
+
+      "UI / UX":
+        "رابط‌هایی دقیق و تجربه‌هایی قابل‌فهم که کاربر بدون اصطکاک با محصول ارتباط بگیرد.",
+
+      "پنل ادمین":
+        "داشبوردهای منظم و قابل استفاده برای مدیریت محتوا، سفارش‌ها و داده‌های کسب‌وکار.",
+
+      "ادیت زنده":
+        "ابزارهایی ساده برای اینکه تیم شما بتواند محتوای سایت را سریع و مستقیم تغییر دهد.",
+
+      "طراحی سه‌بعدی":
+        "فضاها و عناصر سه‌بعدی سبک برای روایت بهتر محصول و افزایش عمق تجربه دیجیتال.",
+
+      "تجربه دیجیتال":
+        "ترکیب طراحی، تعامل و فناوری برای ساخت تجربه‌هایی که در ذهن مخاطب باقی می‌مانند."
+    };
+
+    const portfolioItems = [
+      {
+        title: "E-Commerce Experience",
+        category: "فروشگاهی / پوشاک و مد",
+        number: "01"
+      },
+      {
+        title: "Beauty Clinic Website",
+        category: "وب‌سایت کلینیک زیبایی",
+        number: "02"
+      },
+      {
+        title: "Corporate Website",
+        category: "وب‌سایت شرکتی",
+        number: "03"
+      },
+      {
+        title: "Personal Website",
+        category: "وب‌سایت شخصی",
+        number: "04"
+      },
+      {
+        title: "Landing Page",
+        category: "لندینگ پیج",
+        number: "05"
+      },
+      {
+        title: "Interactive 3D Experience",
+        category: "تجربه تعاملی سه‌بعدی",
+        number: "06"
+      }
+    ];
+
+    const articles = [
+      {
+        title: "چطور یک سایت مسیر تصمیم‌گیری مخاطب را ساده می‌کند؟",
+        category: "تجربه کاربری"
+      },
+      {
+        title: "رابط کاربری خوب چه چیزی را پنهان می‌کند؟",
+        category: "UI / UX"
+      },
+      {
+        title: "طراحی سه‌بعدی در تجربه‌های وب امروز",
+        category: "طراحی سه‌بعدی"
+      },
+      {
+        title: "پنل ادمین؛ جایی که محصول ادامه پیدا می‌کند",
+        category: "پنل ادمین"
+      },
+      {
+        title: "ادیت زنده و استقلال تیم محتوا",
+        category: "ادیت زنده"
+      },
+      {
+        title: "ترندهای طراحی وب برای تجربه‌های ماندگار",
+        category: "ترندهای طراحی وب"
+      }
+    ];
+
+    const modalLayer = document.getElementById("modalLayer");
+    const modalPanel = document.getElementById("modalPanel");
+    const deviceRail = document.getElementById("deviceRail");
+
+    let currentView = "";
+    let modalHistoryState = false;
+
+    function setModal(html, viewName = "content") {
+      modalPanel.innerHTML = html;
+      modalLayer.classList.add("is-open");
+      modalLayer.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      modalPanel.scrollTop = 0;
+      currentView = viewName;
+
+      if (!modalHistoryState) {
+        history.pushState({ nononickModal: true }, "", "#nononick");
+        modalHistoryState = true;
+      }
+
+      const closeButton = modalPanel.querySelector("[data-close]");
+      if (closeButton) {
+        closeButton.focus();
+      }
+    }
+
+    function closeModal(skipHistory = false) {
+      modalLayer.classList.remove("is-open");
+      modalLayer.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+      modalPanel.innerHTML = "";
+      currentView = "";
+
+      if (!skipHistory && modalHistoryState && location.hash === "#nononick") {
+        history.back();
+      }
+
+      if (skipHistory) {
+        modalHistoryState = false;
+      }
+    }
+
+    window.addEventListener("popstate", () => {
+      if (modalLayer.classList.contains("is-open")) {
+        closeModal(true);
+      }
+
+      modalHistoryState = false;
+    });
+
+    function closeButtonMarkup() {
+      return `
+        <button class="modal-close" type="button" data-close aria-label="بستن">
+          ×
+        </button>
+      `;
+    }
+
+    function backButtonMarkup(target) {
+      return `
+        <button class="modal-back" type="button" data-nav="${target}">
+          بازگشت
+        </button>
+      `;
+    }
+
+    function browserMarkup() {
+      return `
+        <div class="modal-browser-area" aria-hidden="true">
+          <i class="visual-glow"></i>
+
+          <div class="browser-visual">
+            <div class="browser-dots">
+              <i></i>
+              <i></i>
+              <i></i>
+            </div>
+
+            <div class="browser-title-line"></div>
+
+            <div class="browser-layout">
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function openMenu() {
+      setModal(
+        `
+          ${closeButtonMarkup()}
+
+          <h2 class="menu-logo">NONONICK</h2>
+
+          <p class="modal-intro">
+            استودیو طراحی سایت، رابط کاربری و تجربه‌های دیجیتال.
+          </p>
+
+          <nav class="full-menu" aria-label="منوی اصلی">
+            <button class="menu-link" type="button" data-nav="خانه">خانه</button>
+            <button class="menu-link" type="button" data-nav="خدمات">خدمات</button>
+            <button class="menu-link" type="button" data-nav="نمونه‌کارها">نمونه‌کارها</button>
+            <button class="menu-link" type="button" data-nav="بلاگ">بلاگ</button>
+            <button class="menu-link" type="button" data-nav="درباره ما">درباره ما</button>
+            <button class="menu-link" type="button" data-nav="FAQ">FAQ</button>
+            <button class="menu-link" type="button" data-nav="تماس با ما">تماس با ما</button>
+          </nav>
+        `,
+        "menu"
+      );
+    }
+
+    function openServices() {
+      const serviceCards = Object.entries(services)
+        .map(
+          ([name, description]) => `
+            <button
+              class="content-card"
+              type="button"
+              data-service="${name}"
+            >
+              <h3>${name}</h3>
+              <p>${description}</p>
+            </button>
+          `
+        )
+        .join("");
+
+      setModal(
+        `
+          ${closeButtonMarkup()}
+
+          <h2 class="modal-heading">خدمات</h2>
+
+          <p class="modal-intro">
+            از طراحی سایت و فروشگاه آنلاین تا رابط کاربری، پنل ادمین،
+            ادیت زنده و تجربه‌های تعاملی.
+          </p>
+
+          <div class="cards-stack">
+            ${serviceCards}
+          </div>
+        `,
+        "services"
+      );
+    }
+
+    function openService(serviceName) {
+      const description =
+        services[serviceName] || services["طراحی سایت"];
+
+      setModal(
+        `
+          ${closeButtonMarkup()}
+          ${backButtonMarkup("خدمات")}
+
+          <div style="clear: both;"></div>
+
+          ${browserMarkup()}
+
+          <span class="eyebrow">SERVICE / NONONICK</span>
+
+          <h2 class="modal-heading" style="margin-top: 6px;">
+            ${serviceName}
+          </h2>
+
+          <p class="modal-intro">${description}</p>
+
+          <div class="service-tags" aria-label="ویژگی‌ها">
+            <span class="service-tag">طراحی اختصاصی</span>
+            <span class="service-tag">تجربه کاربری</span>
+            <span class="service-tag">تعامل روان</span>
+            <span class="service-tag">موبایل‌اول</span>
+          </div>
+
+          <button
+            class="button-primary"
+            type="button"
+            data-nav="نمونه‌کارها"
+          >
+            نمونه‌کارهای مرتبط
+          </button>
+
+          <button
+            class="button-secondary"
+            type="button"
+            data-open="contact"
+          >
+            شروع پروژه
+          </button>
+        `,
+        `service-${serviceName}`
+      );
+    }
+
+    function openPortfolio() {
+      const projectsMarkup = portfolioItems
+        .map(
+          (project) => `
+            <button
+              class="content-card"
+              type="button"
+              data-project="${project.title}"
+            >
+              <div class="project-art"></div>
+
+              <h3>
+                <span class="project-number">${project.number}</span>
+                &nbsp; ${project.title}
+              </h3>
+
+              <p>${project.category}</p>
+            </button>
+          `
+        )
+        .join("");
+
+      setModal(
+        `
+          ${closeButtonMarkup()}
+
+          <h2 class="modal-heading">نمونه‌کارها</h2>
+
+          <p class="modal-intro">
+            هر پروژه یک فضای دیجیتال مستقل است؛ از فروشگاه آنلاین
+            تا تجربه‌های تعاملی و سایت‌های شرکتی.
+          </p>
+
+          <div class="cards-stack">
+            ${projectsMarkup}
+          </div>
+        `,
+        "portfolio"
+      );
+    }
+
+    function openProject(projectTitle) {
+      const selectedProject =
+        portfolioItems.find((project) => project.title === projectTitle) ||
+        portfolioItems[0];
+
+      setModal(
+        `
+          ${closeButtonMarkup()}
+          ${backButtonMarkup("نمونه‌کارها")}
+
+          <div style="clear: both;"></div>
+
+          <h2 class="modal-heading">${selectedProject.title}</h2>
+
+          <div class="project-art detail-art"></div>
+
+          <p class="modal-intro">
+            ${selectedProject.category}
+          </p>
+
+          <div class="detail-copy">
+            <p>
+              این پروژه با تمرکز بر وضوح مسیر کاربر، هویت بصری و
+              تعامل‌های نرم طراحی شده است تا تجربه‌ای یکپارچه در
+              موبایل و دسکتاپ ایجاد کند.
+            </p>
+
+            <p>
+              ساختار محتوا، جزئیات رابط و حرکت‌های ظریف در کنار هم
+              قرار گرفته‌اند تا مخاطب سریع‌تر به اطلاعات و اقدام مورد
+              نیاز خود برسد.
+            </p>
+          </div>
+
+          <div class="service-tags">
+            <span class="service-tag">Web Design</span>
+            <span class="service-tag">UI / UX</span>
+            <span class="service-tag">Interaction</span>
+          </div>
+
+          <button
+            class="button-primary"
+            type="button"
+            data-open="contact"
+          >
+            پروژه‌ای مشابه دارید؟
+          </button>
+        `,
+        `project-${projectTitle}`
+      );
+    }
+
+    function openAbout() {
+      setModal(
+        `
+          ${closeButtonMarkup()}
+
+          <h2 class="modal-heading">درباره Nononick</h2>
+
+          <div class="project-art detail-art"></div>
+
+          <div class="detail-copy">
+            <p>
+              Nononick روی طراحی تجربه‌های دیجیتال، رابط‌های کاربری
+              و وب‌سایت‌هایی تمرکز دارد که فقط یک صفحه نیستند؛ بلکه
+              یک تجربه قابل تعامل برای مخاطب ایجاد می‌کنند.
+            </p>
+
+            <p>
+              ما طراحی، توسعه، ساختار محتوا و بهینه‌سازی تجربه کاربر
+              را کنار هم می‌بینیم تا حضور دیجیتال برند، واضح و ماندگار
+              باشد.
+            </p>
+          </div>
+
+          <button
+            class="button-secondary"
+            type="button"
+            data-open="contact"
+          >
+            با ما گفتگو کنید
+          </button>
+        `,
+        "about"
+      );
+    }
+
+    function openBlog() {
+      const articleMarkup = articles
+        .map(
+          (article) => `
+            <button
+              class="content-card"
+              type="button"
+              data-article="${article.title}"
+            >
+              <div class="project-art article-art"></div>
+
+              <h3>${article.title}</h3>
+
+              <p>
+                ${article.category} · ۴ دقیقه مطالعه
+              </p>
+            </button>
+          `
+        )
+        .join("");
+
+      setModal(
+        `
+          ${closeButtonMarkup()}
+
+          <h2 class="modal-heading">بلاگ</h2>
+
+          <p class="modal-intro">
+            نکته‌ها و راهنماهایی درباره طراحی سایت، رابط کاربری،
+            تجربه کاربر و رشد دیجیتال.
+          </p>
+
+          <div class="service-tags" aria-label="دسته‌بندی مقالات">
+            <span class="service-tag">طراحی سایت</span>
+            <span class="service-tag">UI/UX</span>
+            <span class="service-tag">تجربه کاربری</span>
+            <span class="service-tag">طراحی سه‌بعدی</span>
+            <span class="service-tag">پنل ادمین</span>
+            <span class="service-tag">ادیت زنده</span>
+            <span class="service-tag">ترندهای طراحی وب</span>
+          </div>
+
+          <div class="cards-stack">
+            ${articleMarkup}
+          </div>
+        `,
+        "blog"
+      );
+    }
+
+    function openArticle(articleTitle) {
+      const article =
+        articles.find((item) => item.title === articleTitle) || articles[0];
+
+      setModal(
+        `
+          ${closeButtonMarkup()}
+          ${backButtonMarkup("بلاگ")}
+
+          <div style="clear: both;"></div>
+
+          <span class="eyebrow">${article.category}</span>
+
+          <h2 class="modal-heading" style="margin-top: 8px;">
+            ${article.title}
+          </h2>
+
+          <div class="project-art detail-art"></div>
+
+          <div class="detail-copy">
+            <p>
+              یک تجربه دیجیتال خوب از جایی شروع می‌شود که مخاطب برای
+              فهمیدن مسیر، نیازی به تلاش اضافه نداشته باشد. طراحی باید
+              میان هدف کسب‌وکار و نیاز واقعی انسان، یک گفت‌وگوی روشن
+              بسازد.
+            </p>
+
+            <p>
+              در Nononick، ساختار محتوا، جزئیات رابط، حرکت‌های کوتاه
+              و مسیرهای اقدام با هم دیده می‌شوند تا نتیجه فقط زیبا
+              نباشد؛ بلکه استفاده از آن هم طبیعی و روان باشد.
+            </p>
+
+            <p>
+              هر تصمیم کوچک در طراحی می‌تواند روی درک مخاطب، سرعت
+              تصمیم‌گیری و کیفیت ارتباط با برند اثر بگذارد.
+            </p>
+          </div>
+
+          <button
+            class="button-secondary"
+            type="button"
+            data-open="contact"
+          >
+            درباره پروژه خودتان گفتگو کنیم
+          </button>
+        `,
+        `article-${articleTitle}`
+      );
+    }
+
+    function openFaq() {
+      setModal(
+        `
+          ${closeButtonMarkup()}
+
+          <h2 class="modal-heading">FAQ</h2>
+
+          <div class="cards-stack">
+            <article class="content-card">
+              <h3>فرآیند شروع پروژه چگونه است؟</h3>
+              <p>
+                با ثبت درخواست، درباره هدف، مخاطب و دامنه پروژه گفتگو
+                می‌کنیم و مسیر مناسب را مشخص می‌کنیم.
+              </p>
+            </article>
+
+            <article class="content-card">
+              <h3>آیا طراحی برای موبایل انجام می‌شود؟</h3>
+              <p>
+                بله. تجربه موبایل از ابتدای طراحی در نظر گرفته می‌شود
+                و فقط نسخه کوچک‌شده دسکتاپ نیست.
+              </p>
+            </article>
+
+            <article class="content-card">
+              <h3>آیا امکان مدیریت محتوا وجود دارد؟</h3>
+              <p>
+                بسته به نیاز پروژه، پنل ادمین و قابلیت ادیت زنده برای
+                مدیریت مستقل محتوا طراحی می‌شود.
+              </p>
+            </article>
+
+            <article class="content-card">
+              <h3>آیا پروژه بعداً قابل توسعه است؟</h3>
+              <p>
+                ساختار پروژه به شکلی طراحی می‌شود که بتوان بخش‌ها،
+                صفحات و قابلیت‌های تازه را در آینده اضافه کرد.
+              </p>
+            </article>
+          </div>
+        `,
+        "faq"
+      );
+    }
+
+    function openContact() {
+      const serviceOptions = Object.keys(services)
+        .map((service) => `<option value="${service}">${service}</option>`)
+        .join("");
+
+      setModal(
+        `
+          ${closeButtonMarkup()}
+
+          <h2 class="modal-heading">شروع یک پروژه جدید</h2>
+
+          <p class="modal-intro">
+            ایده‌تان را با ما مطرح کنید.
+          </p>
+
+          <form class="contact-form" id="contactForm">
+            <input
+              type="text"
+              name="name"
+              placeholder="نام"
+              aria-label="نام"
+              required
+            />
+
+            <input
+              type="tel"
+              name="phone"
+              placeholder="شماره تماس"
+              aria-label="شماره تماس"
+              required
+            />
+
+            <input
+              type="email"
+              name="email"
+              placeholder="ایمیل"
+              aria-label="ایمیل"
+            />
+
+            <select name="projectType" aria-label="نوع پروژه">
+              <option value="">نوع پروژه</option>
+              ${serviceOptions}
+            </select>
+
+            <textarea
+              name="description"
+              placeholder="توضیحات"
+              aria-label="توضیحات پروژه"
+            ></textarea>
+
+            <button class="button-primary" type="submit">
+              ارسال درخواست
+            </button>
+
+            <p class="form-notice" id="formNotice">
+              درخواست شما ثبت شد. به‌زودی با شما تماس می‌گیریم.
+            </p>
+          </form>
+
+          <div class="contact-signature">
+            NONONICK · nononick.ir
+          </div>
+        `,
+        "contact"
+      );
+    }
+
+    function navigate(viewName) {
+      switch (viewName) {
+        case "خانه":
+          closeModal();
+          window.setTimeout(() => {
+            deviceRail.scrollTo({
+              left: 0,
+              behavior: "smooth"
+            });
+          }, 150);
+          break;
+
+        case "خدمات":
+          openServices();
+          break;
+
+        case "نمونه‌کارها":
+          openPortfolio();
+          break;
+
+        case "بلاگ":
+          openBlog();
+          break;
+
+        case "درباره ما":
+          openAbout();
+          break;
+
+        case "FAQ":
+          openFaq();
+          break;
+
+        case "تماس با ما":
+          openContact();
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    document.addEventListener("click", (event) => {
+      const button = event.target.closest("button");
+
+      if (!button) return;
+
+      if (button.matches("[data-close]")) {
+        closeModal();
+        return;
+      }
+
+      if (button.dataset.open === "menu") {
+        openMenu();
+        return;
+      }
+
+      if (button.dataset.open === "contact") {
+        openContact();
+        return;
+      }
+
+      if (button.dataset.service) {
+        openService(button.dataset.service);
+        return;
+      }
+
+      if (button.dataset.project) {
+        openProject(button.dataset.project);
+        return;
+      }
+
+      if (button.dataset.article) {
+        openArticle(button.dataset.article);
+        return;
+      }
+
+      if (button.dataset.nav) {
+        navigate(button.dataset.nav);
+      }
+    });
+
+    modalLayer.addEventListener("click", (event) => {
+      if (event.target === modalLayer) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("submit", (event) => {
+      if (event.target.id !== "contactForm") return;
+
+      event.preventDefault();
+
+      const form = event.target;
+      const notice = document.getElementById("formNotice");
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      notice.classList.add("show");
+      form.reset();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modalLayer.classList.contains("is-open")) {
+        closeModal();
+      }
+    });
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    deviceRail.addEventListener(
+      "touchstart",
+      (event) => {
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+      },
+      { passive: true }
+    );
+
+    deviceRail.addEventListener(
+      "touchend",
+      (event) => {
+        const touchEndX = event.changedTouches[0].clientX;
+        const touchEndY = event.changedTouches[0].clientY;
+
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+
+        if (Math.abs(deltaX) < 68 || Math.abs(deltaX) < Math.abs(deltaY)) {
+          return;
+        }
+
+        const targetLeft =
+          deltaX < 0 ? window.innerWidth : -window.innerWidth;
+
+        deviceRail.scrollBy({
+          left: targetLeft,
+          behavior: "smooth"
+        });
+      },
+      { passive: true }
+    );
+
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+  </script>
+</body>
+</html>

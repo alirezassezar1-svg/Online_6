@@ -1,0 +1,1834 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0d12" />
+<title>Project Runner — اجرای پروژه‌های گیت‌هاب در مرورگر</title>
+<style>
+:root{
+  --bg:#0b0d12;--bg1:#0f1218;--bg2:#14181f;--bg3:#1a1f28;--bg4:#212836;
+  --bd:#232a35;--bd2:#2d3644;--tx:#e7ebf3;--tx2:#98a2b5;--tx3:#6a7486;
+  --ac:#6366f1;--ac2:#818cf8;--acs:rgba(99,102,241,.15);
+  --gn:#22c55e;--rd:#ef4444;--am:#f59e0b;--cy:#06b6d4;
+  --r:11px;--rs:8px;--sh:0 10px 40px rgba(0,0,0,.55);
+  --fn:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Roboto,sans-serif;
+  --mn:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+  --tb:50px;--sb:280px;--th:38%;
+}
+[data-theme=light]{
+  --bg:#f7f8fb;--bg1:#fff;--bg2:#fff;--bg3:#f1f3f7;--bg4:#e8ebf1;
+  --bd:#e2e5ec;--bd2:#d3d8e2;--tx:#161a22;--tx2:#5c6575;--tx3:#8b93a3;
+  --ac:#4f46e5;--acs:rgba(79,70,229,.10);
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 var(--fn);
+  -webkit-font-smoothing:antialiased;overscroll-behavior:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer;padding:0}
+.hidden{display:none!important}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:8px}
+::-webkit-scrollbar-track{background:transparent}
+kbd{font-family:var(--fn);font-size:10.5px;font-weight:600;color:var(--tx3);
+  background:var(--bg3);border:1px solid var(--bd2);border-bottom-width:2px;
+  border-radius:5px;padding:1px 5px}
+code{font-family:var(--mn);background:var(--bg3);padding:1px 6px;border-radius:5px;font-size:.88em}
+
+/* ═══════════ COI Setup Overlay ═══════════ */
+.overlay{position:fixed;inset:0;z-index:100;background:radial-gradient(120% 120% at 50% 0%,#1e1b4b,#020617);
+  display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;color:#e2e8f0}
+.setup{max-width:640px;width:100%;background:rgba(15,20,30,.85);backdrop-filter:blur(14px);
+  border:1px solid rgba(99,102,241,.3);border-radius:20px;padding:32px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.setup h1{margin:0 0 8px;font-size:1.6rem;letter-spacing:-.5px;
+  background:linear-gradient(135deg,#a5b4fc,#f0abfc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.setup>p{margin:0 0 24px;color:#94a3b8;line-height:1.75}
+.step{display:flex;gap:16px;margin-bottom:20px;align-items:flex-start}
+.step .num{width:32px;height:32px;flex:none;border-radius:10px;display:grid;place-items:center;
+  font-weight:700;background:linear-gradient(140deg,#6366f1,#a855f7);color:#fff;
+  box-shadow:0 4px 14px rgba(99,102,241,.4)}
+.step h3{margin:2px 0 4px;font-size:1rem;color:#e2e8f0}
+.step p{margin:0;color:#94a3b8;font-size:.9rem;line-height:1.6}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;
+  background:linear-gradient(140deg,#6366f1,#8b5cf6);color:#fff;font-weight:600;font-size:.92rem;
+  transition:transform .15s,filter .15s;margin-top:10px}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.btn.ghost{background:transparent;border:1px solid rgba(148,163,184,.3);color:#94a3b8;font-weight:500}
+.btn.ghost:hover{border-color:rgba(148,163,184,.6);color:#e2e8f0}
+.alt{margin-top:24px;padding:18px;border-radius:12px;background:rgba(30,41,59,.5);
+  border:1px solid rgba(148,163,184,.15);font-size:.88rem;line-height:1.7}
+.alt b{color:#93c5fd}
+.alt pre{margin:10px 0 0;padding:12px;background:#0a0e16;border-radius:8px;font-family:var(--mn);
+  font-size:.78rem;color:#a5f3fc;overflow-x:auto;direction:ltr;text-align:left;line-height:1.6}
+.setup-foot{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.stage{margin-top:14px;padding:12px 16px;border-radius:10px;font-size:.88rem;display:flex;align-items:center;gap:10px}
+.stage.ok{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+.stage.bad{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.3)}
+.stage.wait{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.3)}
+.dot{width:9px;height:9px;border-radius:50%;background:currentColor;flex:none;box-shadow:0 0 8px currentColor}
+
+/* ═══════════ App shell ═══════════ */
+.app{display:grid;grid-template-rows:var(--tb) 1fr;height:100dvh;overflow:hidden}
+.topbar{display:flex;align-items:center;gap:10px;padding:0 12px;
+  background:linear-gradient(180deg,var(--bg1),var(--bg));border-bottom:1px solid var(--bd);z-index:30}
+.brand{display:flex;align-items:center;gap:9px;user-select:none}
+.brand-mark{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  background:linear-gradient(140deg,var(--ac),#a855f7);box-shadow:0 4px 14px rgba(99,102,241,.4)}
+.brand-mark svg{width:15px;height:15px;fill:#fff}
+.brand-name{font-weight:650;font-size:14px;letter-spacing:-.2px}
+.brand-name small{color:var(--tx3);font-weight:450;display:block;font-size:10.5px}
+.tb-btn{height:32px;padding:0 12px;border-radius:var(--rs);display:inline-flex;align-items:center;
+  gap:6px;color:var(--tx2);font-size:12.5px;font-weight:520;transition:.13s;white-space:nowrap}
+.tb-btn:hover{background:var(--bg3);color:var(--tx)}
+.tb-btn.pri{background:var(--ac);color:#fff;font-weight:600}
+.tb-btn.pri:hover{background:var(--ac2)}
+.tb-btn svg{width:15px;height:15px;fill:currentColor;flex:none}
+.tb-btn:disabled{opacity:.4;cursor:not-allowed}
+.icon-btn{width:32px;height:32px;border-radius:var(--rs);display:grid;place-items:center;
+  color:var(--tx2);transition:.13s}
+.icon-btn:hover{background:var(--bg3);color:var(--tx)}
+.icon-btn svg{width:16px;height:16px;fill:currentColor}
+.spacer{flex:1}
+.iso-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;
+  font-size:11px;font-weight:600;border:1px solid}
+.iso-pill.on{color:#4ade80;background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.3)}
+.iso-pill.off{color:#fbbf24;background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.3)}
+
+.workspace{display:grid;grid-template-columns:var(--sb) 1px 1fr;min-height:0;overflow:hidden}
+.sidebar{background:var(--bg1);border-left:1px solid var(--bd);display:flex;flex-direction:column;
+  min-height:0;overflow:hidden}
+.sb-head{padding:12px 14px 8px;font-size:11px;font-weight:700;letter-spacing:.7px;
+  text-transform:uppercase;color:var(--tx3);display:flex;align-items:center;gap:6px}
+.sb-head .count{margin-right:auto;color:var(--tx3);font-weight:600}
+.sb-scroll{flex:1;overflow-y:auto;padding:0 8px 12px}
+.sb-foot{padding:10px 14px;border-top:1px solid var(--bd);font-size:11.5px;color:var(--tx3);
+  display:flex;align-items:center;gap:8px}
+
+.proj{display:flex;gap:10px;align-items:center;padding:9px 10px;border-radius:var(--rs);
+  cursor:pointer;transition:.12s;border:1px solid transparent;margin-bottom:2px;position:relative}
+.proj:hover{background:var(--bg2)}
+.proj.on{background:var(--acs);border-color:rgba(99,102,241,.35)}
+.proj-ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;
+  font-size:14px;font-weight:700;background:var(--bg3);border:1px solid var(--bd)}
+.proj-body{min-width:0;flex:1}
+.proj-name{font-size:13px;font-weight:560;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-meta{font-size:10.5px;color:var(--tx3);margin-top:2px;display:flex;gap:6px;align-items:center}
+.proj-x{opacity:0;width:24px;height:24px;border-radius:6px;display:grid;place-items:center;
+  color:var(--tx3);flex:none;transition:.13s}
+.proj:hover .proj-x{opacity:1}
+.proj-x:hover{background:rgba(239,68,68,.15);color:var(--rd)}
+.proj-x svg{width:14px;height:14px;fill:currentColor}
+
+.badge{display:inline-flex;align-items:center;height:17px;padding:0 6px;border-radius:20px;
+  font-size:9.5px;font-weight:700;letter-spacing:.35px;text-transform:uppercase;border:1px solid}
+.b-html{background:rgba(245,158,11,.15);color:#fbbf24;border-color:rgba(245,158,11,.3)}
+.b-md{background:rgba(6,182,212,.15);color:#22d3ee;border-color:rgba(6,182,212,.3)}
+.b-pdf{background:rgba(239,68,68,.15);color:#f87171;border-color:rgba(239,68,68,.3)}
+.b-node{background:rgba(168,85,247,.15);color:#c084fc;border-color:rgba(168,85,247,.3)}
+.b-static{background:var(--bg3);color:var(--tx2);border-color:var(--bd2)}
+
+.main{display:grid;grid-template-rows:1fr 1px var(--th);min-height:0;min-width:0;background:var(--bg)}
+.pane{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.pane-head{height:38px;flex:none;display:flex;align-items:center;gap:6px;padding:0 10px;
+  background:var(--bg1);border-bottom:1px solid var(--bd);font-size:12px}
+.pane-head .title{font-weight:600;color:var(--tx2);display:flex;align-items:center;gap:7px}
+.pane-head .title svg{width:14px;height:14px;fill:var(--tx3)}
+.status{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--tx3)}
+.status .d{width:7px;height:7px;border-radius:50%;background:var(--tx3)}
+.status .d.on{background:var(--gn);box-shadow:0 0 8px var(--gn)}
+.status .d.run{background:var(--am);box-shadow:0 0 8px var(--am);animation:p 1.2s infinite}
+.status .d.err{background:var(--rd);box-shadow:0 0 8px var(--rd)}
+@keyframes p{50%{opacity:.35}}
+.pane-body{flex:1;min-height:0;position:relative;overflow:hidden;background:var(--bg)}
+
+.preview-host{position:absolute;inset:0;background:#fff}
+.preview-host iframe{width:100%;height:100%;border:0;display:block}
+.preview-empty{position:absolute;inset:0;display:grid;place-items:center;padding:24px;
+  background:var(--bg);color:var(--tx2);text-align:center}
+
+.resizer{background:var(--bd);cursor:row-resize;transition:.15s;position:relative}
+.resizer::after{content:"";position:absolute;inset:-3px}
+.resizer:hover,.resizer.drag{background:var(--ac)}
+
+.term-pane .pane-body{background:#07090d}
+.term{position:absolute;inset:0;overflow-y:auto;padding:10px 14px 80px;
+  font-family:var(--mn);font-size:12.5px;line-height:1.6;color:#d4dae5;
+  white-space:pre-wrap;word-break:break-word}
+.term::-webkit-scrollbar-thumb{background:#2a3340}
+.term .sys{color:#6a7486}
+.term .err{color:#f87171}
+.term .ok{color:#4ade80}
+.term .warn{color:#fbbf24}
+.term .info{color:#60a5fa}
+.term .hdr{color:#c084fc;font-weight:600}
+.term-cmd{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:8px;
+  padding:8px 14px;background:rgba(7,9,13,.94);backdrop-filter:blur(8px);border-top:1px solid #1c232e}
+.term-cmd .ps{font-family:var(--mn);font-size:12.5px;color:#4ade80;flex:none;user-select:none}
+.term-cmd input{flex:1;background:none;border:0;outline:none;color:#d4dae5;
+  font-family:var(--mn);font-size:12.5px}
+.term-cmd input:disabled{opacity:.4}
+
+.empty{position:absolute;inset:0;display:grid;place-items:center;padding:28px;overflow:auto}
+.empty-in{max-width:560px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+.empty-ico{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;
+  background:linear-gradient(140deg,var(--acs),rgba(168,85,247,.12));border:1px solid var(--bd2)}
+.empty-ico svg{width:28px;height:28px;fill:var(--ac2)}
+.empty h2{margin:0;font-size:20px;font-weight:680;letter-spacing:-.5px}
+.empty p{margin:0;color:var(--tx2);font-size:13.5px;max-width:420px;line-height:1.65}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:9px;
+  width:100%;margin-top:20px}
+.tpl{background:var(--bg1);border:1px solid var(--bd);border-radius:var(--r);padding:13px;
+  text-align:right;transition:.15s}
+.tpl:hover{border-color:var(--ac);background:var(--bg2);transform:translateY(-1px)}
+.tpl b{font-size:12.5px;display:block;margin-bottom:3px}
+.tpl small{font-size:11px;color:var(--tx3);line-height:1.4}
+
+/* Drop zone */
+.dz{position:fixed;inset:0;z-index:900;background:rgba(11,13,18,.85);backdrop-filter:blur(6px);
+  display:grid;place-items:center;opacity:0;pointer-events:none;transition:.15s}
+.dz.on{opacity:1}
+.dz-in{border:2px dashed var(--ac);border-radius:20px;padding:52px 68px;text-align:center;
+  background:var(--bg1);box-shadow:var(--sh)}
+.dz-in svg{width:44px;height:44px;fill:var(--ac2);margin-bottom:14px}
+.dz-in b{display:block;font-size:17px;margin-bottom:6px}
+.dz-in small{color:var(--tx3);font-size:12.5px}
+
+/* Toasts */
+.toasts{position:fixed;bottom:16px;left:16px;z-index:1000;display:flex;flex-direction:column;
+  gap:8px;max-width:min(360px,calc(100vw - 32px))}
+.toast{display:flex;gap:10px;padding:11px 14px;border-radius:var(--r);background:var(--bg3);
+  border:1px solid var(--bd2);box-shadow:var(--sh);animation:sl .25s cubic-bezier(.2,.9,.3,1);
+  font-size:13px;direction:rtl}
+@keyframes sl{from{opacity:0;transform:translateY(12px) scale(.97)}}
+.toast svg{width:16px;height:16px;flex:none;margin-top:1px}
+.toast.ok svg{fill:var(--gn)}.toast.err svg{fill:var(--rd)}
+.toast.warn svg{fill:var(--am)}.toast.info svg{fill:var(--cy)}
+.toast-body{min-width:0;flex:1}
+.toast-body b{display:block;font-weight:600;margin-bottom:1px}
+.toast-body p{margin:0;color:var(--tx2);font-size:12px;line-height:1.45;word-break:break-word}
+
+.spinner{width:14px;height:14px;border:2px solid var(--bd2);border-top-color:var(--ac);
+  border-radius:50%;animation:sp .7s linear infinite;display:inline-block;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+input[type=file]{display:none}
+
+@media (max-width:820px){
+  .workspace{grid-template-columns:1fr}
+  .sidebar{position:fixed;top:var(--tb);bottom:0;right:0;width:min(86vw,300px);z-index:60;
+    transform:translateX(102%);transition:transform .22s cubic-bezier(.2,.9,.3,1);box-shadow:var(--sh)}
+  .sidebar.open{transform:none}
+  .resizer{display:none}
+  .brand-name small{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ COI Setup Overlay ═══════════════════ -->
+<div id="coi" class="overlay">
+  <div class="setup">
+    <h1>⚡ Project Runner</h1>
+    <p>هر پروژه‌ای از گیت‌هاب رو داخل مرورگر اجرا کن — بدون نصب هیچ چیزی. قبل از شروع، برای اجرای پروژه‌های Node.js (React، Vite، Next، Express) نیاز به یک راه‌اندازی یک‌باره داریم.</p>
+
+    <div id="stage" class="stage wait"><span class="dot"></span><span id="stageTxt">در حال بررسی وضعیت…</span></div>
+
+    <div class="step">
+      <span class="num">۱</span>
+      <div>
+        <h3>فایل Service Worker رو دانلود کن</h3>
+        <p>این فایل کوچک، هدرهای لازم برای فعال‌سازی <b>SharedArrayBuffer</b> رو به مرورگر تزریق می‌کنه. بعد از دانلود، کنار همین فایل HTML قرارش بده.</p>
+        <button class="btn" id="dlSW">
+          <svg viewBox="0 0 24 24" style="width:15px;height:15px;fill:currentColor"><path d="M12 3v10l3-3 1.4 1.4L12 16.8 7.6 11.4 9 10l3 3V3zM5 19h14v2H5z"/></svg>
+          دانلود coi-serviceworker.js
+        </button>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="num">۲</span>
+      <div>
+        <h3>صفحه رو رفرش کن</h3>
+        <p>وقتی فایل رو کنار HTML گذاشتی، این صفحه رو رفرش کن. حالا همه‌چیز آماده‌ست و Node.js هم اجرا می‌شه.</p>
+      </div>
+    </div>
+
+    <div class="alt">
+      <b>⚡ راه سریع‌تر (بدون Service Worker):</b><br>
+      اگر ترمینال داری، با این دستور سرور بزن — از همون اول COI فعاله:
+      <pre>npx http-server -p 8080 -c-1 \
+  -H "Cross-Origin-Opener-Policy: same-origin" \
+  -H "Cross-Origin-Embedder-Policy: credentialless"</pre>
+      بعد <code style="background:#0a0e16;color:#a5f3fc">http://localhost:8080</code> رو باز کن.
+    </div>
+
+    <div class="setup-foot">
+      <button class="btn ghost" id="skipBtn">ادامه بدون اجرای Node (فقط HTML / MD / PDF)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ App ═══════════════════ -->
+<div id="app" class="app hidden">
+  <header class="topbar">
+    <button class="icon-btn" id="menuBtn" style="display:none" aria-label="منو">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </button>
+    <div class="brand">
+      <div class="brand-mark"><svg viewBox="0 0 24 24"><path d="M13 2 4.5 13.2c-.4.5 0 1.3.7 1.3H10l-1 7.5 8.5-11.2c.4-.5 0-1.3-.7-1.3H12z"/></svg></div>
+      <div class="brand-name">Project Runner<small>اجرای پروژه‌های گیت‌هاب در مرورگر</small></div>
+    </div>
+    <div class="spacer"></div>
+    <span id="isoPill" class="iso-pill off">Node غیرفعال</span>
+    <button class="tb-btn pri" id="newBtn">
+      <svg viewBox="0 0 24 24"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg>
+      پروژه جدید
+    </button>
+    <button class="tb-btn" id="importBtn">
+      <svg viewBox="0 0 24 24"><path d="M12 3 7 8h3v6h4V8h3zM5 18h14v2H5z"/></svg>
+      آپلود
+    </button>
+    <button class="icon-btn" id="themeBtn" aria-label="تم">
+      <svg viewBox="0 0 24 24" id="themeIcon"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+    </button>
+  </header>
+
+  <div class="workspace">
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-head">پروژه‌ها <span class="count" id="projCount">0</span></div>
+      <div class="sb-scroll" id="sbScroll"></div>
+      <div class="sb-foot">
+        <span id="sbStatus">آماده</span>
+      </div>
+    </aside>
+
+    <div class="main" id="main">
+      <section class="pane">
+        <div class="pane-head">
+          <span class="title">
+            <svg viewBox="0 0 24 24"><path d="M12 5C6.5 5 2 12 2 12s4.5 7 10 7 10-7 10-7-4.5-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>
+            پیش‌نمایش
+          </span>
+          <span class="spacer"></span>
+          <span class="status" id="prevStatus"><span class="d"></span><span id="prevTxt">آماده</span></span>
+          <button class="icon-btn" id="refreshBtn" title="رفرش (⌘R)" aria-label="رفرش">
+            <svg viewBox="0 0 24 24"><path d="M12 6V3L8 7l4 4V8a4 4 0 1 1-4 4H6a6 6 0 1 0 6-6z"/></svg>
+          </button>
+          <button class="icon-btn" id="runBtn" title="اجرا (⌘↵)" aria-label="اجرا">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+        <div class="pane-body" id="prevBody">
+          <div class="preview-host" id="prevHost"></div>
+        </div>
+      </section>
+
+      <div class="resizer" id="rz" role="separator"></div>
+
+      <section class="pane term-pane">
+        <div class="pane-head">
+          <span class="title">
+            <svg viewBox="0 0 24 24"><path d="M3 4h18v16H3zm2 4 4 4-4 4 1.5 1.5L11 12 6.5 6.5z"/></svg>
+            ترمینال
+          </span>
+          <span class="spacer"></span>
+          <button class="tb-btn" id="stopBtn" style="height:26px;font-size:11.5px" disabled>
+            <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+            توقف
+          </button>
+          <button class="tb-btn" id="clearBtn" style="height:26px;font-size:11.5px">
+            <svg viewBox="0 0 24 24"><path d="M6 19h12v2H6zm-1-2h14L12 8z"/></svg>
+            پاک
+          </button>
+        </div>
+        <div class="pane-body">
+          <div class="term" id="term" role="log"></div>
+          <div class="term-cmd">
+            <span class="ps">❯</span>
+            <input id="termCmd" type="text" placeholder="دستور shell… (بعد از اجرای Node)" autocomplete="off" spellcheck="false" disabled />
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="dz" id="dz">
+  <div class="dz-in">
+    <svg viewBox="0 0 24 24"><path d="M12 3 6 9h4v7h4V9h4zM5 19h14v2H5z"/></svg>
+    <b>فایل رو رها کن</b>
+    <small>ZIP از گیت‌هاب، HTML، Markdown، PDF یا کل پوشه</small>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+<input type="file" id="fileInput" multiple />
+<input type="file" id="folderInput" webkitdirectory directory multiple />
+
+<script type="module">
+/* ═══════════════════════════════════════════════════════════════════════════
+ * Project Runner — single-file runner for GitHub projects
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const TE = new TextEncoder(), TD = new TextDecoder();
+
+function fmtSize(n) {
+  if (!n) return '0 B';
+  const u = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.min(u.length - 1, Math.floor(Math.log(n) / Math.log(1024)));
+  return (n / 1024 ** i).toFixed(i ? 1 : 0) + ' ' + u[i];
+}
+const MIME = { html: 'text/html', css: 'text/css', js: 'text/javascript', mjs: 'text/javascript',
+  json: 'application/json', md: 'text/markdown', txt: 'text/plain', svg: 'image/svg+xml',
+  png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp',
+  ico: 'image/x-icon', pdf: 'application/pdf', woff: 'font/woff', woff2: 'font/woff2',
+  wasm: 'application/wasm', xml: 'application/xml', csv: 'text/csv', yml: 'text/yaml',
+  map: 'application/json', avif: 'image/avif' };
+const extOf = p => (p.split('.').pop() || '').toLowerCase();
+const mimeFor = p => MIME[extOf(p)] || 'application/octet-stream';
+const TEXT_EXT = new Set(['html','htm','css','js','mjs','cjs','jsx','ts','tsx','json','md','markdown',
+  'txt','svg','xml','csv','yml','yaml','toml','lock','sh','bat','py','go','rs','java','c','cpp',
+  'h','sql','ini','conf','map','vue','svelte']);
+const isText = p => TEXT_EXT.has(extOf(p)) || /(^|\/)(README|LICENSE)/i.test(p);
+
+function toast(kind, title, msg = '', ms = 4000) {
+  const ICONS = {
+    ok: '<path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/>',
+    err: '<path d="M12 2 1 21h22zm-1 6h2v7h-2zm0 9h2v2h-2z"/>',
+    warn: '<path d="M12 2 1 21h22zm-1 6h2v7h-2zm0 9h2v2h-2z"/>',
+    info: '<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/>',
+  };
+  const el = document.createElement('div');
+  el.className = 'toast ' + kind;
+  el.innerHTML = `<svg viewBox="0 0 24 24">${ICONS[kind] || ICONS.info}</svg>
+    <div class="toast-body"><b>${esc(title)}</b>${msg ? `<p>${esc(msg)}</p>` : ''}</div>`;
+  $('#toasts').appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateY(8px)';
+    setTimeout(() => el.remove(), 200); }, ms);
+}
+
+function download(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 1. COI SETUP — the whole reason we have a companion file
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+// The SW source — offered for download, also served alongside
+const SW_SOURCE = `/* coi-serviceworker.js — injects COOP/COEP to enable SharedArrayBuffer */
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  const sameOrigin = url.origin === self.location.origin;
+  const isNav = req.mode === 'navigate';
+  if (!isNav && !sameOrigin) return;
+
+  event.respondWith((async () => {
+    try {
+      const res = await fetch(req);
+      const headers = new Headers(res.headers);
+      if (isNav) {
+        headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+        headers.set('Cross-Origin-Embedder-Policy', 'credentialless');
+      } else if (sameOrigin) {
+        headers.set('Cross-Origin-Embedder-Policy', 'credentialless');
+        headers.set('Cross-Origin-Resource-Policy', 'same-origin');
+      }
+      return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+    } catch { return fetch(req); }
+  })());
+});
+`;
+
+async function checkCOI() {
+  const stage = $('#stage');
+  const txt = $('#stageTxt');
+
+  if (self.crossOriginIsolated) {
+    stage.className = 'stage ok';
+    txt.textContent = '✓ Cross-Origin Isolation فعال است — Node.js آماده است';
+    return true;
+  }
+
+  // Try to register companion SW if it exists
+  if ('serviceWorker' in navigator && window.isSecureContext) {
+    try {
+      const head = await fetch('./coi-serviceworker.js', { method: 'HEAD' }).catch(() => null);
+      if (head && head.ok) {
+        stage.className = 'stage wait';
+        txt.textContent = 'Service Worker پیدا شد — در حال فعال‌سازی…';
+        await navigator.serviceWorker.register('./coi-serviceworker.js', { scope: './' });
+        await navigator.serviceWorker.ready;
+        if (!navigator.serviceWorker.controller) {
+          if (!sessionStorage.getItem('coi-rl')) {
+            sessionStorage.setItem('coi-rl', '1');
+            txt.textContent = 'در حال رفرش…';
+            setTimeout(() => location.reload(), 400);
+            return false;
+          }
+        }
+        if (self.crossOriginIsolated) {
+          stage.className = 'stage ok';
+          txt.textContent = '✓ Cross-Origin Isolation فعال شد';
+          return true;
+        }
+      }
+    } catch (e) {
+      console.warn('SW register failed:', e);
+    }
+  }
+
+  if (!window.isSecureContext) {
+    stage.className = 'stage bad';
+    txt.textContent = '⚠ باید روی http://localhost یا HTTPS باز بشه (نه file://)';
+  } else {
+    stage.className = 'stage wait';
+    txt.textContent = 'کافیه فایل Service Worker رو دانلود کنی (مرحله ۱)';
+  }
+  return false;
+}
+
+function setupCOIOverlay() {
+  // Download button — provides the SW file to save next to the HTML
+  $('#dlSW').addEventListener('click', () => {
+    const blob = new Blob([SW_SOURCE], { type: 'application/javascript' });
+    download(blob, 'coi-serviceworker.js');
+    toast('ok', 'دانلود شد', 'فایل رو کنار HTML بذار، بعد رفرش کن.');
+  });
+
+  // Skip — enter app without Node support
+  $('#skipBtn').addEventListener('click', () => {
+    sessionStorage.setItem('skip-coi', '1');
+    enterApp();
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 2. NATIVE ZIP READER — via DecompressionStream
+ * ═══════════════════════════════════════════════════════════════════════════ */
+async function inflateRaw(bytes) {
+  const ds = new DecompressionStream('deflate-raw');
+  const stream = new Blob([bytes]).stream().pipeThrough(ds);
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+async function unzip(buffer) {
+  const bytes = new Uint8Array(buffer);
+  const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const len = bytes.length;
+
+  // Find EOCD
+  let eocd = -1;
+  const min = Math.max(0, len - 22 - 65535);
+  for (let i = len - 22; i >= min; i--) {
+    if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error('فایل ZIP معتبر نیست');
+
+  const count = dv.getUint16(eocd + 10, true);
+  const cdOff = dv.getUint32(eocd + 16, true);
+  if (cdOff === 0xFFFFFFFF) throw new Error('ZIP64 پشتیبانی نمی‌شه');
+
+  const out = new Map();
+  let p = cdOff;
+
+  for (let i = 0; i < count; i++) {
+    if (p + 46 > len || dv.getUint32(p, true) !== 0x02014b50) break;
+    const method = dv.getUint16(p + 10, true);
+    const compSize = dv.getUint32(p + 20, true);
+    const nameLen = dv.getUint16(p + 28, true);
+    const extraLen = dv.getUint16(p + 30, true);
+    const cmtLen = dv.getUint16(p + 32, true);
+    const localOff = dv.getUint32(p + 42, true);
+    const name = TD.decode(bytes.subarray(p + 46, p + 46 + nameLen));
+    p += 46 + nameLen + extraLen + cmtLen;
+
+    if (!name || name.endsWith('/')) continue;
+    if (name.startsWith('__MACOSX/') || name.endsWith('.DS_Store')) continue;
+    if (localOff + 30 > len || dv.getUint32(localOff, true) !== 0x04034b50) continue;
+
+    const lN = dv.getUint16(localOff + 26, true);
+    const lE = dv.getUint16(localOff + 28, true);
+    const start = localOff + 30 + lN + lE;
+    const raw = bytes.subarray(start, start + compSize);
+
+    let data;
+    if (method === 0) data = raw.slice();
+    else if (method === 8) { try { data = await inflateRaw(raw); } catch { continue; } }
+    else continue;
+
+    out.set(name.replace(/\\/g, '/'), { bytes: data });
+  }
+  return out;
+}
+
+/** Strip the top-level folder that GitHub ZIPs always add. */
+function stripRoot(paths) {
+  if (!paths.length) return paths;
+  const first = paths[0].split('/')[0];
+  if (!first || paths.some(p => !p.includes('/'))) return paths;
+  if (!paths.every(p => p.startsWith(first + '/'))) return paths;
+  return paths.map(p => p.slice(first.length + 1));
+}
+
+/** Convert unzip result to our internal {path: {enc, data}} format. */
+function mapToFiles(map) {
+  const files = {};
+  for (const [path, { bytes }] of map) {
+    const clean = path.replace(/^\.\//, '');
+    if (!clean || clean.endsWith('/')) continue;
+    if (isText(clean)) {
+      try {
+        const txt = TD.decode(bytes);
+        if (txt.includes('\uFFFD')) throw 0;
+        files[clean] = { enc: 'utf8', data: txt, size: bytes.length };
+      } catch {
+        files[clean] = { enc: 'b64', data: b64enc(bytes), size: bytes.length };
+      }
+    } else {
+      files[clean] = { enc: 'b64', data: b64enc(bytes), size: bytes.length };
+    }
+  }
+  return files;
+}
+function b64enc(bytes) {
+  let bin = '';
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk)
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+  return btoa(bin);
+}
+function b64dec(str) {
+  const bin = atob(str);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 3. MARKDOWN RENDERER (compact)
+ * ═══════════════════════════════════════════════════════════════════════════ */
+function mdInline(s) {
+  const codes = [];
+  s = s.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return `\u0001${codes.length - 1}\u0001`; });
+  s = esc(s);
+  s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img src="$2" alt="$1" loading="lazy">');
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
+  s = s.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+  s = s.replace(/\u0001(\d+)\u0001/g, (_, i) => `<code>${esc(codes[+i])}</code>`);
+  return s;
+}
+
+function mdToHtml(md) {
+  const blocks = [];
+  md = md.replace(/```([\w+-]*)\r?\n([\s\S]*?)```/g, (_, l, c) => {
+    blocks.push({ l, c }); return `\n\u0000B${blocks.length - 1}\u0000\n`;
+  });
+  const lines = md.replace(/\r\n?/g, '\n').split('\n');
+  const out = [];
+  const toc = [];
+  const ids = new Set();
+  const slug = s => {
+    let base = s.toLowerCase().replace(/<[^>]+>/g, '').replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-') || 's';
+    let id = base, n = 1;
+    while (ids.has(id)) id = base + '-' + n++;
+    ids.add(id);
+    return id;
+  };
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    let m = line.match(/^\u0000B(\d+)\u0000$/);
+    if (m) {
+      const { l, c } = blocks[+m[1]];
+      out.push(`<pre class="cb" data-l="${esc(l || 'text')}"><code>${esc(c.replace(/\n$/, ''))}</code></pre>`);
+      i++; continue;
+    }
+    if (!line.trim()) { i++; continue; }
+    if (/^\s*([-*_])\s*\1\s*\1/.test(line)) { out.push('<hr>'); i++; continue; }
+    m = line.match(/^(#{1,6})\s+(.*?)\s*#*\s*$/);
+    if (m) {
+      const lvl = m[1].length, raw = m[2], id = slug(raw);
+      toc.push({ lvl, text: raw.replace(/[*_`]/g, ''), id });
+      out.push(`<h${lvl} id="${id}">${mdInline(raw)}</h${lvl}>`);
+      i++; continue;
+    }
+    if (line.includes('|') && i + 1 < lines.length && /^\s*\|?[\s:|-]+\|/.test(lines[i + 1])) {
+      const sp = r => r.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map(c => c.trim());
+      const head = sp(line);
+      i += 2;
+      const rows = [];
+      while (i < lines.length && lines[i].includes('|') && lines[i].trim()) { rows.push(sp(lines[i])); i++; }
+      out.push('<table><thead><tr>' + head.map(h => `<th>${mdInline(h)}</th>`).join('') +
+        '</tr></thead><tbody>' + rows.map(r => '<tr>' + head.map((_, k) => `<td>${mdInline(r[k] || '')}</td>`).join('') + '</tr>').join('') +
+        '</tbody></table>');
+      continue;
+    }
+    if (/^\s*>/.test(line)) {
+      const buf = [];
+      while (i < lines.length && /^\s*>/.test(lines[i])) { buf.push(lines[i].replace(/^\s*>\s?/, '')); i++; }
+      out.push(`<blockquote>${mdToHtml(buf.join('\n'))}</blockquote>`);
+      continue;
+    }
+    if (/^\s*([-*+]|\d+[.)])\s+/.test(line)) {
+      const ord = /^\s*\d+[.)]\s/.test(line);
+      const items = [];
+      while (i < lines.length) {
+        const mm = lines[i].match(/^\s*([-*+]|\d+[.)])\s+(.*)$/);
+        if (mm) { items.push(mm[2]); i++; } else break;
+      }
+      out.push(`<${ord ? 'ol' : 'ul'}>` + items.map(t => `<li>${mdInline(t)}</li>`).join('') + `</${ord ? 'ol' : 'ul'}>`);
+      continue;
+    }
+    const buf = [];
+    while (i < lines.length && lines[i].trim() && !/^(#{1,6}\s|\s*[-*+]\s|\s*\d+[.)]\s|\s*>|\u0000B)/.test(lines[i])) {
+      buf.push(lines[i]); i++;
+    }
+    if (buf.length) out.push(`<p>${mdInline(buf.join('\n'))}</p>`);
+    else i++;
+  }
+  return { html: out.join('\n'), toc };
+}
+
+const MD_CSS = `
+:root{--bg:#0d1117;--bg2:#161b22;--bd:#30363d;--tx:#e6edf3;--tx2:#8b949e;--ac:#58a6ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif}
+.wrap{display:grid;grid-template-columns:minmax(0,1fr);max-width:820px;margin:0 auto;padding:40px 32px 120px}
+h1,h2,h3,h4,h5,h6{line-height:1.3;margin:1.9em 0 .6em;font-weight:650;letter-spacing:-.02em}
+h1{font-size:2em;border-bottom:1px solid var(--bd);padding-bottom:.35em;margin-top:0}
+h2{font-size:1.5em;border-bottom:1px solid var(--bd);padding-bottom:.3em}
+h3{font-size:1.2em}
+p{margin:0 0 1.05em}
+a{color:var(--ac);text-decoration:none}a:hover{text-decoration:underline}
+code{background:rgba(110,118,129,.2);padding:.18em .42em;border-radius:6px;font-size:.87em;
+  font-family:ui-monospace,Menlo,Consolas,monospace}
+pre.cb{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:15px 17px;
+  overflow:auto;margin:0 0 1.2em;position:relative}
+pre.cb code{background:none;padding:0;font-size:.84em;line-height:1.6}
+pre.cb::before{content:attr(data-l);position:absolute;top:8px;left:12px;font-size:10px;
+  letter-spacing:.6px;text-transform:uppercase;color:var(--tx2);opacity:.6}
+blockquote{margin:0 0 1.2em;padding:2px 0 2px 16px;border-left:3px solid var(--bd);color:var(--tx2)}
+ul,ol{margin:0 0 1.1em;padding-left:1.6em}li{margin:.3em 0}
+hr{border:0;border-top:1px solid var(--bd);margin:2.2em 0}
+img{max-width:100%;border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:.92em;margin:0 0 1.2em}
+th,td{border:1px solid var(--bd);padding:7px 12px;text-align:left}
+th{background:var(--bg2);font-weight:600}
+del{color:var(--tx2)}
+`;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 4. INDEXEDDB (minimal)
+ * ═══════════════════════════════════════════════════════════════════════════ */
+const DB = (() => {
+  let _db = null;
+  const open = () => new Promise((res, rej) => {
+    if (_db) return res(_db);
+    const r = indexedDB.open('pr', 1);
+    r.onupgradeneeded = () => {
+      const db = r.result;
+      if (!db.objectStoreNames.contains('p')) db.createObjectStore('p', { keyPath: 'id' });
+      if (!db.objectStoreNames.contains('f')) db.createObjectStore('f');
+      if (!db.objectStoreNames.contains('m')) db.createObjectStore('m');
+    };
+    r.onsuccess = () => { _db = r.result; res(_db); };
+    r.onerror = () => rej(r.error);
+  });
+  const tx = async (store, mode, fn) => {
+    const db = await open();
+    return new Promise((res, rej) => {
+      const t = db.transaction(store, mode);
+      const s = t.objectStore(store);
+      let ret;
+      try { ret = fn(s); } catch (e) { rej(e); return; }
+      t.oncomplete = () => res(ret?.__r ? ret.__r.result : ret);
+      t.onerror = () => rej(t.error);
+    });
+  };
+  const w = req => ({ __r: req });
+  return {
+    putP: p => tx('p', 'readwrite', s => w(s.put(p))),
+    delP: id => tx('p', 'readwrite', s => w(s.delete(id))),
+    allP: () => tx('p', 'readonly', s => w(s.getAll())).then(v => v || []),
+    putF: (id, f) => tx('f', 'readwrite', s => w(s.put(f, id))),
+    getF: id => tx('f', 'readonly', s => w(s.get(id))).then(v => v || {}),
+    delF: id => tx('f', 'readwrite', s => w(s.delete(id))),
+    getM: k => tx('m', 'readonly', s => w(s.get(k))).then(v => v === undefined ? null : v),
+    setM: (k, v) => tx('m', 'readwrite', s => w(s.put(v, k))),
+  };
+})();
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 5. STATE
+ * ═══════════════════════════════════════════════════════════════════════════ */
+const S = {
+  projects: [],
+  active: null,
+  cache: new Map(),   // id -> files
+  runtime: new Map(), // id -> {url, status}
+  theme: 'dark',
+};
+
+async function loadFiles(id) {
+  if (S.cache.has(id)) return S.cache.get(id);
+  const f = await DB.getF(id);
+  S.cache.set(id, f);
+  return f;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 6. PROJECT TYPE DETECTION
+ * ═══════════════════════════════════════════════════════════════════════════ */
+function detectType(files) {
+  const paths = Object.keys(files);
+  const pkg = files['package.json'];
+  if (pkg && pkg.enc === 'utf8') {
+    try {
+      const j = JSON.parse(pkg.data);
+      const deps = { ...(j.dependencies || {}), ...(j.devDependencies || {}) };
+      const scripts = j.scripts || {};
+      if (deps.next) return 'next';
+      if (deps.react && deps.vite) return 'vite-react';
+      if (deps.vite) return 'vite';
+      if (deps.react && deps['react-scripts']) return 'cra';
+      if (scripts.dev || scripts.start || scripts.serve || scripts.build) return 'node';
+      return 'node';
+    } catch {}
+  }
+  if (paths.some(p => /\.html?$/i.test(p))) return 'html';
+  if (paths.some(p => /\.(md|markdown)$/i.test(p))) return 'md';
+  if (paths.some(p => /\.pdf$/i.test(p))) return 'pdf';
+  return 'static';
+}
+
+const TYPE_META = {
+  html: { label: 'HTML', cls: 'b-html', icon: '◆', color: '#f59e0b' },
+  md: { label: 'Markdown', cls: 'b-md', icon: 'M↓', color: '#06b6d4' },
+  pdf: { label: 'PDF', cls: 'b-pdf', icon: '▤', color: '#ef4444' },
+  vite: { label: 'Vite', cls: 'b-node', icon: '⚡', color: '#a855f7' },
+  'vite-react': { label: 'Vite+React', cls: 'b-node', icon: '⚛', color: '#a855f7' },
+  cra: { label: 'React', cls: 'b-node', icon: '⚛', color: '#a855f7' },
+  next: { label: 'Next.js', cls: 'b-node', icon: 'N', color: '#22c55e' },
+  node: { label: 'Node', cls: 'b-node', icon: '⬢', color: '#22c55e' },
+  static: { label: 'Static', cls: 'b-static', icon: '▦', color: '#94a3b8' },
+};
+const typeMeta = t => TYPE_META[t] || TYPE_META.static;
+const isNode = t => ['vite', 'vite-react', 'cra', 'next', 'node'].includes(t);
+
+function pickEntry(files) {
+  const htmls = Object.keys(files).filter(p => /\.html?$/i.test(p));
+  if (!htmls.length) return null;
+  const score = p => {
+    const d = p.split('/').length;
+    const i = /(^|\/)index\.html?$/i.test(p) ? -1 : 0;
+    const dist = /^(dist|build|out|public|docs)\//i.test(p) ? 1 : 0;
+    return d * 10 + i * 4 + dist;
+  };
+  return htmls.sort((a, b) => score(a) - score(b))[0];
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 7. IMPORT PIPELINE
+ * ═══════════════════════════════════════════════════════════════════════════ */
+const readAB = f => new Promise((res, rej) => {
+  const r = new FileReader();
+  r.onload = () => res(r.result); r.onerror = () => rej(r.error);
+  r.readAsArrayBuffer(f);
+});
+
+async function createProject(name, files, opts = {}) {
+  const id = uid();
+  const now = Date.now();
+  const type = opts.type || detectType(files);
+  const meta = {
+    id, name: name || 'پروژه بدون نام', type,
+    createdAt: now, updatedAt: now, lastOpenedAt: now,
+    fileCount: Object.keys(files).length,
+    size: Object.values(files).reduce((a, f) => a + (f.size || 0), 0),
+  };
+  await DB.putP(meta);
+  await DB.putF(id, files);
+  S.cache.set(id, files);
+  return meta;
+}
+
+async function importFiles(fileList) {
+  const files = [...fileList];
+  if (!files.length) return;
+
+  // Single ZIP → unpack
+  if (files.length === 1 && /\.zip$/i.test(files[0].name)) {
+    await importZip(files[0]);
+    return;
+  }
+
+  // Multi-file / folder drop → one project
+  const map = new Map();
+  for (const f of files) {
+    const path = (f.webkitRelativePath || f.name).replace(/\\/g, '/');
+    map.set(path, new Uint8Array(await readAB(f)));
+  }
+  const paths = [...map.keys()];
+  const stripped = stripRoot(paths);
+  const finalMap = new Map();
+  [...map.values()].forEach((v, i) => finalMap.set(stripped[i], { bytes: v }));
+  const fileMap = mapToFiles(finalMap);
+  const baseName = files[0].webkitRelativePath?.split('/')[0]
+    || (files.length === 1 ? files[0].name.replace(/\.[^.]+$/, '') : 'Files');
+  const p = await createProject(baseName, fileMap);
+  S.projects.unshift(p);
+  S.active = p.id;
+  await DB.setM('ws', { projects: S.projects, active: S.active });
+  render();
+  toast('ok', 'وارد شد', `${p.fileCount} فایل · ${typeMeta(p.type).label}`);
+  openProject(p.id);
+}
+
+async function importZip(file) {
+  let fileMap;
+  try {
+    const buf = await readAB(file);
+    const map = await unzip(buf);
+    if (!map.size) throw new Error('فایل ZIP خالیه');
+    const paths = stripRoot([...map.keys()]);
+    const remapped = new Map();
+    [...map.keys()].forEach((k, i) => remapped.set(paths[i], map.get(k)));
+    fileMap = mapToFiles(remapped);
+  } catch (e) {
+    toast('err', 'خطا در خواندن ZIP', e.message);
+    return;
+  }
+  const name = file.name.replace(/\.zip$/i, '');
+  const p = await createProject(name, fileMap);
+  S.projects.unshift(p);
+  S.active = p.id;
+  await DB.setM('ws', { projects: S.projects, active: S.active });
+  render();
+  toast('ok', 'پروژه وارد شد', `${p.fileCount} فایل · ${typeMeta(p.type).label}`);
+  openProject(p.id);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 8. PREVIEW ENGINE
+ * ═══════════════════════════════════════════════════════════════════════════ */
+const blobRegistry = new Map();
+
+function revokeBlobs(id) {
+  (blobRegistry.get(id) || []).forEach(u => { try { URL.revokeObjectURL(u); } catch {} });
+  blobRegistry.set(id, []);
+}
+function makeBlob(id, content, mime) {
+  const url = URL.createObjectURL(new Blob([content], { type: mime }));
+  if (!blobRegistry.has(id)) blobRegistry.set(id, []);
+  blobRegistry.get(id).push(url);
+  return url;
+}
+
+function resolveRef(from, ref) {
+  if (!ref) return null;
+  const t = ref.trim();
+  if (/^(https?:|data:|blob:|mailto:|tel:|javascript:|#|\/\/)/i.test(t)) return null;
+  const cut = Math.min(...[t.indexOf('#'), t.indexOf('?'), t.length].filter(i => i >= 0));
+  const clean = t.slice(0, cut);
+  if (!clean) return null;
+  const baseDir = from.includes('/') ? from.slice(0, from.lastIndexOf('/') + 1) : '';
+  const joined = clean.startsWith('/') ? clean.slice(1) : baseDir + clean;
+  const out = [];
+  for (const seg of joined.split('/')) {
+    if (!seg || seg === '.') continue;
+    if (seg === '..') out.pop(); else out.push(seg);
+  }
+  return out.join('/');
+}
+
+async function processCss(css, cssPath, files, id) {
+  const jobs = [];
+  css.replace(/url\(\s*(['"]?)([^'")]+)\1\s*\)/g, (m, _, ref) => { jobs.push({ m, ref }); return m; });
+  for (const { m, ref } of jobs) {
+    const target = resolveRef(cssPath, ref);
+    if (!target || !files[target]) continue;
+    const entry = files[target];
+    const raw = entry.enc === 'b64' ? b64dec(entry.data) : TE.encode(entry.data);
+    const url = makeBlob(id, raw, mimeFor(target));
+    css = css.split(m).join(`url("${url}")`);
+  }
+  return css;
+}
+
+async function inlineHtml(html, htmlPath, files, id) {
+  // Rewrite src/href to blob URLs
+  const TAGS = /<(link|script|img|source|video|audio|iframe|embed|object)\b([^>]*)>/gi;
+  const jobs = [];
+  let m;
+  while ((m = TAGS.exec(html))) {
+    const [full, tag, attrs] = m;
+    const tl = tag.toLowerCase();
+    if (tl === 'link' && !/rel\s*=\s*("|')?[^"'>]*stylesheet/i.test(attrs)) continue;
+    let newAttrs = attrs;
+    let changed = false;
+    for (const attr of ['src', 'href', 'poster']) {
+      const re = new RegExp(`\\b${attr}\\s*=\\s*("([^"]*)"|'([^']*)')`, 'i');
+      const am = attrs.match(re);
+      if (!am) continue;
+      const val = am[2] ?? am[3];
+      const target = resolveRef(htmlPath, val);
+      if (!target || !files[target]) continue;
+      const entry = files[target];
+      const raw = entry.enc === 'b64' ? b64dec(entry.data) : TE.encode(entry.data);
+      let content = raw;
+      if (extOf(target) === 'css' && entry.enc === 'utf8') {
+        content = TE.encode(await processCss(entry.data, target, files, id));
+      }
+      const url = makeBlob(id, content, mimeFor(target));
+      newAttrs = newAttrs.replace(am[0], `${attr}="${url}"`);
+      changed = true;
+    }
+    if (changed) jobs.push({ full, tag, newAttrs });
+  }
+  for (const j of jobs) html = html.replace(j.full, `<${j.tag}${j.newAttrs}>`);
+
+  // Inline <style> url() refs
+  const styleJobs = [];
+  html.replace(/<style([^>]*)>([\s\S]*?)<\/style>/gi, (full, attrs, css) => {
+    styleJobs.push({ full, attrs, css }); return full;
+  });
+  for (const j of styleJobs) {
+    const n = await processCss(j.css, htmlPath, files, id);
+    if (n !== j.css) html = html.replace(j.full, `<style${j.attrs}>${n}</style>`);
+  }
+  return html;
+}
+
+const BRIDGE = `<script>
+(function(){
+  var s=function(l,a){try{parent.postMessage({__pr:1,l:l,m:[].map.call(a,function(x){
+    try{return typeof x==='object'?JSON.stringify(x):String(x)}catch(e){return String(x)}}).join(' ')},'*')}catch(e){}};
+  ['log','info','warn','error'].forEach(function(k){var o=console[k].bind(console);
+    console[k]=function(){s(k,arguments);o.apply(console,arguments)}});
+  window.addEventListener('error',function(e){s('error',[e.message])});
+  window.addEventListener('unhandledrejection',function(e){s('error',['Promise: '+e.reason])});
+})();
+<\/script>`;
+
+async function buildPreview(project, files) {
+  if (project.type === 'pdf') {
+    const path = Object.keys(files).find(p => /\.pdf$/i.test(p));
+    if (!path) throw new Error('فایل PDF پیدا نشد');
+    const e = files[path];
+    const bytes = e.enc === 'b64' ? b64dec(e.data) : TE.encode(e.data);
+    return { kind: 'url', url: makeBlob(project.id, bytes, 'application/pdf'), title: path };
+  }
+
+  if (project.type === 'md') {
+    const mdPath = Object.keys(files)
+      .filter(p => /\.(md|markdown)$/i.test(p))
+      .sort((a, b) => a.split('/').length - b.split('/').length ||
+        (/readme/i.test(b) ? 1 : 0) - (/readme/i.test(a) ? 1 : 0))[0];
+    if (!mdPath) throw new Error('فایل Markdown پیدا نشد');
+    const { html } = mdToHtml(files[mdPath].data);
+    const doc = `<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(project.name)}</title><style>${MD_CSS}</style></head>
+<body><div class="wrap">${html}</div></body></html>`;
+    return { kind: 'html', html: doc, title: mdPath };
+  }
+
+  // HTML / static
+  const entry = (project.entry && files[project.entry]) ? project.entry : pickEntry(files);
+  if (!entry) {
+    const list = Object.entries(files).map(([p, f]) =>
+      `<tr><td>${esc(p)}</td><td style="text-align:left;color:#8b949e">${fmtSize(f.size || 0)}</td></tr>`).join('');
+    return { kind: 'html', title: 'لیست فایل‌ها',
+      html: `<!doctype html><html><head><meta charset="utf-8"><style>
+body{font:14px/1.6 system-ui,Tahoma,sans-serif;background:#0d1117;color:#e6edf3;padding:32px;direction:ltr}
+h1{font-size:18px}table{border-collapse:collapse;width:100%;max-width:800px}
+td{border-bottom:1px solid #21262d;padding:7px 10px;font-family:ui-monospace,monospace;font-size:12.5px}
+</style></head><body><h1>${esc(project.name)}</h1><table>${list}</table></body></html>` };
+  }
+
+  const raw = files[entry].data;
+  const rewritten = await inlineHtml(raw, entry, files, project.id);
+  return { kind: 'html', html: BRIDGE + rewritten, title: entry };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 9. TERMINAL
+ * ═══════════════════════════════════════════════════════════════════════════ */
+const term = (() => {
+  const el = $('#term');
+  const MAX = 2500;
+  let buf = '';
+  const COLORS = { 30:'#484f58',31:'#f85149',32:'#3fb950',33:'#d29922',34:'#58a6ff',
+    35:'#bc8cff',36:'#39c5cf',37:'#b1bac4',90:'#6e7681',91:'#ff7b72',92:'#56d364',
+    93:'#e3b341',94:'#79c0ff',95:'#d2a8ff',96:'#56d4dd',97:'#f0f6fc' };
+
+  function writeAnsi(text) {
+    let curLine = null;
+    let style = {};
+    const ensure = () => {
+      if (!curLine) { curLine = document.createElement('div'); el.appendChild(curLine); }
+      return curLine;
+    };
+    const apply = codes => {
+      for (const c of codes) {
+        if (c === 0) style = {};
+        else if (c === 1) style.bold = true;
+        else if (c === 2) style.dim = true;
+        else if (c === 22) { style.bold = false; style.dim = false; }
+        else if (c === 39) style.color = null;
+        else if (COLORS[c]) style.color = COLORS[c];
+      }
+    };
+    const put = txt => {
+      if (!txt) return;
+      const ln = ensure();
+      const sp = document.createElement('span');
+      sp.textContent = txt;
+      if (style.color) sp.style.color = style.color;
+      if (style.bold) sp.style.fontWeight = '600';
+      if (style.dim) sp.style.opacity = '.65';
+      ln.appendChild(sp);
+    };
+
+    let i = 0;
+    while (i < text.length) {
+      const esc = text.indexOf('\x1b', i);
+      if (esc < 0) { put(text.slice(i)); break; }
+      if (esc > i) put(text.slice(i, esc));
+      const m = /^\x1b\[([0-9;?]*)([A-Za-z])/.exec(text.slice(esc));
+      if (!m) { i = esc + 1; continue; }
+      i = esc + m[0].length;
+      if (m[2] === 'm') apply(m[1].split(';').map(n => parseInt(n, 10)).filter(n => !isNaN(n)));
+      else if (m[2] === 'J' && m[1] === '2') el.innerHTML = '';
+    }
+    while (el.childElementCount > MAX) el.removeChild(el.firstChild);
+    if (el.scrollHeight - el.scrollTop - el.clientHeight < 200) el.scrollTop = el.scrollHeight;
+  }
+
+  return {
+    write(chunk, cls) {
+      if (cls) {
+        const div = document.createElement('div');
+        const span = document.createElement('span');
+        span.className = cls; span.textContent = chunk;
+        div.appendChild(span); el.appendChild(div);
+        el.scrollTop = el.scrollHeight;
+        return;
+      }
+      const parts = String(chunk).split('\n');
+      for (let i = 0; i < parts.length; i++) {
+        let seg = parts[i];
+        if (seg.includes('\r')) {
+          const parts2 = seg.split('\r');
+          seg = parts2.pop();
+        }
+        if (seg) writeAnsi(seg);
+        if (i < parts.length - 1) writeAnsi('\n');
+      }
+    },
+    info: m => term.write(m + '\n', 'info'),
+    ok: m => term.write(m + '\n', 'ok'),
+    warn: m => term.write(m + '\n', 'warn'),
+    err: m => term.write(m + '\n', 'err'),
+    hdr: m => term.write(m + '\n', 'hdr'),
+    sys: m => term.write(m + '\n', 'sys'),
+    clear: () => { el.innerHTML = ''; },
+  };
+})();
+
+function setPrevStatus(kind, txt) {
+  const d = $('#prevStatus .d');
+  d.className = 'd ' + (kind || '');
+  $('#prevTxt').textContent = txt || 'آماده';
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 10. WEBCONTAINER RUNNER
+ * ═══════════════════════════════════════════════════════════════════════════ */
+let wc = null, wcId = null, wcBoot = null, serverProc = null, installProc = null;
+
+function toFileTree(files) {
+  const root = {};
+  for (const [path, e] of Object.entries(files)) {
+    const parts = path.split('/').filter(Boolean);
+    if (!parts.length) continue;
+    let n = root;
+    for (let i = 0; i < parts.length - 1; i++) {
+      const k = parts[i];
+      if (!n[k] || !n[k].directory) n[k] = { directory: {} };
+      n = n[k].directory;
+    }
+    const name = parts[parts.length - 1];
+    if (n[name] && n[name].directory) continue;
+    n[name] = { file: { contents: e.enc === 'b64' ? b64dec(e.data) : e.data } };
+  }
+  return root;
+}
+
+function parsePkg(files) {
+  const e = files['package.json'];
+  if (!e || e.enc !== 'utf8') return null;
+  try { return JSON.parse(e.data); } catch { return null; }
+}
+
+async function bootWC() {
+  if (wc) return wc;
+  if (wcBoot) return wcBoot;
+  wcBoot = (async () => {
+    term.info('▸ بارگذاری WebContainer…');
+    const mod = await import('https://cdn.jsdelivr.net/npm/@webcontainer/api@1/dist/index.js');
+    const { WebContainer } = mod;
+    if (!WebContainer) throw new Error('WebContainer API در دسترس نیست');
+    term.info('▸ راه‌اندازی…');
+    wc = await WebContainer.boot({ coep: 'require-corp', workdirName: 'project' });
+    wc.on('error', e => term.err('✖ ' + e.message));
+    return wc;
+  })();
+  try { return await wcBoot; }
+  catch (e) { wcBoot = null; throw e; }
+}
+
+async function teardownWC() {
+  serverProc = null; installProc = null;
+  if (wc) { try { wc.teardown(); } catch {} wc = null; wcBoot = null; wcId = null; }
+}
+
+function pipeProc(proc) {
+  proc.output.pipeTo(new WritableStream({
+    write(chunk) { term.write(chunk); },
+  })).catch(() => {});
+}
+
+async function runNode(project, files) {
+  if (!self.crossOriginIsolated) {
+    term.warn('⚠ Cross-Origin Isolation فعال نیست');
+    term.sys('  برای اجرای Node: فایل coi-serviceworker.js رو کنار HTML بذار و رفرش کن.');
+    toast('warn', 'Node غیرفعاله', 'Service Worker رو نصب کن یا با هدرهای COOP/COEP سرور بزن.');
+    return;
+  }
+  const pkg = parsePkg(files);
+  if (!pkg) { term.err('✖ package.json پیدا نشد'); return; }
+
+  setPrevStatus('run', 'در حال راه‌اندازی…');
+  term.hdr(`\n══════ ${project.name} ══════`);
+
+  try {
+    if (wcId !== project.id) {
+      await teardownWC();
+      await bootWC();
+      wcId = project.id;
+      term.info('▸ mount کردن فایل‌ها…');
+      await wc.mount(toFileTree(files));
+      term.ok('✓ فایل‌ها mount شدند');
+    }
+
+    term.info('▸ npm install');
+    installProc = await wc.spawn('npm', ['install'], { env: { ...process.env, CI: '1' } });
+    pipeProc(installProc);
+    const ic = await installProc.exit;
+    installProc = null;
+    if (ic !== 0) throw new Error(`npm install با کد ${ic} خاتمه یافت`);
+    term.ok('✓ پکیج‌ها نصب شدند');
+
+    const scripts = pkg.scripts || {};
+    const preferred = ['dev', 'start', 'serve', 'preview'].find(s => scripts[s]);
+
+    if (preferred) {
+      term.info(`▸ npm run ${preferred}`);
+      wc.once('server-ready', (port, url) => {
+        term.ok(`✓ سرور آماده → ${url}`);
+        setPrevStatus('on', `پورت ${port}`);
+        showUrl(url);
+        S.runtime.set(project.id, { url, status: 'running' });
+        $('#termCmd').disabled = false;
+        $('#stopBtn').disabled = false;
+        toast('ok', 'پروژه اجرا شد', `پورت ${port}`);
+      });
+      serverProc = await wc.spawn('npm', ['run', preferred]);
+      pipeProc(serverProc);
+      serverProc.exit.then(code => {
+        if (code !== 0) { term.err(`✖ سرور متوقف شد (${code})`); setPrevStatus('err', 'خطا'); }
+        else { term.sys('▸ سرور متوقف شد'); setPrevStatus('', 'متوقف'); }
+        serverProc = null;
+        S.runtime.set(project.id, { status: 'stopped' });
+        $('#termCmd').disabled = true;
+        $('#stopBtn').disabled = true;
+      });
+    } else if (scripts.build) {
+      term.info('▸ npm run build');
+      const b = await wc.spawn('npm', ['run', 'build']);
+      pipeProc(b);
+      const code = await b.exit;
+      if (code !== 0) throw new Error(`build با کد ${code} خاتمه یافت`);
+      term.ok('✓ build تمام شد — پیش‌نمایش از خروجی');
+      await previewFromContainer(project);
+    } else {
+      term.warn('⚠ هیچ script dev/start/build در package.json نیست');
+      setPrevStatus('warn', 'اسکریپت نیست');
+    }
+  } catch (e) {
+    term.err('✖ ' + e.message);
+    setPrevStatus('err', 'خطا');
+    toast('err', 'اجرا شکست خورد', e.message);
+  } finally {
+    $('#termCmd').disabled = !wc;
+  }
+}
+
+async function previewFromContainer(project) {
+  for (const dir of ['dist', 'build', 'out', 'public', '.output/public']) {
+    try {
+      const entries = await wc.fs.readdir(dir, { withFileTypes: true });
+      if (!entries.length) continue;
+      const collected = {};
+      await collect(dir, collected);
+      const files = {};
+      for (const [p, bytes] of Object.entries(collected)) {
+        files[p] = isText(p)
+          ? { enc: 'utf8', data: TD.decode(bytes), size: bytes.length }
+          : { enc: 'b64', data: b64enc(bytes), size: bytes.length };
+      }
+      const pv = await buildPreview({ ...project, type: 'html' }, files);
+      await mountPreview(pv);
+      toast('ok', 'پیش‌نمایش آماده', `از ./${dir}`);
+      return;
+    } catch {}
+  }
+  toast('warn', 'خروجی build پیدا نشد');
+}
+
+async function collect(dir, out, prefix = '') {
+  const entries = await wc.fs.readdir(dir, { withFileTypes: true });
+  for (const e of entries) {
+    const full = `${dir}/${e.name}`;
+    const rel = prefix ? `${prefix}/${e.name}` : e.name;
+    if (e.isDirectory()) await collect(full, out, rel);
+    else out[rel] = await wc.fs.readFile(full);
+  }
+}
+
+async function runCmd(cmd) {
+  if (!wc) { term.warn('⚠ اول یه پروژهٔ Node رو اجرا کن'); return; }
+  term.write(`\x1b[32m❯\x1b[0m ${cmd}\n`);
+  try {
+    const p = await wc.spawn('jsh', ['-c', cmd]);
+    pipeProc(p);
+    await p.exit;
+  } catch (e) { term.err(e.message); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 11. UI RENDERING
+ * ═══════════════════════════════════════════════════════════════════════════ */
+function render() {
+  // Sidebar
+  const scroll = $('#sbScroll');
+  $('#projCount').textContent = S.projects.length;
+  if (!S.projects.length) {
+    scroll.innerHTML = `<div style="padding:32px 12px;text-align:center;color:var(--tx3);font-size:12.5px;line-height:1.8">
+      هنوز پروژه‌ای نداری.<br>یه ZIP از گیت‌هاب بکش و بنداز اینجا.
+    </div>`;
+  } else {
+    scroll.innerHTML = S.projects.map(p => {
+      const m = typeMeta(p.type);
+      const on = p.id === S.active;
+      return `<div class="proj ${on ? 'on' : ''}" data-id="${p.id}">
+        <div class="proj-ico" style="color:${m.color}">${m.icon}</div>
+        <div class="proj-body">
+          <div class="proj-name">${esc(p.name)}</div>
+          <div class="proj-meta">
+            <span class="badge ${m.cls}">${m.label}</span>
+            <span>${p.fileCount} فایل</span>
+          </div>
+        </div>
+        <button class="proj-x" data-del="${p.id}" title="حذف" aria-label="حذف">
+          <svg viewBox="0 0 24 24"><path d="M19 6.4 17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/></svg>
+        </button>
+      </div>`;
+    }).join('');
+  }
+
+  // Main area
+  const p = S.projects.find(x => x.id === S.active);
+  const host = $('#prevHost');
+  if (!p) {
+    host.innerHTML = emptyState();
+    wireEmpty();
+    setPrevStatus('', '');
+    $('#sbStatus').textContent = 'آماده';
+  } else {
+    setPrevStatus('', typeMeta(p.type).label);
+    $('#sbStatus').textContent = typeMeta(p.type).label;
+  }
+}
+
+function emptyState() {
+  return `<div class="empty" style="background:var(--bg)"><div class="empty-in">
+    <div class="empty-ico"><svg viewBox="0 0 24 24"><path d="M13 2 4.5 13.2c-.4.5 0 1.3.7 1.3H10l-1 7.5 8.5-11.2c.4-.5 0-1.3-.7-1.3H12z"/></svg></div>
+    <h2>هر پروژه‌ای رو در مرورگر اجرا کن</h2>
+    <p>ZIP از گیت‌هاب رو بکش و بنداز اینجا — HTML، Markdown، PDF، Vite، React، Next، Express.</p>
+    <div class="tpl-grid">
+      <button class="tpl" data-tpl="html"><b>HTML ساده</b><small>صفحهٔ استاتیک</small></button>
+      <button class="tpl" data-tpl="md"><b>Markdown</b><small>مستندات زیبا</small></button>
+      <button class="tpl" data-tpl="vite-react"><b>Vite + React</b><small>اجرای زندهٔ Node</small></button>
+    </div>
+  </div></div>`;
+}
+
+function wireEmpty() {
+  $$('.tpl').forEach(b => b.onclick = () => createFromTemplate(b.dataset.tpl));
+}
+
+function showUrl(url) {
+  const host = $('#prevHost');
+  revokeBlobs(S.active);
+  host.innerHTML = '';
+  const f = document.createElement('iframe');
+  f.src = url;
+  f.title = 'Dev server';
+  f.setAttribute('allow', 'cross-origin-isolated');
+  host.appendChild(f);
+}
+
+async function mountPreview(pv) {
+  const host = $('#prevHost');
+  host.innerHTML = '';
+  if (pv.kind === 'url') {
+    const f = document.createElement('iframe');
+    f.src = pv.url;
+    f.title = pv.title;
+    f.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads');
+    host.appendChild(f);
+    setPrevStatus('on', pv.title || 'آماده');
+    return;
+  }
+  const f = document.createElement('iframe');
+  f.title = pv.title || 'پیش‌نمایش';
+  f.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads');
+  f.srcdoc = pv.html;
+  host.appendChild(f);
+  setPrevStatus('on', pv.title || 'آماده');
+}
+
+async function renderPreview(project) {
+  setPrevStatus('run', 'در حال بارگذاری…');
+  try {
+    const files = await loadFiles(project.id);
+    if (!Object.keys(files).length) {
+      $('#prevHost').innerHTML = '<div class="preview-empty">پروژه خالیه</div>';
+      setPrevStatus('', 'خالی');
+      return;
+    }
+    revokeBlobs(project.id);
+    const pv = await buildPreview(project, files);
+    await mountPreview(pv);
+  } catch (e) {
+    $('#prevHost').innerHTML = `<div class="preview-empty"><div style="max-width:420px">
+      <div style="font-size:32px;margin-bottom:10px">⚠️</div>
+      <h3 style="margin:0 0 6px;font-size:15px">پیش‌نمایش ساخته نشد</h3>
+      <p style="color:var(--tx2);font-size:13px">${esc(e.message)}</p>
+    </div></div>`;
+    setPrevStatus('err', 'خطا');
+  }
+}
+
+async function openProject(id) {
+  const p = S.projects.find(x => x.id === id);
+  if (!p) return;
+  S.active = id;
+  p.lastOpenedAt = Date.now();
+  await DB.putP(p);
+  await DB.setM('ws', { projects: S.projects, active: S.active });
+  render();
+  revokeBlobs(id);
+  closeSidebarMobile();
+
+  const files = await loadFiles(id);
+  term.sys(`▸ ${p.name} · ${typeMeta(p.type).label}`);
+  if (!isNode(p.type)) setTimeout(() => renderPreview(p), 60);
+  else setPrevStatus('', 'برای اجرا، دکمهٔ ▶ رو بزن');
+}
+
+async function deleteProject(id) {
+  const p = S.projects.find(x => x.id === id);
+  if (!p) return;
+  if (!confirm(`«${p.name}» حذف بشه؟`)) return;
+  S.projects = S.projects.filter(x => x.id !== id);
+  await DB.delP(id);
+  await DB.delF(id);
+  S.cache.delete(id);
+  S.runtime.delete(id);
+  if (S.active === id) S.active = S.projects[0]?.id || null;
+  await DB.setM('ws', { projects: S.projects, active: S.active });
+  render();
+  toast('ok', 'حذف شد', p.name);
+  if (S.active) openProject(S.active);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 12. TEMPLATES
+ * ═══════════════════════════════════════════════════════════════════════════ */
+const TEMPLATES = {
+  html: () => ({
+    'index.html': { enc: 'utf8', data:
+`<!doctype html>
+<html lang="fa" dir="rtl">
+<head><meta charset="utf-8"><title>سلام</title>
+<style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;
+  font-family:system-ui,Tahoma,sans-serif;
+  background:radial-gradient(120% 120% at 50% 0%,#1e1b4b,#020617);color:#e2e8f0}
+.card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+  padding:40px 48px;border-radius:18px;backdrop-filter:blur(12px);text-align:center;
+  box-shadow:0 24px 60px rgba(0,0,0,.45)}
+h1{margin:0 0 8px;font-size:30px}
+p{color:#94a3b8}
+button{margin-top:18px;padding:11px 24px;border:0;border-radius:10px;cursor:pointer;
+  font-weight:600;color:#fff;background:linear-gradient(140deg,#6366f1,#8b5cf6);font-size:15px}
+#out{color:#a5b4fc;font-weight:600;margin-top:12px}
+</style></head>
+<body><div class="card">
+  <h1>👋 کار می‌کند</h1>
+  <p>فایل‌ها را ویرایش کن و Refresh بزن.</p>
+  <button id="b">کلیک کن</button>
+  <div id="out"></div>
+</div>
+<script>
+let n=0;
+document.getElementById('b').onclick=()=>{
+  n++;document.getElementById('out').textContent='کلیک '+n+' بار';
+};
+<\/script>
+</body></html>
+`, size: 0 },
+  }),
+  md: () => ({
+    'README.md': { enc: 'utf8', data:
+`# مستندات پروژه
+
+به **Markdown** خوش آمدی. هرچی اینجا بنویسی، زیبا رندر می‌شه.
+
+## شروع
+
+1. یه فایل \`.md\` آپلود کن
+2. یا همین رو ویرایش کن
+
+## نمونه کد
+
+\`\`\`js
+const greet = name => \`سلام، \${name}!\`;
+console.log(greet('دنیا'));
+\`\`\`
+
+## جدول
+
+| ویژگی | وضعیت |
+| --- | --- |
+| تیترها | ✅ |
+| کد | ✅ |
+| جدول | ✅ |
+
+> نکته: از تب Files می‌تونی سورس اصلی رو ببینی.
+`, size: 0 },
+  }),
+  'vite-react': () => ({
+    'package.json': { enc: 'utf8', data: JSON.stringify({
+      name: 'vite-react', private: true, version: '0.0.0', type: 'module',
+      scripts: { dev: 'vite', build: 'vite build', preview: 'vite preview' },
+      dependencies: { react: '^18.3.1', 'react-dom': '^18.3.1' },
+      devDependencies: { '@vitejs/plugin-react': '^4.3.1', vite: '^5.4.2' },
+    }, null, 2) + '\n', size: 0 },
+    'vite.config.js': { enc: 'utf8', data:
+`import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+export default defineConfig({ plugins: [react()], server: { host: true } })
+`, size: 0 },
+    'index.html': { enc: 'utf8', data:
+`<!doctype html><html><head><meta charset="UTF-8"><title>Vite React</title></head>
+<body><div id="root"></div><script type="module" src="/src/main.jsx"><\/script></body></html>
+`, size: 0 },
+    'src/main.jsx': { enc: 'utf8', data:
+`import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+ReactDOM.createRoot(document.getElementById('root')).render(<App />)
+`, size: 0 },
+    'src/App.jsx': { enc: 'utf8', data:
+`import { useState } from 'react'
+export default function App() {
+  const [n, setN] = useState(0)
+  return (
+    <div style={{ fontFamily: 'system-ui', textAlign: 'center', padding: 60, color: '#e2e8f0', background: '#0d1117', minHeight: '100vh' }}>
+      <h1>⚛️ Vite + React</h1>
+      <p style={{color:'#94a3b8'}}>در حال اجرا در مرورگر</p>
+      <button onClick={() => setN(n + 1)} style={{padding: '10px 24px', borderRadius: 10, border: 0, background: '#6366f1', color: '#fff', fontWeight: 600, cursor: 'pointer', fontSize: 15}}>
+        کلیک: {n}
+      </button>
+    </div>
+  )
+}
+`, size: 0 },
+  }),
+};
+
+async function createFromTemplate(key) {
+  const fn = TEMPLATES[key];
+  if (!fn) return;
+  const p = await createProject(
+    { html: 'HTML نمونه', md: 'Markdown نمونه', 'vite-react': 'Vite + React' }[key],
+    fn()
+  );
+  S.projects.unshift(p);
+  S.active = p.id;
+  await DB.setM('ws', { projects: S.projects, active: S.active });
+  render();
+  toast('ok', 'پروژه ساخته شد', p.name);
+  openProject(p.id);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 13. EVENT WIRING
+ * ═══════════════════════════════════════════════════════════════════════════ */
+function closeSidebarMobile() {
+  if (innerWidth <= 820) {
+    $('#sidebar').classList.remove('open');
+    document.querySelector('.sb-scrim')?.remove();
+  }
+}
+
+function wireUI() {
+  // Sidebar clicks
+  $('#sbScroll').addEventListener('click', e => {
+    const del = e.target.closest('[data-del]');
+    if (del) { e.stopPropagation(); deleteProject(del.dataset.del); return; }
+    const p = e.target.closest('.proj');
+    if (p?.dataset.id) openProject(p.dataset.id);
+  });
+
+  // Topbar
+  $('#importBtn').onclick = () => $('#fileInput').click();
+  $('#newBtn').onclick = () => {
+    if (!S.projects.length || confirm('پروژه‌ی نمونهٔ جدید بسازم؟')) {
+      createFromTemplate('html');
+    }
+  };
+  $('#themeBtn').onclick = () => {
+    S.theme = S.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = S.theme;
+    DB.setM('theme', S.theme);
+  };
+  $('#menuBtn').onclick = () => {
+    const sb = $('#sidebar');
+    sb.classList.toggle('open');
+    if (sb.classList.contains('open') && !document.querySelector('.sb-scrim')) {
+      const sc = document.createElement('div');
+      sc.className = 'sb-scrim';
+      sc.style.cssText = 'position:fixed;inset:var(--tb) 0 0 0;background:rgba(0,0,0,.5);z-index:55';
+      sc.onclick = () => { sb.classList.remove('open'); sc.remove(); };
+      document.body.appendChild(sc);
+    } else document.querySelector('.sb-scrim')?.remove();
+  };
+
+  // Preview actions
+  $('#refreshBtn').onclick = () => {
+    const p = S.projects.find(x => x.id === S.active);
+    if (p) { revokeBlobs(p.id); if (S.runtime.get(p.id)?.url) showUrl(S.runtime.get(p.id).url); else renderPreview(p); }
+  };
+  $('#runBtn').onclick = async () => {
+    const p = S.projects.find(x => x.id === S.active);
+    if (!p) { toast('info', 'اول یه پروژه انتخاب کن'); return; }
+    const files = await loadFiles(p.id);
+    if (isNode(p.type)) await runNode(p, files);
+    else { term.info(`▸ رندر ${p.name}…`); await renderPreview(p); term.ok(`✓ پیش‌نمایش آماده (${Object.keys(files).length} فایل)`); }
+  };
+
+  // Terminal
+  $('#clearBtn').onclick = () => term.clear();
+  $('#stopBtn').onclick = async () => {
+    if (serverProc) { try { serverProc.kill(); } catch {} serverProc = null; term.warn('▸ متوقف شد'); }
+    if (wc) { await teardownWC(); term.info('▸ Container بسته شد'); }
+    setPrevStatus('', 'متوقف');
+    $('#stopBtn').disabled = true;
+    $('#termCmd').disabled = true;
+  };
+  $('#termCmd').addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const v = e.target.value.trim();
+    if (!v) return;
+    e.target.value = '';
+    runCmd(v);
+  });
+
+  // Files input
+  $('#fileInput').addEventListener('change', async e => {
+    if (e.target.files?.length) { await importFiles(e.target.files); e.target.value = ''; }
+  });
+  $('#folderInput').addEventListener('change', async e => {
+    if (e.target.files?.length) { await importFiles(e.target.files); e.target.value = ''; }
+  });
+
+  // Drag & drop
+  let dc = 0;
+  const dz = $('#dz');
+  addEventListener('dragenter', e => {
+    if (!e.dataTransfer?.types?.includes('Files')) return;
+    dc++; dz.classList.add('on');
+  });
+  addEventListener('dragleave', () => { if (--dc <= 0) { dc = 0; dz.classList.remove('on'); } });
+  addEventListener('dragover', e => e.preventDefault());
+  addEventListener('drop', async e => {
+    e.preventDefault();
+    dc = 0; dz.classList.remove('on');
+    if (e.dataTransfer?.files?.length) await importFiles(e.dataTransfer.files);
+  });
+
+  // Preview console bridge
+  addEventListener('message', e => {
+    const d = e.data;
+    if (!d || !d.__pr) return;
+    const cls = d.l === 'error' ? 'err' : d.l === 'warn' ? 'warn' : 'info';
+    term.write(`[preview] ${d.m}\n`, cls);
+  });
+
+  // Keyboard shortcuts
+  addEventListener('keydown', e => {
+    const mod = e.metaKey || e.ctrlKey;
+    if (mod && e.key === 'Enter') { e.preventDefault(); $('#runBtn').click(); }
+    if (mod && e.key.toLowerCase() === 'r') { e.preventDefault(); $('#refreshBtn').click(); }
+    if (mod && e.key.toLowerCase() === 'o') { e.preventDefault(); $('#fileInput').click(); }
+    if (mod && e.key.toLowerCase() === 'k' && !e.shiftKey) {
+      e.preventDefault();
+      $('#fileInput').click();
+    }
+  });
+
+  // Resizer
+  const rz = $('#rz');
+  let dragging = false;
+  rz.addEventListener('pointerdown', e => {
+    dragging = true; rz.classList.add('drag');
+    rz.setPointerCapture(e.pointerId);
+    document.body.style.cursor = 'row-resize';
+  });
+  rz.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    const r = $('#main').getBoundingClientRect();
+    const h = Math.max(120, Math.min(r.height - 140, r.bottom - e.clientY));
+    document.documentElement.style.setProperty('--th', h + 'px');
+  });
+  rz.addEventListener('pointerup', e => {
+    if (!dragging) return;
+    dragging = false; rz.classList.remove('drag');
+    document.body.style.cursor = '';
+    try { rz.releasePointerCapture(e.pointerId); } catch {}
+  });
+
+  // Responsive
+  const syncMenu = () => { $('#menuBtn').style.display = innerWidth <= 820 ? '' : 'none'; };
+  syncMenu();
+  addEventListener('resize', syncMenu);
+
+  // Unload guard for running server
+  addEventListener('beforeunload', e => {
+    if (serverProc) { e.preventDefault(); e.returnValue = ''; }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * 14. BOOT
+ * ═══════════════════════════════════════════════════════════════════════════ */
+async function enterApp() {
+  $('#coi').classList.add('hidden');
+  $('#app').classList.remove('hidden');
+
+  // Restore theme
+  const savedTheme = await DB.getM('theme');
+  S.theme = savedTheme || 'dark';
+  document.documentElement.dataset.theme = S.theme;
+
+  // Restore workspace
+  const ws = await DB.getM('ws');
+  if (ws?.projects?.length) {
+    S.projects = ws.projects;
+    S.active = ws.active && S.projects.find(p => p.id === ws.active) ? ws.active : S.projects[0].id;
+  } else {
+    // Seed a welcome project
+    const p = await createProject('پروژهٔ نمونه', TEMPLATES.html());
+    S.projects = [p];
+    S.active = p.id;
+    await DB.setM('ws', { projects: S.projects, active: S.active });
+  }
+
+  wireUI();
+  render();
+
+  // Isolation pill
+  const iso = self.crossOriginIsolated;
+  const pill = $('#isoPill');
+  pill.className = 'iso-pill ' + (iso ? 'on' : 'off');
+  pill.textContent = iso ? '✓ Node آماده' : 'Node غیرفعال';
+
+  // Terminal banner
+  term.hdr('  ⚡ Project Runner');
+  term.sys('  همه‌چیز محلی اجرا می‌شه — هیچی آپلود نمی‌شه\n');
+  if (iso) {
+    term.ok('✓ Cross-Origin Isolation فعال است');
+    term.sys('  پروژه‌های Node (Vite/React/Next/Express) آماده‌اند');
+  } else {
+    term.warn('⚠ Cross-Origin Isolation فعال نیست');
+    term.sys('  HTML/Markdown/PDF/استاتیک کار می‌کنند ولی Node نه.');
+    term.sys('  برای فعال‌سازی: coi-serviceworker.js رو کنار HTML بذار و رفرش کن.\n');
+  }
+
+  // Auto-open the active project
+  if (S.active) openProject(S.active);
+}
+
+async function boot() {
+  setupCOIOverlay();
+
+  // Skip overlay if user already chose to
+  if (sessionStorage.getItem('skip-coi') === '1') {
+    await enterApp();
+    return;
+  }
+
+  const ok = await checkCOI();
+  if (ok) {
+    await enterApp();
+  } else {
+    // If already isolated once, allow entering without the overlay
+    // even if we're currently waiting for a refresh
+    const stage = document.getElementById('stage');
+    if (stage?.classList.contains('ok')) await enterApp();
+  }
+}
+
+boot().catch(err => {
+  console.error(err);
+  document.body.innerHTML = `<div style="padding:40px;font-family:system-ui,Tahoma;color:#e6edf3;background:#0b0d12;min-height:100vh;direction:rtl">
+    <h2 style="margin:0 0 8px">اجرا نشد</h2>
+    <p style="color:#98a2b5">${esc(err.message)}</p>
+    <pre style="color:#6a7486;font-size:12px;white-space:pre-wrap;direction:ltr;text-align:left">${esc(err.stack || '')}</pre>
+  </div>`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Local App Tester</title>
+<meta name="description" content="Import, run, test and debug web projects from your iPhone.">
+<meta name="theme-color" content="#0a0c11">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="App Tester">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0c11'/%3E%3Cpath d='M20 40l12-16 12 16' fill='none' stroke='%233b82f6' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="manifest" href='data:application/manifest+json,{"name":"Local App Tester","short_name":"App Tester","description":"Import, run, test and debug web projects from your iPhone.","start_url":"./","scope":"./","display":"standalone","orientation":"portrait","background_color":"%230a0c11","theme_color":"%230a0c11","categories":["developer","productivity","utilities"]}'>
+
+<style>
+:root{
+  --bg:#0a0c11; --bg2:#0e1118; --panel:rgba(20,24,34,.72);
+  --panel2:rgba(28,33,46,.55); --border:rgba(255,255,255,.08);
+  --border2:rgba(255,255,255,.14); --txt:#e8ecf5; --txt2:#9aa4b8;
+  --txt3:#6a7385; --blue:#3b82f6; --blue2:#60a5fa; --purple:#8b5cf6;
+  --purple2:#a78bfa; --ok:#22c55e; --warn:#f59e0b; --err:#ef4444;
+  --info:#38bdf8; --radius:14px; --radius2:10px;
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-l:env(safe-area-inset-left,0px); --safe-r:env(safe-area-inset-right,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{
+  background:radial-gradient(1200px 600px at 20% -10%,rgba(59,130,246,.10),transparent 60%),
+             radial-gradient(900px 500px at 110% 10%,rgba(139,92,246,.10),transparent 55%),
+             var(--bg);
+  color:var(--txt);
+  font:15px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  overscroll-behavior-y:none; -webkit-font-smoothing:antialiased;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.small{font-size:12.5px}
+.muted{color:var(--txt2)}
+.center{text-align:center}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(84px + var(--safe-b))}
+.appbar{
+  position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;
+  padding:calc(10px + var(--safe-t)) 14px 10px;
+  padding-left:calc(14px + var(--safe-l));padding-right:calc(14px + var(--safe-r));
+  background:rgba(10,12,17,.78);backdrop-filter:saturate(160%) blur(20px);
+  -webkit-backdrop-filter:saturate(160%) blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.appbar-title{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.appbar-title h1{margin:0;font-size:16px;font-weight:600;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px rgba(34,197,94,.7);flex:none}
+.dot.off{background:var(--txt3);box-shadow:none}
+.iconbtn{
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  background:var(--panel2);border:1px solid var(--border);color:var(--txt);
+  transition:transform .15s ease,background .15s ease;
+}
+.iconbtn:active{transform:scale(.94);background:rgba(255,255,255,.06)}
+.iconbtn svg{width:20px;height:20px}
+.iconbtn.sm{width:34px;height:34px;border-radius:10px}
+.view{padding:14px;padding-left:calc(14px + var(--safe-l));padding-right:calc(14px + var(--safe-r))}
+.view[hidden]{display:none}
+.hero{padding:6px 2px 14px}
+.hero h2{margin:0 0 4px;font-size:22px;font-weight:700;letter-spacing:-.3px}
+.hero p{margin:0}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 16px;border-radius:12px;font-weight:600;font-size:14.5px;
+  background:var(--panel2);border:1px solid var(--border);color:var(--txt);
+  transition:transform .15s ease,background .15s ease,border-color .15s ease;
+  min-height:46px;
+}
+.btn:active{transform:scale(.97)}
+.btn svg{width:18px;height:18px}
+.btn.primary{
+  background:linear-gradient(180deg,rgba(59,130,246,.95),rgba(59,130,246,.75));
+  border-color:rgba(96,165,250,.55);color:#fff;
+  box-shadow:0 6px 20px -8px rgba(59,130,246,.75);
+}
+.btn.primary:active{background:linear-gradient(180deg,rgba(59,130,246,.85),rgba(59,130,246,.65))}
+.btn.danger{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.35);color:#fca5a5}
+.chipbtn{
+  padding:9px 13px;border-radius:999px;font-size:13px;font-weight:600;
+  background:var(--panel2);border:1px solid var(--border);color:var(--txt);
+  transition:transform .15s ease;min-height:38px;
+}
+.chipbtn:active{transform:scale(.95)}
+.chipbtn.active{background:rgba(59,130,246,.18);border-color:rgba(96,165,250,.5);color:#bfdbfe}
+select.chipbtn{appearance:none;-webkit-appearance:none;padding-right:26px;
+  background-image:linear-gradient(45deg,transparent 50%,var(--txt2) 50%),linear-gradient(135deg,var(--txt2) 50%,transparent 50%);
+  background-position:calc(100% - 14px) 50%,calc(100% - 9px) 50%;
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.card{
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;margin-bottom:12px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+}
+.card h3{margin:0 0 8px;font-size:15px;font-weight:600}
+.card.danger{border-color:rgba(239,68,68,.28);background:rgba(30,12,14,.55)}
+.searchbar{
+  display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;
+  background:var(--panel2);border:1px solid var(--border);margin-bottom:12px;
+}
+.searchbar svg{width:18px;height:18px;color:var(--txt3);flex:none}
+.searchbar input{flex:1;background:none;border:0;outline:0;font-size:16px;min-width:0}
+.importgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:6px 2px 10px}
+.section-head h3{margin:0;font-size:14px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.6px}
+.count{font-size:12px;color:var(--txt3);background:var(--panel2);padding:3px 9px;border-radius:999px;border:1px solid var(--border)}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{
+  display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;
+  background:var(--panel);border:1px solid var(--border);
+  transition:transform .12s ease,background .12s ease;
+}
+.item:active{transform:scale(.985);background:rgba(255,255,255,.045)}
+.item-icon{
+  width:38px;height:38px;border-radius:10px;flex:none;display:grid;place-items:center;
+  background:linear-gradient(135deg,rgba(59,130,246,.22),rgba(139,92,246,.22));
+  border:1px solid var(--border2);font-size:17px;
+}
+.item-body{flex:1;min-width:0}
+.item-body strong{display:block;font-size:14.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item-body span{display:block;font-size:12px;color:var(--txt2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
+.item-menu{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--txt2);flex:none}
+.empty{text-align:center;padding:34px 18px;color:var(--txt2)}
+.empty-icon{font-size:36px;margin-bottom:10px;opacity:.8}
+.empty p{margin:6px 0}
+.project-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:4px 2px 12px}
+.project-head h2{margin:0;font-size:19px;font-weight:700;letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis}
+.tabbar{display:flex;gap:6px;padding:4px;background:var(--panel2);border:1px solid var(--border);border-radius:12px;margin-bottom:14px;overflow-x:auto}
+.tabbar .tab{flex:1;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;color:var(--txt2);white-space:nowrap;min-width:64px}
+.tabbar .tab.active{background:rgba(59,130,246,.18);color:#bfdbfe;box-shadow:inset 0 0 0 1px rgba(96,165,250,.35)}
+.pane[hidden]{display:none}
+.tree{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.tnode{display:flex;align-items:center;gap:9px;padding:11px 13px;border-bottom:1px solid var(--border);font-size:14px}
+.tnode:last-child{border-bottom:0}
+.tnode:active{background:rgba(255,255,255,.04)}
+.tnode .tico{width:20px;text-align:center;flex:none;color:var(--txt3)}
+.tnode .tpath{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tnode .tsize{font-size:11px;color:var(--txt3);flex:none}
+.tnode.indent-1{padding-left:24px}.tnode.indent-2{padding-left:36px}
+.tnode.indent-3{padding-left:48px}.tnode.indent-4{padding-left:60px}
+.fileviewer{position:fixed;inset:0;z-index:60;background:var(--bg2);display:flex;flex-direction:column;
+  padding-top:var(--safe-t);padding-bottom:var(--safe-b)}
+.fileviewer-head{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);background:rgba(10,12,17,.9)}
+.fileviewer-head .mono{flex:1;font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--txt2)}
+.code{flex:1;overflow:auto;margin:0;padding:14px;font-family:ui-monospace,"SF Mono",Menlo,monospace;
+  font-size:12px;line-height:1.55;white-space:pre;color:#cbd5e1;-webkit-overflow-scrolling:touch}
+.toolbar{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:6px}
+.toolbar .btn,.toolbar .chipbtn{flex:none}
+.preview-wrap{background:#000;border:1px solid var(--border);border-radius:12px;overflow:hidden;height:62vh;position:relative}
+.preview-wrap iframe{width:100%;height:100%;border:0;background:#fff;display:block}
+.note{padding:10px 12px;border-radius:10px;font-size:12.5px;line-height:1.5;background:rgba(56,189,248,.08);
+  border:1px solid rgba(56,189,248,.25);color:#bae6fd;margin-top:10px}
+.note.warn{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3);color:#fcd34d}
+.note.err{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3);color:#fca5a5}
+.fs{position:fixed;inset:0;z-index:80;background:#000;display:flex;flex-direction:column;padding-top:var(--safe-t)}
+.fs-bar{display:flex;align-items:center;gap:10px;padding:8px 12px;background:rgba(10,12,17,.94);
+  border-bottom:1px solid var(--border)}
+.fs-bar .mono{flex:1;font-size:12px;color:var(--txt2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fs iframe{flex:1;width:100%;border:0;background:#fff}
+.progress{height:4px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;margin:10px 0}
+.progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--purple));
+  transition:width .25s ease}
+.results{display:flex;flex-direction:column;gap:10px;margin-top:8px}
+.result{border:1px solid var(--border);border-radius:12px;background:var(--panel);overflow:hidden}
+.result-head{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.sev{width:9px;height:9px;border-radius:50%;flex:none}
+.sev.error{background:var(--err);box-shadow:0 0 8px rgba(239,68,68,.6)}
+.sev.warn{background:var(--warn);box-shadow:0 0 8px rgba(245,158,11,.55)}
+.sev.info{background:var(--info);box-shadow:0 0 8px rgba(56,189,248,.5)}
+.sev.pass{background:var(--ok);box-shadow:0 0 8px rgba(34,197,94,.55)}
+.result-title{flex:1;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.result-kind{font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  padding:3px 7px;border-radius:6px;flex:none}
+.kind-executed{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.3)}
+.kind-static{background:rgba(56,189,248,.15);color:#7dd3fc;border:1px solid rgba(56,189,248,.3)}
+.kind-unsupported{background:rgba(148,163,184,.15);color:#cbd5e1;border:1px solid rgba(148,163,184,.3)}
+.result-body{padding:0 14px 14px;font-size:13px;color:var(--txt2);line-height:1.55}
+.result-body .file{font-family:ui-monospace,monospace;font-size:11.5px;color:#93c5fd;
+  background:rgba(59,130,246,.08);padding:2px 6px;border-radius:5px;display:inline-block;margin:2px 0}
+.result-body .fix{margin-top:8px;padding:8px 10px;border-radius:8px;background:rgba(34,197,94,.07);
+  border:1px solid rgba(34,197,94,.2);color:#bbf7d0;font-size:12.5px}
+.field{display:block;margin:10px 0}
+.field span{display:block;font-size:12.5px;color:var(--txt2);margin-bottom:6px;font-weight:500}
+.field input,.field textarea,.field select{
+  width:100%;padding:12px 13px;border-radius:10px;background:rgba(0,0,0,.35);
+  border:1px solid var(--border);outline:0;font-size:16px;color:var(--txt);
+}
+.field input:focus,.field textarea:focus{border-color:rgba(96,165,250,.5);background:rgba(0,0,0,.5)}
+.field textarea{resize:vertical;min-height:70px;font-family:ui-monospace,monospace;font-size:13px}
+.checkline{display:flex;align-items:center;gap:10px;padding:10px 0;font-size:14px;cursor:pointer}
+.checkline input{width:20px;height:20px;accent-color:var(--blue);flex:none}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.row .btn{flex:1;min-width:130px}
+.disclosure{margin-top:12px;font-size:13px}
+.disclosure summary{padding:8px 0;cursor:pointer;color:var(--blue2);font-weight:600}
+.disclosure ul{padding-left:18px;margin:8px 0 0}
+.disclosure li{margin:6px 0}
+.steps{padding-left:20px;margin:8px 0}
+.steps li{margin:6px 0}
+.log{margin-top:12px;padding:12px;border-radius:10px;background:#05070b;border:1px solid var(--border);
+  font-family:ui-monospace,monospace;font-size:11.5px;line-height:1.55;color:#cbd5e1;
+  max-height:320px;overflow:auto;white-space:pre-wrap;word-break:break-word}
+.tabbar-bottom{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;
+  padding:8px 8px calc(8px + var(--safe-b));
+  padding-left:calc(8px + var(--safe-l));padding-right:calc(8px + var(--safe-r));
+  background:rgba(10,12,17,.86);backdrop-filter:saturate(160%) blur(20px);
+  -webkit-backdrop-filter:saturate(160%) blur(20px);
+  border-top:1px solid var(--border);
+}
+.navbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;
+  border-radius:12px;color:var(--txt3);font-size:10.5px;font-weight:600;letter-spacing:.2px;
+  transition:color .15s ease,background .15s ease}
+.navbtn svg{width:22px;height:22px}
+.navbtn.active{color:var(--blue2);background:rgba(59,130,246,.08)}
+.toasts{position:fixed;left:0;right:0;bottom:calc(96px + var(--safe-b));z-index:90;
+  display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;padding:0 14px}
+.toast{padding:11px 16px;border-radius:12px;background:rgba(20,24,34,.96);border:1px solid var(--border2);
+  color:var(--txt);font-size:13.5px;font-weight:500;box-shadow:0 10px 30px -10px rgba(0,0,0,.7);
+  max-width:100%;animation:toastIn .2s ease;backdrop-filter:blur(12px)}
+.toast.err{border-color:rgba(239,68,68,.5);background:rgba(45,15,18,.96)}
+.toast.ok{border-color:rgba(34,197,94,.5);background:rgba(12,32,20,.96)}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.modal-root{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.6);
+  display:grid;place-items:center;padding:20px;backdrop-filter:blur(4px)}
+.modal{width:100%;max-width:400px;background:var(--bg2);border:1px solid var(--border2);
+  border-radius:16px;padding:20px;box-shadow:0 24px 60px -20px rgba(0,0,0,.8)}
+.modal h3{margin:0 0 8px;font-size:17px}
+.modal p{margin:0 0 16px;font-size:14px;color:var(--txt2)}
+.modal .modal-actions{display:flex;gap:10px;margin-top:16px}
+.modal .modal-actions .btn{flex:1}
+.hidden{display:none!important}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="appbar">
+    <button class="iconbtn" id="btnBack" hidden aria-label="Back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="appbar-title">
+      <span class="dot" id="netDot" title="Network"></span>
+      <h1 id="appTitle">Local App Tester</h1>
+    </div>
+    <button class="iconbtn" id="btnHeaderAction" hidden aria-label="Action"></button>
+  </header>
+
+  <main class="scroll" id="main">
+
+    <section class="view" id="view-dashboard">
+      <div class="hero">
+        <h2>Your projects</h2>
+        <p class="muted small" id="storageLine">Loading storage…</p>
+      </div>
+      <div class="searchbar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21" stroke-linecap="round"/></svg>
+        <input id="searchInput" type="search" placeholder="Search projects" autocomplete="off" enterkeyhint="search">
+      </div>
+      <div class="importgrid">
+        <button class="btn primary" id="btnImportZip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+          Import ZIP
+        </button>
+        <button class="btn" id="btnImportFiles">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M14 3v5h5M6 3h8l5 5v13a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1z"/></svg>
+          Pick files
+        </button>
+      </div>
+      <input type="file" id="fileZip" accept=".zip,application/zip" hidden>
+      <input type="file" id="fileAny" multiple hidden>
+      <div class="section-head"><h3>Projects</h3><span class="count" id="projCount">0</span></div>
+      <div id="projectList" class="list"></div>
+      <div id="projEmpty" class="empty" hidden>
+        <div class="empty-icon">📦</div>
+        <p><strong>No projects yet</strong></p>
+        <p class="muted">Import a ZIP of your web project, or pick individual files. Everything stays on this device.</p>
+      </div>
+    </section>
+
+    <section class="view" id="view-project" hidden>
+      <div class="project-head">
+        <div style="min-width:0;flex:1">
+          <h2 id="projName">Project</h2>
+          <p class="muted small" id="projMeta" style="margin:4px 0 0"></p>
+        </div>
+      </div>
+      <div class="tabbar" id="projTabs" role="tablist">
+        <button class="tab active" data-tab="files" role="tab">Files</button>
+        <button class="tab" data-tab="preview" role="tab">Preview</button>
+        <button class="tab" data-tab="tests" role="tab">Tests</button>
+        <button class="tab" data-tab="report" role="tab">Report</button>
+      </div>
+      <div class="pane" id="pane-files">
+        <div class="tree" id="fileTree"></div>
+        <div class="fileviewer" id="fileViewer" hidden>
+          <div class="fileviewer-head">
+            <span id="fvPath" class="mono"></span>
+            <button class="iconbtn sm" id="fvClose" aria-label="Close">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </button>
+          </div>
+          <pre id="fvBody" class="code"></pre>
+        </div>
+      </div>
+      <div class="pane" id="pane-preview" hidden>
+        <div class="toolbar">
+          <button class="chipbtn" id="btnReload">Reload</button>
+          <select id="viewportSelect" class="chipbtn" aria-label="Viewport width">
+            <option value="device">Device</option>
+            <option value="320">320px</option>
+            <option value="375">375px</option>
+            <option value="414">414px</option>
+            <option value="768">768px</option>
+            <option value="1280">1280px</option>
+          </select>
+          <button class="chipbtn" id="btnFullscreen">Fullscreen</button>
+          <button class="chipbtn" id="btnOpenTab">New tab</button>
+        </div>
+        <div class="preview-wrap" id="previewWrap">
+          <iframe id="previewFrame" title="Live preview" referrerpolicy="no-referrer"></iframe>
+        </div>
+        <div class="note" id="previewNote" hidden></div>
+      </div>
+      <div class="pane" id="pane-tests" hidden>
+        <div class="toolbar">
+          <button class="btn primary" id="btnRunTests">Run all tests</button>
+          <button class="chipbtn" id="btnRunStaticOnly">Static only</button>
+        </div>
+        <div class="progress" id="testProgress" hidden><div class="bar" id="testProgressBar"></div></div>
+        <div id="testResults" class="results"></div>
+        <div id="testEmpty" class="empty">
+          <div class="empty-icon">🧪</div>
+          <p><strong>No tests run yet</strong></p>
+          <p class="muted small">Runs real execution tests in a hidden browser frame, static analysis on your source files, and viewport overflow checks. Unsupported checks are labelled honestly.</p>
+        </div>
+      </div>
+      <div class="pane" id="pane-report" hidden><div id="reportView"></div></div>
+    </section>
+
+    <section class="view" id="view-remote" hidden>
+      <div class="hero">
+        <h2>Remote runtime</h2>
+        <p class="muted small">GitHub Codespaces &amp; Actions for projects that need Node.js, npm or a real build step.</p>
+      </div>
+      <div class="card" id="remoteConnectCard">
+        <h3>GitHub connection</h3>
+        <p class="muted small">The token is sent only to <span class="mono">api.github.com</span> from this device. It is never embedded in the app, never sent anywhere else, and is stored in this browser's IndexedDB only if you choose to save it.</p>
+        <label class="field"><span>Personal Access Token</span>
+          <input type="password" id="ghToken" placeholder="github_pat_… or ghp_…" autocomplete="off" autocapitalize="off" spellcheck="false">
+        </label>
+        <label class="checkline"><input type="checkbox" id="ghSaveToken"><span>Save token on this device (IndexedDB)</span></label>
+        <div class="row">
+          <button class="btn primary" id="btnGhConnect">Connect</button>
+          <button class="btn" id="btnGhDisconnect">Disconnect</button>
+        </div>
+        <div id="ghStatus" class="note" hidden></div>
+        <details class="disclosure">
+          <summary>Required scopes, limits &amp; costs</summary>
+          <ul class="muted small">
+            <li><strong>codespace</strong> scope — list/start/stop Codespaces.</li>
+            <li><strong>repo</strong> + <strong>workflow</strong> scopes — dispatch GitHub Actions workflows and read run logs.</li>
+            <li>GitHub Codespaces has a monthly free quota; beyond it you are billed by GitHub. Starting a codespace consumes quota even while idle.</li>
+            <li>GitHub Actions minutes are metered for private repositories.</li>
+            <li>GitHub does <em>not</em> expose a public API to run arbitrary shell commands inside a Codespace. Remote command execution here is performed through GitHub Actions <span class="mono">workflow_dispatch</span>, which is a real execution path with real logs.</li>
+            <li>All local features keep working when you disconnect.</li>
+          </ul>
+        </details>
+      </div>
+      <div class="card" id="codespaceCard" hidden>
+        <div class="section-head" style="margin-top:0"><h3 style="margin:0">Codespaces</h3><button class="chipbtn" id="btnRefreshCs">Refresh</button></div>
+        <div id="codespaceList" class="list"></div>
+      </div>
+      <div class="card" id="actionsCard" hidden>
+        <h3>Run a command remotely (GitHub Actions)</h3>
+        <p class="muted small">Triggers a real <span class="mono">workflow_dispatch</span> run and streams its actual logs back.</p>
+        <label class="field"><span>Repository (owner/name)</span><input id="actRepo" placeholder="octocat/hello-world" autocapitalize="off" spellcheck="false"></label>
+        <label class="field"><span>Workflow file (e.g. build.yml)</span><input id="actWorkflow" placeholder="build.yml" autocapitalize="off" spellcheck="false"></label>
+        <label class="field"><span>Git ref (branch/tag)</span><input id="actRef" placeholder="main" autocapitalize="off" spellcheck="false"></label>
+        <label class="field"><span>Inputs (JSON, optional)</span><textarea id="actInputs" rows="3" placeholder='{"task":"npm test"}'></textarea></label>
+        <button class="btn primary" id="btnDispatch">Dispatch workflow</button>
+        <div id="actLog" class="log" hidden></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-settings" hidden>
+      <div class="hero"><h2>Settings &amp; backup</h2></div>
+      <div class="card">
+        <h3>Storage</h3>
+        <p class="muted small" id="storageDetail">—</p>
+        <div class="progress"><div class="bar" id="storageBar" style="width:0%"></div></div>
+      </div>
+      <div class="card">
+        <h3>Backup &amp; restore</h3>
+        <p class="muted small">Exports every project (with file contents), every test report and your settings as a single JSON file. Restoring merges by id and never deletes existing data.</p>
+        <div class="row">
+          <button class="btn primary" id="btnExportAll">Export backup</button>
+          <button class="btn" id="btnImportAll">Restore backup</button>
+        </div>
+        <input type="file" id="fileBackup" accept=".json,application/json" hidden>
+      </div>
+      <div class="card">
+        <h3>Preview engine</h3>
+        <label class="checkline"><input type="checkbox" id="optHarness" checked><span>Inject error/console harness into previews</span></label>
+        <label class="checkline"><input type="checkbox" id="optAutoRun" checked><span>Auto-run static tests when a project opens</span></label>
+      </div>
+      <div class="card">
+        <h3>Install on iPhone</h3>
+        <ol class="muted small steps">
+          <li>Open this page in <strong>Safari</strong> over HTTPS (or localhost).</li>
+          <li>Tap the <strong>Share</strong> button.</li>
+          <li>Choose <strong>Add to Home Screen</strong>.</li>
+        </ol>
+      </div>
+      <div class="card danger">
+        <h3>Danger zone</h3>
+        <p class="muted small">Clears every project, report and setting from this browser. Cannot be undone.</p>
+        <button class="btn danger" id="btnWipe">Erase all local data</button>
+      </div>
+      <p class="muted small center" id="versionLine"></p>
+    </section>
+
+  </main>
+
+  <nav class="tabbar-bottom" id="bottomNav">
+    <button class="navbtn active" data-view="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 11l8-7 8 7v8a1 1 0 01-1 1h-4v-6H9v6H5a1 1 0 01-1-1z"/></svg>
+      <span>Projects</span>
+    </button>
+    <button class="navbtn" data-view="remote">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 18a4 4 0 010-8 5 5 0 019.6-1.4A3.5 3.5 0 0117 18z"/></svg>
+      <span>Remote</span>
+    </button>
+    <button class="navbtn" data-view="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6l1.4 1.4m10 10l1.4 1.4m0-12.8l-1.4 1.4m-10 10l-1.4 1.4" stroke-linecap="round"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+</div>
+
+<div class="fs" id="fsOverlay" hidden>
+  <div class="fs-bar">
+    <button class="iconbtn" id="fsClose" aria-label="Exit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <span class="mono small" id="fsLabel"></span>
+    <button class="iconbtn" id="fsReload" aria-label="Reload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 11-2.3-5.6M20 4v5h-5"/></svg></button>
+  </div>
+  <iframe id="fsFrame" title="Fullscreen preview" referrerpolicy="no-referrer"></iframe>
+</div>
+
+<div class="toasts" id="toasts"></div>
+<div class="modal-root" id="modalRoot" hidden></div>
+
+<script>
+"use strict";
+/* =========================================================================
+   Local App Tester — single-file build
+   ========================================================================= */
+
+/* -------- util -------- */
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+const uuid = () => (crypto.randomUUID ? crypto.randomUUID() :
+  'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = (Math.random()*16)|0; return (c==='x'?r:(r&0x3|0x8)).toString(16);
+  }));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtBytes = n => {
+  if (n < 1024) return n + ' B';
+  if (n < 1024*1024) return (n/1024).toFixed(1) + ' KB';
+  return (n/1024/1024).toFixed(2) + ' MB';
+};
+const fmtDate = t => new Date(t).toLocaleString();
+const debounce = (fn, ms=200) => { let h; return (...a) => { clearTimeout(h); h = setTimeout(() => fn(...a), ms); }; };
+
+function toast(msg, kind='') {
+  const root = $('#toasts');
+  const el = document.createElement('div');
+  el.className = 'toast ' + kind;
+  el.textContent = msg;
+  root.appendChild(el);
+  setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 300); }, 2600);
+}
+
+function modal({ title, body, fields = [], confirmLabel = 'Confirm', danger = false }) {
+  return new Promise(resolve => {
+    const root = $('#modalRoot');
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-root';
+    const box = document.createElement('div');
+    box.className = 'modal';
+    box.innerHTML = `<h3>${esc(title)}</h3><p>${body||''}</p>` +
+      fields.map(f => `<label class="field"><span>${esc(f.label)}</span><input name="${esc(f.name)}" type="${f.type||'text'}" value="${esc(f.value||'')}" placeholder="${esc(f.placeholder||'')}"></label>`).join('') +
+      `<div class="modal-actions"><button class="btn" data-act="cancel">Cancel</button><button class="btn ${danger?'danger':'primary'}" data-act="ok">${esc(confirmLabel)}</button></div>`;
+    backdrop.appendChild(box);
+    root.appendChild(backdrop);
+    root.hidden = false;
+    const done = (val) => { root.hidden = true; root.innerHTML = ''; resolve(val); };
+    $$('button', box).forEach(b => b.addEventListener('click', () => {
+      if (b.dataset.act === 'cancel') return done(null);
+      const vals = {};
+      $$('input', box).forEach(i => vals[i.name] = i.value);
+      done(Object.keys(vals).length ? vals : true);
+    }));
+  });
+}
+
+/* -------- zip -------- */
+const CRC_TABLE = (() => {
+  const t = new Uint32Array(256);
+  for (let i = 0; i < 256; i++) {
+    let c = i;
+    for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    t[i] = c;
+  }
+  return t;
+})();
+function crc32(bytes) {
+  let c = 0xFFFFFFFF;
+  for (let i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+
+async function parseZip(buffer) {
+  if (typeof DecompressionStream === 'undefined')
+    throw new Error('This browser does not support DecompressionStream. Update iOS Safari to 16.4+.');
+  const view = new DataView(buffer);
+  const bytes = new Uint8Array(buffer);
+  let eocd = -1;
+  const minEocd = Math.max(0, bytes.length - 65557);
+  for (let i = bytes.length - 22; i >= minEocd; i--) {
+    if (view.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error('Not a valid ZIP (no End-Of-Central-Directory found).');
+  const entryCount = view.getUint16(eocd + 10, true);
+  const cdOffset   = view.getUint32(eocd + 16, true);
+
+  const entries = [];
+  let p = cdOffset;
+  for (let i = 0; i < entryCount; i++) {
+    if (view.getUint32(p, true) !== 0x02014b50) throw new Error('Corrupt ZIP central directory.');
+    const method    = view.getUint16(p + 10, true);
+    const compSize  = view.getUint32(p + 20, true);
+    const nameLen   = view.getUint16(p + 28, true);
+    const extraLen  = view.getUint16(p + 30, true);
+    const cmtLen    = view.getUint16(p + 32, true);
+    const localOff  = view.getUint32(p + 42, true);
+    const name = new TextDecoder('utf-8').decode(bytes.subarray(p + 46, p + 46 + nameLen));
+    entries.push({ name, method, compSize, localOff });
+    p += 46 + nameLen + extraLen + cmtLen;
+  }
+
+  const out = [];
+  for (const e of entries) {
+    if (e.name.endsWith('/')) continue;
+    const lp = e.localOff;
+    if (view.getUint32(lp, true) !== 0x04034b50) throw new Error('Corrupt local header for ' + e.name);
+    const lNameLen  = view.getUint16(lp + 26, true);
+    const lExtraLen = view.getUint16(lp + 28, true);
+    const dataStart = lp + 30 + lNameLen + lExtraLen;
+    const raw = bytes.subarray(dataStart, dataStart + e.compSize);
+    let content;
+    if (e.method === 0) {
+      content = raw.slice();
+    } else if (e.method === 8) {
+      const ds = new DecompressionStream('deflate-raw');
+      const stream = new Blob([raw]).stream().pipeThrough(ds);
+      content = new Uint8Array(await new Response(stream).arrayBuffer());
+    } else {
+      throw new Error('Unsupported ZIP method ' + e.method + ' for ' + e.name);
+    }
+    out.push({ path: e.name, content });
+  }
+  return out;
+}
+
+async function deflateRaw(bytes) {
+  if (typeof CompressionStream === 'undefined') return bytes;
+  const cs = new CompressionStream('deflate-raw');
+  const stream = new Blob([bytes]).stream().pipeThrough(cs);
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+async function buildZip(files) {
+  const chunks = [];
+  const central = [];
+  let offset = 0;
+  for (const f of files) {
+    const nameBytes = new TextEncoder().encode(f.path);
+    const crc = crc32(f.content);
+    const compressed = await deflateRaw(f.content);
+    const useStore = compressed.length >= f.content.length;
+    const data = useStore ? f.content : compressed;
+    const method = useStore ? 0 : 8;
+
+    const local = new Uint8Array(30 + nameBytes.length + data.length);
+    const lv = new DataView(local.buffer);
+    lv.setUint32(0, 0x04034b50, true);
+    lv.setUint16(4, 20, true);
+    lv.setUint16(8, method, true);
+    lv.setUint32(14, crc, true);
+    lv.setUint32(18, data.length, true);
+    lv.setUint32(22, f.content.length, true);
+    lv.setUint16(26, nameBytes.length, true);
+    local.set(nameBytes, 30);
+    local.set(data, 30 + nameBytes.length);
+    chunks.push(local);
+
+    const cd = new Uint8Array(46 + nameBytes.length);
+    const cv = new DataView(cd.buffer);
+    cv.setUint32(0, 0x02014b50, true);
+    cv.setUint16(4, 20, true);
+    cv.setUint16(6, 20, true);
+    cv.setUint16(10, method, true);
+    cv.setUint32(16, crc, true);
+    cv.setUint32(20, data.length, true);
+    cv.setUint32(24, f.content.length, true);
+    cv.setUint16(28, nameBytes.length, true);
+    cv.setUint32(42, offset, true);
+    cd.set(nameBytes, 46);
+    central.push(cd);
+    offset += local.length;
+  }
+  const cdStart = offset;
+  let cdSize = 0;
+  for (const c of central) { chunks.push(c); cdSize += c.length; }
+  const eocd = new Uint8Array(22);
+  const ev = new DataView(eocd.buffer);
+  ev.setUint32(0, 0x06054b50, true);
+  ev.setUint16(8, central.length, true);
+  ev.setUint16(10, central.length, true);
+  ev.setUint32(12, cdSize, true);
+  ev.setUint32(16, cdStart, true);
+  chunks.push(eocd);
+  return new Blob(chunks, { type: 'application/zip' });
+}
+
+/* -------- db -------- */
+const DB_NAME = 'local-app-tester';
+const DB_VERSION = 1;
+let _dbPromise = null;
+function openDB() {
+  if (_dbPromise) return _dbPromise;
+  _dbPromise = new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = e => {
+      const d = e.target.result;
+      if (!d.objectStoreNames.contains('projects')) {
+        const s = d.createObjectStore('projects', { keyPath: 'id' });
+        s.createIndex('updatedAt', 'updatedAt');
+        s.createIndex('name', 'name');
+      }
+      if (!d.objectStoreNames.contains('reports')) {
+        const s = d.createObjectStore('reports', { keyPath: 'id' });
+        s.createIndex('projectId', 'projectId');
+        s.createIndex('createdAt', 'createdAt');
+      }
+      if (!d.objectStoreNames.contains('settings')) {
+        d.createObjectStore('settings', { keyPath: 'key' });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+  return _dbPromise;
+}
+function tx(store, mode, fn) {
+  return openDB().then(d => new Promise((resolve, reject) => {
+    const t = d.transaction(store, mode);
+    const s = t.objectStore(store);
+    const r = fn(s);
+    t.oncomplete = () => resolve(r && r.result !== undefined ? r.result : r);
+    t.onerror = () => reject(t.error);
+    t.onabort = () => reject(t.error);
+  }));
+}
+const db = {
+  put:      (store, val) => tx(store, 'readwrite', s => s.put(val)),
+  get:      (store, key) => tx(store, 'readonly',  s => s.get(key)),
+  getAll:   (store)       => tx(store, 'readonly',  s => s.getAll()),
+  del:      (store, key) => tx(store, 'readwrite', s => s.delete(key)),
+  clear:    (store)       => tx(store, 'readwrite', s => s.clear()),
+  byIndex:  (store, idx, val) => tx(store, 'readonly', s => s.index(idx).getAll(val))
+};
+
+/* -------- mime -------- */
+const MIME = {
+  html:'text/html', htm:'text/html', css:'text/css', js:'text/javascript',
+  mjs:'text/javascript', json:'application/json', svg:'image/svg+xml',
+  png:'image/png', jpg:'image/jpeg', jpeg:'image/jpeg', gif:'image/gif',
+  webp:'image/webp', ico:'image/x-icon', txt:'text/plain', md:'text/markdown',
+  xml:'application/xml', wasm:'application/wasm', woff:'font/woff', woff2:'font/woff2',
+  ttf:'font/ttf', otf:'font/otf', mp3:'audio/mpeg', mp4:'video/mp4',
+  webm:'video/webm', pdf:'application/pdf', scss:'text/x-scss', sass:'text/x-sass',
+  ts:'text/typescript', tsx:'text/typescript', jsx:'text/jsx', yml:'text/yaml', yaml:'text/yaml'
+};
+function mimeFor(p) {
+  const ext = (p.split('.').pop() || '').toLowerCase();
+  return MIME[ext] || 'application/octet-stream';
+}
+function isTextual(p) {
+  const m = mimeFor(p);
+  return m.startsWith('text/') || m.includes('json') || m.includes('javascript') ||
+         m.includes('xml') || m.includes('svg') || m.includes('yaml');
+}
+
+/* -------- analysis -------- */
+function detectProjectKind(files) {
+  const paths = files.map(f => f.path);
+  const has = re => paths.some(p => re.test(p));
+  const pkgFile = files.find(f => f.path === 'package.json' || f.path.endsWith('/package.json'));
+  let pkg = null;
+  if (pkgFile) { try { pkg = JSON.parse(new TextDecoder().decode(pkgFile.content)); } catch {} }
+  const deps = pkg ? { ...(pkg.dependencies||{}), ...(pkg.devDependencies||{}) } : {};
+  const hasDep = n => Object.prototype.hasOwnProperty.call(deps, n);
+  const hasVite = hasDep('vite') || has(/^vite\.config\./m);
+  const hasReact = hasDep('react') || hasDep('react-dom');
+  const hasNext = hasDep('next');
+  const hasSass  = has(/\.(s[ac]ss)$/) || hasDep('sass') || hasDep('node-sass');
+  const hasIndexHtml = has(/(^|\/)index\.html$/);
+
+  if (hasNext)    return { kind:'next',     runnable:false, entry: null, reason:'Next.js requires a Node.js server.' };
+  if (hasVite)    return { kind:'vite',     runnable:false, entry: null, reason:'Vite needs a dev server / build step.' };
+  if (hasReact)   return { kind:'react',    runnable: hasIndexHtml && !pkg, entry: hasIndexHtml ? (paths.find(p => /(^|\/)index\.html$/.test(p))) : null, reason: hasIndexHtml && !pkg ? 'Static React via CDN looks runnable in-browser.' : 'React toolchain requires a build step.' };
+  if (hasSass)    return { kind:'sass',     runnable: hasIndexHtml, entry: paths.find(p => /(^|\/)index\.html$/.test(p)) || null, reason:'Sass needs compilation; preview uses compiled CSS if present.' };
+  if (hasIndexHtml) return { kind:'static', runnable:true,  entry: paths.find(p => /(^|\/)index\.html$/.test(p)), reason:'' };
+  return { kind:'unknown', runnable:false, entry:null, reason:'No index.html or known framework entry found.' };
+}
+
+/* -------- preview (blob URL fallback, no SW needed) -------- */
+function resolvePath(base, rel) {
+  if (!rel || /^(https?:|data:|blob:|#|\/\/|\/)/i.test(rel)) return null;
+  const baseDir = base.includes('/') ? base.slice(0, base.lastIndexOf('/') + 1) : '';
+  const segs = (baseDir + rel).split('/');
+  const out = [];
+  for (const s of segs) {
+    if (!s || s === '.') continue;
+    if (s === '..') out.pop(); else out.push(s);
+  }
+  return out.join('/');
+}
+function rewriteHtmlRefs(html, htmlPath, urlMap) {
+  return html.replace(/\b(src|href)\s*=\s*("([^"]*)"|'([^']*)')/gi, (m, attr, _all, dq, sq) => {
+    const val = dq !== undefined ? dq : sq;
+    if (/^(https?:|data:|blob:|mailto:|tel:|#|\/\/)/i.test(val)) return m;
+    const resolved = resolvePath(htmlPath, val);
+    if (resolved && urlMap.has(resolved)) {
+      const q = dq !== undefined ? '"' : "'";
+      return `${attr}=${q}${urlMap.get(resolved)}${q}`;
+    }
+    return m;
+  });
+}
+function rewriteCssUrls(css, cssPath, urlMap) {
+  return css.replace(/url\(\s*(['"]?)([^'")]+)\1\s*\)/gi, (m, q, val) => {
+    if (/^(https?:|data:|blob:|\/\/)/i.test(val)) return m;
+    const resolved = resolvePath(cssPath, val);
+    if (resolved && urlMap.has(resolved)) return `url(${urlMap.get(resolved)})`;
+    return m;
+  });
+}
+function rewriteJsImports(js, jsPath, urlMap) {
+  return js.replace(/(from|import)\s*(['"])(\.{1,2}\/[^'"]+)\2/g, (m, kw, q, rel) => {
+    const resolved = resolvePath(jsPath, rel);
+    if (resolved && urlMap.has(resolved)) return `${kw} ${q}${urlMap.get(resolved)}${q}`;
+    return m;
+  });
+}
+
+async function buildBlobPreview(project) {
+  const urlMap = new Map();
+  const createdURLs = [];
+  const htmlFiles = project.files.filter(f => /\.html?$/i.test(f.path));
+  const otherFiles = project.files.filter(f => !/\.html?$/i.test(f.path));
+
+  for (const f of otherFiles) {
+    const type = mimeFor(f.path);
+    let blob;
+    if (type === 'text/css') {
+      const cssText = new TextDecoder().decode(f.content);
+      blob = new Blob([rewriteCssUrls(cssText, f.path, urlMap)], { type });
+    } else if (type.startsWith('text/javascript')) {
+      const jsText = new TextDecoder().decode(f.content);
+      blob = new Blob([rewriteJsImports(jsText, f.path, urlMap)], { type });
+    } else {
+      blob = new Blob([f.content], { type });
+    }
+    const url = URL.createObjectURL(blob);
+    urlMap.set(f.path, url);
+    createdURLs.push(url);
+  }
+  for (const f of htmlFiles) {
+    const text = new TextDecoder().decode(f.content);
+    const rewritten = rewriteHtmlRefs(text, f.path, urlMap);
+    const blob = new Blob([rewritten], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    urlMap.set(f.path, url);
+    createdURLs.push(url);
+  }
+  const entryURL = urlMap.get(project.entry);
+  if (!entryURL) throw new Error('Entry HTML was not found for preview.');
+  return { url: entryURL, cleanup: () => createdURLs.forEach(u => URL.revokeObjectURL(u)) };
+}
+
+/* -------- tester -------- */
+const HARNESS_SCRIPT = `<script>(function(){
+  var errors = [], logs = [];
+  window.__LAT__ = { errors: errors, logs: logs, ready: false, loadedAt: 0 };
+  window.addEventListener('error', function(e){
+    errors.push({ type:'error', message: e.message || String(e.error), source: e.filename, line: e.lineno, col: e.colno });
+  }, true);
+  window.addEventListener('unhandledrejection', function(e){
+    errors.push({ type:'unhandledrejection', message: String((e.reason && e.reason.message) || e.reason) });
+  });
+  var oe = console.error, ow = console.warn;
+  console.error = function(){ logs.push({ level:'error', text: Array.prototype.map.call(arguments, String).join(' ') }); oe.apply(console, arguments); };
+  console.warn  = function(){ logs.push({ level:'warn',  text: Array.prototype.map.call(arguments, String).join(' ') }); ow.apply(console, arguments); };
+  window.addEventListener('load', function(){ window.__LAT__.ready = true; window.__LAT__.loadedAt = Date.now(); });
+})();<\/script>`;
+
+function injectHarness(html) {
+  if (/__LAT__/.test(html)) return html;
+  if (/<head[^>]*>/i.test(html)) return html.replace(/<head[^>]*>/i, m => m + HARNESS_SCRIPT);
+  return HARNESS_SCRIPT + html;
+}
+
+const checks = {
+  static: {
+    htmlMissingAlt(project) {
+      const out = [];
+      for (const f of project.files) {
+        if (!/\.html?$/i.test(f.path)) continue;
+        const html = new TextDecoder().decode(f.content);
+        const imgRe = /<img\b[^>]*>/gi; let m;
+        while ((m = imgRe.exec(html))) {
+          if (!/\balt\s*=/.test(m[0])) out.push({ file: f.path, detail: 'Image missing alt attribute: ' + m[0].slice(0, 80) });
+        }
+      }
+      return out;
+    },
+    htmlMissingViewport(project) {
+      const out = [];
+      for (const f of project.files) {
+        if (!/\.html?$/i.test(f.path)) continue;
+        const html = new TextDecoder().decode(f.content);
+        if (!/<meta\s+[^>]*name\s*=\s*["']viewport["']/i.test(html)) out.push({ file: f.path, detail: 'No <meta name="viewport"> — layout will not scale on mobile.' });
+      }
+      return out;
+    },
+    htmlMissingTitle(project) {
+      const out = [];
+      for (const f of project.files) {
+        if (!/\.html?$/i.test(f.path)) continue;
+        const html = new TextDecoder().decode(f.content);
+        if (!/<title[^>]*>[^<]+<\/title>/i.test(html)) out.push({ file: f.path, detail: 'Missing or empty <title>.' });
+      }
+      return out;
+    },
+    htmlMissingLang(project) {
+      const out = [];
+      for (const f of project.files) {
+        if (!/\.html?$/i.test(f.path)) continue;
+        const html = new TextDecoder().decode(f.content);
+        const m = /<html\b([^>]*)>/i.exec(html);
+        if (m && !/\blang\s*=/.test(m[1])) out.push({ file: f.path, detail: '<html> tag has no lang attribute.' });
+      }
+      return out;
+    },
+    targetBlankNoRel(project) {
+      const out = [];
+      for (const f of project.files) {
+        if (!/\.html?$/i.test(f.path)) continue;
+        const html = new TextDecoder().decode(f.content);
+        const re = /<a\b[^>]*target\s*=\s*["']_blank["'][^>]*>/gi; let m;
+        while ((m = re.exec(html))) {
+          if (!/\brel\s*=\s*["'][^"']*noopener/i.test(m[0])) out.push({ file: f.path, detail: 'target="_blank" without rel="noopener": ' + m[0].slice(0, 80) });
+        }
+      }
+      return out;
+    },
+    inlineHandlers(project) {
+      const out = [];
+      for (const f of project.files) {
+        if (!/\.html?$/i.test(f.path)) continue;
+        const html = new TextDecoder().decode(f.content);
+        const re = /\bon(click|load|error|mouseover|submit)\s*=/gi; let m;
+        while ((m = re.exec(html))) out.push({ file: f.path, detail: 'Inline handler "' + m[0].trim() + '" — move to external JS.' });
+      }
+      return out;
+    },
+    mixedContent(project) {
+      const out = [];
+      for (const f of project.files) {
+        if (!isTextual(f.path)) continue;
+        const txt = new TextDecoder().decode(f.content);
+        const re = /(?:src|href|url\()\s*['"]?(http:\/\/[^'")\s>]+)/gi; let m;
+        while ((m = re.exec(txt))) out.push({ file: f.path, detail: 'Insecure http:// reference: ' + m[1] });
+      }
+      return out;
+    },
+    dangerousApis(project) {
+      const out = [];
+      for (const f of project.files) {
+        if (!/\.(js|mjs|jsx|ts|tsx)$/i.test(f.path)) continue;
+        const txt = new TextDecoder().decode(f.content);
+        if (/\beval\s*\(/.test(txt)) out.push({ file: f.path, detail: 'Use of eval().' });
+        if (/\bnew\s+Function\s*\(/.test(txt)) out.push({ file: f.path, detail: 'Use of new Function().' });
+        if (/document\.write\s*\(/.test(txt)) out.push({ file: f.path, detail: 'document.write() — blocks parsing.' });
+        if (/\.innerHTML\s*=/.test(txt)) out.push({ file: f.path, detail: 'innerHTML assignment — prefer textContent or sanitizer.' });
+      }
+      return out;
+    },
+    jsSyntax(project) {
+      const out = [];
+      for (const f of project.files) {
+        if (!/\.(js|mjs)$/i.test(f.path)) continue;
+        const txt = new TextDecoder().decode(f.content);
+        try { new Function('"use strict";' + txt); }
+        catch (e) { out.push({ file: f.path, detail: 'Syntax error: ' + e.message }); }
+      }
+      return out;
+    },
+    cssBraces(project) {
+      const out = [];
+      for (const f of project.files) {
+        if (!/\.css$/i.test(f.path)) continue;
+        const txt = new TextDecoder().decode(f.content);
+        const open = (txt.match(/{/g) || []).length;
+        const close = (txt.match(/}/g) || []).length;
+        if (open !== close) out.push({ file: f.path, detail: `Unbalanced braces: ${open} "{" vs ${close} "}".` });
+      }
+      return out;
+    },
+    manifestCheck(project) {
+      const out = [];
+      const mf = project.files.find(f => /manifest\.(webmanifest|json)$/i.test(f.path));
+      if (!mf) { out.push({ file: '—', detail: 'No manifest.webmanifest / manifest.json found. Project is not installable as a PWA.' }); return out; }
+      try {
+        const data = JSON.parse(new TextDecoder().decode(mf.content));
+        for (const k of ['name','short_name','start_url','display','icons']) if (!(k in data)) out.push({ file: mf.path, detail: 'Manifest missing required field "' + k + '".' });
+        if (Array.isArray(data.icons) && data.icons.length < 1) out.push({ file: mf.path, detail: 'Manifest.icons is empty.' });
+        if (data.display && !['standalone','fullscreen','minimal-ui'].includes(data.display)) out.push({ file: mf.path, detail: 'display="'+data.display+'" is not installable-friendly.' });
+      } catch (e) { out.push({ file: mf.path, detail: 'Manifest is not valid JSON: ' + e.message }); }
+      return out;
+    },
+    serviceWorkerCheck(project) {
+      const out = [];
+      const swFile = project.files.find(f => /(^|\/)(sw|service-worker)\.js$/i.test(f.path));
+      const regCode = project.files.some(f => /\.(html|js)$/i.test(f.path) && /serviceWorker\s*\.\s*register\s*\(/.test(new TextDecoder().decode(f.content)));
+      if (swFile && !regCode) out.push({ file: swFile.path, detail: 'Service worker file exists but is never registered.' });
+      if (!swFile && regCode) out.push({ file: '—', detail: 'Registration code found but no service worker file.' });
+      return out;
+    }
+  },
+
+  async execute(project, { timeoutMs = 9000 } = {}) {
+    const results = { consoleErrors: [], consoleWarnings: [], runtimeErrors: [], resourceErrors: [], domReport: null, loadFailed: false };
+    if (!project.entry || !project.runnable) { results.loadFailed = true; return results; }
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;left:-10000px;top:0;width:1024px;height:768px;border:0;';
+    iframe.setAttribute('title','lat-test-frame');
+    document.body.appendChild(iframe);
+
+    let previewInfo = null;
+    try {
+      previewInfo = await buildBlobPreview(project);
+      // For test execution we want the harness injected; splice into HTML before load
+      const response = await fetch(previewInfo.url);
+      const htmlText = await response.text();
+      const withHarness = injectHarness(htmlText);
+      const harnessBlob = new Blob([withHarness], { type: 'text/html' });
+      const harnessURL = URL.createObjectURL(harnessBlob);
+      const oldCleanup = previewInfo.cleanup;
+      previewInfo = { url: harnessURL, cleanup: () => { oldCleanup(); URL.revokeObjectURL(harnessURL); } };
+    } catch (e) {
+      iframe.remove();
+      results.loadFailed = true;
+      results.runtimeErrors.push({ message: 'Could not build preview: ' + e.message });
+      return results;
+    }
+
+    const loaded = new Promise(resolve => {
+      let done = false;
+      const finish = () => { if (!done) { done = true; resolve(); } };
+      iframe.addEventListener('load', finish, { once: true });
+      setTimeout(finish, timeoutMs);
+    });
+
+    iframe.src = previewInfo.url;
+    await loaded;
+    await new Promise(r => setTimeout(r, 600));
+
+    try {
+      const win = iframe.contentWindow;
+      const doc = win.document;
+      const lat = win.__LAT__;
+      if (lat) {
+        results.runtimeErrors   = lat.errors.filter(e => e.type === 'error');
+        results.consoleErrors   = lat.logs.filter(l => l.level === 'error');
+        results.consoleWarnings = lat.logs.filter(l => l.level === 'warn');
+      }
+      const q = sel => Array.from(doc.querySelectorAll(sel));
+      const images = q('img');
+      const broken = images.filter(i => i.complete && i.naturalWidth === 0).map(i => i.src);
+      results.domReport = {
+        title: doc.title || '',
+        buttons: q('button, [role="button"], input[type="button"], input[type="submit"]').length,
+        links: q('a[href]').length,
+        forms: q('form').length,
+        inputs: q('input, textarea, select').length,
+        images: images.length,
+        brokenImages: broken,
+        headings: q('h1, h2, h3').length,
+        landmarks: q('main, nav, header, footer, aside').length,
+        hasH1: q('h1').length > 0,
+        htmlLang: doc.documentElement.getAttribute('lang') || '',
+        overflow: null
+      };
+    } catch (e) {
+      results.runtimeErrors.push({ message: 'Cannot inspect preview frame: ' + e.message });
+    }
+
+    try {
+      const win = iframe.contentWindow;
+      const breakpoints = [320, 375, 414, 768, 1280];
+      const overflow = {};
+      for (const w of breakpoints) {
+        iframe.style.width = w + 'px';
+        iframe.style.height = (w >= 768 ? 900 : 700) + 'px';
+        await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+        await new Promise(r => setTimeout(r, 60));
+        const de = win.document.documentElement;
+        const hOverflow = de.scrollWidth > de.clientWidth + 1;
+        const excess = Math.max(0, de.scrollWidth - de.clientWidth);
+        overflow[w] = { horizontal: hOverflow, excess };
+      }
+      if (results.domReport) results.domReport.overflow = overflow;
+    } catch (e) {
+      if (results.domReport) results.domReport.overflow = { error: e.message };
+    }
+
+    try { previewInfo.cleanup && previewInfo.cleanup(); } catch {}
+    iframe.remove();
+    return results;
+  }
+};
+
+async function runTests(project, { staticOnly = false, onProgress = () => {} } = {}) {
+  const findings = [];
+  const stats = { executed: 0, static: 0, unsupported: 0, passed: 0, failed: 0 };
+  const push = (f) => { findings.push(f); if (f.status === 'fail') stats.failed++; else if (f.status === 'pass') stats.passed++; };
+
+  const total = staticOnly ? 1 : 2;
+  let step = 0;
+  const next = (label) => { step++; onProgress(step / total, label); };
+
+  next('Static analysis');
+  const staticFindings = [
+    ['Missing alt attributes on images',     checks.static.htmlMissingAlt(project),      'warn', 'Add alt="" (decorative) or a descriptive alt to every <img>.'],
+    ['Responsive viewport meta tag',          checks.static.htmlMissingViewport(project),'error','Add <meta name="viewport" content="width=device-width, initial-scale=1">.'],
+    ['Document title present',                checks.static.htmlMissingTitle(project),   'warn', 'Add a <title> inside <head>.'],
+    ['Document lang attribute',               checks.static.htmlMissingLang(project),    'warn', 'Add lang="en" (or your language) to <html>.'],
+    ['Safe external links (rel=noopener)',    checks.static.targetBlankNoRel(project),   'warn', 'Add rel="noopener noreferrer" to every target="_blank" link.'],
+    ['Inline event handlers',                 checks.static.inlineHandlers(project),     'info', 'Move onclick/onload into external JS and use addEventListener.'],
+    ['Insecure http:// references',           checks.static.mixedContent(project),      'error','Switch to https:// or a relative URL.'],
+    ['Dangerous JS APIs',                     checks.static.dangerousApis(project),      'warn', 'Replace eval/new Function; use textContent instead of innerHTML where possible.'],
+    ['JavaScript syntax check',               checks.static.jsSyntax(project),           'error','Fix the reported syntax error.'],
+    ['CSS brace balance',                     checks.static.cssBraces(project),          'warn', 'Balance every { with a matching }.'],
+    ['PWA manifest validity',                 checks.static.manifestCheck(project),      'info', 'Provide manifest.webmanifest with name, short_name, start_url, display and icons.'],
+    ['Service worker wiring',                 checks.static.serviceWorkerCheck(project), 'info', 'Either register your service worker or remove the unused file.']
+  ];
+  for (const [title, list, sev, fix] of staticFindings) {
+    stats.static++;
+    if (list.length === 0) {
+      push({ status:'pass', severity:'pass', kind:'static', title, detail:'No issues found.', fix:'' });
+    } else {
+      for (const item of list) {
+        push({ status:'fail', severity: sev, kind:'static', title, detail:item.detail, file: item.file, fix });
+      }
+    }
+  }
+
+  if (!staticOnly) {
+    next('Live execution');
+    if (!project.runnable || !project.entry) {
+      stats.unsupported++;
+      push({ status:'unsupported', severity:'info', kind:'unsupported', title:'Live execution skipped',
+        detail:'This project type (' + project.kind + ') cannot run in iOS Safari. ' + (project.reason || 'Use the Remote tab to build/test it on GitHub.'),
+        fix:'Open the Remote tab and dispatch a GitHub Actions workflow to build or test this project.' });
+    } else {
+      stats.executed++;
+      let exec;
+      try { exec = await checks.execute(project); }
+      catch (e) { exec = { loadFailed:true, runtimeErrors:[{message:e.message}], consoleErrors:[], consoleWarnings:[], domReport:null }; }
+
+      if (exec.loadFailed && exec.runtimeErrors.length) {
+        for (const e of exec.runtimeErrors) push({ status:'fail', severity:'error', kind:'executed', title:'Page failed to load', detail:e.message, fix:'Fix the reported error and reload the preview.' });
+      }
+      for (const e of exec.runtimeErrors) push({ status:'fail', severity:'error', kind:'executed', title:'Uncaught runtime error',
+        detail:(e.message||'') + (e.source ? ' — ' + e.source + ':' + (e.line||'?') : ''), fix:'Open the Error Inspector and fix the throw site.' });
+      for (const e of exec.consoleErrors) push({ status:'fail', severity:'error', kind:'executed', title:'console.error', detail:e.text, fix:'Inspect and remove or fix the source of the console error.' });
+      for (const e of exec.consoleWarnings) push({ status:'fail', severity:'warn', kind:'executed', title:'console.warn', detail:e.text, fix:'Review the warning.' });
+
+      const dom = exec.domReport;
+      if (dom) {
+        if (!dom.title) push({ status:'fail', severity:'warn', kind:'executed', title:'Rendered document has no title', detail:'document.title was empty after load.', fix:'Add a <title> element.' });
+        else push({ status:'pass', severity:'pass', kind:'executed', title:'Document title present', detail:'Rendered title: "' + dom.title + '"', fix:'' });
+        if (!dom.hasH1) push({ status:'fail', severity:'info', kind:'executed', title:'No <h1> on the page', detail:'Pages should expose a primary heading.', fix:'Add a single <h1>.' });
+        if (dom.brokenImages.length) for (const src of dom.brokenImages.slice(0, 6)) push({ status:'fail', severity:'warn', kind:'executed', title:'Broken image', detail:src, fix:'Fix the image path or supply the missing file.' });
+        push({ status:'pass', severity:'pass', kind:'executed', title:'Interactive element inventory',
+          detail:`buttons:${dom.buttons}  links:${dom.links}  forms:${dom.forms}  inputs:${dom.inputs}  images:${dom.images}  landmarks:${dom.landmarks}`, fix:'' });
+        if (dom.overflow && !dom.overflow.error) {
+          for (const [w, info] of Object.entries(dom.overflow)) {
+            if (info.horizontal) push({ status:'fail', severity:'warn', kind:'executed', title:`Horizontal overflow at ${w}px`, detail:`Document scrollWidth exceeds clientWidth by ${info.excess}px.`, fix:'Add max-width:100% to wide elements; check fixed-width containers.' });
+            else push({ status:'pass', severity:'pass', kind:'executed', title:`No overflow at ${w}px`, detail:'', fix:'' });
+          }
+        }
+      }
+
+      stats.unsupported++;
+      push({ status:'unsupported', severity:'info', kind:'unsupported', title:'Automated user-flow simulation',
+        detail:'Simulating clicks on the user\'s own buttons/forms requires a real driver (Playwright/Puppeteer). It cannot run in iOS Safari. Static DOM inventory and horizontal-overflow checks above are the automated coverage available locally.',
+        fix:'For full user-flow testing, dispatch a GitHub Actions workflow that runs Playwright/Puppeteer in the Remote tab.' });
+    }
+  }
+
+  return { id: uuid(), projectId: project.id, createdAt: Date.now(), stats, findings };
+}
+
+/* -------- remote -------- */
+const remote = {
+  token: null,
+  async request(path, opts = {}) {
+    if (!remote.token) throw new Error('Not connected. Provide a GitHub token first.');
+    const res = await fetch('https://api.github.com' + path, {
+      ...opts,
+      headers: {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer ' + remote.token,
+        'X-GitHub-Api-Version': '2022-11-28',
+        ...(opts.headers || {})
+      }
+    });
+    if (!res.ok) { const text = await res.text().catch(() => ''); throw new Error('GitHub ' + res.status + ': ' + (text || res.statusText)); }
+    const ct = res.headers.get('content-type') || '';
+    if (ct.includes('application/json')) return res.json();
+    return res;
+  },
+  whoami() { return remote.request('/user'); },
+  listCodespaces() { return remote.request('/user/codespaces?per_page=30'); },
+  listWorkflows(repo) { return remote.request('/repos/' + repo + '/actions/workflows'); },
+  dispatch(repo, workflow, ref, inputs) {
+    return remote.request('/repos/' + repo + '/actions/workflows/' + encodeURIComponent(workflow) + '/dispatches', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ref, inputs: inputs || {} })
+    });
+  },
+  listRuns(repo, workflow) { return remote.request('/repos/' + repo + '/actions/workflows/' + encodeURIComponent(workflow) + '/runs?event=workflow_dispatch&per_page=10'); },
+  getRun(repo, runId) { return remote.request('/repos/' + repo + '/actions/runs/' + runId); },
+  async getRunLogs(repo, runId) {
+    const res = await fetch('https://api.github.com/repos/' + repo + '/actions/runs/' + runId + '/logs', {
+      headers: { 'Accept': 'application/vnd.github+json', 'Authorization': 'Bearer ' + remote.token, 'X-GitHub-Api-Version': '2022-11-28' }
+    });
+    if (!res.ok) throw new Error('Logs request failed: ' + res.status);
+    return res.blob();
+  }
+};
+
+/* -------- state -------- */
+const state = { projects: [], currentProject: null, currentReport: null, currentTab: 'dashboard', currentProjectTab: 'files' };
+const settings = { harness: true, autoRun: true };
+
+async function loadSettings() {
+  const rows = await db.getAll('settings');
+  for (const r of rows) if (r.key in settings) settings[r.key] = r.value;
+}
+async function saveSetting(key, value) { settings[key] = value; await db.put('settings', { key, value }); }
+
+async function refreshProjects() {
+  state.projects = (await db.getAll('projects')).sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0));
+  renderProjects();
+  renderStorage();
+}
+
+function projectEmoji(kind) { return ({ static:'📄', react:'⚛️', vite:'⚡', sass:'🎨', next:'▲', unknown:'📦' })[kind] || '📦'; }
+
+function renderProjects() {
+  const q = ($('#searchInput').value || '').trim().toLowerCase();
+  const list = state.projects.filter(p => !q || p.name.toLowerCase().includes(q) || (p.kind||'').includes(q));
+  const root = $('#projectList');
+  root.innerHTML = '';
+  $('#projEmpty').hidden = list.length !== 0;
+  $('#projCount').textContent = String(state.projects.length);
+  for (const p of list) {
+    const el = document.createElement('div');
+    el.className = 'item';
+    el.innerHTML = `
+      <div class="item-icon">${esc(projectEmoji(p.kind))}</div>
+      <div class="item-body">
+        <strong>${esc(p.name)}</strong>
+        <span>${esc(p.kind)} · ${p.files.length} files · ${fmtDate(p.updatedAt||p.createdAt)}</span>
+      </div>
+      <button class="item-menu" aria-label="Project actions">⋯</button>
+    `;
+    el.addEventListener('click', ev => {
+      if (ev.target.closest('.item-menu')) return projectActions(p);
+      openProject(p.id);
+    });
+    root.appendChild(el);
+  }
+}
+
+async function projectActions(p) {
+  return new Promise(resolve => {
+    const root = $('#modalRoot');
+    const bd = document.createElement('div');
+    bd.className = 'modal-root';
+    const box = document.createElement('div');
+    box.className = 'modal';
+    box.innerHTML = `<h3>${esc(p.name)}</h3>
+      <p class="muted small">${esc(p.kind)} · ${p.files.length} files</p>
+      <div class="row" style="flex-direction:column">
+        <button class="btn" data-a="open">Open</button>
+        <button class="btn" data-a="rename">Rename</button>
+        <button class="btn" data-a="export-zip">Export as ZIP</button>
+        <button class="btn danger" data-a="delete">Delete</button>
+        <button class="btn" data-a="cancel">Cancel</button>
+      </div>`;
+    bd.appendChild(box);
+    root.appendChild(bd);
+    root.hidden = false;
+    const cleanup = () => { root.hidden = true; root.innerHTML = ''; };
+    box.addEventListener('click', async ev => {
+      const a = ev.target.closest('button')?.dataset.a;
+      if (!a) return;
+      cleanup();
+      if (a === 'cancel') return resolve(null);
+      if (a === 'open')  { openProject(p.id); return resolve(null); }
+      if (a === 'rename') {
+        const v = await modal({ title:'Rename project', fields:[{name:'name', label:'Name', value:p.name}], confirmLabel:'Save' });
+        if (v && v.name) { p.name = v.name.trim() || p.name; p.updatedAt = Date.now(); await db.put('projects', p); await refreshProjects(); toast('Renamed', 'ok'); }
+        return resolve(null);
+      }
+      if (a === 'export-zip') {
+        try {
+          const blob = await buildZip(p.files.map(f => ({ path: f.path, content: new Uint8Array(f.content) })));
+          downloadBlob(blob, p.name.replace(/[^\w.-]+/g,'_') + '.zip');
+          toast('ZIP downloaded', 'ok');
+        } catch (e) { toast('Export failed: ' + e.message, 'err'); }
+        return resolve(null);
+      }
+      if (a === 'delete') {
+        const v = await modal({ title:'Delete project?', body:'This removes the project and all its reports from this device.', confirmLabel:'Delete', danger:true });
+        if (v) {
+          const reports = await db.byIndex('reports','projectId', p.id);
+          for (const r of reports) await db.del('reports', r.id);
+          await db.del('projects', p.id);
+          await refreshProjects();
+          toast('Deleted', 'ok');
+        }
+        return resolve(null);
+      }
+    });
+  });
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+function showView(name) {
+  state.currentTab = name;
+  for (const v of ['dashboard','project','remote','settings']) $('#view-' + v).hidden = v !== name;
+  $$('#bottomNav .navbtn').forEach(b => b.classList.toggle('active', b.dataset.view === name));
+  $('#btnBack').hidden = name !== 'project';
+  $('#appTitle').textContent = name === 'project' && state.currentProject ? state.currentProject.name : 'Local App Tester';
+  if (name === 'settings') renderStorageDetail();
+}
+function showProjectTab(name) {
+  state.currentProjectTab = name;
+  for (const t of ['files','preview','tests','report']) $('#pane-' + t).hidden = t !== name;
+  $$('#projTabs .tab').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  if (name === 'preview') refreshPreview();
+}
+
+async function importZipFile(file) {
+  toast('Reading ZIP…');
+  const buf = await file.arrayBuffer();
+  const entries = await parseZip(buf);
+  if (!entries.length) throw new Error('ZIP contained no files.');
+  const project = buildProjectFromFiles(file.name.replace(/\.zip$/i,''), entries);
+  await db.put('projects', project);
+  await refreshProjects();
+  toast('Imported ' + project.name, 'ok');
+  openProject(project.id);
+}
+
+function buildProjectFromFiles(name, files) {
+  const analysis = detectProjectKind(files);
+  const entry = analysis.entry || files.find(f => /(^|\/)index\.html$/i.test(f.path))?.path || null;
+  return {
+    id: uuid(), name: name.trim() || 'Untitled',
+    kind: analysis.kind, runnable: !!analysis.runnable && !!entry, entry,
+    reason: analysis.reason || '',
+    files: files.map(f => ({ path: f.path, content: f.content.buffer.slice(f.content.byteOffset, f.content.byteOffset + f.content.byteLength), size: f.content.length })),
+    createdAt: Date.now(), updatedAt: Date.now()
+  };
+}
+
+async function importPickedFiles(fileList) {
+  const files = [];
+  for (const f of fileList) {
+    const buf = new Uint8Array(await f.arrayBuffer());
+    const rel = f.webkitRelativePath || f.name;
+    files.push({ path: rel, content: buf });
+  }
+  const name = fileList.length && fileList[0].webkitRelativePath ? fileList[0].webkitRelativePath.split('/')[0] : 'Picked files';
+  const project = buildProjectFromFiles(name, files);
+  await db.put('projects', project);
+  await refreshProjects();
+  toast('Imported ' + project.name, 'ok');
+  openProject(project.id);
+}
+
+async function openProject(id) {
+  const p = await db.get('projects', id);
+  if (!p) { toast('Project not found', 'err'); return; }
+  state.currentProject = p;
+  state.currentReport = null;
+  renderProjectHead(p);
+  renderFileTree(p);
+  renderReport(null);
+  $('#testResults').innerHTML = '';
+  $('#testEmpty').hidden = false;
+  showView('project');
+  showProjectTab('files');
+}
+
+function renderProjectHead(p) {
+  $('#projName').textContent = p.name;
+  const kindLabel = p.kind + (p.runnable ? ' · runnable locally' : ' · requires remote runtime');
+  $('#projMeta').textContent = kindLabel + (p.reason ? ' — ' + p.reason : '');
+}
+
+function renderFileTree(p) {
+  const root = $('#fileTree');
+  root.innerHTML = '';
+  const sorted = [...p.files].sort((a,b) => a.path.localeCompare(b.path));
+  for (const f of sorted) {
+    const depth = Math.min(4, (f.path.match(/\//g)||[]).length);
+    const el = document.createElement('div');
+    el.className = 'tnode indent-' + depth;
+    el.innerHTML = `<span class="tico">${fileEmoji(f.path)}</span>
+      <span class="tpath">${esc(f.path)}</span>
+      <span class="tsize">${fmtBytes(f.size || (f.content.byteLength||0))}</span>`;
+    el.addEventListener('click', () => showFile(f));
+    root.appendChild(el);
+  }
+}
+function fileEmoji(p) {
+  const ext = (p.split('.').pop()||'').toLowerCase();
+  return ({
+    html:'📄', htm:'📄', css:'🎨', scss:'🎨', sass:'🎨', js:'📜', mjs:'📜', jsx:'⚛️', ts:'🔷', tsx:'⚛️',
+    json:'⚙️', svg:'🖼️', png:'🖼️', jpg:'🖼️', jpeg:'🖼️', gif:'🖼️', webp:'🖼️', ico:'🖼️',
+    md:'📝', txt:'📝', yml:'📋', yaml:'📋'
+  })[ext] || '📄';
+}
+
+function showFile(f) {
+  const viewer = $('#fileViewer');
+  $('#fvPath').textContent = f.path;
+  const body = $('#fvBody');
+  const bytes = new Uint8Array(f.content);
+  if (isTextual(f.path)) body.textContent = new TextDecoder().decode(bytes);
+  else body.textContent = `[binary file — ${fmtBytes(bytes.length)}]\n\nPreview not available in the file viewer.`;
+  viewer.hidden = false;
+}
+
+let _lastPreviewCleanup = null;
+async function refreshPreview() {
+  const p = state.currentProject;
+  if (!p) return;
+  const frame = $('#previewFrame');
+  const note = $('#previewNote');
+  note.hidden = true;
+
+  if (!p.runnable || !p.entry) {
+    frame.srcdoc = `<html><body style="font-family:-apple-system,sans-serif;padding:24px;color:#e8ecf5;background:#0e1118">
+      <h2 style="margin-top:0">Cannot run locally</h2>
+      <p style="color:#9aa4b8;line-height:1.55">${esc(p.reason || 'This project type cannot execute in iOS Safari.')}</p>
+      <p style="color:#9aa4b8;line-height:1.55">Use the <strong>Remote</strong> tab to build or test it on GitHub Actions / Codespaces.</p>
+    </body></html>`;
+    note.hidden = false;
+    note.className = 'note warn';
+    note.textContent = p.reason || 'This project cannot be executed in the browser.';
+    return;
+  }
+
+  try {
+    if (_lastPreviewCleanup) { try { _lastPreviewCleanup(); } catch {} _lastPreviewCleanup = null; }
+    const info = await buildBlobPreview(p);
+    if (settings.harness) {
+      const res = await fetch(info.url);
+      const htmlText = await res.text();
+      const withHarness = injectHarness(htmlText);
+      const b = new Blob([withHarness], { type: 'text/html' });
+      const harnessURL = URL.createObjectURL(b);
+      const oldCleanup = info.cleanup;
+      frame.src = harnessURL;
+      _lastPreviewCleanup = () => { oldCleanup(); URL.revokeObjectURL(harnessURL); };
+    } else {
+      frame.src = info.url;
+      _lastPreviewCleanup = info.cleanup;
+    }
+    applyViewport();
+  } catch (e) {
+    note.hidden = false;
+    note.className = 'note err';
+    note.textContent = 'Preview failed: ' + e.message;
+  }
+}
+
+function applyViewport() {
+  const wrap = $('#previewWrap');
+  const frame = $('#previewFrame');
+  const v = $('#viewportSelect').value;
+  if (v === 'device') { frame.style.width = '100%'; wrap.style.overflow = 'hidden'; }
+  else { frame.style.width = v + 'px'; wrap.style.overflow = 'auto'; }
+}
+
+async function runTestsUI({ staticOnly = false }) {
+  const p = state.currentProject;
+  if (!p) return;
+  $('#testEmpty').hidden = true;
+  $('#testResults').innerHTML = '';
+  $('#testProgress').hidden = false;
+  $('#testProgressBar').style.width = '0%';
+
+  try {
+    const report = await runTests(p, {
+      staticOnly,
+      onProgress: (frac) => { $('#testProgressBar').style.width = (frac*100).toFixed(0) + '%'; }
+    });
+    await db.put('reports', report);
+    state.currentReport = report;
+    renderTestResults(report);
+    renderReport(report);
+    toast(`Tests: ${report.stats.passed} passed · ${report.stats.failed} failed`, report.stats.failed ? '' : 'ok');
+  } catch (e) {
+    toast('Test run failed: ' + e.message, 'err');
+    $('#testResults').innerHTML = `<div class="note err">Test run failed: ${esc(e.message)}</div>`;
+  } finally {
+    $('#testProgress').hidden = true;
+  }
+}
+
+function renderTestResults(report) {
+  const root = $('#testResults');
+  root.innerHTML = '';
+  const s = report.stats;
+  const sum = document.createElement('div');
+  sum.className = 'note';
+  sum.style.marginBottom = '10px';
+  sum.innerHTML = `<strong>Executed:</strong> ${s.executed} · <strong>Static:</strong> ${s.static} · <strong>Unsupported:</strong> ${s.unsupported} · <strong>Passed:</strong> ${s.passed} · <strong>Failed:</strong> ${s.failed}`;
+  root.appendChild(sum);
+
+  const grouped = { error: [], warn: [], info: [], pass: [], unsupported: [] };
+  for (const f of report.findings) {
+    const key = f.status === 'unsupported' ? 'unsupported' : f.status === 'pass' ? 'pass' : (f.severity || 'info');
+    (grouped[key] || grouped.info).push(f);
+  }
+  for (const key of ['error','warn','info','unsupported','pass']) {
+    for (const f of grouped[key]) {
+      const el = document.createElement('div');
+      el.className = 'result';
+      el.innerHTML = `
+        <div class="result-head">
+          <span class="sev ${key === 'unsupported' ? 'info' : (f.status==='pass'?'pass':key)}"></span>
+          <span class="result-title">${esc(f.title)}</span>
+          <span class="result-kind kind-${f.kind}">${f.kind}</span>
+        </div>
+        <div class="result-body">
+          ${f.file ? `<div class="file">${esc(f.file)}</div>` : ''}
+          ${f.detail ? `<div>${esc(f.detail)}</div>` : ''}
+          ${f.fix ? `<div class="fix">Fix: ${esc(f.fix)}</div>` : ''}
+        </div>`;
+      root.appendChild(el);
+    }
+  }
+}
+
+function renderReport(report) {
+  const root = $('#reportView');
+  if (!report) { root.innerHTML = `<div class="empty"><div class="empty-icon">📊</div><p><strong>No report yet</strong></p><p class="muted small">Run tests to generate a report.</p></div>`; return; }
+  const s = report.stats;
+  const html = [];
+  html.push(`<div class="card"><h3>Report · ${esc(fmtDate(report.createdAt))}</h3>
+    <p class="muted small">Project: ${esc(state.currentProject.name)}</p>
+    <div class="progress"><div class="bar" style="width:${Math.min(100, (s.passed / Math.max(1, s.passed + s.failed)) * 100).toFixed(0)}%"></div></div>
+    <p class="small">Executed: <strong>${s.executed}</strong> · Static: <strong>${s.static}</strong> · Unsupported: <strong>${s.unsupported}</strong></p>
+    <p class="small">Passed: <strong style="color:#86efac">${s.passed}</strong> · Failed: <strong style="color:#fca5a5">${s.failed}</strong></p>
+    <div class="row">
+      <button class="btn" id="btnReportJSON">Download JSON</button>
+      <button class="btn" id="btnReportCopy">Copy summary</button>
+    </div></div>`);
+
+  const byFile = new Map();
+  for (const f of report.findings) {
+    if (f.status !== 'fail') continue;
+    const k = f.file || '(project)';
+    if (!byFile.has(k)) byFile.set(k, []);
+    byFile.get(k).push(f);
+  }
+  if (byFile.size) {
+    html.push('<div class="card"><h3>Failures by file</h3>');
+    for (const [file, list] of byFile) {
+      html.push(`<p class="small"><span class="mono">${esc(file)}</span></p><ul class="muted small">`);
+      for (const f of list) html.push(`<li><strong>${esc(f.severity||'info')}</strong> — ${esc(f.title)}: ${esc(f.detail||'')}</li>`);
+      html.push('</ul>');
+    }
+    html.push('</div>');
+  }
+  root.innerHTML = html.join('');
+
+  $('#btnReportJSON')?.addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+    downloadBlob(blob, 'report-' + report.id.slice(0,8) + '.json');
+  });
+  $('#btnReportCopy')?.addEventListener('click', async () => {
+    const txt = `Local App Tester report\nDate: ${fmtDate(report.createdAt)}\nExecuted: ${s.executed}, Static: ${s.static}, Unsupported: ${s.unsupported}\nPassed: ${s.passed}, Failed: ${s.failed}`;
+    try { await navigator.clipboard.writeText(txt); toast('Copied', 'ok'); } catch { toast('Clipboard not available', 'err'); }
+  });
+}
+
+async function exportBackup() {
+  const [projects, reports, settingsRows] = await Promise.all([db.getAll('projects'), db.getAll('reports'), db.getAll('settings')]);
+  const serialProjects = projects.map(p => ({
+    ...p,
+    files: p.files.map(f => ({ path: f.path, size: f.size, contentB64: arrayBufferToBase64(f.content) }))
+  }));
+  const payload = { app: 'local-app-tester', version: 1, exportedAt: Date.now(), projects: serialProjects, reports, settings: settingsRows };
+  const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+  downloadBlob(blob, 'local-app-tester-backup-' + new Date().toISOString().slice(0,10) + '.json');
+  toast('Backup exported', 'ok');
+}
+function arrayBufferToBase64(buf) {
+  const bytes = new Uint8Array(buf);
+  let bin = '';
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+  return btoa(bin);
+}
+function base64ToArrayBuffer(b64) {
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes.buffer;
+}
+
+async function importBackup(file) {
+  const txt = await file.text();
+  const data = JSON.parse(txt);
+  if (data.app !== 'local-app-tester') throw new Error('Not a Local App Tester backup.');
+  let count = 0;
+  for (const p of (data.projects||[])) {
+    const restored = {
+      id: p.id, name: p.name, kind: p.kind, runnable: p.runnable, entry: p.entry, reason: p.reason,
+      createdAt: p.createdAt, updatedAt: p.updatedAt,
+      files: (p.files||[]).map(f => ({ path: f.path, size: f.size, content: base64ToArrayBuffer(f.contentB64) }))
+    };
+    await db.put('projects', restored);
+    count++;
+  }
+  for (const r of (data.reports||[])) await db.put('reports', r);
+  for (const s of (data.settings||[])) await db.put('settings', s);
+  await refreshProjects();
+  await loadSettings();
+  applySettingsToUI();
+  toast('Restored ' + count + ' projects', 'ok');
+}
+
+async function wipeAll() {
+  await db.clear('projects'); await db.clear('reports'); await db.clear('settings');
+  await refreshProjects();
+  toast('All local data erased', 'ok');
+}
+
+async function renderStorage() {
+  try {
+    if (navigator.storage && navigator.storage.estimate) {
+      const est = await navigator.storage.estimate();
+      $('#storageLine').textContent = `${fmtBytes(est.usage||0)} used of ${fmtBytes(est.quota||0)} available`;
+    } else $('#storageLine').textContent = 'Storage estimate not available';
+  } catch { $('#storageLine').textContent = 'Storage estimate unavailable'; }
+}
+async function renderStorageDetail() {
+  try {
+    if (navigator.storage && navigator.storage.estimate) {
+      const est = await navigator.storage.estimate();
+      const used = est.usage || 0, quota = est.quota || 0;
+      $('#storageDetail').textContent = `${fmtBytes(used)} used of ${fmtBytes(quota)} available (${quota ? (used/quota*100).toFixed(2) : '0'}%)`;
+      $('#storageBar').style.width = (quota ? Math.min(100, used/quota*100) : 0) + '%';
+    } else { $('#storageDetail').textContent = 'Storage estimate not available.'; $('#storageBar').style.width = '0%'; }
+  } catch (e) { $('#storageDetail').textContent = 'Error: ' + e.message; }
+}
+
+async function remoteConnect() {
+  const tok = $('#ghToken').value.trim();
+  if (!tok) { toast('Enter a token', 'err'); return; }
+  remote.token = tok;
+  try {
+    const me = await remote.whoami();
+    if ($('#ghSaveToken').checked) await db.put('settings', { key: 'gh_token', value: tok });
+    $('#ghStatus').hidden = false;
+    $('#ghStatus').className = 'note';
+    $('#ghStatus').textContent = 'Connected as @' + me.login;
+    $('#codespaceCard').hidden = false;
+    $('#actionsCard').hidden = false;
+    await refreshCodespaces();
+    toast('Connected to GitHub', 'ok');
+  } catch (e) {
+    remote.token = null;
+    $('#ghStatus').hidden = false;
+    $('#ghStatus').className = 'note err';
+    $('#ghStatus').textContent = 'Connection failed: ' + e.message;
+    toast('GitHub connection failed', 'err');
+  }
+}
+async function refreshCodespaces() {
+  const root = $('#codespaceList');
+  root.innerHTML = '<div class="muted small" style="padding:8px">Loading…</div>';
+  try {
+    const data = await remote.listCodespaces();
+    root.innerHTML = '';
+    if (!data.codespaces || !data.codespaces.length) { root.innerHTML = '<div class="muted small" style="padding:8px">No codespaces found.</div>'; return; }
+    for (const cs of data.codespaces) {
+      const el = document.createElement('div');
+      el.className = 'item';
+      el.innerHTML = `<div class="item-icon">💻</div>
+        <div class="item-body"><strong>${esc(cs.repository.full_name)}</strong><span>${esc(cs.state)} · ${esc(cs.machine?.display_name||'')}</span></div>`;
+      root.appendChild(el);
+    }
+  } catch (e) { root.innerHTML = `<div class="note err" style="margin:0">${esc(e.message)}</div>`; }
+}
+async function dispatchWorkflow() {
+  const repo = $('#actRepo').value.trim();
+  const wf   = $('#actWorkflow').value.trim();
+  const ref  = $('#actRef').value.trim() || 'main';
+  let inputs = {};
+  const rawIn = $('#actInputs').value.trim();
+  if (rawIn) { try { inputs = JSON.parse(rawIn); } catch { toast('Inputs must be valid JSON', 'err'); return; } }
+  if (!repo || !wf) { toast('repo and workflow file required', 'err'); return; }
+  const log = $('#actLog');
+  log.hidden = false;
+  log.textContent = 'Dispatching ' + repo + ' / ' + wf + ' on ' + ref + '…\n';
+  try {
+    await remote.dispatch(repo, wf, ref, inputs);
+    log.textContent += 'Dispatched. Waiting for run…\n';
+    let runId = null;
+    for (let i = 0; i < 20 && !runId; i++) {
+      await new Promise(r => setTimeout(r, 2500));
+      try {
+        const runs = await remote.listRuns(repo, wf);
+        const latest = runs.workflow_runs && runs.workflow_runs[0];
+        if (latest) runId = latest.id;
+      } catch {}
+    }
+    if (!runId) { log.textContent += 'No run appeared yet — check GitHub directly.\n'; return; }
+    log.textContent += 'Run id ' + runId + '\n';
+    for (let i = 0; i < 60; i++) {
+      await new Promise(r => setTimeout(r, 3000));
+      const r = await remote.getRun(repo, runId);
+      log.textContent += `status=${r.status} conclusion=${r.conclusion||'—'}\n`;
+      if (r.status === 'completed') break;
+    }
+    try {
+      const blob = await remote.getRunLogs(repo, runId);
+      log.textContent += `\nLogs ZIP ready (${fmtBytes(blob.size)}). Tap below to download.\n`;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'run-' + runId + '-logs.zip';
+      a.textContent = 'Download logs ZIP';
+      a.style.cssText = 'display:inline-block;margin-top:8px;padding:8px 12px;border-radius:8px;background:rgba(59,130,246,.2);color:#bfdbfe;text-decoration:none';
+      log.appendChild(document.createElement('br'));
+      log.appendChild(a);
+    } catch (e) { log.textContent += '\nCould not fetch logs: ' + e.message + '\n'; }
+  } catch (e) {
+    log.textContent += 'Error: ' + e.message + '\n';
+    toast('Dispatch failed', 'err');
+  }
+}
+
+function applySettingsToUI() {
+  $('#optHarness').checked = settings.harness;
+  $('#optAutoRun').checked = settings.autoRun;
+}
+
+function wire() {
+  $$('#bottomNav .navbtn').forEach(b => b.addEventListener('click', () => {
+    if (b.dataset.view === 'dashboard') state.currentProject = null;
+    showView(b.dataset.view);
+  }));
+  $('#btnBack').addEventListener('click', () => { state.currentProject = null; showView('dashboard'); });
+
+  $('#btnImportZip').addEventListener('click', () => $('#fileZip').click());
+  $('#btnImportFiles').addEventListener('click', () => $('#fileAny').click());
+  $('#fileZip').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = '';
+    if (!f) return;
+    try { await importZipFile(f); } catch (err) { toast('Import failed: ' + err.message, 'err'); }
+  });
+  $('#fileAny').addEventListener('change', async e => {
+    const list = e.target.files; e.target.value = '';
+    if (!list.length) return;
+    try { await importPickedFiles(list); } catch (err) { toast('Import failed: ' + err.message, 'err'); }
+  });
+
+  $('#searchInput').addEventListener('input', debounce(renderProjects, 150));
+  $$('#projTabs .tab').forEach(t => t.addEventListener('click', () => showProjectTab(t.dataset.tab)));
+  $('#fvClose').addEventListener('click', () => { $('#fileViewer').hidden = true; });
+
+  $('#btnReload').addEventListener('click', refreshPreview);
+  $('#viewportSelect').addEventListener('change', applyViewport);
+  $('#btnFullscreen').addEventListener('click', () => {
+    const p = state.currentProject;
+    if (!p) return;
+    $('#fsOverlay').hidden = false;
+    $('#fsLabel').textContent = p.entry;
+    $('#fsFrame').src = $('#previewFrame').src;
+  });
+  $('#fsClose').addEventListener('click', () => { $('#fsOverlay').hidden = true; $('#fsFrame').src = 'about:blank'; });
+  $('#fsReload').addEventListener('click', () => { const s = $('#fsFrame').src; $('#fsFrame').src = 'about:blank'; requestAnimationFrame(() => $('#fsFrame').src = s); });
+  $('#btnOpenTab').addEventListener('click', () => {
+    const src = $('#previewFrame').src;
+    if (!src || src === 'about:blank') { toast('Nothing to open', 'err'); return; }
+    const w = window.open(src, '_blank', 'noopener');
+    if (!w) toast('Popup blocked — allow popups for this site', 'err');
+  });
+
+  $('#btnRunTests').addEventListener('click', () => runTestsUI({ staticOnly: false }));
+  $('#btnRunStaticOnly').addEventListener('click', () => runTestsUI({ staticOnly: true }));
+
+  $('#optHarness').addEventListener('change', e => saveSetting('harness', e.target.checked));
+  $('#optAutoRun').addEventListener('change', e => saveSetting('autoRun', e.target.checked));
+
+  $('#btnExportAll').addEventListener('click', exportBackup);
+  $('#btnImportAll').addEventListener('click', () => $('#fileBackup').click());
+  $('#fileBackup').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = '';
+    if (!f) return;
+    try { await importBackup(f); } catch (err) { toast('Restore failed: ' + err.message, 'err'); }
+  });
+  $('#btnWipe').addEventListener('click', async () => {
+    const v = await modal({ title:'Erase all data?', body:'Every project and report on this device will be removed.', confirmLabel:'Erase', danger:true });
+    if (v) await wipeAll();
+  });
+
+  $('#btnGhConnect').addEventListener('click', remoteConnect);
+  $('#btnGhDisconnect').addEventListener('click', async () => {
+    remote.token = null;
+    await db.del('settings', 'gh_token');
+    $('#ghStatus').hidden = false;
+    $('#ghStatus').className = 'note warn';
+    $('#ghStatus').textContent = 'Disconnected. Local features still work.';
+    $('#codespaceCard').hidden = true;
+    $('#actionsCard').hidden = true;
+    $('#ghToken').value = '';
+  });
+  $('#btnRefreshCs').addEventListener('click', refreshCodespaces);
+  $('#btnDispatch').addEventListener('click', dispatchWorkflow);
+
+  const setNet = () => {
+    const d = $('#netDot');
+    if (navigator.onLine) { d.classList.remove('off'); d.title = 'Online'; }
+    else { d.classList.add('off'); d.title = 'Offline'; }
+  };
+  window.addEventListener('online', setNet);
+  window.addEventListener('offline', setNet);
+  setNet();
+  document.addEventListener('gesturestart', e => e.preventDefault());
+}
+
+/* -------- optional service-worker detection --------
+   If a service-worker.js exists next to this file, we register it.
+   If it does NOT exist (single-file deployment), we silently skip and
+   preview uses the blob-URL fallback that is already wired above.
+   This is the ONLY thing that cannot be inlined — browsers forbid it. */
+async function tryServiceWorker() {
+  if (!('serviceWorker' in navigator)) return false;
+  if (location.protocol === 'file:') return false;
+  try {
+    const head = await fetch('service-worker.js', { method: 'HEAD' }).catch(() => null);
+    if (!head || !head.ok) return false;
+    await navigator.serviceWorker.register('service-worker.js', { scope: './' });
+    return true;
+  } catch { return false; }
+}
+
+async function boot() {
+  $('#versionLine').textContent = 'Local App Tester · single-file build';
+  wire();
+  await loadSettings();
+  applySettingsToUI();
+
+  const saved = await db.get('settings', 'gh_token');
+  if (saved && saved.value) {
+    remote.token = saved.value;
+    $('#ghToken').value = saved.value;
+    $('#ghSaveToken').checked = true;
+    try {
+      const me = await remote.whoami();
+      $('#ghStatus').hidden = false;
+      $('#ghStatus').className = 'note';
+      $('#ghStatus').textContent = 'Restored session as @' + me.login;
+      $('#codespaceCard').hidden = false;
+      $('#actionsCard').hidden = false;
+    } catch {
+      remote.token = null;
+      $('#ghStatus').hidden = false;
+      $('#ghStatus').className = 'note warn';
+      $('#ghStatus').textContent = 'Saved token is no longer valid. Enter a new one.';
+    }
+  }
+
+  await tryServiceWorker(); // silent — no error if file absent
+  await refreshProjects();
+  showView('dashboard');
+}
+
+document.addEventListener('DOMContentLoaded', boot);
+</script>
+</body>
+</html>

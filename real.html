@@ -1,0 +1,2594 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نونونیک — استودیو دیجیتال غوطه‌ور | Nononick</title>
+<meta name="description" content="نونونیک ایده‌های خام کسب‌وکار را به امضای دیجیتال تبدیل می‌کند: طراحی سایت، فروشگاه، اپلیکیشن، پنل مدیریت و سئو.">
+<meta name="theme-color" content="#050810">
+<link rel="canonical" href="https://nononick.com/fa/">
+<link rel="alternate" hreflang="fa" href="https://nononick.com/fa/">
+<link rel="alternate" hreflang="en" href="https://nononick.com/en/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&family=Inter:wght@300;400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ==================================================================
+   NONONICK — CINEMATIC EDITION
+   ================================================================== */
+
+/* ---------- THEME TOKENS ---------- */
+:root[data-theme="light"]{
+  --bg-0:#eef3f9;
+  --bg-1:#f7fafd;
+  --bg-2:#ffffff;
+  --surface:rgba(255,255,255,.72);
+  --surface-2:rgba(255,255,255,.9);
+  --border:rgba(255,255,255,.9);
+  --border-soft:rgba(140,170,200,.18);
+  --text-0:#0a1220;
+  --text-1:#1e2a42;
+  --text-2:#4c5a75;
+  --text-3:#8894ab;
+  --glow:rgba(0,165,201,.35);
+  --glow-strong:rgba(34,200,232,.55);
+  --shadow-1:0 20px 60px -25px rgba(10,30,60,.28);
+  --shadow-2:0 40px 90px -35px rgba(10,30,60,.4);
+  --horizon:#cfd8e4;
+  --floor-1:#dbe3ee;
+  --floor-2:#c9d4e2;
+  --grid-line:rgba(0,120,150,.06);
+  --cyan-1:#e6fbff; --cyan-2:#b8f2ff; --cyan-3:#6ee0f5;
+  --cyan-4:#22c8e8; --cyan-5:#00a5c9; --cyan-6:#007d9c;
+  --orange-4:#ff8a3d; --orange-5:#ff6a1a;
+  --ink-0:#050810; --ink-1:#0a1220; --ink-2:#131c2e; --ink-3:#1e2a42;
+  --robot-body:#e8edf4;
+  --robot-shade:#b9c3d3;
+  --robot-dark:#1e2a42;
+  --holo-1:rgba(110,224,245,.35);
+  --holo-2:rgba(255,255,255,.55);
+}
+:root[data-theme="dark"]{
+  --bg-0:#02050a;
+  --bg-1:#070c16;
+  --bg-2:#0a1220;
+  --surface:rgba(15,25,45,.55);
+  --surface-2:rgba(20,32,56,.75);
+  --border:rgba(110,224,245,.18);
+  --border-soft:rgba(110,224,245,.08);
+  --text-0:#e8f4ff;
+  --text-1:#c5d8ec;
+  --text-2:#8ba3bd;
+  --text-3:#5a6f88;
+  --glow:rgba(34,200,232,.55);
+  --glow-strong:rgba(110,224,245,.85);
+  --shadow-1:0 20px 60px -25px rgba(0,0,0,.7);
+  --shadow-2:0 40px 90px -35px rgba(0,0,0,.85);
+  --horizon:#0d1a2e;
+  --floor-1:#0a1424;
+  --floor-2:#050b16;
+  --grid-line:rgba(110,224,245,.07);
+  --cyan-1:#dff8ff; --cyan-2:#9defb8; --cyan-3:#6ee0f5;
+  --cyan-4:#22c8e8; --cyan-5:#00a5c9; --cyan-6:#00c8f0;
+  --orange-4:#ff9a4d; --orange-5:#ff6a1a;
+  --ink-0:#000; --ink-1:#05080f; --ink-2:#0a1220; --ink-3:#131c2e;
+  --robot-body:#dfe7f2;
+  --robot-shade:#8fa0b8;
+  --robot-dark:#0a1220;
+  --holo-1:rgba(110,224,245,.25);
+  --holo-2:rgba(255,255,255,.12);
+}
+:root{
+  --font-fa:"Vazirmatn","Tahoma",system-ui,sans-serif;
+  --font-en:"Inter","SF Pro Display",system-ui,-apple-system,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --step--1:clamp(.78rem,.74rem + .2vw,.86rem);
+  --step-0:clamp(.94rem,.9rem + .25vw,1.02rem);
+  --step-1:clamp(1.1rem,1rem + .5vw,1.28rem);
+  --step-2:clamp(1.35rem,1.15rem + 1vw,1.75rem);
+  --step-3:clamp(1.7rem,1.35rem + 1.75vw,2.5rem);
+  --step-4:clamp(2.1rem,1.55rem + 2.75vw,3.6rem);
+  --step-5:clamp(2.6rem,1.75rem + 4.25vw,5rem);
+  --step-6:clamp(3.2rem,1.9rem + 6.5vw,7rem);
+  --container:min(1240px,92vw);
+  --radius-sm:10px; --radius-md:16px; --radius-lg:24px; --radius-xl:36px;
+  --radius-full:999px;
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --ease-soft:cubic-bezier(.4,0,.2,1);
+  --dur-fast:180ms; --dur-med:380ms; --dur-slow:640ms;
+  --nav-h:76px;
+}
+html[lang="fa"]{font-family:var(--font-fa);}
+html[lang="en"]{font-family:var(--font-en);}
+
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;overflow-x:clip;}
+body{
+  background:var(--bg-0);
+  color:var(--text-1);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  min-height:100vh;
+  transition:background .5s var(--ease-soft),color .5s var(--ease-soft);
+  opacity:0;
+}
+body.is-loaded{opacity:1;transition:opacity .5s var(--ease-out),background .5s,color .5s;}
+
+/* Ambient background */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-3;pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 50% -10%,var(--bg-2) 0%,var(--bg-1) 35%,var(--bg-0) 100%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(50% 35% at 12% 18%,var(--glow),transparent 65%),
+    radial-gradient(45% 40% at 88% 78%,var(--glow),transparent 65%),
+    radial-gradient(35% 25% at 55% 40%,rgba(255,138,61,.05),transparent 70%);
+  opacity:.6;
+}
+
+img,svg,video{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;padding:0;}
+:focus-visible{outline:2px solid var(--cyan-4);outline-offset:3px;border-radius:6px;}
+.skip-link{position:absolute;inset-inline-start:1rem;inset-block-start:-3rem;z-index:999;
+  background:var(--ink-1);color:#fff;padding:.6rem 1rem;border-radius:var(--radius-sm);
+  transition:inset-block-start var(--dur-fast);}
+.skip-link:focus{inset-block-start:1rem;}
+.container{width:var(--container);margin-inline:auto;}
+
+h1,h2,h3,h4{margin:0 0 .5em;font-weight:800;line-height:1.1;letter-spacing:-.02em;color:var(--text-0);}
+h1{font-size:var(--step-5);}
+h2{font-size:var(--step-4);}
+h3{font-size:var(--step-2);}
+h4{font-size:var(--step-1);}
+p{margin:0 0 1em;font-size:var(--step-0);color:var(--text-2);}
+.lead{font-size:var(--step-1);color:var(--text-1);max-width:64ch;font-weight:400;}
+.eyebrow{
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--cyan-5);display:inline-flex;align-items:center;gap:.7rem;margin-bottom:1.2rem;
+  font-weight:500;
+}
+.eyebrow::before{
+  content:"";width:28px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan-4));
+}
+[dir="ltr"] .eyebrow::before{background:linear-gradient(90deg,var(--cyan-4),transparent);}
+
+/* ---------- GLASS ---------- */
+.glass{
+  background:var(--surface);
+  border:1px solid var(--border);
+  backdrop-filter:blur(20px) saturate(160%);
+  -webkit-backdrop-filter:blur(20px) saturate(160%);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-1);
+}
+:root[data-theme="dark"] .glass{
+  background:linear-gradient(135deg,rgba(20,32,56,.6),rgba(10,18,32,.4));
+  box-shadow:var(--shadow-1),inset 0 1px 0 rgba(110,224,245,.08);
+}
+.glass--strong{background:var(--surface-2);}
+
+/* ---------- NAV ---------- */
+.nav{
+  position:fixed;top:0;inset-inline:0;z-index:100;
+  padding:.9rem 0;transition:all var(--dur-med) var(--ease-out);
+}
+.nav.is-scrolled{
+  background:color-mix(in srgb,var(--bg-1) 78%,transparent);
+  backdrop-filter:blur(22px) saturate(180%);
+  -webkit-backdrop-filter:blur(22px) saturate(180%);
+  border-bottom:1px solid var(--border-soft);
+  box-shadow:0 10px 40px -25px rgba(0,0,0,.4);
+}
+.nav__inner{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
+.nav__logo{
+  display:inline-flex;align-items:center;gap:.7rem;font-weight:800;
+  letter-spacing:-.02em;font-size:1.15rem;color:var(--text-0);
+}
+.nav__logo-mark{
+  width:36px;height:36px;border-radius:11px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--cyan-3),var(--cyan-5) 55%,var(--ink-2));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.4),
+             0 8px 24px -8px var(--glow-strong);
+}
+.nav__logo-mark::after{
+  content:"";position:absolute;inset:9px;border-radius:6px;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 0 24px var(--cyan-3),0 0 8px rgba(255,255,255,.8);
+  animation:logo-breathe 3.2s ease-in-out infinite;
+}
+@keyframes logo-breathe{0%,100%{opacity:.85;}50%{opacity:1;transform:scale(1.05);}}
+
+.nav__menu{
+  display:flex;align-items:center;gap:1.9rem;list-style:none;margin:0;padding:0;
+}
+.nav__link{
+  font-size:.94rem;font-weight:500;color:var(--text-1);
+  position:relative;padding:.4rem 0;transition:color var(--dur-fast);
+  letter-spacing:-.01em;
+}
+.nav__link::after{
+  content:"";position:absolute;inset-inline:0;bottom:-2px;height:1.5px;
+  background:linear-gradient(90deg,transparent,var(--cyan-4),transparent);
+  transform:scaleX(0);transform-origin:center;
+  transition:transform var(--dur-med) var(--ease-out);
+}
+.nav__link:hover,.nav__link.is-active{color:var(--text-0);}
+.nav__link:hover::after,.nav__link.is-active::after{transform:scaleX(1);}
+.nav__actions{display:flex;align-items:center;gap:.7rem;}
+
+.icon-btn{
+  width:40px;height:40px;border-radius:12px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text-1);
+  backdrop-filter:blur(14px);
+  transition:all var(--dur-fast);
+}
+.icon-btn:hover{background:var(--surface-2);transform:translateY(-1px);color:var(--text-0);}
+.icon-btn svg{width:18px;height:18px;}
+
+:root[data-theme="dark"] .sun-icon{display:block;}
+:root[data-theme="dark"] .moon-icon{display:none;}
+:root[data-theme="light"] .sun-icon{display:none;}
+:root[data-theme="light"] .moon-icon{display:block;}
+
+.lang-switch{
+  display:inline-flex;align-items:center;padding:.28rem;
+  border-radius:var(--radius-full);
+  background:var(--surface);border:1px solid var(--border);
+  font-size:.8rem;font-family:var(--font-mono);font-weight:500;
+  backdrop-filter:blur(14px);
+}
+.lang-switch button{
+  padding:.28rem .65rem;border-radius:var(--radius-full);
+  color:var(--text-3);transition:all var(--dur-fast);
+  font-family:inherit;font-size:inherit;font-weight:500;
+}
+.lang-switch button.is-active{
+  background:var(--text-0);color:var(--bg-1);
+}
+
+.nav__toggle{
+  display:none;width:40px;height:40px;border-radius:12px;
+  border:1px solid var(--border);background:var(--surface);
+  align-items:center;justify-content:center;
+  backdrop-filter:blur(14px);
+}
+.nav__toggle span{
+  display:block;width:18px;height:1.5px;background:var(--text-1);position:relative;
+}
+.nav__toggle span::before,.nav__toggle span::after{
+  content:"";position:absolute;inset-inline-start:0;width:18px;height:1.5px;
+  background:var(--text-1);transition:transform var(--dur-fast);
+}
+.nav__toggle span::before{top:-6px;}
+.nav__toggle span::after{top:6px;}
+.nav__toggle[aria-expanded="true"] span{background:transparent;}
+.nav__toggle[aria-expanded="true"] span::before{transform:translateY(6px) rotate(45deg);}
+.nav__toggle[aria-expanded="true"] span::after{transform:translateY(-6px) rotate(-45deg);}
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.55rem;
+  padding:.95rem 1.55rem;font-size:.92rem;font-weight:600;
+  border-radius:var(--radius-full);border:1px solid transparent;
+  position:relative;overflow:hidden;white-space:nowrap;
+  transition:transform var(--dur-fast) var(--ease-out),
+             box-shadow var(--dur-med) var(--ease-out),
+             background var(--dur-fast),color var(--dur-fast);
+  letter-spacing:-.005em;
+}
+.btn--primary{
+  background:linear-gradient(135deg,var(--orange-4),var(--orange-5));
+  color:#fff;
+  box-shadow:0 12px 34px -12px rgba(255,106,26,.65),
+             0 0 0 1px rgba(255,138,61,.2) inset,
+             0 1px 0 rgba(255,255,255,.35) inset;
+}
+.btn--primary:hover{transform:translateY(-2px);
+  box-shadow:0 20px 46px -12px rgba(255,106,26,.85),
+             0 0 0 1px rgba(255,138,61,.3) inset,
+             0 1px 0 rgba(255,255,255,.5) inset;}
+.btn--primary::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 50%,transparent 70%);
+  transform:translateX(-130%);
+  transition:transform .9s var(--ease-out);
+}
+.btn--primary:hover::after{transform:translateX(130%);}
+.btn--ghost{
+  background:var(--surface);border-color:var(--border);
+  color:var(--text-0);backdrop-filter:blur(14px);
+}
+.btn--ghost:hover{background:var(--surface-2);transform:translateY(-2px);}
+.btn--dark{background:var(--text-0);color:var(--bg-1);}
+.btn--dark:hover{transform:translateY(-2px);}
+
+/* ---------- SECTIONS ---------- */
+.section{padding:clamp(5rem,9vw,9rem) 0;position:relative;}
+.section__head{max-width:62ch;margin-bottom:clamp(2.5rem,5vw,4rem);}
+.section__title{color:var(--text-0);}
+
+/* ============================================================
+   HERO — THE SHOWROOM
+   ============================================================ */
+.hero{
+  position:relative;min-height:100svh;
+  display:flex;align-items:center;
+  padding:calc(var(--nav-h) + 4rem) 0 4rem;
+  overflow:clip;isolation:isolate;
+}
+.hero__stage{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  perspective:1400px;perspective-origin:50% 40%;
+}
+
+/* Layers with parallax */
+.hero__layer{position:absolute;inset:0;will-change:transform;}
+
+/* Architecture: the rounded white/navy corridor walls */
+.hero__layer--architecture{
+  background:
+    radial-gradient(60% 55% at 50% 45%,transparent 0%,color-mix(in srgb,var(--bg-0) 60%,transparent) 70%),
+    linear-gradient(180deg,
+      color-mix(in srgb,var(--bg-2) 90%,transparent) 0%,
+      color-mix(in srgb,var(--bg-1) 95%,transparent) 45%,
+      var(--horizon) 82%,
+      var(--floor-1) 100%);
+}
+.hero__layer--architecture::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%,rgba(255,255,255,.15),transparent 60%),
+    radial-gradient(ellipse 100% 40% at 50% 100%,rgba(0,0,0,.35),transparent 70%);
+  mix-blend-mode:soft-light;
+}
+:root[data-theme="light"] .hero__layer--architecture::before{
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%,rgba(255,255,255,.6),transparent 60%),
+    radial-gradient(ellipse 100% 40% at 50% 100%,rgba(180,200,220,.4),transparent 70%);
+}
+
+/* Volumetric light rays */
+.hero__layer--lightrays{
+  background:
+    linear-gradient(105deg,transparent 22%,rgba(110,224,245,.06) 30%,transparent 38%),
+    linear-gradient(115deg,transparent 55%,rgba(110,224,245,.09) 62%,transparent 70%),
+    linear-gradient(125deg,transparent 15%,rgba(255,255,255,.05) 22%,transparent 30%);
+  mix-blend-mode:screen;
+  filter:blur(2px);
+  animation:rays-drift 12s ease-in-out infinite;
+}
+@keyframes rays-drift{0%,100%{opacity:.8;transform:translateX(0);}
+  50%{opacity:1;transform:translateX(-2%);}}
+
+/* The reflective floor — horizon line + perspective grid */
+.hero__floor{
+  position:absolute;bottom:0;inset-inline:0;height:45%;
+  pointer-events:none;z-index:0;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    color-mix(in srgb,var(--floor-1) 60%,transparent) 25%,
+    var(--floor-1) 60%,
+    var(--floor-2) 100%);
+}
+.hero__floor::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:60px 30px;
+  transform:perspective(600px) rotateX(72deg);
+  transform-origin:top center;
+  mask-image:linear-gradient(180deg,transparent,black 40%,black 70%,transparent);
+  -webkit-mask-image:linear-gradient(180deg,transparent,black 40%,black 70%,transparent);
+  opacity:.8;
+}
+.hero__floor::after{
+  content:"";position:absolute;top:0;inset-inline:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cyan-4),transparent);
+  box-shadow:0 0 20px var(--cyan-4),0 0 60px var(--cyan-3);
+  opacity:.7;
+}
+
+/* ----- ASTRONAUT / ROBOT ----- */
+.hero__astronaut{
+  position:absolute;
+  bottom:12%;
+  inset-inline-end:6%;
+  width:clamp(220px,26vw,340px);
+  height:clamp(340px,45vw,560px);
+  transform-style:preserve-3d;
+  z-index:3;
+}
+.robot{
+  position:absolute;inset:0;
+  filter:drop-shadow(0 40px 60px rgba(0,0,0,.35))
+         drop-shadow(0 0 40px var(--glow));
+}
+/* Body / torso */
+.robot__body{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:70%;height:60%;
+  border-radius:38% 38% 20% 20% / 42% 42% 18% 18%;
+  background:linear-gradient(160deg,
+    var(--robot-body) 0%,
+    color-mix(in srgb,var(--robot-body) 70%,var(--robot-shade)) 45%,
+    var(--robot-shade) 100%);
+  box-shadow:
+    inset 0 -30px 60px color-mix(in srgb,var(--robot-shade) 40%,transparent),
+    inset 0 20px 40px rgba(255,255,255,.7);
+}
+.robot__body::before{
+  /* chest panel */
+  content:"";position:absolute;top:22%;left:50%;transform:translateX(-50%);
+  width:46%;height:26%;border-radius:14px;
+  background:linear-gradient(180deg,rgba(10,18,32,.9),rgba(20,32,56,.8));
+  box-shadow:
+    inset 0 0 20px rgba(110,224,245,.4),
+    0 0 24px rgba(110,224,245,.5),
+    0 0 0 1px rgba(110,224,245,.35);
+}
+.robot__body::after{
+  /* heart-core light */
+  content:"";position:absolute;top:30%;left:50%;transform:translateX(-50%);
+  width:14px;height:14px;border-radius:50%;
+  background:radial-gradient(circle,var(--cyan-2),var(--cyan-4) 60%,transparent 80%);
+  box-shadow:0 0 20px var(--cyan-4),0 0 40px var(--cyan-4);
+  animation:core-pulse 2.4s ease-in-out infinite;
+}
+@keyframes core-pulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.9;}
+  50%{transform:translateX(-50%) scale(1.25);opacity:1;}}
+
+/* Helmet */
+.robot__helmet{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:64%;aspect-ratio:1/1.05;
+  border-radius:50% 50% 46% 46% / 52% 52% 48% 48%;
+  background:linear-gradient(160deg,
+    #ffffff 0%,
+    color-mix(in srgb,var(--robot-body) 80%,var(--robot-shade)) 40%,
+    var(--robot-shade) 100%);
+  box-shadow:
+    inset 0 24px 40px rgba(255,255,255,.85),
+    inset 0 -20px 40px rgba(0,0,0,.15),
+    0 0 40px rgba(0,0,0,.15);
+}
+.robot__helmet::after{
+  /* visor */
+  content:"";position:absolute;top:16%;left:50%;transform:translateX(-50%);
+  width:78%;height:58%;border-radius:48% 48% 42% 42% / 52% 52% 48% 48%;
+  background:
+    radial-gradient(circle at 30% 30%,rgba(255,255,255,.55),transparent 45%),
+    radial-gradient(circle at 70% 75%,rgba(110,224,245,.4),transparent 50%),
+    linear-gradient(165deg,#0a1220 0%,#050810 55%,#02050a 100%);
+  box-shadow:
+    inset 0 6px 20px rgba(110,224,245,.5),
+    inset 0 -8px 20px rgba(0,0,0,.8),
+    0 0 30px rgba(110,224,245,.4),
+    0 0 0 1.5px rgba(110,224,245,.35);
+}
+.robot__helmet::before{
+  /* visor highlight ring */
+  content:"";position:absolute;top:20%;left:22%;
+  width:22%;height:14%;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(255,255,255,.9),transparent 70%);
+  filter:blur(1px);
+  z-index:2;
+  pointer-events:none;
+}
+
+/* Antenna */
+.robot__antenna{
+  position:absolute;top:-6%;left:50%;transform:translateX(-50%);
+  width:2px;height:12%;
+  background:linear-gradient(180deg,transparent,var(--robot-shade));
+}
+.robot__antenna::after{
+  content:"";position:absolute;top:-8px;left:50%;transform:translateX(-50%);
+  width:12px;height:12px;border-radius:50%;
+  background:radial-gradient(circle,var(--cyan-2),var(--cyan-4));
+  box-shadow:0 0 16px var(--cyan-4),0 0 30px var(--cyan-4);
+  animation:antenna-blink 2.8s ease-in-out infinite;
+}
+@keyframes antenna-blink{0%,100%{opacity:.6;}50%{opacity:1;}}
+
+/* Arms */
+.robot__arm{
+  position:absolute;bottom:28%;
+  width:22%;height:52%;
+  border-radius:40% 40% 45% 45% / 30% 30% 60% 60%;
+  background:linear-gradient(180deg,
+    var(--robot-body) 0%,
+    color-mix(in srgb,var(--robot-body) 70%,var(--robot-shade)) 60%,
+    var(--robot-shade) 100%);
+  box-shadow:inset -8px -12px 20px rgba(0,0,0,.08);
+}
+.robot__arm--left{
+  inset-inline-start:-6%;transform:rotate(-8deg);transform-origin:top center;
+  animation:arm-sway-l 5s ease-in-out infinite;
+}
+.robot__arm--right{
+  inset-inline-end:-6%;transform:rotate(8deg);transform-origin:top center;
+  animation:arm-sway-r 5s ease-in-out infinite;
+}
+@keyframes arm-sway-l{0%,100%{transform:rotate(-8deg);}
+  50%{transform:rotate(-11deg) translateY(-4px);}}
+@keyframes arm-sway-r{0%,100%{transform:rotate(8deg);}
+  50%{transform:rotate(5deg) translateY(-4px);}}
+
+/* Ground glow beneath robot */
+.hero__astronaut::after{
+  content:"";position:absolute;bottom:-8%;left:50%;transform:translateX(-50%);
+  width:90%;height:24px;border-radius:50%;
+  background:radial-gradient(ellipse,var(--glow-strong),transparent 70%);
+  filter:blur(6px);
+}
+
+/* ----- HOLOGRAPHIC SCREEN ----- */
+.hero__holo{
+  position:absolute;
+  top:14%;
+  inset-inline-end:32%;
+  width:clamp(320px,34vw,520px);
+  aspect-ratio:4/3;
+  transform-style:preserve-3d;
+  transform:perspective(1100px) rotateY(-14deg) rotateX(6deg) translateZ(0);
+  z-index:4;
+  animation:holo-float 7s ease-in-out infinite;
+}
+@keyframes holo-float{0%,100%{transform:perspective(1100px) rotateY(-14deg) rotateX(6deg) translateY(0);}
+  50%{transform:perspective(1100px) rotateY(-12deg) rotateX(5deg) translateY(-10px);}}
+
+.holo{
+  position:absolute;inset:0;
+  border-radius:16px;
+  background:
+    linear-gradient(135deg,var(--holo-1),var(--holo-2) 60%,transparent),
+    linear-gradient(180deg,rgba(255,255,255,.06),rgba(0,0,0,.08));
+  border:1px solid rgba(110,224,245,.5);
+  box-shadow:
+    0 40px 80px -30px var(--glow),
+    0 0 80px rgba(34,200,232,.35),
+    inset 0 0 60px rgba(110,224,245,.2),
+    inset 0 0 0 1px rgba(255,255,255,.15);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  overflow:hidden;
+}
+.holo::before{
+  /* inner grid */
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(110,224,245,.12) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(110,224,245,.12) 1px,transparent 1px);
+  background-size:32px 32px;
+  opacity:.6;
+}
+.holo::after{
+  /* light sweep */
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.65) 50%,transparent 70%);
+  background-size:250% 100%;background-position:200% 0;
+  animation:holo-sweep 5.5s ease-in-out infinite;
+  mix-blend-mode:overlay;
+  pointer-events:none;
+}
+@keyframes holo-sweep{0%,55%{background-position:200% 0;}
+  100%{background-position:-150% 0;}}
+
+/* Fake UI inside the holo screen */
+.holo__ui{
+  position:absolute;inset:22px;
+  display:grid;
+  grid-template-rows:auto auto 1fr;
+  gap:14px;
+  z-index:2;
+}
+.holo__topbar{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:.62rem;
+  color:var(--cyan-2);letter-spacing:.15em;
+}
+.holo__dots{display:flex;gap:5px;}
+.holo__dot{width:8px;height:8px;border-radius:50%;
+  background:var(--cyan-3);box-shadow:0 0 8px var(--cyan-3);}
+.holo__dot:nth-child(2){background:var(--orange-4);box-shadow:0 0 8px var(--orange-4);}
+.holo__dot:nth-child(3){background:rgba(255,255,255,.4);box-shadow:none;}
+.holo__title{margin-inline-start:auto;opacity:.7;}
+
+.holo__readout{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+}
+.holo__stat{
+  background:linear-gradient(180deg,rgba(110,224,245,.16),rgba(110,224,245,.04));
+  border:1px solid rgba(110,224,245,.3);
+  border-radius:8px;padding:8px 10px;
+  font-family:var(--font-mono);
+}
+.holo__stat span{display:block;font-size:.55rem;color:var(--cyan-2);
+  letter-spacing:.15em;opacity:.75;margin-bottom:4px;}
+.holo__stat strong{font-size:.95rem;color:#fff;font-weight:700;
+  font-family:var(--font-en);letter-spacing:-.02em;}
+.holo__stat em{font-style:normal;font-size:.6rem;color:var(--cyan-3);}
+
+.holo__chart{
+  position:relative;display:flex;align-items:flex-end;gap:6px;
+  padding:10px;border-radius:10px;
+  background:linear-gradient(180deg,rgba(110,224,245,.08),transparent);
+  border:1px solid rgba(110,224,245,.2);
+  overflow:hidden;
+}
+.holo__bar{
+  flex:1;border-radius:4px 4px 0 0;
+  background:linear-gradient(180deg,var(--cyan-3),var(--cyan-5));
+  box-shadow:0 0 12px rgba(110,224,245,.5);
+  animation:bar-grow 1.2s var(--ease-out) both;
+  transform-origin:bottom;
+}
+.holo__bar:nth-child(1){height:35%;animation-delay:.1s;}
+.holo__bar:nth-child(2){height:55%;animation-delay:.2s;}
+.holo__bar:nth-child(3){height:40%;animation-delay:.3s;}
+.holo__bar:nth-child(4){height:72%;animation-delay:.4s;}
+.holo__bar:nth-child(5){height:88%;animation-delay:.5s;
+  background:linear-gradient(180deg,var(--orange-4),var(--orange-5));
+  box-shadow:0 0 14px rgba(255,138,61,.6);}
+.holo__bar:nth-child(6){height:64%;animation-delay:.6s;}
+.holo__bar:nth-child(7){height:92%;animation-delay:.7s;
+  background:linear-gradient(180deg,var(--cyan-2),var(--cyan-4));
+  box-shadow:0 0 16px var(--cyan-3);}
+@keyframes bar-grow{from{transform:scaleY(0);opacity:0;}
+  to{transform:scaleY(1);opacity:1;}}
+
+/* Floating scan line inside holo */
+.holo__scan{
+  position:absolute;inset-inline:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--cyan-3),transparent);
+  box-shadow:0 0 12px var(--cyan-3);
+  animation:scan 3.5s linear infinite;
+  z-index:3;
+}
+@keyframes scan{0%{top:0;opacity:0;}
+  10%{opacity:1;}
+  90%{opacity:1;}
+  100%{top:100%;opacity:0;}}
+
+/* Hero text */
+.hero__content{
+  position:relative;z-index:5;
+  max-width:min(760px,60vw);
+}
+.hero__brand{
+  font-family:var(--font-mono);
+  font-size:var(--step-6);
+  font-weight:800;
+  letter-spacing:-.05em;line-height:.92;
+  margin:0 0 .3rem;
+  background:linear-gradient(135deg,var(--text-0) 0%,var(--text-1) 45%,var(--cyan-4) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  color:var(--text-0);
+}
+:root[data-theme="dark"] .hero__brand{
+  background:linear-gradient(135deg,#fff 0%,var(--cyan-2) 40%,var(--cyan-4) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 30px rgba(110,224,245,.35));
+}
+.hero__tagline{
+  font-family:var(--font-mono);
+  font-size:var(--step-1);
+  letter-spacing:.32em;text-transform:uppercase;
+  color:var(--cyan-5);margin:0 0 1.6rem;font-weight:500;
+}
+.hero__sub p{
+  font-size:var(--step-1);color:var(--text-1);
+  margin:0 0 .55rem;max-width:44ch;font-weight:400;
+}
+.hero__sub strong{color:var(--text-0);font-weight:700;}
+.hero__cta{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:2.2rem;}
+.hero__scroll{
+  position:absolute;bottom:1.6rem;inset-inline-start:50%;transform:translateX(-50%);
+  font-family:var(--font-mono);font-size:.65rem;letter-spacing:.3em;
+  color:var(--text-3);display:flex;flex-direction:column;align-items:center;gap:.7rem;
+  z-index:5;
+}
+.hero__scroll::after{
+  content:"";width:1px;height:36px;
+  background:linear-gradient(to bottom,var(--cyan-4),transparent);
+  animation:scroll-hint 2.4s ease-in-out infinite;
+}
+@keyframes scroll-hint{0%,100%{transform:translateY(0);opacity:.4;}
+  50%{transform:translateY(6px);opacity:1;}}
+
+/* Mask reveal */
+.mask-reveal{overflow:hidden;display:block;}
+.mask-reveal>span{display:inline-block;transform:translateY(110%);
+  animation:mask-up .95s var(--ease-out) forwards;}
+.mask-reveal:nth-of-type(2)>span{animation-delay:.15s;}
+@keyframes mask-up{to{transform:translateY(0);}}
+
+/* ---------- TIMELINE ---------- */
+.timeline{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,5rem);align-items:start;}
+.timeline__steps{position:relative;padding-inline-start:2.5rem;}
+.timeline__steps::before{
+  content:"";position:absolute;inset-inline-start:8px;top:10px;bottom:10px;
+  width:1px;background:linear-gradient(to bottom,
+    transparent,var(--border-soft) 10%,var(--border-soft) 90%,transparent);
+}
+.timeline__step{
+  position:relative;padding:1.5rem 0;opacity:.3;
+  transition:opacity var(--dur-med),transform var(--dur-med);
+}
+.timeline__step.is-active{opacity:1;transform:translateX(0);}
+.timeline__step::before{
+  content:"";position:absolute;inset-inline-start:-2.5rem;top:2rem;
+  width:14px;height:14px;border-radius:50%;
+  background:var(--bg-0);
+  border:2px solid var(--border-soft);
+  box-shadow:0 0 0 4px transparent;
+  transition:all var(--dur-med) var(--ease-out);
+}
+.timeline__step.is-active::before{
+  background:var(--cyan-4);border-color:var(--cyan-3);
+  box-shadow:0 0 0 6px color-mix(in srgb,var(--cyan-4) 18%,transparent),
+             0 0 24px var(--cyan-4);
+}
+.timeline__num{
+  font-family:var(--font-mono);color:var(--cyan-5);font-size:.78rem;
+  letter-spacing:.28em;margin-bottom:.5rem;
+}
+.timeline__title{font-size:var(--step-2);margin:0 0 .5rem;color:var(--text-0);}
+.timeline__stage{
+  position:sticky;top:calc(var(--nav-h) + 30px);
+  height:min(72vh,600px);border-radius:var(--radius-xl);
+  background:
+    radial-gradient(circle at 50% 55%,var(--glow-strong),transparent 60%),
+    linear-gradient(180deg,var(--bg-2),var(--bg-0));
+  border:1px solid var(--border);
+  box-shadow:
+    var(--shadow-2),
+    inset 0 0 100px color-mix(in srgb,var(--cyan-4) 10%,transparent);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;
+}
+:root[data-theme="light"] .timeline__stage{
+  background:
+    radial-gradient(circle at 50% 55%,var(--glow),transparent 60%),
+    linear-gradient(180deg,#fff,var(--bg-1));
+}
+.timeline__stage::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:40px 40px;
+  opacity:.6;
+  mask-image:radial-gradient(circle at center,black,transparent 75%);
+  -webkit-mask-image:radial-gradient(circle at center,black,transparent 75%);
+}
+.timeline__core{
+  width:180px;height:180px;border-radius:50%;position:relative;z-index:2;
+  background:radial-gradient(circle at 35% 30%,#fff,var(--cyan-3) 40%,var(--cyan-5));
+  box-shadow:
+    0 0 60px var(--glow-strong),
+    inset 0 0 40px rgba(255,255,255,.5),
+    inset 0 -20px 40px rgba(0,0,0,.15);
+  transition:all 1s var(--ease-out);
+}
+:root[data-theme="dark"] .timeline__core{
+  background:radial-gradient(circle at 35% 30%,#fff,var(--cyan-3) 40%,var(--cyan-6));
+  box-shadow:
+    0 0 80px var(--glow-strong),
+    0 0 160px rgba(34,200,232,.5),
+    inset 0 0 40px rgba(255,255,255,.4);
+}
+.timeline__stage[data-step="1"] .timeline__core{transform:scale(1.05);}
+.timeline__stage[data-step="2"] .timeline__core{
+  border-radius:30% 70% 70% 30% / 40% 40% 60% 60%;
+  transform:scale(1.15) rotate(30deg);
+}
+.timeline__stage[data-step="3"] .timeline__core{
+  border-radius:50%;transform:scale(1.22);
+  background:radial-gradient(circle at 35% 30%,#fff,var(--orange-4) 45%,var(--orange-5));
+  box-shadow:
+    0 0 90px rgba(255,138,61,.7),
+    0 0 180px rgba(255,138,61,.4),
+    inset 0 0 40px rgba(255,255,255,.5);
+}
+.timeline__node{
+  position:absolute;width:10px;height:10px;border-radius:50%;
+  background:var(--cyan-3);box-shadow:0 0 16px var(--cyan-3);
+  opacity:0;transition:opacity var(--dur-med),transform var(--dur-med);
+  z-index:3;
+}
+.timeline__stage[data-step="1"] .timeline__node,
+.timeline__stage[data-step="2"] .timeline__node,
+.timeline__stage[data-step="3"] .timeline__node{opacity:1;}
+.timeline__node:nth-child(2){top:22%;inset-inline-start:20%;}
+.timeline__node:nth-child(3){top:32%;inset-inline-end:22%;}
+.timeline__node:nth-child(4){bottom:24%;inset-inline-start:26%;}
+.timeline__node:nth-child(5){bottom:20%;inset-inline-end:24%;}
+.timeline__stage[data-step="2"] .timeline__node{animation:node-pulse 2s ease-in-out infinite;}
+.timeline__stage[data-step="3"] .timeline__node{
+  background:var(--orange-4);box-shadow:0 0 16px var(--orange-4);
+}
+@keyframes node-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.4);}}
+
+/* ---------- WORLDS ---------- */
+.worlds{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+.world{
+  position:relative;border-radius:var(--radius-lg);overflow:hidden;
+  min-height:380px;padding:1.75rem;text-align:start;
+  display:flex;flex-direction:column;justify-content:space-between;
+  border:1px solid var(--border);cursor:pointer;
+  transition:transform var(--dur-med) var(--ease-out),
+             box-shadow var(--dur-med),filter var(--dur-med);
+  isolation:isolate;
+}
+.world::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  transition:transform .8s var(--ease-out);
+}
+.world:hover{transform:translateY(-8px);box-shadow:var(--shadow-2);}
+.world:hover::before{transform:scale(1.06);}
+
+/* Café — warm amber */
+.world--cafe::before{background:
+  radial-gradient(circle at 30% 80%,#ffd6a0 0%,#c97a3c 45%,#5a2a10 100%);}
+/* Jewelry — deep black + gold */
+.world--jewelry::before{background:
+  radial-gradient(circle at 70% 20%,#3a2f18 0%,#0a0a14 55%,#020204 100%);}
+.world--jewelry::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(circle at 30% 70%,rgba(255,215,120,.4),transparent 45%);
+  animation:gold-shimmer 6s ease-in-out infinite;
+}
+@keyframes gold-shimmer{0%,100%{opacity:.4;}50%{opacity:1;}}
+/* Fitness — neon cyan */
+.world--fitness::before{background:
+  linear-gradient(135deg,#050810 0%,#0a1a2e 40%,#00a5c9 100%);}
+.world--fitness::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:repeating-linear-gradient(45deg,transparent,transparent 20px,
+    rgba(110,224,245,.06) 20px,rgba(110,224,245,.06) 21px);
+}
+/* Education — soft layered */
+.world--education::before{background:
+  linear-gradient(160deg,#e6fbff 0%,#b8f2ff 50%,#6ee0f5 100%);}
+/* Real estate — architectural */
+.world--realestate::before{background:
+  linear-gradient(135deg,#0a1220 0%,#1e2a42 40%,#8ba3bd 100%);}
+.world--realestate::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background-image:
+    linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
+  background-size:40px 40px;
+  mask-image:linear-gradient(180deg,transparent,black);
+  -webkit-mask-image:linear-gradient(180deg,transparent,black);
+}
+/* Shop — bright commerce */
+.world--shop::before{background:
+  linear-gradient(150deg,#ffffff 0%,#e6fbff 50%,#22c8e8 100%);}
+
+.world__label{
+  font-family:var(--font-mono);font-size:.7rem;letter-spacing:.28em;
+  text-transform:uppercase;opacity:.8;margin-bottom:.6rem;color:rgba(255,255,255,.9);
+}
+.world--education .world__label,
+.world--shop .world__label{color:rgba(10,20,40,.7);}
+.world__title{
+  font-size:var(--step-2);margin:0 0 .5rem;color:#fff;
+  text-shadow:0 2px 20px rgba(0,0,0,.35);font-weight:800;
+}
+.world--education .world__title,
+.world--shop .world__title{color:var(--ink-1);text-shadow:none;}
+.world--jewelry .world__title{
+  color:#ffd778;text-shadow:0 0 40px rgba(255,215,120,.7);
+}
+.world__preview{
+  margin-top:auto;
+  background:rgba(255,255,255,.14);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:12px;padding:.75rem;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;
+}
+.world__preview span{
+  height:32px;border-radius:5px;
+  background:rgba(255,255,255,.4);
+  border:1px solid rgba(255,255,255,.35);
+}
+.world--education .world__preview,
+.world--shop .world__preview{
+  background:rgba(255,255,255,.55);border-color:rgba(255,255,255,.9);
+}
+.world--education .world__preview span,
+.world--shop .world__preview span{background:rgba(255,255,255,.85);border-color:#fff;}
+.world__link{
+  display:inline-flex;align-items:center;gap:.5rem;font-weight:600;
+  font-size:.88rem;margin-top:.9rem;color:#fff;
+}
+.world--education .world__link,
+.world--shop .world__link{color:var(--ink-1);}
+.world--jewelry .world__link{color:#ffd778;}
+
+/* ---------- SYSTEM ---------- */
+.system{
+  position:relative;min-height:620px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--radius-xl);padding:2rem;
+  background:
+    radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--cyan-4) 8%,transparent),transparent 65%),
+    var(--surface);
+  border:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  overflow:hidden;
+}
+.system::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:50px 50px;
+  mask-image:radial-gradient(circle at center,black,transparent 70%);
+  -webkit-mask-image:radial-gradient(circle at center,black,transparent 70%);
+  pointer-events:none;
+}
+.system__svg{
+  position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
+}
+.system__svg line{
+  stroke:color-mix(in srgb,var(--cyan-4) 45%,transparent);
+  stroke-width:1.2;stroke-dasharray:3 7;
+  animation:line-flow 30s linear infinite;
+}
+@keyframes line-flow{to{stroke-dashoffset:-200;}}
+
+.system__node{
+  position:absolute;
+  width:118px;height:118px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:700;color:var(--text-0);text-align:center;
+  padding:.5rem;
+  background:
+    radial-gradient(circle at 35% 30%,var(--surface-2),var(--surface));
+  border:1px solid var(--border);
+  box-shadow:
+    0 20px 40px -15px var(--shadow-2),
+    inset 0 0 20px rgba(255,255,255,.15);
+  backdrop-filter:blur(14px);
+  cursor:pointer;font-family:inherit;
+  transition:all var(--dur-med) var(--ease-out);
+}
+:root[data-theme="dark"] .system__node{
+  background:
+    radial-gradient(circle at 35% 30%,rgba(110,224,245,.15),rgba(10,18,32,.6));
+  border-color:rgba(110,224,245,.25);
+  box-shadow:
+    0 20px 40px -15px rgba(0,0,0,.7),
+    0 0 30px rgba(110,224,245,.15),
+    inset 0 0 20px rgba(110,224,245,.1);
+  color:var(--text-0);
+}
+.system__node:hover,.system__node:focus-visible{
+  transform:scale(1.12);
+  box-shadow:
+    0 30px 60px -15px var(--glow-strong),
+    0 0 40px var(--glow),
+    inset 0 0 30px rgba(255,255,255,.2);
+}
+.system__node--center{
+  width:158px;height:158px;font-size:.9rem;color:#fff;
+  background:radial-gradient(circle at 35% 30%,#fff,var(--cyan-3) 45%,var(--cyan-6));
+  border-color:var(--cyan-3);
+  box-shadow:
+    0 0 60px var(--glow-strong),
+    0 0 120px rgba(34,200,232,.5),
+    inset 0 0 40px rgba(255,255,255,.35);
+  text-shadow:0 1px 8px rgba(10,30,60,.5);
+  letter-spacing:.02em;
+}
+.system__node--growth{
+  background:radial-gradient(circle at 35% 30%,#fff,var(--orange-4) 45%,var(--orange-5));
+  border-color:var(--orange-4);color:#fff;
+  box-shadow:
+    0 0 60px rgba(255,138,61,.6),
+    0 0 120px rgba(255,106,26,.35),
+    inset 0 0 40px rgba(255,255,255,.35);
+}
+.system__list{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:.9rem;margin-top:3rem;
+}
+.system__item{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.9rem 1.15rem;border-radius:14px;
+  background:var(--surface);border:1px solid var(--border);
+  font-size:.9rem;color:var(--text-1);font-weight:500;
+  cursor:pointer;text-align:start;font-family:inherit;width:100%;
+  backdrop-filter:blur(12px);
+  transition:all var(--dur-fast);
+}
+.system__item:hover{
+  background:var(--surface-2);
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-1);
+  color:var(--text-0);
+}
+.system__item span:first-child{
+  width:6px;height:6px;border-radius:50%;background:var(--cyan-4);
+  box-shadow:0 0 12px var(--cyan-4);flex-shrink:0;
+}
+
+/* ---------- PORTFOLIO EXHIBIT ---------- */
+.exhibit{
+  display:flex;gap:1.75rem;overflow-x:auto;
+  scroll-snap-type:x mandatory;padding:2rem max(2rem,calc((100vw - 1240px)/2)) 3rem;
+  scrollbar-width:thin;
+}
+.exhibit::-webkit-scrollbar{height:6px;}
+.exhibit::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+.exhibit__card{
+  flex:0 0 min(540px,82vw);scroll-snap-align:start;
+  border-radius:var(--radius-xl);overflow:hidden;position:relative;
+  min-height:440px;padding:2rem;cursor:pointer;
+  display:flex;flex-direction:column;justify-content:space-between;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow-1);
+  text-align:start;font-family:inherit;
+  transition:transform var(--dur-med) var(--ease-out),box-shadow var(--dur-med);
+  isolation:isolate;
+}
+.exhibit__card::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  transition:transform .9s var(--ease-out);
+}
+.exhibit__card:hover{transform:translateY(-10px) rotateX(2deg);box-shadow:var(--shadow-2);}
+.exhibit__card:hover::before{transform:scale(1.05);}
+.exhibit__card--cafe::before{background:radial-gradient(circle at 30% 80%,#ffd6a0 0%,#c97a3c 45%,#5a2a10 100%);}
+.exhibit__card--jewelry::before{background:radial-gradient(circle at 70% 20%,#3a2f18,#0a0a14 55%,#020204);}
+.exhibit__card--fitness::before{background:linear-gradient(135deg,#050810,#0a1a2e 40%,#00a5c9);}
+.exhibit__card--realestate::before{background:linear-gradient(135deg,#0a1220,#1e2a42 40%,#8ba3bd);}
+.exhibit__card--education::before{background:linear-gradient(160deg,#e6fbff,#b8f2ff 50%,#6ee0f5);}
+
+.exhibit__meta{
+  font-family:var(--font-mono);font-size:.7rem;letter-spacing:.28em;
+  text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:.7rem;
+}
+.exhibit__card--education .exhibit__meta{color:rgba(10,20,40,.65);}
+.exhibit__title{
+  font-size:var(--step-3);margin:0;color:#fff;
+  text-shadow:0 2px 20px rgba(0,0,0,.35);
+}
+.exhibit__card--education .exhibit__title{color:var(--ink-1);text-shadow:none;}
+.exhibit__card--jewelry .exhibit__title{color:#ffd778;text-shadow:0 0 40px rgba(255,215,120,.6);}
+.exhibit__tag{
+  display:inline-block;padding:.35rem .85rem;border-radius:var(--radius-full);
+  background:rgba(255,255,255,.18);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.3);
+  font-size:.72rem;font-weight:600;color:#fff;align-self:flex-start;
+}
+.exhibit__card--education .exhibit__tag{
+  background:rgba(255,255,255,.65);border-color:#fff;color:var(--ink-1);
+}
+
+/* ---------- CORRIDOR ---------- */
+.corridor{position:relative;padding:5rem 0;}
+.corridor__line{
+  position:absolute;top:0;bottom:0;inset-inline-start:50%;
+  width:1px;transform:translateX(-50%);
+  background:linear-gradient(to bottom,
+    transparent,var(--border-soft) 8%,var(--border-soft) 92%,transparent);
+}
+.corridor__progress{
+  position:absolute;top:0;inset-inline-start:50%;width:2px;
+  transform:translateX(-50%);height:0;
+  background:linear-gradient(to bottom,var(--cyan-4),var(--cyan-3));
+  box-shadow:0 0 24px var(--cyan-4),0 0 8px var(--cyan-3);
+  transition:height .15s linear;
+}
+.corridor__stage{
+  display:grid;grid-template-columns:1fr 60px 1fr;align-items:center;
+  padding:2.8rem 0;gap:2rem;
+}
+.corridor__stage:nth-child(even) .corridor__content{grid-column:3;}
+.corridor__stage:nth-child(even) .corridor__dot{grid-column:2;}
+.corridor__stage:nth-child(odd) .corridor__content{grid-column:1;text-align:end;}
+.corridor__dot{
+  width:42px;height:42px;border-radius:50%;margin-inline:auto;
+  background:var(--bg-1);
+  border:1.5px solid var(--border-soft);
+  position:relative;
+  transition:all var(--dur-med) var(--ease-out);
+}
+.corridor__dot::after{
+  content:"";position:absolute;inset:9px;border-radius:50%;
+  background:color-mix(in srgb,var(--cyan-4) 25%,transparent);
+  transition:all var(--dur-med);
+}
+.corridor__stage.is-active .corridor__dot{
+  border-color:var(--cyan-4);
+  box-shadow:
+    0 0 0 6px color-mix(in srgb,var(--cyan-4) 15%,transparent),
+    0 0 30px var(--cyan-4);
+}
+.corridor__stage.is-active .corridor__dot::after{
+  background:var(--cyan-4);
+  box-shadow:0 0 12px var(--cyan-4);
+}
+.corridor__content{opacity:.4;transition:opacity var(--dur-med);}
+.corridor__stage.is-active .corridor__content{opacity:1;}
+.corridor__num{
+  font-family:var(--font-mono);color:var(--cyan-5);
+  font-size:.76rem;letter-spacing:.3em;margin-bottom:.5rem;
+}
+.corridor__name{font-size:var(--step-3);margin:0 0 .5rem;color:var(--text-0);}
+
+/* ---------- FINAL ---------- */
+.final{position:relative;padding:8rem 0;text-align:center;overflow:clip;}
+.final__core{
+  width:min(320px,55vw);aspect-ratio:1;border-radius:50%;margin:0 auto 3rem;
+  background:radial-gradient(circle at 35% 30%,#fff,var(--cyan-3) 40%,var(--cyan-6));
+  box-shadow:
+    0 0 120px var(--glow-strong),
+    0 0 240px rgba(34,200,232,.4),
+    inset 0 0 60px rgba(255,255,255,.5);
+  animation:core-breathe 4.5s ease-in-out infinite;
+  position:relative;
+}
+.final__core::after{
+  content:"";position:absolute;inset:-20%;border-radius:50%;
+  background:radial-gradient(circle,transparent 55%,var(--glow) 60%,transparent 70%);
+  animation:ring-pulse 4.5s ease-in-out infinite;
+}
+@keyframes core-breathe{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.06);}
+}
+@keyframes ring-pulse{
+  0%,100%{opacity:0;transform:scale(.9);}
+  50%{opacity:.6;transform:scale(1.1);}
+}
+.final__panel{max-width:720px;margin:0 auto;padding:3rem 2rem;}
+
+/* ---------- FOOTER ---------- */
+.footer{
+  padding:5rem 0 2rem;
+  border-top:1px solid var(--border-soft);
+  background:color-mix(in srgb,var(--bg-1) 70%,transparent);
+  backdrop-filter:blur(20px);
+}
+.footer__grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;
+  margin-bottom:3rem;
+}
+.footer__col h4{
+  font-size:.8rem;font-family:var(--font-mono);letter-spacing:.22em;
+  text-transform:uppercase;color:var(--cyan-5);margin-bottom:1rem;font-weight:500;
+}
+.footer__col ul{list-style:none;padding:0;margin:0;}
+.footer__col li{margin-bottom:.6rem;font-size:.88rem;color:var(--text-2);}
+.footer__col button{
+  background:none;border:none;padding:0;cursor:pointer;
+  color:var(--text-2);font-family:inherit;font-size:inherit;text-align:start;
+  transition:color var(--dur-fast);
+}
+.footer__col button:hover{color:var(--cyan-4);}
+.footer__col a:hover{color:var(--cyan-4);}
+.footer__bottom{
+  padding-top:2rem;border-top:1px solid var(--border-soft);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+  font-size:.78rem;color:var(--text-3);font-family:var(--font-mono);
+}
+
+/* ---------- PAGE HERO ---------- */
+.page-hero{padding:calc(var(--nav-h) + 5rem) 0 3rem;position:relative;}
+.page-hero__crumbs{
+  font-size:.78rem;font-family:var(--font-mono);color:var(--text-3);
+  margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+}
+.page-hero__crumbs button{
+  background:none;border:none;padding:0;cursor:pointer;
+  color:var(--text-3);font-family:inherit;font-size:inherit;
+  transition:color var(--dur-fast);
+}
+.page-hero__crumbs button:hover{color:var(--cyan-4);}
+
+/* ---------- BLOG / POSTS ---------- */
+.blog-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:1.75rem;
+}
+.post{
+  border-radius:var(--radius-lg);overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:transform var(--dur-med) var(--ease-out),
+             box-shadow var(--dur-med),border-color var(--dur-med);
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(16px);box-shadow:var(--shadow-1);
+  cursor:pointer;text-align:start;font-family:inherit;padding:0;width:100%;
+}
+.post:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--shadow-2);
+  border-color:color-mix(in srgb,var(--cyan-4) 40%,var(--border));
+}
+.post__thumb{
+  aspect-ratio:16/9;position:relative;
+  background:
+    radial-gradient(circle at 30% 40%,var(--cyan-2),var(--cyan-4) 55%,var(--cyan-6));
+  overflow:hidden;
+}
+.post__thumb::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(115deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);
+  background-size:250% 100%;background-position:200% 0;
+  animation:holo-sweep 6s ease-in-out infinite;
+  mix-blend-mode:overlay;
+}
+.post__thumb::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.15) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.15) 1px,transparent 1px);
+  background-size:30px 30px;
+  mask-image:radial-gradient(circle at center,black,transparent 80%);
+  -webkit-mask-image:radial-gradient(circle at center,black,transparent 80%);
+}
+.post__body{padding:1.4rem 1.5rem 1.6rem;}
+.post__meta{
+  font-family:var(--font-mono);font-size:.68rem;letter-spacing:.22em;
+  color:var(--cyan-5);margin-bottom:.55rem;text-transform:uppercase;
+}
+.post__title{font-size:var(--step-1);margin:0 0 .6rem;color:var(--text-0);line-height:1.25;}
+.post__excerpt{font-size:.88rem;color:var(--text-2);margin:0;line-height:1.6;}
+
+/* ---------- FORM ---------- */
+.form{display:grid;gap:1.15rem;}
+.form__field{display:flex;flex-direction:column;gap:.4rem;}
+.form__label{font-size:.82rem;font-weight:600;color:var(--text-1);}
+.form__input,.form__textarea{
+  padding:.85rem 1.1rem;border-radius:12px;
+  border:1px solid var(--border);background:var(--surface);
+  font-size:.92rem;color:var(--text-0);
+  transition:all var(--dur-fast);
+  backdrop-filter:blur(10px);font-family:inherit;
+}
+.form__input:focus,.form__textarea:focus{
+  outline:none;border-color:var(--cyan-4);
+  background:var(--surface-2);
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--cyan-4) 18%,transparent);
+}
+.form__textarea{min-height:150px;resize:vertical;}
+.form__status{
+  font-size:.88rem;color:var(--cyan-4);min-height:1.4em;font-family:var(--font-mono);
+}
+
+/* ---------- GRIDS ---------- */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+
+.feature-list{
+  list-style:none;padding:0;margin:1rem 0;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:.65rem 1.5rem;
+}
+.feature-list li{
+  padding-inline-start:1.5rem;position:relative;
+  font-size:.92rem;color:var(--text-1);
+}
+.feature-list li::before{
+  content:"◆";position:absolute;inset-inline-start:0;
+  color:var(--cyan-4);font-size:.65rem;top:.4em;
+}
+
+.faq details{
+  padding:1.1rem 1.3rem;border-radius:14px;
+  background:var(--surface);border:1px solid var(--border);
+  margin-bottom:.7rem;backdrop-filter:blur(14px);
+  transition:border-color var(--dur-fast);
+}
+.faq details[open]{border-color:color-mix(in srgb,var(--cyan-4) 40%,var(--border));}
+.faq summary{
+  cursor:pointer;font-weight:600;color:var(--text-0);
+  font-size:.95rem;list-style:none;
+}
+.faq summary::-webkit-details-marker{display:none;}
+.faq summary::after{
+  content:"+";float:inline-end;color:var(--cyan-4);
+  font-weight:400;font-size:1.2rem;line-height:1;
+}
+.faq details[open] summary::after{content:"−";}
+.faq details[open] summary{margin-bottom:.6rem;color:var(--cyan-4);}
+
+/* ---------- REVEAL ---------- */
+.reveal{
+  opacity:0;transform:translateY(28px);
+  transition:opacity .9s var(--ease-out),transform .9s var(--ease-out);
+}
+.reveal.is-visible{opacity:1;transform:none;}
+
+/* ---------- VIEWS ---------- */
+.view{display:none;}
+.view.is-active{display:block;animation:view-in .55s var(--ease-out);}
+@keyframes view-in{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1100px){
+  .hero__holo{width:clamp(260px,40vw,420px);inset-inline-end:28%;}
+  .hero__astronaut{width:clamp(180px,22vw,280px);}
+  .worlds{grid-template-columns:repeat(2,1fr);}
+  .footer__grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:900px){
+  .timeline{grid-template-columns:1fr;gap:2rem;}
+  .timeline__stage{position:relative;top:auto;height:320px;order:-1;}
+  .hero__content{max-width:100%;}
+  .hero__holo{inset-inline-end:-10%;top:6%;opacity:.55;width:60vw;}
+  .hero__astronaut{inset-inline-end:-8%;opacity:.5;width:42vw;}
+  .grid-2{grid-template-columns:1fr;}
+  .grid-3{grid-template-columns:1fr;}
+}
+@media (max-width:720px){
+  .nav__menu{
+    display:none;position:fixed;inset:0;z-index:99;
+    background:color-mix(in srgb,var(--bg-1) 96%,transparent);
+    backdrop-filter:blur(24px);
+    flex-direction:column;justify-content:center;gap:1.8rem;
+    padding:6rem 2rem;
+  }
+  .nav__menu.is-open{display:flex;}
+  .nav__menu .nav__link{font-size:1.35rem;}
+  .nav__toggle{display:inline-flex;}
+  .nav__actions>.btn{display:none;}
+
+  .hero{padding:calc(var(--nav-h) + 3rem) 0 3rem;}
+  .hero__brand{font-size:clamp(2.4rem,13vw,4.5rem);}
+  .hero__cta{flex-direction:column;align-items:stretch;}
+  .hero__cta .btn{width:100%;}
+
+  .worlds{grid-template-columns:1fr;}
+  .system{min-height:auto;padding:2rem 0;}
+  .system__node{width:76px;height:76px;font-size:.62rem;padding:.3rem;}
+  .system__node--center{width:104px;height:104px;font-size:.74rem;}
+  .corridor__stage{grid-template-columns:1fr 40px;gap:1rem;}
+  .corridor__stage:nth-child(even) .corridor__content,
+  .corridor__stage:nth-child(odd) .corridor__content{grid-column:1;text-align:start;}
+  .corridor__dot{grid-column:2;width:34px;height:34px;}
+  .footer__grid{grid-template-columns:1fr;}
+  .footer__bottom{flex-direction:column;text-align:center;}
+  .exhibit__card{flex:0 0 86vw;min-height:360px;}
+  .feature-list{grid-template-columns:1fr;}
+}
+@media (max-width:420px){
+  .btn{padding:.85rem 1.25rem;font-size:.88rem;}
+  .system__node{width:64px;height:64px;font-size:.55rem;}
+  .system__node--center{width:88px;height:88px;font-size:.65rem;}
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+  .parallax{transform:none !important;}
+  .reveal{opacity:1 !important;transform:none !important;}
+  .holo::after,.post__thumb::after{display:none;}
+  .final__core{animation:none;}
+  .final__core::after{display:none;}
+  .mask-reveal>span{transform:none !important;animation:none !important;}
+  .hero__holo{animation:none;}
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="skip">پرش به محتوای اصلی</a>
+
+<!-- ================= NAV ================= -->
+<header class="nav" role="banner">
+  <div class="container nav__inner">
+    <a class="nav__logo" data-route="home" href="#">
+      <span class="nav__logo-mark" aria-hidden="true"></span>
+      <span>Nononick</span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav__menu" id="primary-menu">
+        <li><button class="nav__link" data-route="services" data-i18n="nav.services">خدمات</button></li>
+        <li><button class="nav__link" data-route="portfolio" data-i18n="nav.portfolio">نمونه‌کارها</button></li>
+        <li><button class="nav__link" data-route="about" data-i18n="nav.about">درباره ما</button></li>
+        <li><button class="nav__link" data-route="blog" data-i18n="nav.blog">وبلاگ</button></li>
+        <li><button class="nav__link" data-route="contact" data-i18n="nav.contact">تماس با ما</button></li>
+      </ul>
+    </nav>
+    <div class="nav__actions">
+      <button class="icon-btn" id="theme-toggle" aria-label="Toggle theme" title="Theme">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="fa" class="is-active">FA</button>
+        <button type="button" data-lang="en">EN</button>
+      </div>
+      <button class="btn btn--primary" data-route="contact" data-i18n="nav.start" style="padding:.7rem 1.2rem;font-size:.88rem">شروع پروژه</button>
+      <button class="nav__toggle" aria-label="Menu" aria-expanded="false" aria-controls="primary-menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============================================================
+     VIEW: HOME
+     ============================================================ -->
+<section class="view is-active" data-view="home" aria-label="Home">
+
+  <!-- CHAPTER 1 — CINEMATIC HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__stage" aria-hidden="true">
+      <div class="hero__layer hero__layer--architecture parallax" data-speed="0.05"></div>
+      <div class="hero__layer hero__layer--lightrays parallax" data-speed="0.09"></div>
+      <div class="hero__floor parallax" data-speed="0.03"></div>
+
+      <!-- Astronaut -->
+      <div class="hero__astronaut parallax" data-speed="0.08">
+        <div class="robot">
+          <div class="robot__antenna"></div>
+          <div class="robot__helmet"></div>
+          <div class="robot__body"></div>
+          <div class="robot__arm robot__arm--left"></div>
+          <div class="robot__arm robot__arm--right"></div>
+        </div>
+      </div>
+
+      <!-- Holographic screen -->
+      <div class="hero__holo parallax" data-speed="0.18">
+        <div class="holo">
+          <div class="holo__scan"></div>
+          <div class="holo__ui">
+            <div class="holo__topbar">
+              <div class="holo__dots">
+                <span class="holo__dot"></span><span class="holo__dot"></span><span class="holo__dot"></span>
+              </div>
+              <span class="holo__title">NONONICK / DASHBOARD</span>
+            </div>
+            <div class="holo__readout">
+              <div class="holo__stat"><span>VISITORS</span><strong>12.4K</strong> <em>↑ 24%</em></div>
+              <div class="holo__stat"><span>CONVERT</span><strong>8.7%</strong> <em>↑ 12%</em></div>
+              <div class="holo__stat"><span>SCORE</span><strong>98</strong> <em>SEO</em></div>
+            </div>
+            <div class="holo__chart">
+              <div class="holo__bar"></div><div class="holo__bar"></div>
+              <div class="holo__bar"></div><div class="holo__bar"></div>
+              <div class="holo__bar"></div><div class="holo__bar"></div>
+              <div class="holo__bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container hero__content">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Nononick Studio — Est. 2018</p>
+      <h1 id="hero-title" class="hero__brand mask-reveal"><span>NONONICK</span></h1>
+      <p class="hero__tagline mask-reveal"><span data-i18n="hero.tagline">IMMERSIVE DIGITAL STUDIO</span></p>
+      <div class="hero__sub">
+        <p><strong data-i18n="hero.promise">ایده خام تا امضای دیجیتال.</strong></p>
+        <p data-i18n="hero.desc">ما ایده‌های کسب‌وکار را به تجربه‌های دیجیتال مدرن، سریع و قابل رشد تبدیل می‌کنیم.</p>
+      </div>
+      <div class="hero__cta">
+        <button class="btn btn--primary" data-route="contact" data-i18n="hero.cta1">شروع تجربه ←</button>
+        <button class="btn btn--ghost" data-route="portfolio" data-i18n="hero.cta2">مشاهده نمونه‌کارها</button>
+      </div>
+    </div>
+    <div class="hero__scroll" aria-hidden="true">SCROLL</div>
+  </section>
+
+  <!-- CHAPTER 2 — TIMELINE -->
+  <section class="section" aria-labelledby="timeline-title">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="eyebrow" data-i18n="tl.eyebrow">Chapter 02 — The Method</p>
+        <h2 id="timeline-title" class="section__title" data-i18n="tl.title">مسیر سه‌گانه نونونیک</h2>
+        <p class="lead" data-i18n="tl.lead">هر پروژه از شناخت شروع می‌شود، به تبدیل می‌رسد و با رشد به یک دارایی زنده تبدیل می‌گردد.</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline__steps">
+          <article class="timeline__step is-active" data-step="1">
+            <p class="timeline__num" data-i18n="tl.s1.num">۰۱ — شناخت</p>
+            <h3 class="timeline__title" data-i18n="tl.s1.t">شناخت</h3>
+            <p data-i18n="tl.s1.d">کسب‌وکار، مخاطب و مسئله واقعی شما را می‌شناسیم.</p>
+          </article>
+          <article class="timeline__step" data-step="2">
+            <p class="timeline__num" data-i18n="tl.s2.num">۰۲ — تبدیل</p>
+            <h3 class="timeline__title" data-i18n="tl.s2.t">تبدیل</h3>
+            <p data-i18n="tl.s2.d">ایده شما را به ساختار، طراحی و تجربه دیجیتال تبدیل می‌کنیم.</p>
+          </article>
+          <article class="timeline__step" data-step="3">
+            <p class="timeline__num" data-i18n="tl.s3.num">۰۳ — رشد</p>
+            <h3 class="timeline__title" data-i18n="tl.s3.t">رشد</h3>
+            <p data-i18n="tl.s3.d">با توسعه، سئو و پشتیبانی، تجربه شما را به یک دارایی زنده تبدیل می‌کنیم.</p>
+          </article>
+        </div>
+        <div class="timeline__stage glass" data-step="1" aria-hidden="true">
+          <div class="timeline__core"></div>
+          <span class="timeline__node"></span><span class="timeline__node"></span>
+          <span class="timeline__node"></span><span class="timeline__node"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 3 — WORLDS -->
+  <section class="section" aria-labelledby="worlds-title">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="eyebrow" data-i18n="wr.eyebrow">Chapter 03 — Digital Worlds</p>
+        <h2 id="worlds-title" class="section__title" data-i18n="wr.title">هر کسب‌وکار، جهان خودش را دارد</h2>
+      </div>
+      <div class="worlds">
+        <button class="world world--cafe reveal" data-route="portfolio-detail" data-slug="cafe-restaurant">
+          <div><p class="world__label">Café & Restaurant</p>
+            <h3 class="world__title" data-i18n="wr.cafe">کافه و رستوران</h3></div>
+          <div><div class="world__preview"><span></span><span></span><span></span></div>
+            <span class="world__link" data-i18n="wr.enter">ورود به این جهان ←</span></div>
+        </button>
+        <button class="world world--jewelry reveal" data-route="portfolio-detail" data-slug="jewelry">
+          <div><p class="world__label">Fine Jewelry</p>
+            <h3 class="world__title" data-i18n="wr.jewelry">طلا و جواهر</h3></div>
+          <div><div class="world__preview"><span></span><span></span><span></span></div>
+            <span class="world__link" data-i18n="wr.enter">ورود به این جهان ←</span></div>
+        </button>
+        <button class="world world--fitness reveal" data-route="portfolio-detail" data-slug="fitness">
+          <div><p class="world__label">Fitness & Sport</p>
+            <h3 class="world__title" data-i18n="wr.fitness">بدنسازی و ورزش</h3></div>
+          <div><div class="world__preview"><span></span><span></span><span></span></div>
+            <span class="world__link" data-i18n="wr.enter">ورود به این جهان ←</span></div>
+        </button>
+        <button class="world world--education reveal" data-route="portfolio-detail" data-slug="education">
+          <div><p class="world__label">Education</p>
+            <h3 class="world__title" data-i18n="wr.education">آموزش</h3></div>
+          <div><div class="world__preview"><span></span><span></span><span></span></div>
+            <span class="world__link" data-i18n="wr.enter">ورود به این جهان ←</span></div>
+        </button>
+        <button class="world world--realestate reveal" data-route="portfolio-detail" data-slug="real-estate">
+          <div><p class="world__label">Real Estate</p>
+            <h3 class="world__title" data-i18n="wr.realestate">املاک</h3></div>
+          <div><div class="world__preview"><span></span><span></span><span></span></div>
+            <span class="world__link" data-i18n="wr.enter">ورود به این جهان ←</span></div>
+        </button>
+        <button class="world world--shop reveal" data-route="service-detail" data-slug="ecommerce-website">
+          <div><p class="world__label">E-Commerce</p>
+            <h3 class="world__title" data-i18n="wr.shop">فروشگاه</h3></div>
+          <div><div class="world__preview"><span></span><span></span><span></span></div>
+            <span class="world__link" data-i18n="wr.enter">ورود به این جهان ←</span></div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 4 — SYSTEM -->
+  <section class="section" aria-labelledby="system-title">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="eyebrow" data-i18n="sys.eyebrow">Chapter 04 — The System</p>
+        <h2 id="system-title" class="section__title" data-i18n="sys.title">خدمات، به‌مثابه یک سیستم زنده</h2>
+        <p class="lead" data-i18n="sys.lead">هر بخش از خدمات ما به دیگری متصل است — طراحی، توسعه، پنل، سئو، اپلیکیشن و رشد.</p>
+      </div>
+      <div class="system glass" role="group" aria-label="Services map">
+        <svg class="system__svg" viewBox="0 0 1000 620" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="500" y1="310" x2="180" y2="130"/>
+          <line x1="500" y1="310" x2="820" y2="130"/>
+          <line x1="500" y1="310" x2="150" y2="490"/>
+          <line x1="500" y1="310" x2="850" y2="490"/>
+          <line x1="500" y1="310" x2="500" y2="70"/>
+          <line x1="500" y1="310" x2="500" y2="550"/>
+        </svg>
+        <button class="system__node" style="top:7%;inset-inline-start:calc(50% - 59px)" data-route="service-detail" data-slug="custom-website-design" data-i18n="sys.design">طراحی</button>
+        <button class="system__node" style="top:15%;inset-inline-start:7%" data-route="service-detail" data-slug="app-development" data-i18n="sys.app">اپلیکیشن</button>
+        <button class="system__node" style="top:15%;inset-inline-end:7%" data-route="service-detail" data-slug="admin-dashboard" data-i18n="sys.panel">پنل مدیریت</button>
+        <button class="system__node system__node--center" style="top:calc(50% - 79px);inset-inline-start:calc(50% - 79px)" data-route="services">Nononick</button>
+        <button class="system__node" style="bottom:20%;inset-inline-start:5%" data-route="service-detail" data-slug="custom-website-design" data-i18n="sys.dev">توسعه</button>
+        <button class="system__node" style="bottom:20%;inset-inline-end:5%" data-route="service-detail" data-slug="seo" data-i18n="sys.seo">سئو</button>
+        <button class="system__node system__node--growth" style="bottom:5%;inset-inline-start:calc(50% - 59px)" data-route="services" data-i18n="sys.growth">رشد</button>
+      </div>
+      <div class="system__list" data-list="services"></div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 5 — PORTFOLIO -->
+  <section class="section" aria-labelledby="exhibit-title">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="eyebrow" data-i18n="ex.eyebrow">Chapter 05 — The Exhibition</p>
+        <h2 id="exhibit-title" class="section__title" data-i18n="ex.title">نمایشگاه دیجیتال پروژه‌ها</h2>
+        <p class="lead" data-i18n="ex.lead">با کلیدهای ← → حرکت کنید. هر پروژه یک صفحه اختصاصی دارد.</p>
+      </div>
+    </div>
+    <div class="exhibit" role="region" aria-label="Portfolio gallery" tabindex="0"></div>
+  </section>
+
+  <!-- CHAPTER 6 — CORRIDOR -->
+  <section class="section" aria-labelledby="process-title">
+    <div class="container">
+      <div class="section__head reveal">
+        <p class="eyebrow" data-i18n="pr.eyebrow">Chapter 06 — The Process</p>
+        <h2 id="process-title" class="section__title" data-i18n="pr.title">راهروی نور — شش ایستگاه</h2>
+      </div>
+      <div class="corridor">
+        <div class="corridor__line" aria-hidden="true"></div>
+        <div class="corridor__progress" aria-hidden="true"></div>
+        <article class="corridor__stage is-active">
+          <div class="corridor__content">
+            <p class="corridor__num">01</p>
+            <h3 class="corridor__name" data-i18n="pr.s1">شناخت</h3>
+            <p data-i18n="pr.s1d">بررسی دقیق کسب‌وکار، رقبا و مخاطب هدف شما.</p>
+          </div><span class="corridor__dot" aria-hidden="true"></span>
+        </article>
+        <article class="corridor__stage">
+          <div class="corridor__content">
+            <p class="corridor__num">02</p>
+            <h3 class="corridor__name" data-i18n="pr.s2">استراتژی</h3>
+            <p data-i18n="pr.s2d">تعریف مسیر، اولویت‌ها و معماری اطلاعات.</p>
+          </div><span class="corridor__dot" aria-hidden="true"></span>
+        </article>
+        <article class="corridor__stage">
+          <div class="corridor__content">
+            <p class="corridor__num">03</p>
+            <h3 class="corridor__name" data-i18n="pr.s3">طراحی</h3>
+            <p data-i18n="pr.s3d">زبان بصری، سیستم دیزاین و تجربه کاربری.</p>
+          </div><span class="corridor__dot" aria-hidden="true"></span>
+        </article>
+        <article class="corridor__stage">
+          <div class="corridor__content">
+            <p class="corridor__num">04</p>
+            <h3 class="corridor__name" data-i18n="pr.s4">توسعه</h3>
+            <p data-i18n="pr.s4d">کدنویسی تمیز، سریع و سئو-محور.</p>
+          </div><span class="corridor__dot" aria-hidden="true"></span>
+        </article>
+        <article class="corridor__stage">
+          <div class="corridor__content">
+            <p class="corridor__num">05</p>
+            <h3 class="corridor__name" data-i18n="pr.s5">انتشار</h3>
+            <p data-i18n="pr.s5d">راه‌اندازی، تست و بهینه‌سازی نهایی.</p>
+          </div><span class="corridor__dot" aria-hidden="true"></span>
+        </article>
+        <article class="corridor__stage">
+          <div class="corridor__content">
+            <p class="corridor__num">06</p>
+            <h3 class="corridor__name" data-i18n="pr.s6">رشد</h3>
+            <p data-i18n="pr.s6d">سئو، محتوا، پشتیبانی و تکامل مستمر.</p>
+          </div><span class="corridor__dot" aria-hidden="true"></span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 7 — FINAL -->
+  <section class="final" aria-labelledby="final-title">
+    <div class="container">
+      <div class="final__core" aria-hidden="true"></div>
+      <div class="final__panel glass reveal">
+        <p class="eyebrow" data-i18n="fn.eyebrow">Final Chapter</p>
+        <h2 id="final-title" class="section__title" data-i18n="fn.title">حالا نوبت ایده شماست</h2>
+        <p class="lead" data-i18n="fn.lead">ایده‌ای که امروز در ذهن شماست، می‌تواند به تجربه دیجیتال فردای برندتان تبدیل شود.</p>
+        <div class="hero__cta" style="justify-content:center">
+          <button class="btn btn--primary" data-route="contact" data-i18n="fn.cta1">شروع پروژه ←</button>
+          <button class="btn btn--ghost" data-route="contact" data-i18n="fn.cta2">دریافت مشاوره رایگان</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ============================================================
+     VIEW: ABOUT
+     ============================================================ -->
+<section class="view" data-view="about" aria-label="About">
+  <div class="container page-hero">
+    <nav class="page-hero__crumbs" aria-label="Breadcrumb">
+      <button data-route="home" data-i18n="crumb.home">خانه</button>
+      <span aria-hidden="true">/</span>
+      <span data-i18n="nav.about">درباره ما</span>
+    </nav>
+    <p class="eyebrow" data-i18n="ab.eyebrow">About Nononick</p>
+    <h1 data-i18n="ab.h1">استودیویی برای برندهای بلندپرواز</h1>
+    <p class="lead" data-i18n="ab.lead">نونونیک یک استودیو دیجیتال غوطه‌ور است. ما به برندها کمک می‌کنیم ایده‌های خام را به امضای دیجیتال خودشان تبدیل کنند — با طراحی، توسعه، سئو و یک سیستم یکپارچه.</p>
+  </div>
+  <section class="section">
+    <div class="container grid-2">
+      <div class="reveal glass" style="padding:2rem">
+        <p class="eyebrow">01 — Mission</p>
+        <h2 data-i18n="ab.mission.t">مأموریت ما</h2>
+        <p data-i18n="ab.mission.d">هر کسب‌وکار درست، شایسته یک تجربه دیجیتال درست است. ما فاصله میان ایده و اجرا را حذف می‌کنیم.</p>
+      </div>
+      <div class="reveal glass" style="padding:2rem">
+        <p class="eyebrow">02 — Approach</p>
+        <h2 data-i18n="ab.approach.t">رویکرد ما</h2>
+        <p data-i18n="ab.approach.d">ما به‌جای صفحات جدا، سیستم می‌سازیم: طراحی، کد، پنل، محتوا و سئو — همه به هم متصل.</p>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ============================================================
+     VIEW: SERVICES
+     ============================================================ -->
+<section class="view" data-view="services" aria-label="Services">
+  <div class="container page-hero">
+    <nav class="page-hero__crumbs" aria-label="Breadcrumb">
+      <button data-route="home" data-i18n="crumb.home">خانه</button>
+      <span aria-hidden="true">/</span>
+      <span data-i18n="nav.services">خدمات</span>
+    </nav>
+    <p class="eyebrow" data-i18n="sv.eyebrow">Our Services</p>
+    <h1 data-i18n="sv.h1">خدمات نونونیک</h1>
+    <p class="lead" data-i18n="sv.lead">از ایده تا رشد — هر خدمت بخشی از یک سیستم یکپارچه است که در کنار هم تجربه‌ای زنده می‌سازند.</p>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="system__list" data-list="services"></div>
+    </div>
+  </section>
+</section>
+
+<!-- ============================================================
+     VIEW: SERVICE DETAIL
+     ============================================================ -->
+<section class="view" data-view="service-detail" aria-label="Service"></section>
+
+<!-- ============================================================
+     VIEW: PORTFOLIO
+     ============================================================ -->
+<section class="view" data-view="portfolio" aria-label="Portfolio">
+  <div class="container page-hero">
+    <nav class="page-hero__crumbs" aria-label="Breadcrumb">
+      <button data-route="home" data-i18n="crumb.home">خانه</button>
+      <span aria-hidden="true">/</span>
+      <span data-i18n="nav.portfolio">نمونه‌کارها</span>
+    </nav>
+    <p class="eyebrow" data-i18n="pf.eyebrow">Portfolio</p>
+    <h1 data-i18n="pf.h1">نمایشگاه پروژه‌ها</h1>
+    <p class="lead" data-i18n="pf.lead">مجموعه‌ای از پروژه‌های مفهومی و واقعی. اگر پروژه‌ای مفهومی است، به‌صراحت با برچسب «پروژه مفهومی» مشخص شده است.</p>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="blog-grid" data-list="portfolio"></div>
+    </div>
+  </section>
+</section>
+
+<!-- ============================================================
+     VIEW: PORTFOLIO DETAIL
+     ============================================================ -->
+<section class="view" data-view="portfolio-detail" aria-label="Portfolio item"></section>
+
+<!-- ============================================================
+     VIEW: BLOG
+     ============================================================ -->
+<section class="view" data-view="blog" aria-label="Blog">
+  <div class="container page-hero">
+    <nav class="page-hero__crumbs" aria-label="Breadcrumb">
+      <button data-route="home" data-i18n="crumb.home">خانه</button>
+      <span aria-hidden="true">/</span>
+      <span data-i18n="nav.blog">وبلاگ</span>
+    </nav>
+    <p class="eyebrow" data-i18n="bl.eyebrow">Journal</p>
+    <h1 data-i18n="bl.h1">وبلاگ نونونیک</h1>
+    <p class="lead" data-i18n="bl.lead">یادداشت‌هایی درباره طراحی سایت، سئو، تجربه کاربری و رشد دیجیتال.</p>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="blog-grid" data-list="blog"></div>
+    </div>
+  </section>
+</section>
+
+<!-- ============================================================
+     VIEW: BLOG DETAIL
+     ============================================================ -->
+<section class="view" data-view="blog-detail" aria-label="Article"></section>
+
+<!-- ============================================================
+     VIEW: CONTACT
+     ============================================================ -->
+<section class="view" data-view="contact" aria-label="Contact">
+  <div class="container page-hero">
+    <nav class="page-hero__crumbs" aria-label="Breadcrumb">
+      <button data-route="home" data-i18n="crumb.home">خانه</button>
+      <span aria-hidden="true">/</span>
+      <span data-i18n="nav.contact">تماس با ما</span>
+    </nav>
+    <p class="eyebrow" data-i18n="ct.eyebrow">Let's talk</p>
+    <h1 data-i18n="ct.h1">شروع پروژه یا مشاوره رایگان</h1>
+    <p class="lead" data-i18n="ct.lead">ایده خود را برای ما بنویسید؛ در کوتاه‌ترین زمان پاسخ می‌دهیم.</p>
+  </div>
+  <section class="section">
+    <div class="container grid-2">
+      <div>
+        <form class="form glass" style="padding:2rem" novalidate>
+          <div class="form__field">
+            <label class="form__label" for="f-name" data-i18n="ct.name">نام شما</label>
+            <input class="form__input" id="f-name" name="name" required autocomplete="name">
+          </div>
+          <div class="form__field">
+            <label class="form__label" for="f-email" data-i18n="ct.email">ایمیل</label>
+            <input class="form__input" id="f-email" type="email" name="email" required autocomplete="email">
+          </div>
+          <div class="form__field">
+            <label class="form__label" for="f-msg" data-i18n="ct.msg">پیام / پروژه</label>
+            <textarea class="form__textarea" id="f-msg" name="message" required></textarea>
+          </div>
+          <button class="btn btn--primary" type="submit" data-i18n="ct.send">ارسال پیام</button>
+          <p class="form__status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+      <div class="glass" style="padding:2rem;align-self:flex-start">
+        <p class="eyebrow">Direct</p>
+        <h2 data-i18n="ct.side.t">راه‌های دیگر تماس</h2>
+        <p><a href="mailto:hello@nononick.com">hello@nononick.com</a></p>
+        <p><a href="tel:+982100000000">+98 21 0000 0000</a></p>
+        <p data-i18n="ct.side.addr">تهران، ایران</p>
+      </div>
+    </div>
+  </section>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__col">
+        <a class="nav__logo" data-route="home" href="#"><span class="nav__logo-mark" aria-hidden="true"></span> Nononick</a>
+        <p style="margin-top:1rem;max-width:34ch" data-i18n="ft.tag">استودیو دیجیتال غوطه‌ور برای برندهای بلندپرواز.</p>
+      </div>
+      <div class="footer__col">
+        <h4 data-i18n="ft.serv">خدمات</h4>
+        <ul>
+          <li><button data-route="service-detail" data-slug="custom-website-design" data-i18n="sv.custom">طراحی سایت اختصاصی</button></li>
+          <li><button data-route="service-detail" data-slug="ecommerce-website" data-i18n="sv.ecom">فروشگاه اینترنتی</button></li>
+          <li><button data-route="service-detail" data-slug="app-development" data-i18n="sv.app">توسعه اپلیکیشن</button></li>
+          <li><button data-route="service-detail" data-slug="seo" data-i18n="sv.seo">سئو و محتوا</button></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 data-i18n="ft.studio">استودیو</h4>
+        <ul>
+          <li><button data-route="about" data-i18n="nav.about">درباره ما</button></li>
+          <li><button data-route="portfolio" data-i18n="nav.portfolio">نمونه‌کارها</button></li>
+          <li><button data-route="blog" data-i18n="nav.blog">وبلاگ</button></li>
+          <li><button data-route="contact" data-i18n="nav.contact">تماس با ما</button></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4 data-i18n="ft.contact">ارتباط</h4>
+        <ul>
+          <li><a href="mailto:hello@nononick.com">hello@nononick.com</a></li>
+          <li><a href="tel:+982100000000">+98 21 0000 0000</a></li>
+          <li data-i18n="ft.city">تهران، ایران</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2025 NONONICK — All rights reserved.</span>
+      <span data-i18n="ft.made">طراحی و توسعه در تهران</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ==================================================================
+   NONONICK — CINEMATIC APP
+   Theme · i18n · Router · Parallax · Storytelling · Data
+   ================================================================== */
+(function () {
+  'use strict';
+
+  /* ---------- THEME ---------- */
+  const savedTheme = localStorage.getItem('nononick-theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('nononick-theme', next);
+  });
+
+  /* ---------- i18n ---------- */
+  const I18N = {
+    fa: {
+      'skip':'پرش به محتوای اصلی',
+      'nav.services':'خدمات','nav.portfolio':'نمونه‌کارها','nav.about':'درباره ما',
+      'nav.blog':'وبلاگ','nav.contact':'تماس با ما','nav.start':'شروع پروژه',
+      'hero.eyebrow':'Nononick Studio — Est. 2018',
+      'hero.tagline':'IMMERSIVE DIGITAL STUDIO',
+      'hero.promise':'ایده خام تا امضای دیجیتال.',
+      'hero.desc':'ما ایده‌های کسب‌وکار را به تجربه‌های دیجیتال مدرن، سریع و قابل رشد تبدیل می‌کنیم.',
+      'hero.cta1':'شروع تجربه ←','hero.cta2':'مشاهده نمونه‌کارها',
+      'tl.eyebrow':'Chapter 02 — The Method','tl.title':'مسیر سه‌گانه نونونیک',
+      'tl.lead':'هر پروژه از شناخت شروع می‌شود، به تبدیل می‌رسد و با رشد به یک دارایی زنده تبدیل می‌گردد.',
+      'tl.s1.num':'۰۱ — شناخت','tl.s1.t':'شناخت','tl.s1.d':'کسب‌وکار، مخاطب و مسئله واقعی شما را می‌شناسیم.',
+      'tl.s2.num':'۰۲ — تبدیل','tl.s2.t':'تبدیل','tl.s2.d':'ایده شما را به ساختار، طراحی و تجربه دیجیتال تبدیل می‌کنیم.',
+      'tl.s3.num':'۰۳ — رشد','tl.s3.t':'رشد','tl.s3.d':'با توسعه، سئو و پشتیبانی، تجربه شما را به یک دارایی زنده تبدیل می‌کنیم.',
+      'wr.eyebrow':'Chapter 03 — Digital Worlds','wr.title':'هر کسب‌وکار، جهان خودش را دارد',
+      'wr.cafe':'کافه و رستوران','wr.jewelry':'طلا و جواهر','wr.fitness':'بدنسازی و ورزش',
+      'wr.education':'آموزش','wr.realestate':'املاک','wr.shop':'فروشگاه','wr.enter':'ورود به این جهان ←',
+      'sys.eyebrow':'Chapter 04 — The System','sys.title':'خدمات، به‌مثابه یک سیستم زنده',
+      'sys.lead':'هر بخش از خدمات ما به دیگری متصل است — طراحی، توسعه، پنل، سئو، اپلیکیشن و رشد.',
+      'sys.design':'طراحی','sys.app':'اپلیکیشن','sys.panel':'پنل مدیریت',
+      'sys.dev':'توسعه','sys.seo':'سئو','sys.growth':'رشد',
+      'ex.eyebrow':'Chapter 05 — The Exhibition','ex.title':'نمایشگاه دیجیتال پروژه‌ها',
+      'ex.lead':'با کلیدهای ← → حرکت کنید. هر پروژه یک صفحه اختصاصی دارد.',
+      'pr.eyebrow':'Chapter 06 — The Process','pr.title':'راهروی نور — شش ایستگاه',
+      'pr.s1':'شناخت','pr.s1d':'بررسی دقیق کسب‌وکار، رقبا و مخاطب هدف شما.',
+      'pr.s2':'استراتژی','pr.s2d':'تعریف مسیر، اولویت‌ها و معماری اطلاعات.',
+      'pr.s3':'طراحی','pr.s3d':'زبان بصری، سیستم دیزاین و تجربه کاربری.',
+      'pr.s4':'توسعه','pr.s4d':'کدنویسی تمیز، سریع و سئو-محور.',
+      'pr.s5':'انتشار','pr.s5d':'راه‌اندازی، تست و بهینه‌سازی نهایی.',
+      'pr.s6':'رشد','pr.s6d':'سئو، محتوا، پشتیبانی و تکامل مستمر.',
+      'fn.eyebrow':'Final Chapter','fn.title':'حالا نوبت ایده شماست',
+      'fn.lead':'ایده‌ای که امروز در ذهن شماست، می‌تواند به تجربه دیجیتال فردای برندتان تبدیل شود.',
+      'fn.cta1':'شروع پروژه ←','fn.cta2':'دریافت مشاوره رایگان',
+      'crumb.home':'خانه',
+      'ab.eyebrow':'About Nononick','ab.h1':'استودیویی برای برندهای بلندپرواز',
+      'ab.lead':'نونونیک یک استودیو دیجیتال غوطه‌ور است. ما به برندها کمک می‌کنیم ایده‌های خام را به امضای دیجیتال خودشان تبدیل کنند — با طراحی، توسعه، سئو و یک سیستم یکپارچه.',
+      'ab.mission.t':'مأموریت ما','ab.mission.d':'هر کسب‌وکار درست، شایسته یک تجربه دیجیتال درست است. ما فاصله میان ایده و اجرا را حذف می‌کنیم.',
+      'ab.approach.t':'رویکرد ما','ab.approach.d':'ما به‌جای صفحات جدا، سیستم می‌سازیم: طراحی، کد، پنل، محتوا و سئو — همه به هم متصل.',
+      'sv.eyebrow':'Our Services','sv.h1':'خدمات نونونیک',
+      'sv.lead':'از ایده تا رشد — هر خدمت بخشی از یک سیستم یکپارچه است که در کنار هم تجربه‌ای زنده می‌سازند.',
+      'sv.custom':'طراحی سایت اختصاصی','sv.ecom':'فروشگاه اینترنتی','sv.landing':'لندینگ‌پیج',
+      'sv.edu':'سایت آموزشی','sv.fit':'سایت بدنسازی','sv.jewel':'سایت طلا و جواهر',
+      'sv.cafe':'سایت کافه و رستوران','sv.real':'سایت املاک','sv.app':'توسعه اپلیکیشن',
+      'sv.panel':'پنل مدیریت اختصاصی','sv.seo':'سئو و تولید محتوا','sv.support':'پشتیبانی و توسعه',
+      'pf.eyebrow':'Portfolio','pf.h1':'نمایشگاه پروژه‌ها',
+      'pf.lead':'مجموعه‌ای از پروژه‌های مفهومی و واقعی. اگر پروژه‌ای مفهومی است، به‌صراحت با برچسب «پروژه مفهومی» مشخص شده است.',
+      'pf.concept':'پروژه مفهومی','pf.real':'پروژه واقعی',
+      'bl.eyebrow':'Journal','bl.h1':'وبلاگ نونونیک',
+      'bl.lead':'یادداشت‌هایی درباره طراحی سایت، سئو، تجربه کاربری و رشد دیجیتال.',
+      'ct.eyebrow':"Let's talk",'ct.h1':'شروع پروژه یا مشاوره رایگان',
+      'ct.lead':'ایده خود را برای ما بنویسید؛ در کوتاه‌ترین زمان پاسخ می‌دهیم.',
+      'ct.name':'نام شما','ct.email':'ایمیل','ct.msg':'پیام / پروژه','ct.send':'ارسال پیام',
+      'ct.side.t':'راه‌های دیگر تماس','ct.side.addr':'تهران، ایران',
+      'ft.tag':'استودیو دیجیتال غوطه‌ور برای برندهای بلندپرواز.',
+      'ft.serv':'خدمات','ft.studio':'استودیو','ft.contact':'ارتباط',
+      'ft.city':'تهران، ایران','ft.made':'طراحی و توسعه در تهران',
+      'form.ok':'✓ پیام شما دریافت شد. به‌زودی پاسخ می‌دهیم.',
+      'form.err':'لطفاً فیلدهای الزامی را تکمیل کنید.',
+      'sd.problem':'مسئله','sd.solution':'راه‌حل نونونیک','sd.features':'ویژگی‌ها',
+      'sd.process':'فرآیند اجرا','sd.faq':'پرسش‌های پرتکرار',
+      'sd.related':'پروژه‌های مرتبط','sd.cta':'شروع این پروژه',
+      'pd.challenge':'چالش','pd.solution':'راه‌حل','pd.system':'سیستم طراحی',
+      'pd.features':'ویژگی‌های کلیدی','pd.related':'خدمت مرتبط','pd.cta':'ساخت پروژه مشابه',
+      'bd.author':'نویسنده','bd.date':'تاریخ','bd.read':'زمان مطالعه',
+      'bd.toc':'فهرست مطالب','bd.related':'مقالات مرتبط','bd.cta':'شروع پروژه با نونونیک',
+    },
+    en: {
+      'skip':'Skip to main content',
+      'nav.services':'Services','nav.portfolio':'Portfolio','nav.about':'About',
+      'nav.blog':'Blog','nav.contact':'Contact','nav.start':'Start a Project',
+      'hero.eyebrow':'Nononick Studio — Est. 2018',
+      'hero.tagline':'IMMERSIVE DIGITAL STUDIO',
+      'hero.promise':'Raw ideas into digital signatures.',
+      'hero.desc':'We transform business ideas into modern, fast, and scalable digital experiences.',
+      'hero.cta1':'Begin the Experience →','hero.cta2':'View Portfolio',
+      'tl.eyebrow':'Chapter 02 — The Method','tl.title':'The Nononick Path',
+      'tl.lead':'Every project starts with understanding, transforms through design, and grows into a living digital asset.',
+      'tl.s1.num':'01 — Understand','tl.s1.t':'Understand','tl.s1.d':'We map your business, audience and the real problem.',
+      'tl.s2.num':'02 — Transform','tl.s2.t':'Transform','tl.s2.d':'We convert your idea into structure, design and digital experience.',
+      'tl.s3.num':'03 — Grow','tl.s3.t':'Grow','tl.s3.d':'Through development, SEO and support, we turn the experience into a living asset.',
+      'wr.eyebrow':'Chapter 03 — Digital Worlds','wr.title':'Every business has its own world',
+      'wr.cafe':'Café & Restaurant','wr.jewelry':'Jewelry','wr.fitness':'Fitness',
+      'wr.education':'Education','wr.realestate':'Real Estate','wr.shop':'Shop','wr.enter':'Enter this world →',
+      'sys.eyebrow':'Chapter 04 — The System','sys.title':'Services as a living system',
+      'sys.lead':'Every part of our service connects to another — design, development, panel, SEO, app and growth.',
+      'sys.design':'Design','sys.app':'App','sys.panel':'Panel',
+      'sys.dev':'Dev','sys.seo':'SEO','sys.growth':'Growth',
+      'ex.eyebrow':'Chapter 05 — The Exhibition','ex.title':'Digital Exhibition of Projects',
+      'ex.lead':'Navigate with ← → keys. Each project has its own page.',
+      'pr.eyebrow':'Chapter 06 — The Process','pr.title':'Corridor of Light — Six Checkpoints',
+      'pr.s1':'Understand','pr.s1d':'Deep analysis of your business, competitors and audience.',
+      'pr.s2':'Strategy','pr.s2d':'Defining path, priorities and information architecture.',
+      'pr.s3':'Design','pr.s3d':'Visual language, design system and user experience.',
+      'pr.s4':'Develop','pr.s4d':'Clean, fast and SEO-driven engineering.',
+      'pr.s5':'Launch','pr.s5d':'Deployment, testing and final optimization.',
+      'pr.s6':'Grow','pr.s6d':'SEO, content, support and continuous evolution.',
+      'fn.eyebrow':'Final Chapter','fn.title':"Now it's your idea's turn",
+      'fn.lead':'The idea in your mind today can become the digital experience of your brand tomorrow.',
+      'fn.cta1':'Start a Project →','fn.cta2':'Free Consultation',
+      'crumb.home':'Home',
+      'ab.eyebrow':'About Nononick','ab.h1':'A studio for ambitious brands',
+      'ab.lead':'Nononick is an immersive digital studio. We help brands turn raw ideas into their own digital signature — through design, development, SEO and one connected system.',
+      'ab.mission.t':'Our Mission','ab.mission.d':'Every serious business deserves a serious digital experience. We remove the gap between idea and execution.',
+      'ab.approach.t':'Our Approach','ab.approach.d':'Instead of separate pages, we build systems: design, code, panel, content and SEO — all connected.',
+      'sv.eyebrow':'Our Services','sv.h1':'Nononick Services',
+      'sv.lead':'From idea to growth — each service is part of one connected system that together creates a living experience.',
+      'sv.custom':'Custom Website Design','sv.ecom':'E-commerce Website','sv.landing':'Landing Page',
+      'sv.edu':'Educational Website','sv.fit':'Fitness Website','sv.jewel':'Jewelry Website',
+      'sv.cafe':'Café & Restaurant Website','sv.real':'Real Estate Website','sv.app':'App Development',
+      'sv.panel':'Custom Admin Panel','sv.seo':'SEO & Content','sv.support':'Support & Growth',
+      'pf.eyebrow':'Portfolio','pf.h1':'Project Exhibition',
+      'pf.lead':'A collection of conceptual and real projects. If a project is conceptual, it is clearly labeled.',
+      'pf.concept':'Concept Project','pf.real':'Real Project',
+      'bl.eyebrow':'Journal','bl.h1':'Nononick Blog',
+      'bl.lead':'Notes on web design, SEO, user experience and digital growth.',
+      'ct.eyebrow':"Let's talk",'ct.h1':'Start a project or request a free consult',
+      'ct.lead':'Write your idea to us; we respond as quickly as possible.',
+      'ct.name':'Your name','ct.email':'Email','ct.msg':'Message / Project','ct.send':'Send Message',
+      'ct.side.t':'Other ways to reach us','ct.side.addr':'Tehran, Iran',
+      'ft.tag':'Immersive digital studio for ambitious brands.',
+      'ft.serv':'Services','ft.studio':'Studio','ft.contact':'Contact',
+      'ft.city':'Tehran, Iran','ft.made':'Designed & engineered in Tehran',
+      'form.ok':'✓ Message received. We will get back to you shortly.',
+      'form.err':'Please complete the required fields.',
+      'sd.problem':'The Problem','sd.solution':'The Nononick Solution','sd.features':'Features',
+      'sd.process':'Process','sd.faq':'FAQ',
+      'sd.related':'Related Projects','sd.cta':'Start this project',
+      'pd.challenge':'Challenge','pd.solution':'Solution','pd.system':'Design System',
+      'pd.features':'Key Features','pd.related':'Related Service','pd.cta':'Build something similar',
+      'bd.author':'Author','bd.date':'Date','bd.read':'Read time',
+      'bd.toc':'Table of Contents','bd.related':'Related Articles','bd.cta':'Start a project with Nononick',
+    }
+  };
+
+  let LANG = localStorage.getItem('nononick-lang') || 'fa';
+  const t = k => (I18N[LANG] && I18N[LANG][k]) || k;
+  const pick = o => o && (o[LANG] || o.fa || o.en || '');
+
+  /* ---------- DATA ---------- */
+  const SERVICES = [
+    { slug:'custom-website-design', label:{fa:'طراحی سایت اختصاصی',en:'Custom Website Design'},
+      promise:{fa:'سایتی که فقط شما دارید.',en:'A website that is only yours.'},
+      problem:{fa:'قالب‌های آماده شما را شبیه هزاران سایت دیگر می‌کنند.',en:'Ready-made templates make you look like thousands of others.'},
+      solution:{fa:'ما از صفر، متناسب با کسب‌وکار شما، طراحی و کد می‌نویسیم.',en:'We design and code from scratch, tailored to your business.'},
+      features:{fa:['طراحی اختصاصی','کدنویسی تمیز','سئو فنی','ریسپانسیو کامل','سرعت بالا','پنل مدیریت'],en:['Custom design','Clean code','Technical SEO','Fully responsive','High performance','Admin panel']} },
+    { slug:'ecommerce-website', label:{fa:'طراحی فروشگاه اینترنتی',en:'E-commerce Website'},
+      promise:{fa:'فروشگاه دیجیتال شما، ویترین آینده برندتان است.',en:'Your digital store is the future showcase of your brand.'},
+      problem:{fa:'یک فروشگاه اینترنتی باید هم برای مشتری جذاب باشد و هم برای مدیر قابل کنترل.',en:'An online store must delight customers and remain controllable.'},
+      solution:{fa:'سیستم فروشگاهی یکپارچه با مدیریت محصول، سبد خرید، پرداخت و داشبورد.',en:'A unified commerce system with products, cart, payment and dashboard.'},
+      features:{fa:['مدیریت محصولات','دسته‌بندی','فیلترها','سبد خرید','پرداخت آنلاین','داشبورد سفارش','کد تخفیف','موجودی','صفحات محصول سئو-محور','ریسپانسیو'],en:['Product management','Categories','Filters','Cart','Online payment','Order dashboard','Coupons','Inventory','SEO-ready pages','Responsive']} },
+    { slug:'landing-page', label:{fa:'طراحی لندینگ‌پیج',en:'Landing Page'},
+      promise:{fa:'یک صفحه، یک هدف، نتیجه سریع.',en:'One page. One goal. Fast results.'},
+      problem:{fa:'کمپین‌ها بدون صفحه فرود اختصاصی، نرخ تبدیل پایینی دارند.',en:'Campaigns without a dedicated landing page suffer low conversion.'},
+      solution:{fa:'لندینگ‌پیج متمرکز روی یک اقدام، با سرعت و پیام دقیق.',en:'A focused landing page on one action, with speed and a precise message.'},
+      features:{fa:['پیام متمرکز','CTA بهینه','A/B Ready','فرم‌های هوشمند','سرعت بالا','تحلیل رفتار'],en:['Focused message','Optimized CTA','A/B Ready','Smart forms','High speed','Analytics']} },
+    { slug:'educational-website', label:{fa:'طراحی سایت آموزشی',en:'Educational Website'},
+      promise:{fa:'یادگیری، درست مثل تجربه‌ای که باید باشد.',en:'Learning, exactly as the experience should be.'},
+      problem:{fa:'محتوای آموزشی بدون ساختار، کاربر را خسته می‌کند.',en:'Unstructured content exhausts the learner.'},
+      solution:{fa:'سیستم آموزشی با مسیر یادگیری، پیشرفت و ارزیابی.',en:'A learning system with pathways, progress and assessment.'},
+      features:{fa:['دوره‌ها','مسیر یادگیری','آزمون','گواهی','پنل مدرس','پنل دانشجو','پرداخت'],en:['Courses','Learning paths','Quizzes','Certificates','Instructor panel','Student panel','Payment']} },
+    { slug:'fitness-website', label:{fa:'طراحی سایت بدنسازی',en:'Fitness Website'},
+      promise:{fa:'انرژی، سرعت و حرکت — روی سایت شما.',en:'Energy, speed and motion — on your site.'},
+      problem:{fa:'باشگاه‌ها اغلب فقط یک صفحه اینستاگرام دارند.',en:'Gyms often only have an Instagram page.'},
+      solution:{fa:'سایت باشگاه با برنامه‌ها، مربیان، ثبت‌نام و پنل.',en:'A gym website with programs, coaches, registration and panel.'},
+      features:{fa:['برنامه‌ها','مربیان','ثبت‌نام آنلاین','پنل اعضا','فروشگاه مکمل','گالری'],en:['Programs','Coaches','Online signup','Member panel','Supplement shop','Gallery']} },
+    { slug:'jewelry-website', label:{fa:'طراحی سایت طلا و جواهر',en:'Jewelry Website'},
+      promise:{fa:'درخشش، بدون شلوغی.',en:'Radiance, without clutter.'},
+      problem:{fa:'جواهرات لوکس در سایت‌های معمولی زشت دیده می‌شوند.',en:'Luxury jewelry looks wrong on ordinary websites.'},
+      solution:{fa:'ویترین مینیمال با عکاسی بزرگ، جزئیات و تجربه خرید امن.',en:'A minimal showcase with large photography and secure checkout.'},
+      features:{fa:['گالری حرفه‌ای','جزئیات محصول','سبد خرید','پرداخت امن','نشان اصالت','ریسپانسیو'],en:['Pro gallery','Product detail','Cart','Secure payment','Authenticity','Responsive']} },
+    { slug:'cafe-restaurant-website', label:{fa:'طراحی سایت کافه و رستوران',en:'Café & Restaurant Website'},
+      promise:{fa:'منو، بو، و نور — روی صفحه.',en:'Menu, scent and light — on screen.'},
+      problem:{fa:'مشتری قبل از رسیدن، منو و فضای شما را می‌خواهد ببیند.',en:'Before arriving, customers want to see your menu and space.'},
+      solution:{fa:'سایت کافه با منوی دیجیتال، رزرو و تجربه بصری گرم.',en:'A café site with digital menu, reservation and warm visuals.'},
+      features:{fa:['منوی دیجیتال','رزرو میز','گالری','نقشه','شبکه‌های اجتماعی'],en:['Digital menu','Table booking','Gallery','Map','Social links']} },
+    { slug:'real-estate-website', label:{fa:'طراحی سایت املاک',en:'Real Estate Website'},
+      promise:{fa:'معماری داده و نقشه، در یک تجربه.',en:'Architecture of data and maps, in one experience.'},
+      problem:{fa:'جستجوی ملک بدون فیلتر هوشمند، تجربه‌ای خسته‌کننده است.',en:'Property search without smart filters is exhausting.'},
+      solution:{fa:'سیستم املاک با فیلتر پیشرفته، نقشه و پنل مشاور.',en:'A real estate system with advanced filters, map and agent panel.'},
+      features:{fa:['فیلتر پیشرفته','نقشه','گالری','پنل مشاور','مقایسه','درخواست بازدید'],en:['Advanced filters','Map','Gallery','Agent panel','Compare','Visit request']} },
+    { slug:'app-development', label:{fa:'توسعه اپلیکیشن',en:'App Development'},
+      promise:{fa:'اپلیکیشنی که بخشی از زندگی روزمره می‌شود.',en:'An app that becomes part of daily life.'},
+      problem:{fa:'اپ‌های بدون معماری درست، سریع شکست می‌خورند.',en:'Apps without proper architecture fail quickly.'},
+      solution:{fa:'طراحی و توسعه اپ با معماری ماژولار و تجربه روان.',en:'App design and development with modular architecture.'},
+      features:{fa:['طراحی UX','توسعه iOS/Android','API','اعلان','آنالیتیکس','پشتیبانی'],en:['UX design','iOS/Android dev','API','Notifications','Analytics','Support']} },
+    { slug:'admin-dashboard', label:{fa:'پنل مدیریت اختصاصی',en:'Custom Admin Panel'},
+      promise:{fa:'کنترل کامل، بدون پیچیدگی.',en:'Full control, without complexity.'},
+      problem:{fa:'پنل‌های آماده معمولاً متناسب با کسب‌وکار شما نیستند.',en:'Off-the-shelf panels rarely fit your business.'},
+      solution:{fa:'پنلی که دقیقاً برای گردش کار شما ساخته می‌شود.',en:'A panel built exactly for your workflow.'},
+      features:{fa:['نقش‌ها و دسترسی‌ها','گزارش‌ها','فیلترها','ورود امن','صادرات','اتصال API'],en:['Roles & permissions','Reports','Filters','Secure login','Export','API integration']} },
+    { slug:'seo', label:{fa:'سئو و تولید محتوا',en:'SEO & Content'},
+      promise:{fa:'دیده شدن، نتیجه دیده شدن.',en:'Being seen — the result of being visible.'},
+      problem:{fa:'سایت زیبا بدون سئو، دیده نمی‌شود.',en:'A beautiful site without SEO is invisible.'},
+      solution:{fa:'سئو فنی، محتوا و بهینه‌سازی مستمر.',en:'Technical SEO, content and continuous optimization.'},
+      features:{fa:['سئو فنی','تحقیق کلمات کلیدی','تولید محتوا','لینک‌سازی','آنالیتیکس','گزارش ماهانه'],en:['Technical SEO','Keyword research','Content','Link building','Analytics','Monthly reports']} },
+    { slug:'support', label:{fa:'پشتیبانی و توسعه',en:'Support & Growth'},
+      promise:{fa:'رشد، متوقف نمی‌شود.',en:'Growth does not stop.'},
+      problem:{fa:'سایت بدون پشتیبانی، در نهایت فرسوده می‌شود.',en:'A site without support eventually erodes.'},
+      solution:{fa:'پشتیبانی مستمر، بهبود و افزودن امکانات جدید.',en:'Continuous support, improvements and new features.'},
+      features:{fa:['پشتیبانی فنی','به‌روزرسانی','بهینه‌سازی سرعت','افزودن امکانات','مشاوره','گزارش'],en:['Technical support','Updates','Speed optimization','New features','Consulting','Reports']} },
+  ];
+
+  const PORTFOLIO = [
+    { slug:'cafe-restaurant', cls:'cafe', concept:true,
+      title:{fa:'قهوه‌خانه مدرن',en:'Modern Coffee House'},
+      type:{fa:'کافه و رستوران',en:'Café & Restaurant'},
+      challenge:{fa:'فضای گرم کافه در یک سایت سرد دیده نمی‌شد.',en:'The warm café atmosphere was invisible on a cold website.'},
+      solution:{fa:'طراحی سایت با منوی دیجیتال، گالری فضای کافه و تجربه رزرو آسان.',en:'A site with digital menu, gallery and easy booking.'},
+      features:{fa:['منوی دیجیتال','رزرو میز','گالری','نقشه'],en:['Digital menu','Table booking','Gallery','Map']},
+      relatedService:'cafe-restaurant-website' },
+    { slug:'jewelry', cls:'jewelry', concept:true,
+      title:{fa:'ویترین جواهرات',en:'Jewelry Showcase'},
+      type:{fa:'طلا و جواهر',en:'Jewelry'},
+      challenge:{fa:'نمایش جواهر بدون عکاسی و فضای مینیمال، جذاب نیست.',en:'Jewelry without photography and minimal space is not appealing.'},
+      solution:{fa:'ویترین مینیمال، تیره و درخشان با تمرکز روی جزئیات.',en:'A minimal, dark and luminous showcase focused on detail.'},
+      features:{fa:['گالری','جزئیات محصول','نشان اصالت'],en:['Gallery','Product detail','Authenticity mark']},
+      relatedService:'jewelry-website' },
+    { slug:'fitness', cls:'fitness', concept:true,
+      title:{fa:'باشگاه انرژی',en:'Energy Gym'},
+      type:{fa:'بدنسازی و ورزش',en:'Fitness & Sport'},
+      challenge:{fa:'باشگاه‌ها در رقابت بصری گم می‌شوند.',en:'Gyms get lost in visual competition.'},
+      solution:{fa:'سایت پرانرژی با خطوط تیز، برنامه‌ها و پنل اعضا.',en:'A high-energy site with sharp lines, programs and member panel.'},
+      features:{fa:['برنامه‌ها','مربیان','پنل اعضا'],en:['Programs','Coaches','Member panel']},
+      relatedService:'fitness-website' },
+    { slug:'real-estate', cls:'realestate', concept:true,
+      title:{fa:'املاک هوشمند',en:'Smart Real Estate'},
+      type:{fa:'املاک',en:'Real Estate'},
+      challenge:{fa:'جستجوی ملک با تجربه‌ای کند و گیج‌کننده.',en:'Property search with a slow and confusing experience.'},
+      solution:{fa:'سیستم املاک با فیلتر پیشرفته، نقشه و پنل مشاور.',en:'A system with advanced filters, map and agent panel.'},
+      features:{fa:['فیلتر پیشرفته','نقشه','درخواست بازدید'],en:['Advanced filters','Map','Visit request']},
+      relatedService:'real-estate-website' },
+    { slug:'education', cls:'education', concept:true,
+      title:{fa:'آکادمی آینده',en:'Future Academy'},
+      type:{fa:'آموزش',en:'Education'},
+      challenge:{fa:'مسیر یادگیری پراکنده و گیج‌کننده.',en:'Fragmented and confusing learning path.'},
+      solution:{fa:'پلتفرم آموزشی با مسیر مشخص و پیشرفت قابل مشاهده.',en:'A learning platform with clear path and visible progress.'},
+      features:{fa:['دوره‌ها','مسیر یادگیری','پنل دانشجو'],en:['Courses','Learning path','Student panel']},
+      relatedService:'educational-website' },
+  ];
+
+  const BLOG = [
+    { slug:'what-is-custom-website',
+      title:{fa:'سایت اختصاصی چیست و چرا مهم است؟',en:'What is a custom website and why does it matter?'},
+      excerpt:{fa:'تفاوت سایت اختصاصی با قالب آماده، در تجربه کاربر و رشد کسب‌وکار است.',en:'The difference between a custom site and a template lies in user experience and business growth.'},
+      author:{fa:'تیم نونونیک',en:'Nononick Team'},
+      date:{fa:'۱۴۰۳/۰۹/۱۵',en:'Dec 05, 2024'}, read:6,
+      body:{fa:'<h2>سایت اختصاصی چیست؟</h2><p>سایت اختصاصی، از صفر برای کسب‌وکار شما طراحی و کد می‌شود. هیچ محدودیتی از قالب آماده وجود ندارد و هر جزء بر اساس نیاز شما شکل می‌گیرد.</p><h3>چرا مهم است؟</h3><p>چون تجربه کاربر، سرعت، سئو و پنل مدیریت همه به یکدیگر متصل هستند.</p><h3>چه زمانی به آن نیاز دارید؟</h3><p>وقتی برند شما از یک نقطه مشخص عبور می‌کند و می‌خواهد از رقبا فاصله بگیرد.</p>',
+             en:'<h2>What is a custom website?</h2><p>A custom website is designed and coded from scratch for your business. No template constraints — every part is shaped around your needs.</p><h3>Why it matters</h3><p>Because user experience, performance, SEO and admin panel are all connected.</p><h3>When do you need one?</h3><p>When your brand crosses a threshold and wants to distance itself from competitors.</p>'} },
+    { slug:'ecommerce-website-guide',
+      title:{fa:'راهنمای کامل ساخت فروشگاه اینترنتی',en:'Complete guide to building an online store'},
+      excerpt:{fa:'از انتخاب پلتفرم تا پرداخت، همه چیز که باید بدانید.',en:'From platform choice to payments — everything you need to know.'},
+      author:{fa:'تیم نونونیک',en:'Nononick Team'},
+      date:{fa:'۱۴۰۳/۰۹/۰۲',en:'Nov 22, 2024'}, read:9,
+      body:{fa:'<h2>شروع فروشگاه اینترنتی</h2><p>اول باید مشخص کنید چه می‌فروشید، به چه کسی، و با چه تجربه‌ای.</p><h3>اجزای ضروری</h3><ul><li>مدیریت محصول</li><li>سبد خرید روان</li><li>پرداخت امن</li><li>داشبورد سفارش</li></ul>',
+             en:'<h2>Starting an online store</h2><p>First define what you sell, to whom, and with what experience.</p><h3>Essential parts</h3><ul><li>Product management</li><li>Smooth cart</li><li>Secure payment</li><li>Order dashboard</li></ul>'} },
+    { slug:'seo-for-business',
+      title:{fa:'سئو برای کسب‌وکارهای کوچک',en:'SEO for small businesses'},
+      excerpt:{fa:'قدم‌های عملی که در سه ماه اول باید انجام دهید.',en:'Actionable steps for the first three months.'},
+      author:{fa:'تیم نونونیک',en:'Nononick Team'},
+      date:{fa:'۱۴۰۳/۰۸/۲۰',en:'Nov 10, 2024'}, read:7,
+      body:{fa:'<h2>سئو از کجا شروع می‌شود؟</h2><p>از کلمات کلیدی که مشتریان واقعی جستجو می‌کنند.</p><h3>اولویت‌ها</h3><ul><li>سئو فنی</li><li>محتوا</li><li>سرعت</li></ul>',
+             en:'<h2>Where does SEO start?</h2><p>With the keywords real customers search for.</p><h3>Priorities</h3><ul><li>Technical SEO</li><li>Content</li><li>Speed</li></ul>'} },
+    { slug:'responsive-web-design',
+      title:{fa:'طراحی ریسپانسیو در ۲۰۲۵',en:'Responsive design in 2025'},
+      excerpt:{fa:'موبایل‌محور بودن دیگر یک گزینه نیست، یک ضرورت است.',en:'Mobile-first is no longer optional — it is essential.'},
+      author:{fa:'تیم نونونیک',en:'Nononick Team'},
+      date:{fa:'۱۴۰۳/۰۸/۰۵',en:'Oct 27, 2024'}, read:5,
+      body:{fa:'<h2>چرا موبایل‌محور؟</h2><p>بیش از ۷۰٪ ترافیک سایت‌ها از موبایل است.</p>',
+             en:'<h2>Why mobile-first?</h2><p>Over 70% of traffic is mobile.</p>'} },
+  ];
+
+  /* ---------- ROUTING ---------- */
+  function routeFor(name, slug){
+    if (name === 'service-detail')   return '/' + LANG + '/services/' + slug;
+    if (name === 'portfolio-detail') return '/' + LANG + '/portfolio/' + slug;
+    if (name === 'blog-detail')      return '/' + LANG + '/blog/' + slug;
+    return '/' + LANG + (name === 'home' ? '/' : '/' + name);
+  }
+  function parsePath(){
+    let p = location.hash.startsWith('#/') ? location.hash.slice(1) : location.pathname;
+    p = p.replace(/\/index\.html$/, '/');
+    const parts = p.split('/').filter(Boolean);
+    if (parts[0] === 'fa' || parts[0] === 'en') { LANG = parts[0]; parts.shift(); }
+    if (!parts.length) return { name:'home' };
+    const [a, b] = parts;
+    if (a === 'services'  && b) return { name:'service-detail',   slug:b };
+    if (a === 'services')       return { name:'services' };
+    if (a === 'portfolio' && b) return { name:'portfolio-detail', slug:b };
+    if (a === 'portfolio')      return { name:'portfolio' };
+    if (a === 'blog'      && b) return { name:'blog-detail',      slug:b };
+    if (a === 'blog')           return { name:'blog' };
+    if (a === 'about')          return { name:'about' };
+    if (a === 'contact')        return { name:'contact' };
+    return { name:'home' };
+  }
+
+  function navigate(name, slug){
+    const url = routeFor(name, slug);
+    try { history.pushState({ name, slug }, '', url); }
+    catch (e) { location.hash = '#' + url; }
+    render(name, slug);
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  /* ---------- RENDERERS ---------- */
+  function renderServiceList(container){
+    container.innerHTML = SERVICES.map(s => `
+      <button class="system__item" data-route="service-detail" data-slug="${s.slug}">
+        <span></span>${pick(s.label)}
+      </button>`).join('');
+  }
+  function renderPortfolioGrid(container){
+    container.innerHTML = PORTFOLIO.map(p => `
+      <button class="post" data-route="portfolio-detail" data-slug="${p.slug}">
+        <div class="post__thumb"></div>
+        <div class="post__body">
+          <p class="post__meta">${pick(p.type)} — ${p.concept ? t('pf.concept') : t('pf.real')}</p>
+          <h3 class="post__title">${pick(p.title)}</h3>
+        </div>
+      </button>`).join('');
+  }
+  function renderExhibit(container){
+    container.innerHTML = PORTFOLIO.map((p, i) => `
+      <button class="exhibit__card exhibit__card--${p.cls}"
+        data-route="portfolio-detail" data-slug="${p.slug}">
+        <div>
+          <p class="exhibit__meta">Case ${String(i+1).padStart(2,'0')} — ${pick(p.type)}</p>
+          <h3 class="exhibit__title">${pick(p.title)}</h3>
+        </div>
+        <span class="exhibit__tag">${p.concept ? t('pf.concept') : t('pf.real')}</span>
+      </button>`).join('');
+  }
+  function renderBlogGrid(container){
+    container.innerHTML = BLOG.map(b => `
+      <button class="post" data-route="blog-detail" data-slug="${b.slug}">
+        <div class="post__thumb"></div>
+        <div class="post__body">
+          <p class="post__meta">${pick(b.author)} · ${pick(b.date)} · ${b.read} ${LANG === 'fa' ? 'دقیقه' : 'min'}</p>
+          <h3 class="post__title">${pick(b.title)}</h3>
+          <p class="post__excerpt">${pick(b.excerpt)}</p>
+        </div>
+      </button>`).join('');
+  }
+
+  function renderServiceDetail(root, slug){
+    const s = SERVICES.find(x => x.slug === slug);
+    if (!s) { root.innerHTML = '<div class="container page-hero"><h1>Not found</h1></div>'; return; }
+    const related = PORTFOLIO.filter(p => p.relatedService === s.slug);
+    root.innerHTML = `
+      <div class="container page-hero">
+        <nav class="page-hero__crumbs" aria-label="Breadcrumb">
+          <button data-route="home">${t('crumb.home')}</button><span>/</span>
+          <button data-route="services">${t('nav.services')}</button><span>/</span>
+          <span>${pick(s.label)}</span>
+        </nav>
+        <p class="eyebrow">Service — ${s.slug}</p>
+        <h1>${pick(s.label)}</h1>
+        <p class="lead">${pick(s.promise)}</p>
+        <div class="hero__cta" style="margin-top:2rem">
+          <button class="btn btn--primary" data-route="contact">${t('sd.cta')} ←</button>
+        </div>
+      </div>
+      <section class="section"><div class="container grid-2">
+        <div class="reveal glass" style="padding:2rem">
+          <p class="eyebrow">${t('sd.problem')}</p>
+          <h2>${t('sd.problem')}</h2>
+          <p>${pick(s.problem)}</p>
+        </div>
+        <div class="reveal glass" style="padding:2rem">
+          <p class="eyebrow">${t('sd.solution')}</p>
+          <h2>${t('sd.solution')}</h2>
+          <p>${pick(s.solution)}</p>
+        </div>
+      </div></section>
+      <section class="section"><div class="container">
+        <div class="section__head"><p class="eyebrow">${t('sd.features')}</p><h2>${t('sd.features')}</h2></div>
+        <ul class="feature-list">${pick(s.features).map(f => `<li>${f}</li>`).join('')}</ul>
+      </div></section>
+      ${related.length ? `
+      <section class="section"><div class="container">
+        <div class="section__head"><p class="eyebrow">${t('sd.related')}</p><h2>${t('sd.related')}</h2></div>
+        <div class="blog-grid"></div>
+      </div></section>` : ''}
+      <section class="section"><div class="container">
+        <div class="section__head"><p class="eyebrow">FAQ</p><h2>${t('sd.faq')}</h2></div>
+        <div class="faq">
+          <details><summary>${LANG === 'fa' ? 'چه مدت زمان نیاز است؟' : 'How long does it take?'}</summary>
+            <p>${LANG === 'fa' ? 'بسته به حجم پروژه، معمولاً بین ۴ تا ۱۲ هفته.' : 'Depending on scope, typically 4–12 weeks.'}</p></details>
+          <details><summary>${LANG === 'fa' ? 'آیا پشتیبانی دارید؟' : 'Do you provide support?'}</summary>
+            <p>${LANG === 'fa' ? 'بله، پشتیبانی و توسعه مستمر بخشی از خدمات ما است.' : 'Yes, continuous support and development is part of our service.'}</p></details>
+          <details><summary>${LANG === 'fa' ? 'هزینه چگونه محاسبه می‌شود؟' : 'How is the price calculated?'}</summary>
+            <p>${LANG === 'fa' ? 'بر اساس دامنه، پیچیدگی و زمان‌بندی پروژه.' : 'Based on scope, complexity and timeline.'}</p></details>
+        </div>
+      </div></section>
+      <section class="final">
+        <div class="container"><div class="final__panel glass reveal">
+          <h2>${t('fn.title')}</h2>
+          <div class="hero__cta" style="justify-content:center">
+            <button class="btn btn--primary" data-route="contact">${t('sd.cta')} ←</button>
+          </div>
+        </div></div>
+      </section>`;
+    const grid = root.querySelector('.blog-grid');
+    if (grid) renderPortfolioGrid(grid);
+  }
+
+  function renderPortfolioDetail(root, slug){
+    const p = PORTFOLIO.find(x => x.slug === slug);
+    if (!p) { root.innerHTML = '<div class="container page-hero"><h1>Not found</h1></div>'; return; }
+    root.innerHTML = `
+      <div class="container page-hero">
+        <nav class="page-hero__crumbs" aria-label="Breadcrumb">
+          <button data-route="home">${t('crumb.home')}</button><span>/</span>
+          <button data-route="portfolio">${t('nav.portfolio')}</button><span>/</span>
+          <span>${pick(p.title)}</span>
+        </nav>
+        <p class="eyebrow">${pick(p.type)} — ${p.concept ? t('pf.concept') : t('pf.real')}</p>
+        <h1>${pick(p.title)}</h1>
+      </div>
+      <section class="section"><div class="container grid-2">
+        <div class="glass reveal" style="padding:2rem">
+          <p class="eyebrow">${t('pd.challenge')}</p>
+          <h2>${t('pd.challenge')}</h2>
+          <p>${pick(p.challenge)}</p>
+        </div>
+        <div class="glass reveal" style="padding:2rem">
+          <p class="eyebrow">${t('pd.solution')}</p>
+          <h2>${t('pd.solution')}</h2>
+          <p>${pick(p.solution)}</p>
+        </div>
+      </div></section>
+      <section class="section"><div class="container">
+        <div class="section__head"><p class="eyebrow">${t('pd.features')}</p><h2>${t('pd.features')}</h2></div>
+        <ul class="feature-list">${pick(p.features).map(f => `<li>${f}</li>`).join('')}</ul>
+      </div></section>
+      <section class="section"><div class="container">
+        <div class="section__head"><p class="eyebrow">${t('pd.related')}</p><h2>${t('pd.related')}</h2></div>
+        <button class="system__item" style="max-width:400px" data-route="service-detail" data-slug="${p.relatedService}">
+          <span></span>${pick(SERVICES.find(s => s.slug === p.relatedService).label)}
+        </button>
+      </div></section>
+      <section class="final"><div class="container"><div class="final__panel glass">
+        <h2>${t('fn.title')}</h2>
+        <div class="hero__cta" style="justify-content:center">
+          <button class="btn btn--primary" data-route="contact">${t('pd.cta')} ←</button>
+        </div>
+      </div></div></section>`;
+  }
+
+  function renderBlogDetail(root, slug){
+    const b = BLOG.find(x => x.slug === slug);
+    if (!b) { root.innerHTML = '<div class="container page-hero"><h1>Not found</h1></div>'; return; }
+    const related = BLOG.filter(x => x.slug !== slug).slice(0, 3);
+    root.innerHTML = `
+      <div class="container page-hero" style="max-width:820px">
+        <nav class="page-hero__crumbs" aria-label="Breadcrumb">
+          <button data-route="home">${t('crumb.home')}</button><span>/</span>
+          <button data-route="blog">${t('nav.blog')}</button><span>/</span>
+          <span>${pick(b.title)}</span>
+        </nav>
+        <p class="eyebrow">${t('bd.read')}: ${b.read} ${LANG === 'fa' ? 'دقیقه' : 'min'}</p>
+        <h1>${pick(b.title)}</h1>
+        <p class="lead" style="color:var(--text-3);font-size:.9rem;font-family:var(--font-mono)">
+          ${t('bd.author')}: ${pick(b.author)} · ${t('bd.date')}: ${pick(b.date)}
+        </p>
+      </div>
+      <article class="section"><div class="container" style="max-width:820px">
+        <div class="glass" style="padding:2rem">${pick(b.body)}</div>
+      </div></article>
+      <section class="section"><div class="container">
+        <div class="section__head"><p class="eyebrow">${t('bd.related')}</p><h2>${t('bd.related')}</h2></div>
+        <div class="blog-grid"></div>
+      </div></section>
+      <section class="final"><div class="container"><div class="final__panel glass">
+        <h2>${t('bd.cta')}</h2>
+        <div class="hero__cta" style="justify-content:center">
+          <button class="btn btn--primary" data-route="contact">${t('nav.start')} ←</button>
+        </div>
+      </div></div></section>`;
+    const grid = root.querySelector('.blog-grid');
+    if (grid) {
+      grid.innerHTML = related.map(r => `
+        <button class="post" data-route="blog-detail" data-slug="${r.slug}">
+          <div class="post__thumb"></div>
+          <div class="post__body">
+            <p class="post__meta">${pick(r.date)}</p>
+            <h3 class="post__title">${pick(r.title)}</h3>
+          </div>
+        </button>`).join('');
+    }
+  }
+
+  /* ---------- MAIN RENDER ---------- */
+  function render(name, slug){
+    document.documentElement.lang = LANG;
+    document.documentElement.dir = LANG === 'fa' ? 'rtl' : 'ltr';
+    document.querySelectorAll('[data-lang]').forEach(b =>
+      b.classList.toggle('is-active', b.dataset.lang === LANG));
+    document.title = LANG === 'fa'
+      ? 'نونونیک — استودیو دیجیتال غوطه‌ور'
+      : 'Nononick — Immersive Digital Studio';
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      el.textContent = t(el.dataset.i18n);
+    });
+
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('is-active'));
+    const view = document.querySelector(`[data-view="${name}"]`);
+    if (view) view.classList.add('is-active');
+
+    document.querySelectorAll('[data-list="services"]').forEach(renderServiceList);
+    const pfGrid = document.querySelector('[data-view="portfolio"] [data-list="portfolio"]');
+    if (pfGrid) renderPortfolioGrid(pfGrid);
+    const blGrid = document.querySelector('[data-view="blog"] [data-list="blog"]');
+    if (blGrid) renderBlogGrid(blGrid);
+    const exhibit = document.querySelector('.exhibit');
+    if (exhibit) renderExhibit(exhibit);
+
+    if (name === 'service-detail')
+      renderServiceDetail(document.querySelector('[data-view="service-detail"]'), slug);
+    if (name === 'portfolio-detail')
+      renderPortfolioDetail(document.querySelector('[data-view="portfolio-detail"]'), slug);
+    if (name === 'blog-detail')
+      renderBlogDetail(document.querySelector('[data-view="blog-detail"]'), slug);
+
+    document.querySelectorAll('.nav__link').forEach(l => {
+      const r = l.dataset.route;
+      l.classList.toggle('is-active', r === name ||
+        (name === 'service-detail'   && r === 'services') ||
+        (name === 'portfolio-detail' && r === 'portfolio') ||
+        (name === 'blog-detail'      && r === 'blog'));
+    });
+
+    bindObservers();
+    bindParallax();
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  /* ---------- OBSERVERS ---------- */
+  let currentObservers = [];
+  function bindObservers(){
+    currentObservers.forEach(o => o.disconnect());
+    currentObservers = [];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.querySelectorAll('.reveal:not(.is-visible)').forEach(el => {
+      if (reduce) { el.classList.add('is-visible'); return; }
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+      io.observe(el);
+      currentObservers.push(io);
+    });
+
+    const steps = document.querySelectorAll('.timeline__step');
+    const stage = document.querySelector('.timeline__stage');
+    if (steps.length && stage) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            steps.forEach(s => s.classList.toggle('is-active', s === entry.target));
+            stage.dataset.step = entry.target.dataset.step;
+          }
+        });
+      }, { rootMargin: '-45% 0px -45% 0px' });
+      steps.forEach(s => io.observe(s));
+      currentObservers.push(io);
+    }
+
+    const cStages = document.querySelectorAll('.corridor__stage');
+    if (cStages.length) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting)
+            cStages.forEach(s => s.classList.toggle('is-active', s === entry.target));
+        });
+      }, { rootMargin: '-40% 0px -40% 0px' });
+      cStages.forEach(s => io.observe(s));
+      currentObservers.push(io);
+    }
+  }
+
+  /* ---------- PARALLAX ---------- */
+  let parallaxBound = false;
+  function bindParallax(){
+    if (parallaxBound) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    parallaxBound = true;
+    const layers = Array.from(document.querySelectorAll('.parallax[data-speed]'));
+    let ticking = false;
+    function update(){
+      const y = window.scrollY;
+      if (y > window.innerHeight * 1.6) { ticking = false; return; }
+      layers.forEach(l => {
+        const speed = parseFloat(l.dataset.speed) || 0;
+        l.style.transform = `translate3d(0, ${y * speed}px, 0)`;
+      });
+      ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+  }
+
+  /* ---------- EVENTS ---------- */
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-route]');
+    if (!el) return;
+    e.preventDefault();
+    navigate(el.dataset.route, el.dataset.slug);
+    document.querySelector('.nav__menu')?.classList.remove('is-open');
+    document.querySelector('.nav__toggle')?.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  });
+
+  document.querySelectorAll('[data-lang]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const next = btn.dataset.lang;
+      if (next === LANG) return;
+      LANG = next;
+      localStorage.setItem('nononick-lang', LANG);
+      const cur = parsePath();
+      navigate(cur.name, cur.slug);
+    });
+  });
+
+  const toggle = document.querySelector('.nav__toggle');
+  const menu = document.querySelector('.nav__menu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      menu.classList.toggle('is-open', !open);
+      document.body.style.overflow = !open ? 'hidden' : '';
+    });
+  }
+
+  const nav = document.querySelector('.nav');
+  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 20);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  document.addEventListener('keydown', e => {
+    const ex = document.querySelector('.exhibit');
+    if (!ex) return;
+    if (document.activeElement !== ex && !ex.contains(document.activeElement)) return;
+    if (e.key === 'ArrowRight') ex.scrollBy({ left: 340, behavior: 'smooth' });
+    if (e.key === 'ArrowLeft')  ex.scrollBy({ left: -340, behavior: 'smooth' });
+  });
+
+  document.addEventListener('submit', e => {
+    const form = e.target.closest('.form');
+    if (!form) return;
+    e.preventDefault();
+    const req = form.querySelectorAll('[required]');
+    let ok = true;
+    req.forEach(f => {
+      if (!f.value.trim()) { ok = false; f.setAttribute('aria-invalid','true'); }
+      else f.removeAttribute('aria-invalid');
+    });
+    const status = form.querySelector('.form__status');
+    if (status) status.textContent = ok ? t('form.ok') : t('form.err');
+    if (ok) form.reset();
+  });
+
+  window.addEventListener('popstate', () => {
+    const r = parsePath();
+    render(r.name, r.slug);
+  });
+
+  /* ---------- BOOT ---------- */
+  document.body.classList.add('is-loaded');
+  const initial = parsePath();
+  if (!/^\/(fa|en)/.test(location.pathname) && !location.hash.startsWith('#/')) {
+    try { history.replaceState({}, '', '/fa/'); } catch(e){}
+  }
+  render(initial.name, initial.slug);
+})();
+</script>
+</body>
+</html>

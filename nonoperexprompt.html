@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nononick — استودیوی دیجیتال غوطه‌ور | ایده خام تا امضای دیجیتال</title>
+<meta name="description" content="نونونیک ایده‌های کسب‌وکار را به تجربه‌های دیجیتال مدرن، سریع و قابل رشد تبدیل می‌کند.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Unbounded:wght@300;500;700&family=Space+Grotesk:wght@400;500;700&family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --paper:#f3f6f9; --paper2:#e9eef4; --ink:#0c1c2b; --ink2:#43596d; --line:#d3dee9;
+  --cy:#10d4e8; --cy2:#7deefb; --cyd:#0891b2; --hot:#ff7a3b; --hot2:#ff9a63;
+  --glass:rgba(255,255,255,.58); --gbrd:rgba(110,190,225,.5);
+  --ease:cubic-bezier(.22,.61,.21,1);
+  --fd:'Lalezar','Unbounded',sans-serif; --fb:'Vazirmatn','Space Grotesk',sans-serif;
+  --fdl:'Unbounded','Lalezar',sans-serif;
+}
+html[dir="ltr"]{--fd:'Unbounded','Lalezar',sans-serif;--fb:'Space Grotesk','Vazirmatn',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);line-height:1.8;overflow-x:clip;font-size:16px}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+button{font:inherit;cursor:pointer;background:none;border:0;color:inherit}
+:focus-visible{outline:2px solid var(--cyd);outline-offset:3px;border-radius:6px}
+::selection{background:rgba(16,212,232,.28)}
+.wrap{width:min(1180px,92%);margin-inline:auto}
+.skip{position:fixed;top:-60px;inset-inline-start:16px;z-index:200;background:var(--ink);color:#fff;padding:.7rem 1.2rem;border-radius:12px;transition:top .3s}
+.skip:focus{top:14px}
+/* grain */
+body::after{content:"";position:fixed;inset:-40px;z-index:120;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+  animation:grain 7s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-14px,10px)}50%{transform:translate(10px,-12px)}75%{transform:translate(-8px,-8px)}100%{transform:translate(0,0)}}
+/* ============ TYPE / SHARED ============ */
+.kick{display:inline-flex;align-items:center;gap:.9rem;font-family:var(--fdl);font-size:.72rem;letter-spacing:.28em;color:var(--cyd);text-transform:uppercase}
+.kick::before{content:"";width:38px;height:1px;background:linear-gradient(90deg,var(--cy),transparent)}
+h1,h2,h3{font-family:var(--fd);font-weight:500;line-height:1.35}
+.sec{padding-block:clamp(4.5rem,9vw,8rem);position:relative}
+.sec-head{max-width:640px;margin-bottom:clamp(2.2rem,5vw,3.6rem)}
+.sec-title{font-size:clamp(1.7rem,3.6vw,2.7rem);margin:.5rem 0 .7rem}
+.sec-sub{color:var(--ink2)}
+.glass{background:linear-gradient(150deg,rgba(255,255,255,.72),rgba(255,255,255,.4));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--gbrd);box-shadow:0 24px 50px -24px rgba(12,40,60,.28)}
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.95rem 1.9rem;border-radius:999px;font-weight:600;font-size:.95rem;border:1px solid var(--gbrd);background:var(--glass);backdrop-filter:blur(10px);transition:transform .35s var(--ease),box-shadow .35s,background .35s;position:relative}
+.btn:hover{transform:translateY(-3px)}
+.btn-hot{background:linear-gradient(135deg,var(--hot),var(--hot2));border:0;color:#fff;box-shadow:0 14px 34px -12px rgba(255,122,59,.65)}
+.btn-hot::after{content:"";position:absolute;inset:-5px;border-radius:inherit;border:1px solid rgba(255,122,59,.55);animation:pulse 2.6s var(--ease) infinite;pointer-events:none}
+@keyframes pulse{0%{opacity:.9;transform:scale(1)}70%,100%{opacity:0;transform:scale(1.16)}}
+.btn-ghost:hover{background:#fff}
+/* reveal */
+.js [data-reveal]{opacity:0;transform:translateY(28px);filter:blur(6px);transition:opacity .8s var(--ease),transform .8s var(--ease),filter .8s var(--ease);transition-delay:var(--d,0s)}
+.js [data-reveal].in{opacity:1;transform:none;filter:none}
+/* ============ HEADER ============ */
+.head{position:fixed;top:14px;inset-inline:0;z-index:100;transition:.4s var(--ease)}
+.nav{display:flex;align-items:center;gap:1rem;padding:.65rem 1.1rem;border-radius:999px;transition:.4s var(--ease)}
+.head.is-stuck .nav{background:rgba(255,255,255,.72);backdrop-filter:blur(16px);border:1px solid var(--gbrd);box-shadow:0 18px 40px -22px rgba(12,40,60,.35)}
+.brand{font-family:var(--fdl);font-weight:700;font-size:1.05rem;letter-spacing:.14em;padding-inline:.6rem}
+.brand b{color:var(--cyd)}
+.menu{display:flex;align-items:center;gap:1.4rem;margin-inline-start:auto}
+.menu-list{display:flex;gap:1.5rem;font-size:.92rem;font-weight:500}
+.menu-list a{position:relative;padding-block:.3rem;opacity:.85;transition:.3s}
+.menu-list a::after{content:"";position:absolute;bottom:0;inset-inline-start:0;height:2px;width:0;border-radius:2px;background:linear-gradient(90deg,var(--cy),transparent);transition:width .4s var(--ease)}
+.menu-list a:hover,.menu-list a[aria-current]{opacity:1}
+.menu-list a:hover::after,.menu-list a[aria-current]::after{width:100%}
+.lang{font-family:var(--fdl);font-size:.72rem;letter-spacing:.15em;border:1px solid var(--gbrd);border-radius:999px;padding:.42rem .9rem;background:var(--glass);transition:.3s}
+.lang:hover{background:#fff;box-shadow:0 0 0 3px rgba(16,212,232,.18)}
+.nav .btn{padding:.6rem 1.3rem;font-size:.85rem}
+.burger{display:none;flex-direction:column;gap:5px;padding:.7rem;margin-inline-start:auto}
+.burger span{width:22px;height:2px;background:var(--ink);border-radius:2px;transition:.3s}
+/* ============ HERO SHOWROOM ============ */
+.hero{position:relative;min-height:100svh;display:grid;align-items:center;overflow:clip;isolation:isolate}
+.room{position:absolute;inset:-8% 0 0;z-index:-3;background:
+ radial-gradient(120% 85% at 50% -12%,#ffffff 0%,#eef4f9 36%,#dfe9f1 62%,#d4e0ea 100%)}
+.room::before{content:"";position:absolute;inset:0;background:
+ radial-gradient(55% 72% at 50% 4%,rgba(255,255,255,.95),transparent 62%),
+ radial-gradient(74% 90% at 50% -6%,rgba(180,208,228,.55),transparent 60%),
+ repeating-radial-gradient(130% 105% at 50% -14%,rgba(12,40,60,.05) 0 1px,transparent 1px 150px)}
+.room::after{content:"";position:absolute;inset-inline:0;bottom:0;height:36%;
+ background:
+ radial-gradient(46% 60% at 50% 0%,rgba(16,212,232,.22),transparent 70%),
+ repeating-linear-gradient(90deg,rgba(12,40,60,.06) 0 1px,transparent 1px 90px),
+ repeating-linear-gradient(0deg,rgba(12,40,60,.05) 0 1px,transparent 1px 46px),
+ linear-gradient(#e7eef4,#f6f9fb 78%);
+ transform:perspective(640px) rotateX(54deg);transform-origin:top;mask-image:linear-gradient(rgba(0,0,0,.9),transparent 92%)}
+.shaft{position:absolute;top:-12%;inset-inline-start:18%;width:64vw;height:130%;z-index:-2;pointer-events:none;filter:blur(7px);
+ background:conic-gradient(from 180deg at 50% 0%,transparent 41%,rgba(120,230,250,.1) 46%,rgba(120,230,250,.22) 50%,rgba(120,230,250,.1) 54%,transparent 59%);animation:breathe 9s ease-in-out infinite alternate}
+@keyframes breathe{from{opacity:.55}to{opacity:1}}
+.dust{position:absolute;inset:0;z-index:3;pointer-events:none}
+.dust::before,.dust::after{content:"";position:absolute;inset:0;background-image:
+ radial-gradient(3px 3px at 12% 30%,rgba(125,238,251,.9),transparent 60%),
+ radial-gradient(2px 2px at 28% 64%,rgba(255,255,255,.95),transparent 60%),
+ radial-gradient(3px 3px at 46% 22%,rgba(125,238,251,.75),transparent 60%),
+ radial-gradient(2px 2px at 63% 70%,rgba(255,255,255,.9),transparent 60%),
+ radial-gradient(3px 3px at 81% 38%,rgba(125,238,251,.8),transparent 60%),
+ radial-gradient(2px 2px at 90% 62%,rgba(255,255,255,.85),transparent 60%);
+ animation:floaty 12s ease-in-out infinite alternate}
+.dust::after{transform:translate(4%,8%) scale(1.2);opacity:.6;animation-duration:16s}
+@keyframes floaty{from{transform:translateY(-12px)}to{transform:translateY(14px)}}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:2rem;padding-top:5.5rem}
+.hero-eyebrow{display:flex;align-items:center;gap:.8rem;color:var(--cyd);font-family:var(--fdl);font-size:.72rem;letter-spacing:.34em;text-transform:uppercase}
+.hero-eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cy);box-shadow:0 0 14px var(--cy);animation:blink 2.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero-title{font-family:var(--fdl);font-weight:700;font-size:clamp(2.6rem,7.4vw,5.6rem);letter-spacing:.06em;line-height:1.05;margin:.6rem 0 .2rem;direction:ltr;text-align:start;
+ text-shadow:0 24px 50px rgba(12,40,60,.14)}
+.hero-tag{font-family:var(--fd);font-size:clamp(1.5rem,3.4vw,2.5rem);color:var(--ink);margin-bottom:.6rem}
+.hero-tag em{font-style:normal;color:var(--cyd)}
+.hero-p{color:var(--ink2);max-width:46ch;margin-bottom:1.8rem}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
+.cue{position:absolute;bottom:26px;inset-inline-start:50%;transform:translateX(50%);z-index:4;display:flex;flex-direction:column;align-items:center;gap:.4rem;color:var(--ink2);font-size:.72rem;letter-spacing:.2em}
+.cue i{width:1px;height:44px;background:linear-gradient(var(--cy),transparent);display:block;animation:cue 2s var(--ease) infinite}
+@keyframes cue{from{transform:scaleY(0);transform-origin:top}55%{transform:scaleY(1);transform-origin:top}56%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+html[dir="rtl"] .cue{transform:translateX(50%)}
+html[dir="ltr"] .cue{transform:translateX(-50%)}
+/* bot + holo */
+.stage{position:relative;min-height:420px}
+.bot{width:clamp(240px,32vw,430px);margin-inline:auto;filter:drop-shadow(0 30px 40px rgba(12,40,60,.18));animation:hover 7s ease-in-out infinite alternate}
+@keyframes hover{from{transform:translateY(-8px)}to{transform:translateY(10px)}}
+.holo{position:absolute;bottom:4%;inset-inline-end:-2%;width:min(340px,60%);aspect-ratio:4/3;border-radius:20px;padding:1rem 1.1rem;
+ transform:perspective(1100px) rotateY(calc(var(--ry,16deg)));transform-style:preserve-3d}
+html[dir="rtl"] .holo{--ry:-16deg}
+.holo::before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(120deg,rgba(16,212,232,.16),rgba(255,255,255,.06) 45%,rgba(16,212,232,.12));pointer-events:none}
+.holo::after{content:"";position:absolute;inset:0;border-radius:inherit;overflow:hidden;
+ background:linear-gradient(105deg,transparent 42%,rgba(125,238,251,.5) 50%,transparent 58%);background-size:260% 100%;animation:sweep 5.5s var(--ease) infinite}
+@keyframes sweep{0%{background-position:130% 0}55%,100%{background-position:-130% 0}}
+.holo-head{display:flex;align-items:center;gap:.4rem;margin-bottom:.8rem;font-family:var(--fdl);font-size:.6rem;letter-spacing:.22em;color:var(--cyd);direction:ltr}
+.holo-head i{width:7px;height:7px;border-radius:50%;background:var(--cy);opacity:.85}
+.holo-head i:nth-child(2){opacity:.5}.holo-head i:nth-child(3){opacity:.3}
+.holo-head span{margin-inline-start:auto}
+.holo ul{display:grid;gap:.55rem}
+.holo li{height:9px;border-radius:6px;background:linear-gradient(90deg,rgba(16,212,232,.65),rgba(16,212,232,.08));width:var(--w,70%);box-shadow:0 0 12px rgba(16,212,232,.25)}
+.holo-chart{display:flex;align-items:flex-end;gap:6px;height:64px;margin-top:1rem}
+.holo-chart i{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(#7deefb,#10d4e8);height:var(--h,50%);opacity:.85;animation:eq 3.4s ease-in-out infinite alternate;animation-delay:var(--dl,0s)}
+@keyframes eq{from{transform:scaleY(.55);transform-origin:bottom}to{transform:scaleY(1);transform-origin:bottom}}
+/* ============ STORY (sticky timeline) ============ */
+.problem{background:linear-gradient(180deg,transparent,rgba(16,212,232,.06) 30%,transparent);text-align:center}
+.problem p{font-family:var(--fd);font-size:clamp(1.3rem,2.8vw,2rem);max-width:30ch;margin-inline:auto}
+.problem p b{color:var(--cyd);font-weight:500}
+.story-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,6vw,5rem);align-items:start}
+.story-stick{position:sticky;top:16vh;display:grid;place-items:center;min-height:60vh}
+.core{position:relative;width:clamp(200px,26vw,320px);aspect-ratio:1;border-radius:44% 56% 58% 42%/48% 42% 58% 52%;
+ background:radial-gradient(circle at 32% 28%,#eafdff,#7deefb 34%,#10d4e8 62%,#0891b2 100%);
+ box-shadow:0 0 90px rgba(16,212,232,.5),inset 0 0 60px rgba(255,255,255,.5);
+ animation:morph 9s ease-in-out infinite alternate;transition:transform 1s var(--ease),filter 1s}
+@keyframes morph{0%{border-radius:44% 56% 58% 42%/48% 42% 58% 52%}50%{border-radius:58% 42% 40% 60%/52% 60% 40% 48%}100%{border-radius:40% 60% 55% 45%/60% 44% 56% 40%}}
+.core::after{content:"";position:absolute;inset:-26px;border:1px dashed rgba(8,145,178,.5);border-radius:50%;animation:spin 26s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+[data-stage="2"] .core{transform:scale(1.1);filter:hue-rotate(14deg) saturate(1.15)}
+[data-stage="3"] .core{transform:scale(1.2);filter:hue-rotate(-10deg) brightness(1.06);box-shadow:0 0 130px rgba(16,212,232,.7),inset 0 0 70px rgba(255,255,255,.6)}
+.core-chip{position:absolute;top:8%;inset-inline-end:6%;padding:.5rem 1rem;border-radius:14px;font-family:var(--fdl);font-size:.8rem;color:var(--cyd);letter-spacing:.12em}
+.core-chip::after{content:attr(data-n)}
+.story-steps{display:grid;gap:26vh;padding-block:18vh}
+.step{padding:2rem;border-radius:26px;opacity:.35;transform:translateY(10px);transition:opacity .6s var(--ease),transform .6s var(--ease),box-shadow .6s}
+.step.is-active{opacity:1;transform:none;box-shadow:0 30px 60px -28px rgba(12,40,60,.35)}
+.step-num{font-family:var(--fdl);color:var(--cyd);font-size:.8rem;letter-spacing:.24em}
+.step h3{font-size:1.6rem;margin:.3rem 0 .4rem}
+.step p{color:var(--ink2)}
+/* ============ WORLDS ============ */
+.worlds-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.world{position:relative;display:block;overflow:hidden;border-radius:26px;aspect-ratio:4/3;isolation:isolate;
+ transform:perspective(900px) rotateX(1.5deg);transition:transform .6s var(--ease),box-shadow .6s}
+.world:hover{transform:perspective(900px) rotateX(0) translateY(-8px);box-shadow:0 40px 70px -30px rgba(12,40,60,.45)}
+.world img{width:100%;height:100%;object-fit:cover;transform:scale(1.06);transition:transform 1.6s var(--ease)}
+.world:hover img{transform:scale(1.14)}
+.world-glow{position:absolute;inset:0;background:
+ radial-gradient(70% 60% at 50% 100%,var(--g,rgba(16,212,232,.4)),transparent 70%),
+ linear-gradient(rgba(8,20,32,.05),rgba(8,20,32,.42));transition:opacity .5s;opacity:.9}
+.world:hover .world-glow{opacity:1}
+.world-ui{position:absolute;top:14px;inset-inline-start:14px;display:grid;gap:5px;padding:.7rem .8rem;border-radius:14px;opacity:.9}
+.world-ui i{display:block;width:52px;height:5px;border-radius:4px;background:rgba(255,255,255,.85)}
+.world-ui i:nth-child(2){width:36px;opacity:.7}.world-ui i:nth-child(3){width:44px;opacity:.5}
+.world-label{position:absolute;bottom:14px;inset-inline-start:14px;padding:.55rem 1.1rem;border-radius:14px;font-family:var(--fd);font-size:1.05rem}
+.world-label small{display:block;font-family:var(--fb);font-size:.68rem;color:var(--ink2);letter-spacing:.06em}
+.w-cafe{--g:rgba(255,178,94,.55)}.w-jewelry{--g:rgba(242,201,76,.5)}
+.w-fit{--g:rgba(16,212,232,.55)}.w-edu{--g:rgba(110,168,255,.5)}
+.w-estate{--g:rgba(74,222,196,.45)}.w-shop{--g:rgba(255,122,59,.5)}
+/* ============ SYSTEM ============ */
+.sys-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:2rem;align-items:center;margin-bottom:3rem}
+.sys-map{position:relative;aspect-ratio:10/7;border-radius:30px;overflow:hidden;
+ background:radial-gradient(80% 80% at 50% 40%,rgba(16,212,232,.1),transparent 70%),linear-gradient(rgba(255,255,255,.6),rgba(255,255,255,.3));border:1px solid var(--gbrd)}
+.sys-lines{position:absolute;inset:0;width:100%;height:100%}
+.sys-lines path{fill:none;stroke:rgba(16,212,232,.55);stroke-width:1.1;stroke-dasharray:5 7;animation:dash 30s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-600}}
+.sys-node{position:absolute;transform:translate(-50%,-50%);padding:.6rem 1.1rem;border-radius:999px;font-size:.82rem;font-weight:600;
+ background:var(--glass);border:1px solid var(--gbrd);backdrop-filter:blur(8px);transition:.35s var(--ease);white-space:nowrap}
+.sys-node::before{content:"";position:absolute;inset:-7px;border-radius:inherit;border:1px solid transparent;transition:.35s}
+.sys-node:hover{transform:translate(-50%,-54%)}
+.sys-node.is-on{background:linear-gradient(135deg,var(--cy),var(--cyd));color:#fff;box-shadow:0 0 26px rgba(16,212,232,.6)}
+.sys-node.n1{left:16%;top:24%}.sys-node.n2{left:50%;top:14%}.sys-node.n3{left:84%;top:26%}
+.sys-node.n4{left:24%;top:72%}.sys-node.n5{left:60%;top:80%}.sys-node.n6{left:86%;top:64%}
+.sys-panels{border-radius:26px;padding:2rem;min-height:300px}
+.sys-panel h3{font-size:1.4rem;margin-bottom:.4rem}
+.sys-panel p{color:var(--ink2);margin-bottom:1rem}
+.sys-panel ul{display:grid;gap:.5rem}
+.sys-panel a{display:inline-flex;gap:.5rem;align-items:center;color:var(--cyd);font-weight:600;font-size:.9rem}
+.sys-panel a::before{content:"◆";font-size:.6rem}
+.sys-panel a:hover{text-decoration:underline}
+.svc-index{border-top:1px solid var(--line)}
+.svc-row{display:flex;align-items:center;gap:1.2rem;padding:1rem .4rem;border-bottom:1px solid var(--line);transition:.3s;align-items:center}
+.svc-row:hover{background:rgba(255,255,255,.75);padding-inline:1rem}
+.svc-row i{font-style:normal;font-family:var(--fdl);font-size:.72rem;color:var(--cyd);letter-spacing:.15em;min-width:2.4rem}
+.svc-row b{font-weight:600}
+.svc-row span{margin-inline-start:auto;color:var(--ink2);font-size:.8rem;opacity:0;transition:.3s}
+.svc-row:hover span{opacity:1}
+.svc-row::after{content:"←";color:var(--hot);opacity:0;transition:.3s;transform:translateX(6px)}
+html[dir="ltr"] .svc-row::after{content:"→";transform:translateX(-6px)}
+.svc-row:hover::after{opacity:1;transform:none}
+/* ============ EXHIBITION ============ */
+.ex-top{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:2.4rem}
+.rail-btns{display:flex;gap:.6rem}
+.rail-btn{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:1.2rem;transition:.3s}
+.rail-btn:hover{background:#fff;box-shadow:0 0 0 4px rgba(16,212,232,.18)}
+.rail{display:flex;gap:1.6rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:1.4rem .4rem 2rem;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.frame{flex:0 0 clamp(300px,58vw,460px);scroll-snap-align:center;display:block;position:relative;border-radius:28px;overflow:hidden;
+ transform:perspective(1200px) rotateY(var(--tilt,3deg));transition:transform .6s var(--ease),box-shadow .6s;box-shadow:0 30px 60px -30px rgba(12,40,60,.4)}
+.frame:nth-child(even){--tilt:-3deg}
+.frame:hover,.frame:focus-visible{transform:perspective(1200px) rotateY(0) translateY(-8px);box-shadow:0 46px 80px -34px rgba(12,40,60,.5)}
+.frame figure{position:relative;aspect-ratio:4/3;overflow:hidden}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.frame .after{opacity:0;transition:opacity .9s var(--ease)}
+.frame:hover .after,.frame:focus-visible .after{opacity:1}
+.frame-cap{position:absolute;bottom:12px;inset-inline:12px;display:flex;align-items:center;gap:.8rem;padding:.8rem 1.1rem;border-radius:16px}
+.frame-cap b{font-family:var(--fd);font-weight:500}
+.frame-cap small{color:var(--ink2);font-size:.72rem}
+.concept{margin-inline-start:auto;font-size:.64rem;background:rgba(16,212,232,.16);color:var(--cyd);border:1px solid rgba(16,212,232,.4);padding:.25rem .6rem;border-radius:999px;white-space:nowrap}
+.ba-tag{position:absolute;top:12px;inset-inline-start:12px;padding:.3rem .8rem;border-radius:999px;font-size:.66rem;letter-spacing:.12em;font-family:var(--fdl);background:rgba(8,20,32,.5);color:#c9f6fd;backdrop-filter:blur(6px)}
+/* ============ CORRIDOR ============ */
+.cor-track{position:relative;max-width:760px;margin-inline:auto;padding-inline:1rem}
+.cor-line{position:absolute;top:0;bottom:0;inset-inline-start:calc(50% - 1px);width:2px;background:var(--line)}
+.cor-line i{position:absolute;top:0;inset-inline:0;height:var(--p,0%);background:linear-gradient(var(--cy2),var(--cy));box-shadow:0 0 16px rgba(16,212,232,.7);transition:height .8s var(--ease)}
+.cor-steps{display:grid;gap:4rem;padding-block:2rem}
+.cor-step{display:flex;align-items:center;gap:1.4rem;opacity:.35;transition:opacity .6s,transform .6s}
+.cor-step:nth-child(even){flex-direction:row-reverse;text-align:end}
+.cor-step.is-lit{opacity:1}
+.cor-dot{flex:0 0 18px;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--line);position:relative;z-index:2;transition:.5s;margin-inline:auto}
+.cor-step.is-lit .cor-dot{border-color:var(--cy);background:var(--cy);box-shadow:0 0 22px rgba(16,212,232,.9)}
+.cor-card{flex:1;padding:1.4rem 1.7rem;border-radius:22px}
+.cor-card h3{font-size:1.25rem;display:flex;gap:.7rem;align-items:center}
+.cor-card h3 i{font-style:normal;font-family:var(--fdl);font-size:.7rem;color:var(--cyd);letter-spacing:.2em}
+.cor-card p{color:var(--ink2);font-size:.92rem}
+/* ============ FINALE ============ */
+.finale{text-align:center;background:
+ radial-gradient(60% 55% at 50% 20%,rgba(16,212,232,.16),transparent 70%)}
+.core-done{width:180px;aspect-ratio:1;margin:0 auto 2rem;border-radius:50%;
+ background:radial-gradient(circle at 34% 30%,#ffffff,#a5f3fc 30%,#10d4e8 65%,#0891b2);
+ box-shadow:0 0 120px rgba(16,212,232,.75),inset 0 0 50px rgba(255,255,255,.6);animation:morph 8s ease-in-out infinite alternate}
+.shards{position:relative;height:0}
+.shard{position:absolute;width:20px;height:26px;border-radius:6px;background:var(--glass);border:1px solid var(--gbrd);backdrop-filter:blur(4px);top:-130px;left:calc(50% + var(--sx));animation:orbit 7s linear infinite;animation-delay:var(--dl)}
+@keyframes orbit{from{transform:rotate(0) translateX(120px) rotate(0)}to{transform:rotate(360deg) translateX(120px) rotate(-360deg)}}
+.finale-panel{max-width:640px;margin:0 auto;border-radius:30px;padding:clamp(2rem,5vw,3.4rem)}
+.finale-panel h2{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:.6rem}
+.finale-panel p{color:var(--ink2);margin-bottom:1.8rem}
+/* ============ FOOTER ============ */
+.foot{background:linear-gradient(#eef3f8,#e4ecf3);border-top:1px solid var(--line);padding:4rem 0 2rem;margin-top:3rem}
+.foot-mark{font-family:var(--fdl);font-weight:700;font-size:clamp(3rem,10vw,7.5rem);letter-spacing:.08em;text-align:center;line-height:1;direction:ltr;
+ color:transparent;-webkit-text-stroke:1px rgba(12,40,60,.22);margin-bottom:3rem;user-select:none}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:2rem;padding-bottom:2.5rem;border-bottom:1px solid var(--line)}
+.foot h2{font-size:.95rem;margin-bottom:.9rem}
+.foot nav a,.foot-col a,.foot-col p{display:block;color:var(--ink2);font-size:.88rem;padding-block:.22rem;transition:.3s}
+.foot nav a:hover{color:var(--cyd);transform:translateX(-4px)}
+html[dir="ltr"] .foot nav a:hover{transform:translateX(4px)}
+.foot-base{display:flex;justify-content:space-between;gap:1rem;padding-top:1.6rem;font-size:.8rem;color:var(--ink2);flex-wrap:wrap}
+/* ============ RESPONSIVE ============ */
+@media(max-width:1020px){.hero-grid{grid-template-columns:1fr;padding-top:7rem}.stage{min-height:340px;order:2}.sys-wrap{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:860px){
+ .menu-list,.menu .btn{display:none}
+ .burger{display:flex}
+ .head.nav-open .nav{flex-wrap:wrap;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border-radius:26px;padding:1rem}
+ .head.nav-open .menu{width:100%;flex-direction:column;align-items:stretch;margin:0}
+ .head.nav-open .menu-list{display:flex;flex-direction:column;gap:.2rem;width:100%}
+ .head.nav-open .menu-list a{display:block;padding:.8rem;border-radius:14px}
+ .head.nav-open .menu-list a:hover{background:rgba(16,212,232,.1)}
+ .head.nav-open .menu .btn{display:inline-flex;margin-top:.6rem;justify-content:center}
+ .head.nav-open .menu-side{display:flex;gap:.8rem;width:100%;align-items:center}
+ .worlds-grid{grid-template-columns:1fr 1fr}
+ .story-grid{grid-template-columns:1fr}
+ .story-stick{position:relative;top:0;min-height:340px}
+ .story-steps{padding-block:1rem;gap:2rem}
+ .cor-line{inset-inline-start:12px}
+ .cor-step,.cor-step:nth-child(even){flex-direction:row;text-align:start}
+ .cor-dot{margin:0}
+}
+@media(max-width:600px){.worlds-grid{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}.svc-row span{display:none}}
+/* ============ REDUCED MOTION ============ */
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.001s!important;animation-iteration-count:1!important;transition-duration:.001s!important}
+ html{scroll-behavior:auto}
+ .js [data-reveal]{opacity:1;transform:none;filter:none}
+ .step{opacity:1;transform:none}
+ .cor-step{opacity:1}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">پرش به محتوا</a>
+
+<!-- ============ HEADER ============ -->
+<header class="head" id="head">
+  <nav class="nav wrap" aria-label="ناوبری اصلی">
+    <a class="brand" href="#top">NONO<b>NICK</b></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="menu" aria-label="باز و بسته کردن منو"><span></span><span></span><span></span></button>
+    <div class="menu" id="menu">
+      <ul class="menu-list">
+        <li><a href="#system" data-i18n="nav.services">خدمات</a></li>
+        <li><a href="#work" data-i18n="nav.work">نمونه‌کارها</a></li>
+        <li><a href="#story" data-i18n="nav.about">درباره ما</a></li>
+        <li><a href="#process" data-i18n="nav.blog">وبلاگ</a></li>
+        <li><a href="#finale" data-i18n="nav.contact">تماس با ما</a></li>
+      </ul>
+      <div class="menu-side" style="display:flex;gap:.8rem;align-items:center;margin-inline-start:1rem">
+        <a class="btn btn-hot" href="#finale" data-i18n="nav.cta">شروع پروژه</a>
+        <button class="lang" id="langBtn" aria-label="تغییر زبان به انگلیسی">EN</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+<!-- ============ CHAPTER 1 — SHOWROOM ENTRY ============ -->
+<section class="hero" id="top" data-scope>
+  <div class="room" data-para="0.05" aria-hidden="true"></div>
+  <div class="shaft" aria-hidden="true"></div>
+
+  <div class="wrap hero-grid">
+    <div class="hero-copy" data-reveal>
+      <p class="hero-eyebrow" data-i18n="hero.kick">IMMERSIVE DIGITAL STUDIO</p>
+      <h1 class="hero-title" data-scramble>NONONICK</h1>
+      <p class="hero-tag" data-i18n-html="hero.tag">ایده خام تا <em>امضای دیجیتال</em></p>
+      <p class="hero-p" data-i18n="hero.p">ما ایده‌های کسب‌وکار را به تجربه‌های دیجیتال مدرن، سریع و قابل رشد تبدیل می‌کنیم؛ از طراحی سایت و فروشگاه تا اپلیکیشن، پنل مدیریت و سئو.</p>
+      <div class="hero-cta">
+        <a class="btn btn-hot" href="#story" data-i18n="hero.b1">شروع تجربه</a>
+        <a class="btn btn-ghost" href="#work" data-i18n="hero.b2">مشاهده نمونه‌کارها</a>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="holo glass" data-para="0.18" aria-hidden="true">
+        <div class="holo-head"><i></i><i></i><i></i><span>NN–SYSTEM 06</span></div>
+        <ul>
+          <li style="--w:78%"></li><li style="--w:52%"></li><li style="--w:88%"></li><li style="--w:40%"></li>
+        </ul>
+        <div class="holo-chart">
+          <i style="--h:42%;--dl:0s"></i><i style="--h:70%;--dl:.3s"></i><i style="--h:55%;--dl:.6s"></i><i style="--h:88%;--dl:.9s"></i><i style="--h:64%;--dl:1.2s"></i><i style="--h:96%;--dl:1.5s"></i>
+        </div>
+      </div>
+      <div data-para="0.08">
+        <svg class="bot" viewBox="0 0 230 300" role="img" aria-label="کاوشگر نونونیک در حال کار با صفحه هولوگرافیک">
+          <defs>
+            <linearGradient id="bb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#d9e6f1"/></linearGradient>
+            <linearGradient id="bv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a5f3fc"/><stop offset="1" stop-color="#0aa9c9"/></linearGradient>
+          </defs>
+          <ellipse cx="112" cy="286" rx="64" ry="9" fill="#0c2a3d" opacity=".12"/>
+          <rect x="54" y="98" width="36" height="74" rx="17" fill="url(#bb)" stroke="#c6d7e5"/>
+          <path d="M150 132 q40 8 50 40" stroke="#e9f2f9" stroke-width="21" fill="none" stroke-linecap="round"/>
+          <rect x="72" y="104" width="80" height="100" rx="36" fill="url(#bb)" stroke="#c6d7e5"/>
+          <rect x="94" y="150" width="36" height="24" rx="9" fill="#eef7fb" stroke="#bcd3e3"/>
+          <circle cx="112" cy="64" r="42" fill="url(#bb)" stroke="#c6d7e5"/>
+          <path d="M84 60 a28 28 0 0 1 56 0 v8 a28 21 0 0 1 -56 0z" fill="url(#bv)" opacity=".92"/>
+          <rect x="84" y="202" width="22" height="62" rx="11" fill="url(#bb)" stroke="#c6d7e5"/>
+          <rect x="118" y="202" width="22" height="62" rx="11" fill="url(#bb)" stroke="#c6d7e5"/>
+          <circle cx="206" cy="146" r="5" fill="#12d3e7"/>
+          <circle cx="206" cy="146" r="10" fill="none" stroke="#12d3e7" opacity=".5"/>
+        </svg>
+      </div>
+      <div class="dust" data-para="0.35" aria-hidden="true"></div>
+    </div>
+  </div>
+  <p class="cue" aria-hidden="true"><i></i><span data-i18n="hero.cue">ورود به نمایشگاه</span></p>
+</section>
+
+<!-- ============ CHAPTER 2 — THE PROBLEM ============ -->
+<section class="sec problem">
+  <div class="wrap" data-reveal>
+    <p class="kick" style="justify-content:center" data-i18n="problem.kick">فصل ۰۲ — کشف مسئله</p>
+    <p style="margin-top:1rem" data-i18n="problem.txt">یک کسب‌وکار خوب ممکن است وجود داشته باشد؛ اما بدون تجربه دیجیتال قدرتمند، <b>نامرئی می‌ماند.</b></p>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 3 — HOLOGRAPHIC TIMELINE ============ -->
+<section class="sec" id="story" data-story data-stage="1">
+  <div class="wrap">
+    <header class="sec-head" data-reveal>
+      <p class="kick" data-i18n="story.kick">فصل ۰۳ — مسیر تبدیل</p>
+      <h2 class="sec-title" data-i18n="story.title">سه گام؛ از ایده تا دارایی زنده</h2>
+      <p class="sec-sub" data-i18n="story.sub">اسکرول کنید تا هسته هولوگرافیک با شما همراه شود.</p>
+    </header>
+    <div class="story-grid">
+      <div class="story-visual" aria-hidden="true">
+        <div class="story-stick">
+          <div class="core"></div>
+          <p class="core-chip glass" data-n="۰۱" id="coreChip"></p>
+        </div>
+      </div>
+      <div class="story-steps">
+        <article class="step glass" data-reveal>
+          <p class="step-num">01</p>
+          <h3 data-i18n="s1.t">شناخت</h3>
+          <p data-i18n="s1.p">کسب‌وکار، مخاطب و مسئله واقعی شما را می‌شناسیم.</p>
+        </article>
+        <article class="step glass" data-reveal>
+          <p class="step-num">02</p>
+          <h3 data-i18n="s2.t">تبدیل</h3>
+          <p data-i18n="s2.p">ایده شما را به ساختار، طراحی و تجربه دیجیتال تبدیل می‌کنیم.</p>
+        </article>
+        <article class="step glass" data-reveal>
+          <p class="step-num">03</p>
+          <h3 data-i18n="s3.t">رشد</h3>
+          <p data-i18n="s3.p">با توسعه، سئو و پشتیبانی، تجربه شما را به یک دارایی زنده تبدیل می‌کنیم.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 4 — DIGITAL WORLDS ============ -->
+<section class="sec" id="worlds" style="background:linear-gradient(#eef3f8,var(--paper))">
+  <div class="wrap">
+    <header class="sec-head" data-reveal>
+      <p class="kick" data-i18n="worlds.kick">فصل ۰۴ — جهان‌های دیجیتال</p>
+      <h2 class="sec-title" data-i18n="worlds.title">هر کسب‌وکار، جهان خودش را دارد</h2>
+      <p class="sec-sub" data-i18n="worlds.sub">شش جهان؛ هرکدام با نور، زبان بصری و رابط مخصوص خودش.</p>
+    </header>
+    <div class="worlds-grid">
+      <a class="world w-cafe" href="#work" data-reveal>
+        <img src="https://picsum.photos/seed/nononick-cafe-world/720/540" width="720" height="540" alt="فضای گرم کافه با نور کهربایی" loading="lazy">
+        <span class="world-glow" aria-hidden="true"></span>
+        <span class="world-ui glass" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="world-label glass" data-i18n="w1">کافه و رستوران<small>Café &amp; Restaurant</small></span>
+      </a>
+      <a class="world w-jewelry" href="#work" data-reveal style="--d:.06s">
+        <img src="https://picsum.photos/seed/nononick-jewelry-world/720/540" width="720" height="540" alt="درخشش طلایی جواهرات روی شیشه مشکی" loading="lazy">
+        <span class="world-glow" aria-hidden="true"></span>
+        <span class="world-ui glass" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="world-label glass" data-i18n="w2">طلا و جواهر<small>Jewelry</small></span>
+      </a>
+      <a class="world w-fit" href="#work" data-reveal style="--d:.12s">
+        <img src="https://picsum.photos/seed/nononick-fitness-world/720/540" width="720" height="540" alt="خطوط فیروزه‌ای پرانرژی باشگاه ورزشی" loading="lazy">
+        <span class="world-glow" aria-hidden="true"></span>
+        <span class="world-ui glass" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="world-label glass" data-i18n="w3">بدنسازی و ورزش<small>Fitness</small></span>
+      </a>
+      <a class="world w-edu" href="#work" data-reveal>
+        <img src="https://picsum.photos/seed/nononick-education-world/720/540" width="720" height="540" alt="لایه‌های کارت آموزشی و خط زمان یادگیری" loading="lazy">
+        <span class="world-glow" aria-hidden="true"></span>
+        <span class="world-ui glass" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="world-label glass" data-i18n="w4">آموزش<small>Education</small></span>
+      </a>
+      <a class="world w-estate" href="#work" data-reveal style="--d:.06s">
+        <img src="https://picsum.photos/seed/nononick-realestate-world/720/540" width="720" height="540" alt="شبکه معماری و خطوط نقشه املاک" loading="lazy">
+        <span class="world-glow" aria-hidden="true"></span>
+        <span class="world-ui glass" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="world-label glass" data-i18n="w5">املاک<small>Real Estate</small></span>
+      </a>
+      <a class="world w-shop" href="#work" data-reveal style="--d:.12s">
+        <img src="https://picsum.photos/seed/nononick-shop-world/720/540" width="720" height="540" alt="گرید محصولات و رابط فروشگاهی" loading="lazy">
+        <span class="world-glow" aria-hidden="true"></span>
+        <span class="world-ui glass" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="world-label glass" data-i18n="w6">فروشگاه اینترنتی<small>E-commerce</small></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 5 — SERVICES AS A SYSTEM ============ -->
+<section class="sec" id="system" data-system>
+  <div class="wrap">
+    <header class="sec-head" data-reveal>
+      <p class="kick" data-i18n="sys.kick">فصل ۰۵ — سیستم متصل</p>
+      <h2 class="sec-title" data-i18n="sys.title">خدمات، مثل یک سیستم زنده</h2>
+      <p class="sec-sub" data-i18n="sys.sub">روی هر گره کلیک کنید تا پنل اطلاعات آن باز شود.</p>
+    </header>
+
+    <div class="sys-wrap" data-reveal>
+      <div class="sys-map glass" role="group" aria-label="نقظه گره‌های سیستم دیجیتال">
+        <svg class="sys-lines" viewBox="0 0 100 70" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M16 17 L50 10 L84 18 M16 17 L24 50 M50 10 L60 56 M84 18 L86 45 M24 50 L60 56 L86 45 M16 17 L84 18"/>
+        </svg>
+        <button class="sys-node n1" aria-expanded="true" data-i18n="n1">طراحی</button>
+        <button class="sys-node n2" aria-expanded="false" data-i18n="n2">توسعه</button>
+        <button class="sys-node n3" aria-expanded="false" data-i18n="n3">پنل مدیریت</button>
+        <button class="sys-node n4" aria-expanded="false" data-i18n="n4">سئو</button>
+        <button class="sys-node n5" aria-expanded="false" data-i18n="n5">اپلیکیشن</button>
+        <button class="sys-node n6" aria-expanded="false" data-i18n="n6">رشد</button>
+      </div>
+
+      <div class="sys-panels glass">
+        <article class="sys-panel" id="p1">
+          <h3>طراحی تجربه و رابط</h3>
+          <p>هویت بصری، طراحی اختصاصی و صفحاتی که برند شما را امضا می‌کنند.</p>
+          <ul><li><a href="#svc-list">طراحی سایت اختصاصی</a></li><li><a href="#svc-list">طراحی لندینگ‌پیج</a></li><li><a href="#svc-list">طراحی سایت طلا و جواهر</a></li></ul>
+        </article>
+        <article class="sys-panel" id="p2" hidden>
+          <h3>توسعه مهندسی‌شده</h3>
+          <p>کد تمیز، معماری ماژولار و سرعت واقعی در همه دستگاه‌ها.</p>
+          <ul><li><a href="#svc-list">توسعه اپلیکیشن</a></li><li><a href="#svc-list">طراحی فروشگاه اینترنتی</a></li><li><a href="#svc-list">طراحی سایت آموزشی</a></li></ul>
+        </article>
+        <article class="sys-panel" id="p3" hidden>
+          <h3>پنل مدیریت اختصاصی</h3>
+          <p>اتاق کنترل کسب‌وکار شما؛ از محتوا تا سفارش و گزارش‌ها.</p>
+          <ul><li><a href="#svc-list">پنل مدیریت اختصاصی</a></li><li><a href="#svc-list">داشبورد سفارش‌ها</a></li></ul>
+        </article>
+        <article class="sys-panel" id="p4" hidden>
+          <h3>سئو و دیده‌شدن</h3>
+          <p>محتوا، ساختار و بهینه‌سازی فنی برای رشد پایدار در جست‌وجو.</p>
+          <ul><li><a href="#svc-list">سئو و تولید محتوا</a></li><li><a href="#svc-list">بهینه‌سازی فنی</a></li></ul>
+        </article>
+        <article class="sys-panel" id="p5" hidden>
+          <h3>اپلیکیشن</h3>
+          <p>تجربه برند شما، یک‌پارچه و در جیب مخاطب.</p>
+          <ul><li><a href="#svc-list">توسعه اپلیکیشن</a></li><li><a href="#svc-list">PWA</a></li></ul>
+        </article>
+        <article class="sys-panel" id="p6" hidden>
+          <h3>رشد و پشتیبانی</h3>
+          <p>وب‌سایت شما یک دارایی زنده است؛ ما کنارش می‌مانیم.</p>
+          <ul><li><a href="#svc-list">پشتیبانی و توسعه</a></li><li><a href="#svc-list">بهینه‌سازی تبدیل</a></li></ul>
+        </article>
+      </div>
+    </div>
+
+    <ul class="svc-index" id="svc-list" data-reveal>
+      <li><a class="svc-row" href="#finale"><i>01</i><b>طراحی سایت اختصاصی</b><span>Custom Website</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>02</i><b>طراحی فروشگاه اینترنتی</b><span>E-commerce</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>03</i><b>طراحی لندینگ‌پیج</b><span>Landing Page</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>04</i><b>طراحی سایت آموزشی</b><span>Education</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>05</i><b>طراحی سایت بدنسازی</b><span>Fitness</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>06</i><b>طراحی سایت طلا و جواهر</b><span>Jewelry</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>07</i><b>طراحی سایت کافه و رستوران</b><span>Café</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>08</i><b>طراحی سایت املاک</b><span>Real Estate</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>09</i><b>توسعه اپلیکیشن</b><span>App Dev</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>10</i><b>پنل مدیریت اختصاصی</b><span>Admin Panel</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>11</i><b>سئو و تولید محتوا</b><span>SEO</span></a></li>
+      <li><a class="svc-row" href="#finale"><i>12</i><b>پشتیبانی و توسعه</b><span>Support</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ CHAPTER 6 — PORTFOLIO EXHIBITION ============ -->
+<section class="sec" id="work" style="background:linear-gradient(var(--paper),#eaf1f7)">
+  <div class="wrap">
+    <div class="ex-top" data-reveal>
+      <header class="sec-head" style="margin:0">
+        <p class="kick" data-i18n="work.kick">فصل ۰۶ — نمایشگاه</p>
+        <h2 class="sec-title" data-i18n="work.title">نمایشگاه پروژه‌ها</h2>
+        <p class="sec-sub" data-i18n="work.sub">نشانگر را روی هر قاب نگه دارید تا نسخه نهایی آشکار شود.</p>
+      </header>
+      <div class="rail-btns">
+        <button class="rail-btn glass" data-rail="1" aria-label="پروژه بعدی">→</button>
+        <button class="rail-btn glass" data-rail="-1" aria-label="پروژه قبلی">←</button>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="rail" id="rail" tabindex="0" role="region" aria-label="گالری نمونه‌کارها — با کلیدهای جهت‌دار پیمایش کنید">
+      <a class="frame" href="#finale" data-reveal>
+        <figure>
+          <img class="before" src="https://picsum.photos/seed/nononick-cafe-before/920/690?grayscale" width="920" height="690" alt="نمای اولیه پروژه کافه مدار" loading="lazy">
+          <img class="after" src="https://picsum.photos/seed/nononick-cafe-after/920/690" width="920" height="690" alt="نمای نهایی پروژه کافه مدار" loading="lazy">
+          <span class="ba-tag">BEFORE → AFTER</span>
+          <figcaption class="frame-cap glass"><span><b>کافه مدار</b><small>وب‌سایت کافه · منو و رزرو</small></span><span class="concept">پروژه مفهومی</span></figcaption>
+        </figure>
+      </a>
+      <a class="frame" href="#finale" data-reveal style="--d:.08s">
+        <figure>
+          <img class="before" src="https://picsum.photos/seed/nononick-jewelry-before/920/690?grayscale" width="920" height="690" alt="نمای اولیه پروژه گالری زر" loading="lazy">
+          <img class="after" src="https://picsum.photos/seed/nononick-jewelry-after/920/690" width="920" height="690" alt="نمای نهایی پروژه گالری زر" loading="lazy">
+          <span class="ba-tag">BEFORE → AFTER</span>
+          <figcaption class="frame-cap glass"><span><b>گالری زر</b><small>فروشگاه طلا و جواهر</small></span><span class="concept">پروژه مفهومی</span></figcaption>
+        </figure>
+      </a>
+      <a class="frame" href="#finale" data-reveal style="--d:.16s">
+        <figure>
+          <img class="before" src="https://picsum.photos/seed/nononick-fitness-before/920/690?grayscale" width="920" height="690" alt="نمای اولیه پروژه باشگاه اوج" loading="lazy">
+          <img class="after" src="https://picsum.photos/seed/nononick-fitness-after/920/690" width="920" height="690" alt="نمای نهایی پروژه باشگاه اوج" loading="lazy">
+          <span class="ba-tag">BEFORE → AFTER</span>
+          <figcaption class="frame-cap glass"><span><b>باشگاه اوج</b><small>سایت بدنسازی · برنامه کلاس</small></span><span class="concept">پروژه مفهومی</span></figcaption>
+        </figure>
+      </a>
+      <a class="frame" href="#finale" data-reveal style="--d:.24s">
+        <figure>
+          <img class="before" src="https://picsum.photos/seed/nononick-estate-before/920/690?grayscale" width="920" height="690" alt="نمای اولیه پروژه املاک افق" loading="lazy">
+          <img class="after" src="https://picsum.photos/seed/nononick-estate-after/920/690" width="920" height="690" alt="نمای نهایی پروژه املاک افق" loading="lazy">
+          <span class="ba-tag">BEFORE → AFTER</span>
+          <figcaption class="frame-cap glass"><span><b>املاک افق</b><small>پلتفرم املاک · جست‌وجوی نقشه</small></span><span class="concept">پروژه مفهومی</span></figcaption>
+        </figure>
+      </a>
+      <a class="frame" href="#finale" data-reveal style="--d:.32s">
+        <figure>
+          <img class="before" src="https://picsum.photos/seed/nononick-edu-before/920/690?grayscale" width="920" height="690" alt="نمای اولیه پروژه آکادمی نوا" loading="lazy">
+          <img class="after" src="https://picsum.photos/seed/nononick-edu-after/920/690" width="920" height="690" alt="نمای نهایی پروژه آکادمی نوا" loading="lazy">
+          <span class="ba-tag">BEFORE → AFTER</span>
+          <figcaption class="frame-cap glass"><span><b>آکادمی نوا</b><small>سایت آموزشی · مسیر یادگیری</small></span><span class="concept">پروژه مفهومی</span></figcaption>
+        </figure>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS CORRIDOR ============ -->
+<section class="sec" id="process" data-corridor style="--p:0%">
+  <div class="wrap">
+    <header class="sec-head" style="text-align:center;margin-inline:auto" data-reveal>
+      <p class="kick" style="justify-content:center" data-i18n="proc.kick">کریدور فرآیند</p>
+      <h2 class="sec-title" data-i18n="proc.title">شش ایستگاه تا امضای دیجیتال</h2>
+    </header>
+    <div class="cor-track">
+      <div class="cor-line" aria-hidden="true"><i></i></div>
+      <ol class="cor-steps">
+        <li class="cor-step"><span class="cor-dot" aria-hidden="true"></span><div class="cor-card glass"><h3><i>01</i>شناخت</h3><p>گفت‌وگوی عمیق با شما؛ درک کسب‌وکار، مخاطب و هدف.</p></div></li>
+        <li class="cor-step"><span class="cor-dot" aria-hidden="true"></span><div class="cor-card glass"><h3><i>02</i>استراتژی</h3><p>نقشه راه، معماری اطلاعات و تعریف معیارهای موفقیت.</p></div></li>
+        <li class="cor-step"><span class="cor-dot" aria-hidden="true"></span><div class="cor-card glass"><h3><i>03</i>طراحی</h3><p>هویت بصری، پروتوتایپ و طراحی اختصاصی صفحات.</p></div></li>
+        <li class="cor-step"><span class="cor-dot" aria-hidden="true"></span><div class="cor-card glass"><h3><i>04</i>توسعه</h3><p>کدنویسی تمیز، پنل مدیریت و اتصال همه اجزا به هم.</p></div></li>
+        <li class="cor-step"><span class="cor-dot" aria-hidden="true"></span><div class="cor-card glass"><h3><i>05</i>انتشار</h3><p>استقرار، تست نهایی و راه‌اندازی بدون اصطکاک.</p></div></li>
+        <li class="cor-step"><span class="cor-dot" aria-hidden="true"></span><div class="cor-card glass"><h3><i>06</i>رشد</h3><p>سئو، محتوا و توسعه مستمر؛ دارایی دیجیتال شما زنده می‌ماند.</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINALE ============ -->
+<section class="sec finale" id="finale">
+  <div class="wrap" data-reveal>
+    <div class="shards" aria-hidden="true">
+      <span class="shard" style="--sx:-90px;--dl:0s"></span>
+      <span class="shard" style="--sx:-10px;--dl:-1.8s"></span>
+      <span class="shard" style="--sx:60px;--dl:-3.6s"></span>
+      <span class="shard" style="--sx:110px;--dl:-5.2s"></span>
+    </div>
+    <div class="core-done" aria-hidden="true"></div>
+    <div class="finale-panel glass">
+      <p class="kick" style="justify-content:center">فصل پایانی — شروع شما</p>
+      <h2 data-i18n="fin.t">حالا نوبت ایده شماست</h2>
+      <p data-i18n="fin.p">ایده‌ای که امروز در ذهن شماست، می‌تواند به تجربه دیجیتال فردای برندتان تبدیل شود.</p>
+      <div class="hero-cta" style="justify-content:center">
+        <a class="btn btn-hot" href="#top" data-i18n="fin.b1">شروع پروژه</a>
+        <a class="btn btn-ghost" href="#top" data-i18n="fin.b2">دریافت مشاوره رایگان</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <p class="foot-mark" aria-hidden="true">NONONICK</p>
+  <div class="wrap foot-grid">
+    <div class="foot-col">
+      <p class="brand" style="padding:0">NONO<b style="color:var(--cyd)">NICK</b></p>
+      <p data-i18n="foot.tag" style="margin-top:.6rem">استودیوی دیجیتال غوطه‌ور برای برندهای بلندپرواز. ایده خام تا امضای دیجیتال.</p>
+    </div>
+    <nav aria-label="خدمات">
+      <h2>خدمات</h2>
+      <a href="#svc-list">طراحی سایت اختصاصی</a><a href="#svc-list">فروشگاه اینترنتی</a><a href="#svc-list">سئو و محتوا</a><a href="#svc-list">پنل مدیریت</a>
+    </nav>
+    <nav aria-label="استودیو">
+      <h2>استودیو</h2>
+      <a href="#story">درباره ما</a><a href="#work">نمونه‌کارها</a><a href="#process">فرآیند</a><a href="#finale">تماس</a>
+    </nav>
+    <div class="foot-col">
+      <h2>تماس</h2>
+      <a href="mailto:studio@nononick.com">studio@nononick.com</a>
+      <p>تهران، ایران</p>
+    </div>
+  </div>
+  <div class="wrap foot-base">
+    <p>© ۲۰۲۶ نونونیک — همه حقوق محفوظ است.</p>
+    <a href="#top">بازگشت به بالا ↑</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.documentElement.classList.add('js');
+
+/* ---------- i18n (EN dictionary; FA is the source HTML) ---------- */
+var EN = {
+ "nav.services":"Services","nav.work":"Portfolio","nav.about":"About","nav.blog":"Blog","nav.contact":"Contact","nav.cta":"Start a Project",
+ "hero.kick":"IMMERSIVE DIGITAL STUDIO","hero.tag":"From raw idea to <em>digital signature</em>",
+ "hero.p":"We turn business ideas into modern, fast and growable digital experiences — from websites and stores to apps, admin panels and SEO.",
+ "hero.b1":"Enter the experience","hero.b2":"View portfolio","hero.cue":"Enter the exhibition",
+ "problem.kick":"CHAPTER 02 — THE PROBLEM","problem.txt":"A good business may exist — but without a strong digital experience it stays <b>invisible.</b>",
+ "story.kick":"CHAPTER 03 — THE PATH","story.title":"Three steps, from idea to living asset","story.sub":"Scroll and the holographic core moves with you.",
+ "s1.t":"Discover","s1.p":"We learn your business, your audience and the real problem.",
+ "s2.t":"Transform","s2.p":"We turn your idea into structure, design and a digital experience.",
+ "s3.t":"Grow","s3.p":"With development, SEO and support, your experience becomes a living asset.",
+ "worlds.kick":"CHAPTER 04 — DIGITAL WORLDS","worlds.title":"Every business has its own world","worlds.sub":"Six worlds, each with its own light, visual language and interface.",
+ "w1":"Café &amp; Restaurant<small>Warm amber light</small>","w2":"Jewelry<small>Golden on black glass</small>","w3":"Fitness<small>Sharp cyan energy</small>","w4":"Education<small>Layered learning paths</small>","w5":"Real Estate<small>Architectural grids</small>","w6":"E-commerce<small>Product &amp; conversion</small>",
+ "sys.kick":"CHAPTER 05 — THE SYSTEM","sys.title":"Services, as one living system","sys.sub":"Click each node to open its glass panel.",
+ "n1":"Design","n2":"Development","n3":"Admin Panel","n4":"SEO","n5":"App","n6":"Growth",
+ "work.kick":"CHAPTER 06 — EXHIBITION","work.title":"Portfolio exhibition","work.sub":"Hover a frame to reveal the final version.",
+ "proc.kick":"THE CORRIDOR","proc.title":"Six checkpoints to your digital signature",
+ "fin.t":"Now it's your idea's turn","fin.p":"The idea in your mind today can become your brand's digital experience tomorrow.",
+ "fin.b1":"Start a project","fin.b2":"Free consultation","foot.tag":"Immersive digital studio for ambitious brands. Raw idea to digital signature."
+};
+var faSaved = false;
+var langBtn = document.getElementById('langBtn');
+langBtn.addEventListener('click', function(){
+  var html = document.documentElement, toEN = html.lang === 'fa';
+  if(toEN && !faSaved){ document.querySelectorAll('[data-i18n]').forEach(function(el){ el.dataset.fa = el.innerHTML; }); faSaved = true; }
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var k = el.dataset.i18n;
+    el.innerHTML = toEN ? (EN[k]||el.innerHTML) : el.dataset.fa;
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+    if(!el.dataset.fa) el.dataset.fa = el.innerHTML;
+    el.innerHTML = toEN ? EN[el.dataset.i18nHtml] : el.dataset.fa;
+  });
+  html.lang = toEN ? 'en':'fa'; html.dir = toEN ? 'ltr':'rtl';
+  langBtn.textContent = toEN ? 'FA':'EN';
+  document.title = toEN ? 'Nononick — Immersive Digital Studio' : 'Nononick — استودیوی دیجیتال غوطه‌ور | ایده خام تا امضای دیجیتال';
+});
+
+/* ---------- header ---------- */
+var head = document.getElementById('head'), burger = document.getElementById('burger');
+function stuck(){ head.classList.toggle('is-stuck', scrollY > 30); }
+addEventListener('scroll', stuck, {passive:true}); stuck();
+burger.addEventListener('click', function(){
+  var on = head.classList.toggle('nav-open');
+  burger.setAttribute('aria-expanded', on);
+});
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape' && head.classList.contains('nav-open')){ head.classList.remove('nav-open'); burger.setAttribute('aria-expanded','false'); burger.focus(); }
+});
+document.querySelectorAll('.menu a').forEach(function(a){
+  a.addEventListener('click', function(){ head.classList.remove('nav-open'); burger.setAttribute('aria-expanded','false'); });
+});
+
+/* ---------- reveal ---------- */
+var revs = document.querySelectorAll('[data-reveal]');
+if(reduced || !('IntersectionObserver' in window)){ revs.forEach(function(el){ el.classList.add('in'); }); }
+else{
+  var ro = new IntersectionObserver(function(es){ es.forEach(function(x){ if(x.isIntersecting){ x.target.classList.add('in'); ro.unobserve(x.target);} }); }, {threshold:.12, rootMargin:'0px 0px -8%'});
+  revs.forEach(function(el){ ro.observe(el); });
+}
+
+/* ---------- scramble decode ---------- */
+var sc = document.querySelectorAll('[data-scramble]');
+if(sc.length && !reduced){
+  var CH = 'NN/\\×+◇01';
+  sc.forEach(function(el){
+    var t = el.textContent, f = 0, total = 34;
+    (function tick(){
+      f++;
+      el.textContent = t.split('').map(function(c,i){ return i < (f/total)*t.length ? c : CH[(Math.random()*CH.length)|0]; }).join('');
+      if(f < total) requestAnimationFrame(tick); else el.textContent = t;
+    })();
+  });
+}
+
+/* ---------- parallax (3-layer system) ---------- */
+var items = Array.prototype.slice.call(document.querySelectorAll('[data-para]')).map(function(el){
+  return { el:el, sp:parseFloat(el.getAttribute('data-para'))||.1, scope:el.closest('[data-scope]') || el.parentElement };
+});
+if(items.length && !reduced && innerWidth >= 768 && matchMedia('(pointer:fine)').matches){
+  var ticking = false;
+  function para(){
+    ticking = false; var vh = innerHeight;
+    items.forEach(function(it){
+      var r = it.scope.getBoundingClientRect();
+      if(r.bottom < -120 || r.top > vh + 120) return;
+      var c = (r.top + r.height/2) - vh/2;
+      it.el.style.transform = 'translate3d(0,' + (c*it.sp).toFixed(1) + 'px,0)';
+    });
+  }
+  addEventListener('scroll', function(){ if(!ticking){ ticking = true; requestAnimationFrame(para); } }, {passive:true});
+  addEventListener('resize', para); para();
+}
+
+/* ---------- story chapters ---------- */
+var story = document.querySelector('[data-story]');
+if(story && 'IntersectionObserver' in window){
+  var steps = Array.prototype.slice.call(story.querySelectorAll('.step'));
+  var chip = document.getElementById('coreChip');
+  var nums = ['۰۱','۰۲','۰۳'];
+  var so = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        var i = steps.indexOf(e.target);
+        story.setAttribute('data-stage', i+1);
+        if(chip) chip.setAttribute('data-n', nums[i]);
+        steps.forEach(function(s,j){ s.classList.toggle('is-active', j===i); });
+      }
+    });
+  }, {rootMargin:'-42% 0px -42%', threshold:0});
+  steps.forEach(function(s){ so.observe(s); });
+  steps[0].classList.add('is-active');
+}
+
+/* ---------- service system ---------- */
+var sys = document.querySelector('[data-system]');
+if(sys){
+  var nodes = Array.prototype.slice.call(sys.querySelectorAll('.sys-node'));
+  var panels = Array.prototype.slice.call(sys.querySelectorAll('.sys-panel'));
+  nodes.forEach(function(n,i){
+    n.addEventListener('click', function(){
+      nodes.forEach(function(m,j){ m.classList.toggle('is-on', j===i); m.setAttribute('aria-expanded', j===i); });
+      panels.forEach(function(p,j){ p.hidden = j!==i; });
+    });
+  });
+  nodes[0].classList.add('is-on');
+}
+
+/* ---------- gallery rail ---------- */
+var rail = document.getElementById('rail');
+if(rail){
+  var sign = document.documentElement.dir === 'rtl' ? -1 : 1;
+  function go(d){ rail.scrollBy({ left: d * rail.clientWidth * .8 * sign, behavior: reduced ? 'auto':'smooth' }); }
+  document.querySelectorAll('[data-rail]').forEach(function(b){ b.addEventListener('click', function(){ go(+b.getAttribute('data-rail')); }); });
+  rail.addEventListener('keydown', function(e){
+    if(e.key==='ArrowRight'){ e.preventDefault(); go(1); }
+    if(e.key==='ArrowLeft'){ e.preventDefault(); go(-1); }
+  });
+}
+
+/* ---------- corridor ---------- */
+var cor = document.querySelector('[data-corridor]');
+if(cor && 'IntersectionObserver' in window){
+  var cs = Array.prototype.slice.call(cor.querySelectorAll('.cor-step'));
+  var co = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('is-lit');
+        cor.style.setProperty('--p', (cor.querySelectorAll('.is-lit').length / cs.length * 100) + '%');
+      }
+    });
+  }, {rootMargin:'-35% 0px -35%'});
+  cs.forEach(function(s){ co.observe(s); });
+}
+})();
+</script>
+</body>
+</html>

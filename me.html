@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="NONONICK — Alireza Ssezar. Web developer and automation builder. Selected projects, verified technologies, honest documentation.">
+<meta name="theme-color" content="#0A0A0B">
+<title>NONONICK — Alireza Ssezar</title>
+
+<!-- Favicon: inline SVG, no external asset -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0B'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='16' font-weight='700' fill='%2300C8FF'%3EN%3C/text%3E%3C/svg%3E">
+
+<!-- Fonts: swapped with fallbacks. If Google Fonts fails, system stack applies. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   RESET & TOKENS
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0A0A0B;
+  --surface:#111113;
+  --surface-2:#18181B;
+  --surface-3:#1F1F23;
+  --border:#27272A;
+  --border-hover:#3F3F46;
+  --accent:#00C8FF;
+  --accent-soft:rgba(0,200,255,.12);
+  --accent-line:rgba(0,200,255,.28);
+  --violet:#7C3AED;
+  --violet-soft:rgba(124,58,237,.12);
+  --success:#00E5A0;
+  --success-soft:rgba(0,229,160,.12);
+  --warning:#F59E0B;
+  --warning-soft:rgba(245,158,11,.12);
+  --muted:#8B8B90;
+  --dim:#52525B;
+  --text:#EDEDEF;
+  --font-sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-fa:'Vazirmatn','Inter',Tahoma,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --radius:14px;
+  --radius-sm:9px;
+  --radius-lg:20px;
+  --max-w:1180px;
+  --nav-h:64px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html[dir="rtl"] body{font-family:var(--font-fa)}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-sans);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+img,svg{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+::selection{background:var(--accent);color:#001018}
+
+/* Focus ring — visible for keyboard, subtle for mouse */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* ============================================================
+   LAYOUT PRIMITIVES
+   ============================================================ */
+.wrap{width:100%;max-width:var(--max-w);margin-inline:auto;padding-inline:clamp(20px,4vw,40px)}
+
+section{padding-block:clamp(64px,10vw,120px);position:relative}
+section + section{border-top:1px solid var(--border)}
+
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:16px;
+}
+.eyebrow::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 12px var(--accent);
+}
+h2{
+  font-size:clamp(28px,4.2vw,44px);
+  font-weight:600;
+  letter-spacing:-.02em;
+  line-height:1.15;
+  margin-bottom:16px;
+}
+.section-lede{
+  color:var(--muted);
+  font-size:clamp(15px,1.6vw,17px);
+  max-width:62ch;
+  margin-bottom:48px;
+}
+
+/* ============================================================
+   HEADER / NAV
+   ============================================================ */
+.skip{
+  position:absolute;inset-inline-start:-9999px;
+  background:var(--accent);color:#001018;
+  padding:10px 16px;border-radius:8px;z-index:200;font-weight:600;
+}
+.skip:focus{inset-inline-start:16px;top:16px}
+
+.nav{
+  position:sticky;top:0;z-index:100;
+  height:var(--nav-h);
+  background:rgba(10,10,11,.72);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);font-weight:500;font-size:14px;
+  letter-spacing:.02em;
+}
+.brand-mark{
+  width:26px;height:26px;border-radius:7px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--violet));
+  color:#001018;font-weight:700;font-family:var(--font-mono);
+  font-size:13px;
+}
+.brand-name{color:var(--text)}
+.brand-dot{color:var(--accent)}
+
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{
+  font-size:14px;font-weight:500;color:var(--muted);
+  padding:8px 12px;border-radius:8px;
+  transition:color .2s var(--ease),background .2s var(--ease);
+}
+.nav-links a:hover{color:var(--text);background:var(--surface-2)}
+
+.nav-right{display:flex;align-items:center;gap:8px}
+
+.lang-toggle{
+  display:inline-flex;align-items:center;
+  background:var(--surface-2);border:1px solid var(--border);
+  border-radius:999px;padding:3px;
+  font-family:var(--font-mono);font-size:12px;font-weight:500;
+}
+.lang-toggle button{
+  padding:6px 11px;border-radius:999px;color:var(--muted);
+  transition:color .2s var(--ease),background .2s var(--ease);
+}
+.lang-toggle button[aria-pressed="true"]{background:var(--surface-3);color:var(--text)}
+.lang-toggle button:hover{color:var(--text)}
+
+.menu-btn{
+  display:none;width:38px;height:38px;border-radius:9px;
+  border:1px solid var(--border);background:var(--surface-2);
+  place-items:center;
+}
+.menu-btn span{display:block;width:16px;height:1.5px;background:var(--text);position:relative}
+.menu-btn span::before,.menu-btn span::after{
+  content:'';position:absolute;left:0;width:16px;height:1.5px;background:var(--text);
+}
+.menu-btn span::before{top:-5px}
+.menu-btn span::after{top:5px}
+
+.mobile-menu{
+  display:none;position:absolute;top:var(--nav-h);inset-inline:0;
+  background:rgba(10,10,11,.96);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  padding:12px 20px 20px;
+}
+.mobile-menu.open{display:block}
+.mobile-menu a{
+  display:block;padding:12px 4px;font-size:16px;color:var(--text);
+  border-bottom:1px solid var(--border);
+}
+.mobile-menu a:last-child{border-bottom:0}
+
+@media (max-width:760px){
+  .nav-links{display:none}
+  .menu-btn{display:grid}
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  padding-block:clamp(80px,14vw,160px) clamp(80px,12vw,140px);
+  overflow:hidden;border-top:0;
+}
+.hero::before{
+  content:'';position:absolute;inset:-40% -20% auto -20%;height:120%;
+  background:
+    radial-gradient(circle at 25% 35%,var(--accent-soft),transparent 42%),
+    radial-gradient(circle at 75% 55%,var(--violet-soft),transparent 46%);
+  filter:blur(20px);
+  z-index:0;pointer-events:none;
+  animation:drift 26s ease-in-out infinite alternate;
+}
+@keyframes drift{
+  from{transform:translate3d(0,0,0) scale(1)}
+  to{transform:translate3d(3%,-2%,0) scale(1.08)}
+}
+.hero-inner{position:relative;z-index:1}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.05em;
+  color:var(--success);
+  background:var(--success-soft);
+  border:1px solid rgba(0,229,160,.28);
+  padding:6px 12px;border-radius:999px;
+  margin-bottom:28px;
+}
+.hero-badge::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--success);box-shadow:0 0 10px var(--success);
+  animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+.hero-title{
+  font-size:clamp(40px,8.5vw,86px);
+  font-weight:600;letter-spacing:-.035em;line-height:1.02;
+  margin-bottom:24px;
+}
+.hero-name{display:block;color:var(--text)}
+.hero-brand{
+  display:block;
+  background:linear-gradient(96deg,var(--accent) 0%,#7DD3FC 45%,var(--violet) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+  font-family:var(--font-mono);font-weight:500;
+  letter-spacing:-.02em;
+}
+.hero-lede{
+  font-size:clamp(16px,2vw,19px);color:var(--muted);
+  max-width:60ch;margin-bottom:40px;line-height:1.65;
+}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:13px 22px;border-radius:10px;
+  font-weight:500;font-size:15px;
+  transition:transform .18s var(--ease),background .2s var(--ease),border-color .2s var(--ease),box-shadow .2s var(--ease);
+  border:1px solid transparent;
+  white-space:nowrap;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{
+  background:var(--accent);color:#001018;
+  box-shadow:0 0 0 0 rgba(0,200,255,.4);
+}
+.btn-primary:hover{background:#3ED8FF;box-shadow:0 0 28px rgba(0,200,255,.28)}
+.btn-ghost{
+  background:var(--surface-2);color:var(--text);
+  border-color:var(--border);
+}
+.btn-ghost:hover{border-color:var(--border-hover);background:var(--surface-3)}
+
+/* ============================================================
+   SELECTED PROJECTS
+   ============================================================ */
+.selected-grid{
+  display:grid;grid-template-columns:repeat(12,1fr);gap:20px;
+}
+.pcard{
+  grid-column:span 6;
+  background:linear-gradient(180deg,var(--surface),var(--surface-2));
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:clamp(22px,3vw,32px);
+  display:flex;flex-direction:column;gap:16px;
+  position:relative;overflow:hidden;
+  transition:border-color .25s var(--ease),transform .25s var(--ease);
+}
+.pcard:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.pcard.feature{grid-column:span 12}
+@media (max-width:820px){.pcard,.pcard.feature{grid-column:span 12}}
+
+.pcard-glow{
+  position:absolute;top:-1px;inset-inline-start:12%;width:60%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:.6;
+}
+.pcard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.pcard-title{font-size:clamp(20px,2.6vw,26px);font-weight:600;letter-spacing:-.02em}
+.pcard-repo{
+  font-family:var(--font-mono);font-size:12px;color:var(--dim);
+  margin-top:6px;
+}
+.pcard-tagline{color:var(--muted);font-size:15px;line-height:1.6;flex-grow:1}
+
+.status{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;
+  padding:5px 10px;border-radius:999px;font-weight:500;
+  white-space:nowrap;
+}
+.status::before{content:'';width:6px;height:6px;border-radius:50%}
+.status.working{color:var(--success);background:var(--success-soft);border:1px solid rgba(0,229,160,.28)}
+.status.working::before{background:var(--success);box-shadow:0 0 8px var(--success)}
+.status.prototype{color:var(--warning);background:var(--warning-soft);border:1px solid rgba(245,158,11,.28)}
+.status.prototype::before{background:var(--warning)}
+.status.live{color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-line)}
+.status.live::before{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{
+  font-family:var(--font-mono);font-size:11px;
+  padding:4px 9px;border-radius:6px;
+  background:var(--surface-3);color:var(--muted);
+  border:1px solid var(--border);
+}
+
+.pcard-actions{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  margin-top:4px;
+}
+.link-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:14px;font-weight:500;color:var(--text);
+  padding:9px 14px;border-radius:9px;
+  border:1px solid var(--border);background:var(--surface-2);
+  transition:border-color .2s var(--ease),background .2s var(--ease);
+}
+.link-btn:hover{border-color:var(--accent-line);background:var(--surface-3)}
+.link-btn.ghost{border-color:transparent;background:transparent;color:var(--muted);padding-inline:6px}
+.link-btn.ghost:hover{color:var(--text);background:transparent;border-color:transparent}
+
+/* ============================================================
+   LIBRARY / FILTERS
+   ============================================================ */
+.filters{
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;
+}
+.filter{
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;
+  padding:8px 14px;border-radius:999px;
+  border:1px solid var(--border);background:var(--surface-2);
+  color:var(--muted);font-weight:500;
+  transition:color .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease);
+}
+.filter:hover{color:var(--text);border-color:var(--border-hover)}
+.filter[aria-pressed="true"]{
+  color:var(--bg);background:var(--accent);border-color:var(--accent);
+}
+
+.lib-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;
+}
+.lcard{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px;
+  display:flex;flex-direction:column;gap:12px;
+  transition:border-color .2s var(--ease),background .2s var(--ease);
+  cursor:pointer;text-align:start;
+}
+.lcard:hover{border-color:var(--border-hover);background:var(--surface-2)}
+.lcard.hidden{display:none}
+.lcard-title{font-size:17px;font-weight:600;letter-spacing:-.01em}
+.lcard-desc{font-size:14px;color:var(--muted);line-height:1.55;flex-grow:1}
+.lcard-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+
+.empty{
+  grid-column:1/-1;text-align:center;padding:60px 20px;
+  color:var(--muted);font-family:var(--font-mono);font-size:13px;
+  border:1px dashed var(--border);border-radius:var(--radius);
+}
+
+/* ============================================================
+   SKILLS
+   ============================================================ */
+.skills-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;
+}
+.skill-col{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;
+}
+.skill-col h3{
+  font-size:13px;font-family:var(--font-mono);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+  margin-bottom:16px;font-weight:500;
+  display:flex;align-items:center;gap:8px;
+}
+.skill-col h3::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.skill-col[data-level="working"] h3::before{background:var(--warning)}
+.skill-col[data-level="learning"] h3::before{background:var(--violet)}
+
+.skill-list{display:flex;flex-wrap:wrap;gap:8px}
+.skill{
+  font-family:var(--font-mono);font-size:12px;
+  padding:6px 11px;border-radius:7px;
+  background:var(--surface-2);border:1px solid var(--border);
+  color:var(--text);
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about-grid{
+  display:grid;grid-template-columns:1.4fr 1fr;gap:clamp(24px,5vw,56px);
+  align-items:start;
+}
+@media (max-width:820px){.about-grid{grid-template-columns:1fr}}
+.about-body p{color:var(--muted);font-size:16px;line-height:1.75;margin-bottom:16px}
+.about-body p:last-child{margin-bottom:0}
+.about-body strong{color:var(--text);font-weight:600}
+
+.fact-list{display:flex;flex-direction:column;gap:14px}
+.fact{
+  display:flex;justify-content:space-between;gap:16px;
+  padding:14px 0;border-bottom:1px solid var(--border);
+  font-size:14px;
+}
+.fact:last-child{border-bottom:0}
+.fact-k{color:var(--muted);font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.fact-v{color:var(--text);text-align:end}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-card{
+  background:linear-gradient(135deg,var(--surface) 0%,var(--surface-2) 100%);
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:clamp(28px,5vw,52px);
+  display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;
+}
+.contact-card h2{margin-bottom:8px}
+.contact-card p{color:var(--muted);max-width:44ch}
+
+/* ============================================================
+   LIMITATIONS NOTE
+   ============================================================ */
+.note{
+  background:var(--surface);border:1px solid var(--border);
+  border-inline-start:3px solid var(--warning);
+  border-radius:var(--radius);padding:22px 24px;
+  font-size:14px;color:var(--muted);line-height:1.7;
+  max-width:78ch;
+}
+.note strong{color:var(--text);font-weight:600}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{
+  border-top:1px solid var(--border);
+  padding:32px 0;
+  font-family:var(--font-mono);font-size:12px;color:var(--dim);
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;
+}
+.footer a{color:var(--muted)}
+.footer a:hover{color:var(--text)}
+
+/* ============================================================
+   CASE STUDY DIALOG
+   ============================================================ */
+dialog.case{
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  background:var(--surface);
+  color:var(--text);
+  max-width:min(780px,92vw);width:100%;
+  max-height:88vh;padding:0;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  overflow:hidden;
+}
+dialog.case::backdrop{background:rgba(0,0,0,.72);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.case-head{
+  position:sticky;top:0;z-index:2;
+  padding:22px 26px;border-bottom:1px solid var(--border);
+  background:rgba(17,17,19,.94);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+}
+.case-head h3{font-size:22px;font-weight:600;letter-spacing:-.02em;margin-bottom:4px}
+.case-head .pcard-repo{margin-top:0}
+.case-close{
+  width:34px;height:34px;border-radius:9px;
+  border:1px solid var(--border);background:var(--surface-2);
+  display:grid;place-items:center;flex-shrink:0;
+  font-size:18px;line-height:1;color:var(--muted);
+  transition:color .2s var(--ease),border-color .2s var(--ease);
+}
+.case-close:hover{color:var(--text);border-color:var(--border-hover)}
+
+.case-body{padding:26px;overflow-y:auto;max-height:calc(88vh - 92px)}
+.case-section{margin-bottom:28px}
+.case-section:last-child{margin-bottom:0}
+.case-section h4{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);
+  margin-bottom:10px;font-weight:500;
+}
+.case-section p{color:var(--text);font-size:15px;line-height:1.7;opacity:.92}
+.case-section ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.case-section li{
+  position:relative;padding-inline-start:20px;font-size:15px;
+  line-height:1.6;color:var(--text);opacity:.92;
+}
+.case-section li::before{
+  content:'';position:absolute;inset-inline-start:0;top:.6em;
+  width:8px;height:1px;background:var(--accent);
+}
+.case-placeholder{
+  font-family:var(--font-mono);font-size:12px;color:var(--dim);
+  padding:14px 16px;border:1px dashed var(--border);border-radius:8px;
+  text-align:center;
+}
+
+/* ============================================================
+   PRINT CV (hidden on screen, shown in print)
+   ============================================================ */
+#print-cv{display:none}
+@media print{
+  @page{margin:16mm}
+  body{background:#fff;color:#000;font-size:11pt;font-family:'Inter',Arial,sans-serif}
+  html[dir="rtl"] body{font-family:'Vazirmatn',Arial,sans-serif}
+  body > *{display:none !important}
+  body > #print-cv{display:block !important}
+  #print-cv{
+    max-width:190mm;margin:0 auto;
+  }
+  #print-cv h1{font-size:22pt;letter-spacing:-.02em;margin-bottom:2mm;font-weight:700}
+  #print-cv h2{
+    font-size:11pt;letter-spacing:.14em;text-transform:uppercase;
+    border-bottom:1pt solid #000;padding-bottom:1.5mm;
+    margin:8mm 0 3mm;font-weight:600;
+  }
+  #print-cv h3{font-size:12pt;margin:4mm 0 1mm;font-weight:600}
+  #print-cv p,#print-cv li{font-size:10.5pt;line-height:1.5}
+  #print-cv ul{list-style:none;padding:0}
+  #print-cv li{position:relative;padding-inline-start:5mm;margin-bottom:1mm}
+  #print-cv li::before{content:'—';position:absolute;inset-inline-start:0}
+  #print-cv .cv-meta{font-family:'JetBrains Mono',monospace;font-size:9.5pt;color:#333;margin-bottom:6mm}
+  #print-cv .cv-tag{
+    display:inline-block;border:0.5pt solid #888;border-radius:2mm;
+    padding:0.5mm 2mm;margin:0 1mm 1mm 0;font-size:9pt;
+    font-family:'JetBrains Mono',monospace;
+  }
+  #print-cv .cv-proj{margin-bottom:4mm;page-break-inside:avoid}
+  #print-cv .cv-foot{margin-top:8mm;padding-top:3mm;border-top:0.5pt solid #888;font-size:9pt;color:#555}
+}
+
+/* ============================================================
+   MOTION PREFERENCES
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  .reveal{opacity:1;transform:none}
+  .hero::before{animation:none}
+}
+
+/* ============================================================
+   MOBILE POLISH
+   ============================================================ */
+@media (max-width:520px){
+  :root{--nav-h:58px}
+  .brand-name{display:none}
+  .hero-cta .btn{flex:1;justify-content:center}
+  .pcard-actions .link-btn{padding:10px 12px;font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main" data-en="Skip to content" data-fa="پرش به محتوا">Skip to content</a>
+
+<!-- =========================================================
+     NAV
+     ========================================================= -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#home" class="brand" aria-label="NONONICK home">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span class="brand-name">nononick<span class="brand-dot">.</span>ir</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#selected" data-en="Selected" data-fa="منتخب">Selected</a>
+      <a href="#library"  data-en="Library"  data-fa="کتابخانه">Library</a>
+      <a href="#skills"   data-en="Skills"   data-fa="مهارتها">Skills</a>
+      <a href="#about"    data-en="About"    data-fa="درباره">About</a>
+      <a href="#contact"  data-en="Contact"  data-fa="تماس">Contact</a>
+    </nav>
+
+    <div class="nav-right">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="fa" aria-pressed="false">FA</button>
+      </div>
+      <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" data-en-aria="Menu" data-fa-aria="منو">
+        <span aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#selected" data-en="Selected" data-fa="منتخب">Selected</a>
+    <a href="#library"  data-en="Library"  data-fa="کتابخانه">Library</a>
+    <a href="#skills"   data-en="Skills"   data-fa="مهارتها">Skills</a>
+    <a href="#about"    data-en="About"    data-fa="درباره">About</a>
+    <a href="#contact"  data-en="Contact"  data-fa="تماس">Contact</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- =========================================================
+     HERO
+     ========================================================= -->
+<section class="hero" id="home">
+  <div class="wrap hero-inner">
+    <div class="hero-badge" data-en="Available for freelance & full-time" data-fa="آماده همکاری پروژهای و تماموقت">Available for freelance &amp; full-time</div>
+    <h1 class="hero-title">
+      <span class="hero-name">Alireza Ssezar</span>
+      <span class="hero-brand">NONONICK</span>
+    </h1>
+    <p class="hero-lede"
+       data-en="Independent web developer and automation builder. I design and ship client websites, internal tools, and content pipelines — and I document what actually works, what is still a prototype, and what I could not verify."
+       data-fa="توسعهدهنده وب و سازنده اتوماسیون مستقل. وبسایت مشتری، ابزار داخلی و خطوط تولید محتوا طراحی و تحویل میدهم — و مستند میکنم چه چیزی واقعاً کار میکند، چه چیزی هنوز نمونه اولیه است، و چه چیزی را نتوانستم تأیید کنم.">
+      Independent web developer and automation builder. I design and ship client websites, internal tools, and content pipelines — and I document what actually works, what is still a prototype, and what I could not verify.
+    </p>
+    <div class="hero-cta">
+      <a href="#selected" class="btn btn-primary" data-en="View selected work" data-fa="مشاهده کارهای منتخب">View selected work</a>
+      <button type="button" class="btn btn-ghost" data-action="print-cv" data-en="Save CV as PDF" data-fa="ذخیره رزومه PDF">Save CV as PDF</button>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     SELECTED PROJECTS
+     ========================================================= -->
+<section id="selected">
+  <div class="wrap">
+    <span class="eyebrow" data-en="01 — Selected work" data-fa="۰۱ — کارهای منتخب">01 — Selected work</span>
+    <h2 data-en="Three projects, honestly presented" data-fa="سه پروژه، با صداقت ارائه شده">Three projects, honestly presented</h2>
+    <p class="section-lede"
+       data-en="Each card shows verified status. Prototypes and unverified deployments are labeled — not hidden. Open a case study for the problem, my contribution, testing evidence, and known limitations."
+       data-fa="هر کارت وضعیت تأییدشده را نشان میدهد. نمونههای اولیه و استقرارهای تأییدنشده برچسبگذاری شدهاند — نه پنهان. برای مشاهده مسئله، سهم من، شواهد تست و محدودیتهای شناختهشده، مطالعه موردی را باز کنید.">
+      Each card shows verified status. Prototypes and unverified deployments are labeled — not hidden. Open a case study for the problem, my contribution, testing evidence, and known limitations.
+    </p>
+    <div class="selected-grid" id="selectedGrid"><!-- rendered --></div>
+  </div>
+</section>
+
+<!-- =========================================================
+     LIBRARY
+     ========================================================= -->
+<section id="library">
+  <div class="wrap">
+    <span class="eyebrow" data-en="02 — Project library" data-fa="۰۲ — کتابخانه پروژهها">02 — Project library</span>
+    <h2 data-en="Everything else, filterable" data-fa="همه چیزهای دیگر، قابل فیلتر">Everything else, filterable</h2>
+    <p class="section-lede"
+       data-en="All audited repositories. Filter by category. Click any card to open its case study."
+       data-fa="همه مخازن بررسیشده. بر اساس دستهبندی فیلتر کنید. برای مشاهده مطالعه موردی روی هر کارت کلیک کنید.">
+      All audited repositories. Filter by category. Click any card to open its case study.
+    </p>
+
+    <div class="filters" role="group" aria-label="Filter projects" id="filters">
+      <button class="filter" type="button" data-filter="all"       aria-pressed="true"  data-en="All"       data-fa="همه">All</button>
+      <button class="filter" type="button" data-filter="automation" aria-pressed="false" data-en="Automation" data-fa="اتوماسیون">Automation</button>
+      <button class="filter" type="button" data-filter="tool"       aria-pressed="false" data-en="Tools"     data-fa="ابزارها">Tools</button>
+      <button class="filter" type="button" data-filter="design"     aria-pressed="false" data-en="Design"    data-fa="طراحی">Design</button>
+      <button class="filter" type="button" data-filter="web"        aria-pressed="false" data-en="Web"       data-fa="وب">Web</button>
+    </div>
+
+    <div class="lib-grid" id="libGrid"><!-- rendered --></div>
+  </div>
+</section>
+
+<!-- =========================================================
+     SKILLS
+     ========================================================= -->
+<section id="skills">
+  <div class="wrap">
+    <span class="eyebrow" data-en="03 — Skills & approach" data-fa="۰۳ — مهارتها و رویکرد">03 — Skills &amp; approach</span>
+    <h2 data-en="What I have actually used" data-fa="آنچه واقعاً استفاده کردهام">What I have actually used</h2>
+    <p class="section-lede"
+       data-en="This is not a wish list. Confirmed technologies appear in shipped or running code that I authored. Working and Learning sections are labeled honestly."
+       data-fa="این فهرست آرزو نیست. فناوریهای تأییدشده در کدی که نوشتهام یا در حال اجراست دیده میشوند. بخشهای «در حال کار» و «در حال یادگیری» صادقانه برچسب خوردهاند.">
+      This is not a wish list. Confirmed technologies appear in shipped or running code that I authored. Working and Learning sections are labeled honestly.
+    </p>
+    <div class="skills-grid" id="skillsGrid"><!-- rendered --></div>
+  </div>
+</section>
+
+<!-- =========================================================
+     ABOUT
+     ========================================================= -->
+<section id="about">
+  <div class="wrap">
+    <span class="eyebrow" data-en="04 — About" data-fa="۰۴ — درباره">04 — About</span>
+    <h2 data-en="Verifiable experience only" data-fa="فقط تجربه قابل تأیید">Verifiable experience only</h2>
+    <div class="about-grid">
+      <div class="about-body">
+        <p data-en="I build under the NONONICK name. My work spans client-facing websites, a content automation pipeline, a file-to-HTML converter, and a project-management UI prototype. I prefer dependency-light, self-contained implementations that can be deployed without a build step or a paid service."
+           data-fa="من با نام نونونیک کار میکنم. کارهایم شامل وبسایتهای مشتری، یک خط تولید خودکار محتوا، یک مبدل فایل به HTML و یک نمونه اولیه رابط مدیریت پروژه است. پیادهسازیهای کمدانش، خودکفا و بدون مرحله build یا سرویس پولی را ترجیح میدهم.">
+          I build under the NONONICK name. My work spans client-facing websites, a content automation pipeline, a file-to-HTML converter, and a project-management UI prototype. I prefer dependency-light, self-contained implementations that can be deployed without a build step or a paid service.
+        </p>
+        <p data-en="No employment history, education, or business metrics are listed here, because none were provided or verified. When I cannot confirm something — a live deployment, a Cron job, a metric — I say so on the project card instead of guessing."
+           data-fa="هیچ سابقه استخدام، تحصیلات یا معیار کسبوکاری در اینجا فهرست نشده، چون هیچکدام ارائه یا تأیید نشدهاند. وقتی چیزی را نمیتوانم تأیید کنم — استقرار زنده، کرون جاب، یک معیار — آن را روی کارت پروژه میگویم، نه اینکه حدس بزنم.">
+          No employment history, education, or business metrics are listed here, because none were provided or verified. When I cannot confirm something — a live deployment, a Cron job, a metric — I say so on the project card instead of guessing.
+        </p>
+      </div>
+      <div class="fact-list">
+        <div class="fact">
+          <span class="fact-k" data-en="Identity" data-fa="هویت">Identity</span>
+          <span class="fact-v">NONONICK</span>
+        </div>
+        <div class="fact">
+          <span class="fact-k" data-en="Focus" data-fa="تمرکز">Focus</span>
+          <span class="fact-v" data-en="Websites · Automation · Tools" data-fa="وبسایت · اتوماسیون · ابزار">Websites · Automation · Tools</span>
+        </div>
+        <div class="fact">
+          <span class="fact-k" data-en="Availability" data-fa="وضعیت">Availability</span>
+          <span class="fact-v" data-en="Open to work" data-fa="آماده همکاری">Open to work</span>
+        </div>
+        <div class="fact">
+          <span class="fact-k" data-en="Live site" data-fa="سایت اصلی">Live site</span>
+          <span class="fact-v"><a href="https://nononick.ir/" target="_blank" rel="noopener">nononick.ir ↗</a></span>
+        </div>
+        <div class="fact">
+          <span class="fact-k">GitHub</span>
+          <span class="fact-v"><a href="https://github.com/alirezassezar1-svg" target="_blank" rel="noopener">alirezassezar1-svg ↗</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     CONTACT
+     ========================================================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-card">
+      <div>
+        <span class="eyebrow" data-en="05 — Contact" data-fa="۰۵ — تماس">05 — Contact</span>
+        <h2 data-en="Let's build something" data-fa="بیایید چیزی بسازیم">Let's build something</h2>
+        <p data-en="For project enquiries or hiring, reach me on GitHub or Instagram. There is no form on this page — I did not want to add one I could not actually deliver to."
+           data-fa="برای درخواست پروژه یا استخدام، از طریق گیتهاب یا اینستاگرام در تماس باشید. هیچ فرمی در این صفحه نیست — نمیخواستم فرمی اضافه کنم که واقعاً نتوانم به آن پاسخ دهم.">
+          For project enquiries or hiring, reach me on GitHub or Instagram. There is no form on this page — I did not want to add one I could not actually deliver to.
+        </p>
+      </div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://github.com/alirezassezar1-svg" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="btn btn-ghost" href="https://instagram.com/nononick.ir" target="_blank" rel="noopener">Instagram ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     LIMITATIONS
+     ========================================================= -->
+<section id="limitations" style="border-top:0;padding-block:0 60px">
+  <div class="wrap">
+    <div class="note"
+         data-en-html='<strong>Honest limitations.</strong> No live demo URLs are linked for Forge_html, Portfo_Land, Content Automation, or nononick-invite, because none were verified. The Content Automation Cron job and MySQL insertion are documented but cannot be confirmed from outside the server. The <code>my_website</code> repository was inaccessible during the audit and is not included. No email address is listed because none was verified.'
+         data-fa-html='<strong>محدودیتهای صادقانه.</strong> هیچ لینک دموی زندهای برای Forge_html، Portfo_Land، اتوماسیون محتوا یا nononick-invite وجود ندارد، چون هیچکدام تأیید نشدند. کرون جاب اتوماسیون محتوا و درج MySQL مستند شدهاند اما از بیرون سرور قابل تأیید نیستند. مخزن <code>my_website</code> در زمان بررسی غیرقابل دسترس بود و گنجانده نشده. هیچ ایمیل آدرسی فهرست نشده چون تأیید نشد.'>
+      <strong>Honest limitations.</strong> No live demo URLs are linked for Forge_html, Portfo_Land, Content Automation, or nononick-invite, because none were verified. The Content Automation Cron job and MySQL insertion are documented but cannot be confirmed from outside the server. The <code>my_website</code> repository was inaccessible during the audit and is not included. No email address is listed because none was verified.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+<footer class="wrap footer">
+  <span>© <span id="year"></span> NONONICK — Alireza Ssezar</span>
+  <span data-en="Static site. No analytics, no cookies, no tracking." data-fa="سایت استاتیک. بدون آنالیتیکس، بدون کوکی، بدون ردیابی.">Static site. No analytics, no cookies, no tracking.</span>
+</footer>
+
+<!-- =========================================================
+     CASE STUDY DIALOG
+     ========================================================= -->
+<dialog class="case" id="caseDialog" aria-labelledby="caseTitle">
+  <div class="case-head">
+    <div>
+      <h3 id="caseTitle">—</h3>
+      <div class="pcard-repo" id="caseRepo">—</div>
+    </div>
+    <button type="button" class="case-close" data-action="close-case" aria-label="Close" data-en-aria="Close" data-fa-aria="بستن">×</button>
+  </div>
+  <div class="case-body" id="caseBody"></div>
+</dialog>
+
+<!-- =========================================================
+     PRINT-ONLY CV
+     ========================================================= -->
+<div id="print-cv" aria-hidden="true"><!-- rendered --></div>
+
+<script>
+/* ============================================================
+   DATA — single source of truth.
+   To add a project: append an object to PROJECTS.
+   ============================================================ */
+const PROJECTS = [
+  {
+    id: 'content-automation',
+    feature: true,
+    repoName: 'nononick-content-automation',
+    category: 'automation',
+    status: 'working', // working | prototype | live
+    name: { en: 'Content Automation Pipeline', fa: 'خط تولید خودکار محتوا' },
+    tagline: {
+      en: 'A semi-automated article workflow: JSON drafts committed to GitHub, pulled by a scheduled PHP script on cPanel, inserted into MySQL, and approved by an admin before publishing.',
+      fa: 'یک جریان نیمهخودکار مقاله: پیشنویسهای JSON در گیتهاب کامیت میشوند، با اسکریپت زمانبندیشده PHP روی cPanel دریافت و در MySQL درج میشوند و قبل از انتشار توسط ادمین تأیید میشوند.'
+    },
+    tech: ['PHP', 'MySQL', 'GitHub Actions', 'Cron', 'JSON'],
+    repo: 'https://github.com/alirezassezar1-svg/nononick-content-automation',
+    demo: null,
+    caseStudy: {
+      problem: {
+        en: 'Publishing articles manually required copy-pasting content into a CMS and re-uploading images for every post. The process was slow and prone to inconsistency.',
+        fa: 'انتشار دستی مقاله نیازمند کپیپیست محتوا در CMS و آپلود مجدد تصاویر برای هر پست بود. این فرآیند کند و مستعد ناهماهنگی بود.'
+      },
+      audience: {
+        en: 'Content publishers and small editorial teams running a self-hosted blog on shared cPanel hosting.',
+        fa: 'ناشران محتوا و تیمهای تحریریه کوچک که وبلاگ self-hosted روی هاست اشتراکی cPanel دارند.'
+      },
+      solution: {
+        en: 'Drafts are written as JSON files and committed to GitHub. A scheduled PHP script running on cPanel pulls those drafts via the GitHub API, inserts them into MySQL with a draft status, and an admin approves them before they go live. A GitHub Actions workflow handles a Google Drive backup.',
+        fa: 'پیشنویسها بهصورت فایلهای JSON نوشته و در گیتهاب کامیت میشوند. یک اسکریپت PHP زمانبندیشده روی cPanel این پیشنویسها را از طریق API گیتهاب دریافت، با وضعیت پیشنویس در MySQL درج و ادمین قبل از انتشار آنها را تأیید میکند. یک ورکفلوی GitHub Actions پشتیبانگیری گوگل درایو را مدیریت میکند.'
+      },
+      contribution: {
+        en: 'Full author. Repository, PHP pipeline, SQL schema, GitHub Actions workflow, and documentation.',
+        fa: 'نویسنده کامل. مخزن، پایپلاین PHP، اسکیمای SQL، ورکفلوی GitHub Actions و مستندات.'
+      },
+      features: [
+        { en: 'GitHub-committed JSON drafts', fa: 'پیشنویسهای JSON کامیتشده در گیتهاب' },
+        { en: 'Scheduled PHP script on cPanel Cron', fa: 'اسکریپت PHP زمانبندیشده روی کرون cPanel' },
+        { en: 'MySQL insertion with draft status', fa: 'درج در MySQL با وضعیت پیشنویس' },
+        { en: 'Admin approval before publish', fa: 'تأیید ادمین قبل از انتشار' },
+        { en: 'Google Drive backup via GitHub Actions', fa: 'پشتیبانگیری گوگل درایو از طریق GitHub Actions' },
+        { en: 'Secrets excluded from repository (config.example.php only)', fa: 'حذف اطلاعات محرمانه از مخزن (فقط config.example.php)' }
+      ],
+      testing: {
+        en: 'README documents local testing of the engine and upload page. The live Cron job and MySQL insertion cannot be verified externally — no server access was provided.',
+        fa: 'README مستندات تست محلی موتور و صفحه آپلود را دارد. اجرای زنده کرون و درج MySQL از بیرون قابل تأیید نیست — دسترسی به سرور ارائه نشده است.'
+      },
+      limitations: {
+        en: 'No public live demo. Deployment state unverified from outside. Requires a configured cPanel Cron job and MySQL database to run.',
+        fa: 'دموی زنده عمومی وجود ندارد. وضعیت استقرار از بیرون تأیید نشده. برای اجرا نیازمند کرون جاب cPanel و دیتابیس MySQL پیکربندیشده است.'
+      }
+    }
+  },
+  {
+    id: 'forge-html',
+    feature: true,
+    repoName: 'Forge_html',
+    category: 'tool',
+    status: 'prototype',
+    name: { en: 'Forge — File to Single HTML', fa: 'فورج — تبدیل فایل به HTML یکپارچه' },
+    tagline: {
+      en: 'Converts a file or ZIP archive into a single self-contained offline HTML page. Locally tested; not yet run on real GitHub.',
+      fa: 'یک فایل یا آرشیو ZIP را به یک صفحه HTML خودکفا و آفلاین تبدیل میکند. تستشده بهصورت محلی؛ هنوز روی گیتهاب واقعی اجرا نشده.'
+    },
+    tech: ['Node.js', 'GitHub Actions', 'HTML', 'Vite / React / Vue / Svelte (optional)'],
+    repo: 'https://github.com/alirezassezar1-svg/Forge_html',
+    demo: null,
+    caseStudy: {
+      problem: {
+        en: 'Sharing a working web project usually requires the recipient to install tooling, run a build, or spin up a dev server. There is no simple way to hand someone a single file that just opens and works.',
+        fa: 'بهاشتراکگذاری یک پروژه وب فعال معمولاً نیازمند نصب ابزار، اجرای build یا راهاندازی dev server توسط گیرنده است. راه سادهای وجود ندارد که یک فایل واحد تحویل داد که فقط باز شود و کار کند.'
+      },
+      audience: {
+        en: 'Developers sharing demos, reviewers, and clients who want to open a project without any setup.',
+        fa: 'توسعهدهندگانی که دمو بهاشتراک میگذارند، بازبینها، و مشتریانی که میخواهند پروژه را بدون هیچ راهاندازیای باز کنند.'
+      },
+      solution: {
+        en: 'A Node.js engine (anyhtml.mjs) plus a GitHub Actions workflow produce a single HTML output. Framework projects (Vite, React, Vue, Svelte) are supported optionally. A browser-based upload page lets you hand the tool a file or ZIP and receive the HTML back.',
+        fa: 'یک موتور Node.js (anyhtml.mjs) بههمراه ورکفلوی GitHub Actions یک خروجی HTML واحد تولید میکنند. پروژههای فریمورکی (Vite، React، Vue، Svelte) بهصورت اختیاری پشتیبانی میشوند. یک صفحه آپلود مبتنی بر مرورگر اجازه میدهد فایل یا ZIP بدهید و HTML را دریافت کنید.'
+      },
+      contribution: {
+        en: 'Full author. Engine, GitHub Actions workflow, upload page, and documentation.',
+        fa: 'نویسنده کامل. موتور، ورکفلوی GitHub Actions، صفحه آپلود و مستندات.'
+      },
+      features: [
+        { en: 'Static HTML projects → single self-contained HTML', fa: 'پروژههای HTML استاتیک → یک HTML خودکفا' },
+        { en: 'ZIP archive ingestion', fa: 'دریافت آرشیو ZIP' },
+        { en: 'Optional framework support (Vite / React / Vue / Svelte)', fa: 'پشتیبانی اختیاری از فریمورک (Vite / React / Vue / Svelte)' },
+        { en: 'GitHub Actions workflow', fa: 'ورکفلوی GitHub Actions' },
+        { en: 'Browser upload page with token kept in-memory only', fa: 'صفحه آپلود مرورگر با نگهداری توکن فقط در حافظه' }
+      ],
+      testing: {
+        en: 'README states the engine and upload page have been tested locally. It explicitly notes the pipeline has not yet been run against real GitHub.',
+        fa: 'README اشاره دارد که موتور و صفحه آپلود بهصورت محلی تست شدهاند. صراحتاً ذکر شده که پایپلاین هنوز روی گیتهاب واقعی اجرا نشده است.'
+      },
+      limitations: {
+        en: 'Server-backed projects (scripts, forms, backend requests) are captured as static screenshots only. API-dependent pages such as Gemini will not respond offline. No public live demo.',
+        fa: 'پروژههای وابسته به سرور (اسکریپتها، فرمها، درخواستهای بکاند) فقط بهصورت اسکرینشات استاتیک ثبت میشوند. صفحات وابسته به API مانند Gemini بهصورت آفلاین پاسخ نمیدهند. دموی زنده عمومی وجود ندارد.'
+      }
+    }
+  },
+  {
+    id: 'portfo-land',
+    feature: true,
+    repoName: 'Portfo_Land',
+    category: 'design',
+    status: 'prototype',
+    name: { en: 'PROJECTVERSE — Portfolio Dashboard UI', fa: 'PROJECTVERSE — داشبورد پورتفولیو' },
+    tagline: {
+      en: 'A client-side dashboard UI with a project intake wizard, content studios, tech analyzer, and export center. UI shell — no backend or persistence verified.',
+      fa: 'یک رابط داشبورد سمت کلاینت با ویزارد ورود پروژه، استودیوهای محتوا، تحلیلگر فناوری و مرکز خروجی. پوسته رابط — بکاند یا ماندگاری تأیید نشده.'
+    },
+    tech: ['HTML', 'CSS', 'Vanilla JavaScript'],
+    repo: 'https://github.com/alirezassezar1-svg/Portfo_Land',
+    demo: null,
+    caseStudy: {
+      problem: {
+        en: 'Managing portfolio content across multiple tools (drafts, tech metadata, exports) is fragmented. A single surface for intake, editing, and export would reduce context switching.',
+        fa: 'مدیریت محتوای پورتفولیو در چند ابزار (پیشنویسها، متادیتای فناوری، خروجیها) پراکنده است. یک سطح واحد برای ورود، ویرایش و خروجی میتواند جابهجایی زمینه را کاهش دهد.'
+      },
+      audience: {
+        en: 'Developers and designers who maintain a personal portfolio and want a structured editor.',
+        fa: 'توسعهدهندگان و طراحانی که پورتفولیوی شخصی نگه میدارند و یک ویرایشگر ساختاریافته میخواهند.'
+      },
+      solution: {
+        en: 'A single-page dashboard built with vanilla HTML, CSS, and JavaScript. Sections include a project intake wizard, content studios, a technology analyzer, and an export center. State is intended to persist client-side; no server component exists.',
+        fa: 'یک داشبورد تکصفحهای ساختهشده با HTML، CSS و JavaScript خالص. بخشها شامل ویزارد ورود پروژه، استودیوهای محتوا، تحلیلگر فناوری و مرکز خروجی است. حالت بهصورت سمت کلاینت ذخیره میشود؛ هیچ کامپوننت سروری وجود ندارد.'
+      },
+      contribution: {
+        en: 'Full author of the UI shell.',
+        fa: 'نویسنده کامل پوسته رابط.'
+      },
+      features: [
+        { en: 'Project intake wizard', fa: 'ویزارد ورود پروژه' },
+        { en: 'Content studios (draft editing surfaces)', fa: 'استودیوهای محتوا (سطوح ویرایش پیشنویس)' },
+        { en: 'Technology analyzer (UI)', fa: 'تحلیلگر فناوری (رابط)' },
+        { en: 'Export center', fa: 'مرکز خروجی' },
+        { en: 'Filterable project list', fa: 'فهرست پروژه قابل فیلتر' }
+      ],
+      testing: {
+        en: 'No live demo URL exists. No README documentation beyond the repository title. The dashboard renders but its internal logic and persistence were not verifiable from static inspection alone.',
+        fa: 'هیچ آدرس دموی زندهای وجود ندارد. مستنداتی فراتر از عنوان مخزن وجود ندارد. داشبورد رندر میشود اما منطق داخلی و ماندگاری آن از طریق بازرسی استاتیک قابل تأیید نبود.'
+      },
+      limitations: {
+        en: 'UI shell only. No verified persistence between sessions. No backend. The technology analyzer and content studios are interface elements without confirmed processing logic.',
+        fa: 'فقط پوسته رابط. ماندگاری تأییدشدهای بین جلسات وجود ندارد. بکاندی نیست. تحلیلگر فناوری و استودیوهای محتوا عناصر رابط بدون منطق پردازش تأییدشده هستند.'
+      }
+    }
+  },
+  {
+    id: 'nononick-invite',
+    feature: false,
+    repoName: 'nononick-invite',
+    category: 'design',
+    status: 'working',
+    name: { en: 'NONONICK Invite Page', fa: 'صفحه دعوت نونونیک' },
+    tagline: {
+      en: 'A self-contained, deployable invite page with an interactive explosion effect.',
+      fa: 'یک صفحه دعوت خودکفا و قابل استقرار با افکت انفجاری تعاملی.'
+    },
+    tech: ['HTML', 'CSS', 'Vanilla JavaScript', 'GitHub Pages'],
+    repo: 'https://github.com/alirezassezar1-svg/nononick-invite',
+    demo: null,
+    caseStudy: {
+      problem: {
+        en: 'A lightweight, single-file invite page was needed that could be deployed to static hosting without any build step.',
+        fa: 'یک صفحه دعوت سبک و تکفایلی مورد نیاز بود که بدون هیچ مرحله build روی هاست استاتیک قابل استقرار باشد.'
+      },
+      audience: {
+        en: 'Guests receiving a shareable invite link.',
+        fa: 'مهمانانی که لینک دعوت قابل اشتراکگذاری دریافت میکنند.'
+      },
+      solution: {
+        en: 'A single index.html with inline CSS and JavaScript, including an interactive visual effect. A separate dbreader.html exists but its purpose and dependencies are not documented. Deployed as a static site.',
+        fa: 'یک index.html با CSS و JavaScript درونخطی، شامل یک افکت بصری تعاملی. یک dbreader.html جداگانه وجود دارد اما هدف و وابستگیهایش مستند نیست. بهصورت سایت استاتیک مستقر شده.'
+      },
+      contribution: {
+        en: 'Full author.',
+        fa: 'نویسنده کامل.'
+      },
+      features: [
+        { en: 'Single-file static page', fa: 'صفحه استاتیک تکفایلی' },
+        { en: 'Interactive explosion animation', fa: 'انیمیشن انفجار تعاملی' },
+        { en: 'Instagram contact link', fa: 'لینک تماس اینستاگرام' }
+      ],
+      testing: {
+        en: 'The page is a static deployable file. No live demo URL was verified during audit.',
+        fa: 'صفحه یک فایل استاتیک قابل استقرار است. هیچ آدرس دموی زندهای در زمان بررسی تأیید نشد.'
+      },
+      limitations: {
+        en: 'Small scope. The dbreader.html companion file is undocumented and unverified.',
+        fa: 'دامنه کوچک. فایل همراه dbreader.html مستند و تأیید نشده است.'
+      }
+    }
+  },
+  {
+    id: 'nononick-ir',
+    feature: false,
+    repoName: 'nononick.ir (live)',
+    category: 'web',
+    status: 'live',
+    name: { en: 'nononick.ir — Agency Site', fa: 'nononick.ir — سایت آژانس' },
+    tagline: {
+      en: 'The live client-facing site advertising website design, custom admin panels, e-commerce with payment gateway, SEO, and branding.',
+      fa: 'سایت زنده مشتریمحور که طراحی وبسایت، پنل ادمین سفارشی، فروشگاه با درگاه پرداخت، سئو و برندینگ را ارائه میدهد.'
+    },
+    tech: ['Unknown stack (server-rendered)', 'Live deployment'],
+    repo: null,
+    demo: 'https://nononick.ir/',
+    caseStudy: {
+      problem: {
+        en: 'The NONONICK brand needed a live commercial site to present services and portfolio samples to potential clients.',
+        fa: 'برند نونونیک به یک سایت تجاری زنده نیاز داشت تا خدمات و نمونهکارها را به مشتریان بالقوه ارائه دهد.'
+      },
+      audience: {
+        en: 'Small businesses and individuals seeking a website, admin panel, or e-commerce build.',
+        fa: 'کسبوکارهای کوچک و افرادی که به دنبال وبسایت، پنل ادمین یا فروشگاه هستند.'
+      },
+      solution: {
+        en: 'A live site presenting service offerings, portfolio samples (restaurant and café sites, among others), and a blog. This is the primary commercial surface for the NONONICK identity.',
+        fa: 'یک سایت زنده که خدمات، نمونهکارها (از جمله سایت رستوران و کافه) و یک وبلاگ را ارائه میدهد. این سطح تجاری اصلی برند نونونیک است.'
+      },
+      contribution: {
+        en: 'Claimed owner of the brand. Individual project attributions on the site were not independently verified during audit.',
+        fa: 'مالک ادعایی برند. انتساب پروژههای منفرد روی سایت بهصورت مستقل در زمان بررسی تأیید نشد.'
+      },
+      features: [
+        { en: 'Service listings (design, admin panels, e-commerce, SEO, branding)', fa: 'فهرست خدمات (طراحی، پنل ادمین، فروشگاه، سئو، برندینگ)' },
+        { en: 'Portfolio samples', fa: 'نمونهکارها' },
+        { en: 'Blog with published technical articles', fa: 'وبلاگ با مقالات فنی منتشرشده' }
+      ],
+      testing: {
+        en: 'The site is live and reachable. Backend quality and individual project authorship were not auditable from outside.',
+        fa: 'سایت زنده و قابل دسترسی است. کیفیت بکاند و نویسندگی پروژههای منفرد از بیرون قابل بررسی نبود.'
+      },
+      limitations: {
+        en: 'Cannot confirm which portfolio projects on the site were built by Alireza versus by other contributors. No stack details available.',
+        fa: 'نمیتوان تأیید کرد کدام پروژههای پورتفولیو روی سایت توسط علیرضا ساخته شده و کدام توسط دیگران. جزئیات استک موجود نیست.'
+      }
+    }
+  }
+];
+
+/* ============================================================
+   SKILLS — verified vs working vs learning
+   ============================================================ */
+const SKILLS = {
+  confirmed: {
+    label: { en: 'Confirmed — used in authored code', fa: 'تأییدشده — استفادهشده در کد نوشتهشده' },
+    level: 'confirmed',
+    items: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL', 'SQL', 'Git', 'GitHub', 'GitHub Actions', 'cPanel', 'Cron', 'JSON']
+  },
+  working: {
+    label: { en: 'Working — used with support', fa: 'در حال کار — استفاده با پشتیبانی' },
+    level: 'working',
+    items: ['Google Drive API (service accounts)', 'Node.js', 'Vite', 'Regex pipelines']
+  },
+  learning: {
+    label: { en: 'Learning — not yet shipped', fa: 'در حال یادگیری — هنوز تحویل نشده' },
+    level: 'learning',
+    items: ['React', 'Vue', 'Svelte', 'TypeScript']
+  }
+};
+
+/* ============================================================
+   UI STRINGS
+   ============================================================ */
+const UI = {
+  viewCase: { en: 'View case study', fa: 'مشاهده مطالعه موردی' },
+  viewRepo: { en: 'Repository', fa: 'مخزن' },
+  viewDemo: { en: 'Live site', fa: 'سایت زنده' },
+  noDemo:   { en: 'No live demo available', fa: 'دموی زنده موجود نیست' },
+  noRepo:   { en: 'No public repository', fa: 'مخزن عمومی ندارد' },
+  noShot:   { en: 'No screenshot available', fa: 'اسکرینشات موجود نیست' },
+  empty:    { en: 'No projects in this filter.', fa: 'پروژهای در این فیلتر نیست.' },
+  problem:  { en: 'Problem & audience', fa: 'مسئله و مخاطب' },
+  solution: { en: 'Solution & design decisions', fa: 'راهحل و تصمیمات طراحی' },
+  contribution: { en: 'My contribution', fa: 'سهم من' },
+  tech:     { en: 'Verified technologies', fa: 'فناوریهای تأییدشده' },
+  features: { en: 'Implemented features', fa: 'ویژگیهای پیادهسازیشده' },
+  shot:     { en: 'Screenshots & demo', fa: 'اسکرینشات و دمو' },
+  source:   { en: 'Source repository', fa: 'مخزن منبع' },
+  testing:  { en: 'Testing evidence', fa: 'شواهد تست' },
+  limits:   { en: 'Known limitations & status', fa: 'محدودیتها و وضعیت شناختهشده' },
+  statusLabels: {
+    working:   { en: 'Working', fa: 'کارکردی' },
+    prototype: { en: 'Prototype', fa: 'نمونه اولیه' },
+    live:      { en: 'Live', fa: 'زنده' }
+  }
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  lang: (localStorage.getItem('nn_lang') === 'fa') ? 'fa' : 'en',
+  filter: 'all',
+  activeId: null
+};
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const $  = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const L  = (obj) => obj ? obj[state.lang] : '';
+
+/* ============================================================
+   LANGUAGE
+   ============================================================ */
+function applyLang(lang) {
+  state.lang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = (lang === 'fa') ? 'rtl' : 'ltr';
+  try { localStorage.setItem('nn_lang', lang); } catch(e){}
+
+  // Swap text nodes on elements with data-en / data-fa
+  $$('[data-en]').forEach(el => {
+    const v = el.getAttribute('data-' + lang);
+    if (v !== null) el.textContent = v;
+  });
+  // Swap innerHTML variants (used for the limitations note)
+  $$('[data-en-html]').forEach(el => {
+    const v = el.getAttribute('data-' + lang + '-html');
+    if (v !== null) el.innerHTML = v;
+  });
+  // Swap aria-labels
+  $$('[data-en-aria]').forEach(el => {
+    const v = el.getAttribute('data-' + lang + '-aria');
+    if (v !== null) el.setAttribute('aria-label', v);
+  });
+
+  // Toggle buttons
+  $$('.lang-toggle button').forEach(b => {
+    b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+  });
+
+  renderAll();
+}
+
+/* ============================================================
+   RENDER: SELECTED
+   ============================================================ */
+function renderSelected() {
+  const root = $('#selectedGrid');
+  const featured = PROJECTS.filter(p => p.feature);
+  root.innerHTML = featured.map(p => cardHTML(p)).join('');
+  bindCardActions(root);
+}
+
+/* ============================================================
+   RENDER: LIBRARY
+   ============================================================ */
+function renderLibrary() {
+  const root = $('#libGrid');
+  const list = PROJECTS.filter(p => state.filter === 'all' || p.category === state.filter);
+
+  if (!list.length) {
+    root.innerHTML = `<div class="empty">${L(UI.empty)}</div>`;
+    return;
+  }
+  root.innerHTML = list.map(p => libCardHTML(p)).join('');
+  bindCardActions(root);
+}
+
+/* ============================================================
+   CARD TEMPLATES
+   ============================================================ */
+function statusChip(status) {
+  const label = L(UI.statusLabels[status]) || status;
+  return `<span class="status ${status}">${label}</span>`;
+}
+
+function cardHTML(p) {
+  const repoLine = p.repoName ? p.repoName : '';
+  const tags = p.tech.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('');
+  const demoLink = p.demo
+    ? `<a class="link-btn" href="${p.demo}" target="_blank" rel="noopener">${L(UI.viewDemo)} ↗</a>`
+    : '';
+  const repoLink = p.repo
+    ? `<a class="link-btn" href="${p.repo}" target="_blank" rel="noopener" rel-="noreferrer">${L(UI.viewRepo)} ↗</a>`
+    : '';
+
+  return `
+    <article class="pcard ${p.feature ? 'feature' : ''}">
+      <span class="pcard-glow" aria-hidden="true"></span>
+      <div class="pcard-head">
+        <div>
+          <h3 class="pcard-title">${escapeHTML(L(p.name))}</h3>
+          ${repoLine ? `<div class="pcard-repo">${escapeHTML(repoLine)}</div>` : ''}
+        </div>
+        ${statusChip(p.status)}
+      </div>
+      <p class="pcard-tagline">${escapeHTML(L(p.tagline))}</p>
+      <div class="tags">${tags}</div>
+      <div class="pcard-actions">
+        <button class="link-btn" type="button" data-case="${p.id}">${L(UI.viewCase)} →</button>
+        ${repoLink}
+        ${demoLink}
+      </div>
+    </article>
+  `;
+}
+
+function libCardHTML(p) {
+  return `
+    <button class="lcard" type="button" data-case="${p.id}">
+      <div class="pcard-head" style="margin-bottom:0">
+        <div class="lcard-title">${escapeHTML(L(p.name))}</div>
+        ${statusChip(p.status)}
+      </div>
+      <div class="lcard-desc">${escapeHTML(L(p.tagline))}</div>
+      <div class="lcard-foot">
+        <div class="tags">${p.tech.slice(0,3).map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>
+        <span class="link-btn ghost" style="padding:4px 0">${L(UI.viewCase)} →</span>
+      </div>
+    </button>
+  `;
+}
+
+/* ============================================================
+   RENDER: SKILLS
+   ============================================================ */
+function renderSkills() {
+  const root = $('#skillsGrid');
+  root.innerHTML = Object.values(SKILLS).map(group => `
+    <div class="skill-col" data-level="${group.level}">
+      <h3>${escapeHTML(L(group.label))}</h3>
+      <div class="skill-list">
+        ${group.items.map(s => `<span class="skill">${escapeHTML(s)}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ============================================================
+   RENDER: PRINT CV
+   ============================================================ */
+function renderCV() {
+  const root = $('#print-cv');
+  const isFa = state.lang === 'fa';
+
+  const heading = isFa ? 'علیرضا سزار — توسعهدهنده وب و اتوماسیون' : 'Alireza Ssezar — Web Developer & Automation Builder';
+  const sub = isFa
+    ? 'پورتفولیوی زنده: nononick.ir · گیتهاب: github.com/alirezassezar1-svg'
+    : 'Live portfolio: nononick.ir · GitHub: github.com/alirezassezar1-svg';
+
+  const summaryH = isFa ? 'خلاصه' : 'Summary';
+  const summaryP = isFa
+    ? 'توسعهدهنده وب و سازنده اتوماسیون مستقل. وبسایت مشتری، ابزار داخلی و خطوط تولید محتوا طراحی و تحویل میدهم. پیادهسازیهای کمدانش و بدون مرحله build را ترجیح میدهم.'
+    : 'Independent web developer and automation builder. I design and ship client websites, internal tools, and content pipelines. I prefer dependency-light implementations that deploy without a build step.';
+
+  const skillsH = isFa ? 'مهارتهای تأییدشده' : 'Confirmed skills';
+  const skillsList = SKILLS.confirmed.items;
+
+  const projectsH = isFa ? 'پروژههای منتخب' : 'Selected projects';
+  const projItems = PROJECTS.filter(p => p.feature).map(p => `
+    <div class="cv-proj">
+      <h3>${escapeHTML(L(p.name))}</h3>
+      <div style="font-family:monospace;font-size:9.5pt;color:#555;margin-bottom:1mm">
+        ${escapeHTML(p.repoName)} — ${escapeHTML(L(UI.statusLabels[p.status]))}
+      </div>
+      <p>${escapeHTML(L(p.tagline))}</p>
+    </div>
+  `).join('');
+
+  const contactH = isFa ? 'تماس' : 'Contact';
+  const contactP = isFa
+    ? 'گیتهاب: github.com/alirezassezar1-svg · اینستاگرام: instagram.com/nononick.ir · سایت: nononick.ir'
+    : 'GitHub: github.com/alirezassezar1-svg · Instagram: instagram.com/nononick.ir · Site: nononick.ir';
+
+  const foot = isFa
+    ? 'هیچ سابقه استخدامی، تحصیلات یا معیار کسبوکاری در این رزومه درج نشده، چون هیچکدام ارائه یا تأیید نشدهاند.'
+    : 'No employment history, education, or business metrics are listed, because none were provided or verified.';
+
+  root.innerHTML = `
+    <h1>${escapeHTML(heading)}</h1>
+    <div class="cv-meta">${escapeHTML(sub)}</div>
+
+    <h2>${escapeHTML(summaryH)}</h2>
+    <p>${escapeHTML(summaryP)}</p>
+
+    <h2>${escapeHTML(skillsH)}</h2>
+    <div>${skillsList.map(s => `<span class="cv-tag">${escapeHTML(s)}</span>`).join('')}</div>
+
+    <h2>${escapeHTML(projectsH)}</h2>
+    ${projItems}
+
+    <h2>${escapeHTML(contactH)}</h2>
+    <p>${escapeHTML(contactP)}</p>
+
+    <div class="cv-foot">${escapeHTML(foot)}</div>
+  `;
+}
+
+/* ============================================================
+   CASE STUDY DIALOG
+   ============================================================ */
+function openCaseStudy(id) {
+  const p = PROJECTS.find(x => x.id === id);
+  if (!p) return;
+  state.activeId = id;
+
+  $('#caseTitle').textContent = L(p.name);
+  $('#caseRepo').textContent = p.repoName || '';
+
+  const cs = p.caseStudy;
+  const repoLink = p.repo
+    ? `<a class="link-btn" href="${p.repo}" target="_blank" rel="noopener">${L(UI.viewRepo)} ↗</a>`
+    : `<span class="link-btn ghost">${L(UI.noRepo)}</span>`;
+  const demoLink = p.demo
+    ? `<a class="link-btn" href="${p.demo}" target="_blank" rel="noopener">${L(UI.viewDemo)} ↗</a>`
+    : `<span class="link-btn ghost">${L(UI.noDemo)}</span>`;
+
+  $('#caseBody').innerHTML = `
+    <div class="case-section">
+      <h4>${L(UI.problem)}</h4>
+      <p>${escapeHTML(L(cs.problem))}</p>
+      <p style="margin-top:10px;opacity:.75">${escapeHTML(L(cs.audience))}</p>
+    </div>
+    <div class="case-section">
+      <h4>${L(UI.solution)}</h4>
+      <p>${escapeHTML(L(cs.solution))}</p>
+    </div>
+    <div class="case-section">
+      <h4>${L(UI.contribution)}</h4>
+      <p>${escapeHTML(L(cs.contribution))}</p>
+    </div>
+    <div class="case-section">
+      <h4>${L(UI.tech)}</h4>
+      <div class="tags">${p.tech.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}</div>
+    </div>
+    <div class="case-section">
+      <h4>${L(UI.features)}</h4>
+      <ul>${cs.features.map(f => `<li>${escapeHTML(L(f))}</li>`).join('')}</ul>
+    </div>
+    <div class="case-section">
+      <h4>${L(UI.shot)}</h4>
+      <div class="case-placeholder">${L(UI.noShot)}</div>
+    </div>
+    <div class="case-section">
+      <h4>${L(UI.source)}</h4>
+      <div class="pcard-actions" style="margin-top:0">${repoLink}${demoLink}</div>
+    </div>
+    <div class="case-section">
+      <h4>${L(UI.testing)}</h4>
+      <p>${escapeHTML(L(cs.testing))}</p>
+    </div>
+    <div class="case-section">
+      <h4>${L(UI.limits)}</h4>
+      <p>${escapeHTML(L(cs.limitations))}</p>
+    </div>
+  `;
+
+  const dlg = $('#caseDialog');
+  if (!dlg.open) dlg.showModal();
+}
+
+function closeCaseStudy() {
+  const dlg = $('#caseDialog');
+  if (dlg.open) dlg.close();
+  state.activeId = null;
+}
+
+/* ============================================================
+   BIND CARD ACTIONS (delegated per render)
+   ============================================================ */
+function bindCardActions(root) {
+  root.querySelectorAll('[data-case]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      // If clicked inside an <a>, let the anchor work
+      if (e.target.closest('a')) return;
+      e.preventDefault();
+      openCaseStudy(el.dataset.case);
+    });
+  });
+}
+
+/* ============================================================
+   FILTERS
+   ============================================================ */
+function bindFilters() {
+  $$('.filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.filter = btn.dataset.filter;
+      $$('.filter').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      renderLibrary();
+    });
+  });
+}
+
+/* ============================================================
+   LANGUAGE TOGGLE
+   ============================================================ */
+function bindLang() {
+  $$('.lang-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+  });
+}
+
+/* ============================================================
+   MOBILE MENU
+   ============================================================ */
+function bindMenu() {
+  const btn = $('.menu-btn');
+  const menu = $('#mobileMenu');
+  if (!btn || !menu) return;
+  btn.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
+  menu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+/* ============================================================
+   PRINT CV
+   ============================================================ */
+function bindPrint() {
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-action]');
+    if (!t) return;
+    if (t.dataset.action === 'print-cv') {
+      renderCV();
+      // Defer to allow layout to settle before the print dialog opens.
+      requestAnimationFrame(() => window.print());
+    }
+    if (t.dataset.action === 'close-case') {
+      closeCaseStudy();
+    }
+  });
+}
+
+/* ============================================================
+   DIALOG BACKDROP CLOSE + ESC
+   ============================================================ */
+function bindDialog() {
+  const dlg = $('#caseDialog');
+  dlg.addEventListener('click', (e) => {
+    const r = dlg.getBoundingClientRect();
+    const inside = e.clientX >= r.left && e.clientX <= r.right &&
+                   e.clientY >= r.top  && e.clientY <= r.bottom;
+    if (!inside) closeCaseStudy();
+  });
+  dlg.addEventListener('cancel', (e) => {
+    // ESC pressed — dialog handles close natively, just clear state
+    state.activeId = null;
+  });
+  dlg.addEventListener('close', () => {
+    state.activeId = null;
+  });
+}
+
+/* ============================================================
+   REVEAL ON SCROLL
+   ============================================================ */
+function bindReveal() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced || !('IntersectionObserver' in window)) return;
+
+  const targets = $$('section > .wrap > h2, section > .wrap > .section-lede, .pcard, .lcard, .skill-col, .contact-card, .note');
+  targets.forEach(el => el.classList.add('reveal'));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+
+  targets.forEach(el => io.observe(el));
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+/* ============================================================
+   MASTER RENDER
+   ============================================================ */
+function renderAll() {
+  renderSelected();
+  renderLibrary();
+  renderSkills();
+  renderCV();
+  if (state.activeId) openCaseStudy(state.activeId);
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init() {
+  $('#year').textContent = new Date().getFullYear();
+
+  bindLang();
+  bindFilters();
+  bindMenu();
+  bindPrint();
+  bindDialog();
+  bindReveal();
+
+  applyLang(state.lang); // triggers renderAll()
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>

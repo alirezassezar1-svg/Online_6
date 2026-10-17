@@ -1,0 +1,2499 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0d12" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Backend Forge" />
+<title>Local Backend Forge</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0d12'/%3E%3Cpath d='M16 20h32M16 32h24M16 44h28' stroke='%2322d3ee' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='48' cy='44' r='4' fill='%23a855f7'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%230b0d12'/%3E%3Cpath d='M40 60h100M40 90h70M40 120h80' stroke='%2322d3ee' stroke-width='10' stroke-linecap='round'/%3E%3Ccircle cx='135' cy='120' r='12' fill='%23a855f7'/%3E%3C/svg%3E" />
+<link rel="manifest" href='data:application/manifest+json,{"name":"Local Backend Forge","short_name":"BackendForge","start_url":".","display":"standalone","background_color":"%230b0d12","theme_color":"%230b0d12","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27%3E%3Crect width=%27192%27 height=%27192%27 rx=%2736%27 fill=%27%230b0d12%27/%3E%3Cpath d=%27M40 60h112M40 96h80M40 132h90%27 stroke=%27%2322d3ee%27 stroke-width=%2712%27 stroke-linecap=%27round%27/%3E%3Ccircle cx=%27145%27 cy=%27132%27 r=%2714%27 fill=%27%23a855f7%27/%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}' />
+<style>
+/* ---------- Design tokens ---------- */
+:root{
+  --bg:#0b0d12;
+  --bg-elev:#11141c;
+  --bg-soft:#161a24;
+  --panel:rgba(22,26,36,0.72);
+  --panel-solid:#1a1f2b;
+  --border:rgba(255,255,255,0.08);
+  --border-strong:rgba(255,255,255,0.14);
+  --text:#e6ebf2;
+  --text-dim:#9aa3b2;
+  --text-mute:#6b7280;
+  --accent:#22d3ee;
+  --accent-2:#3b82f6;
+  --accent-soft:rgba(34,211,238,0.12);
+  --purple:#a855f7;
+  --purple-soft:rgba(168,85,247,0.14);
+  --success:#10b981;
+  --warn:#f59e0b;
+  --danger:#ef4444;
+  --radius:14px;
+  --radius-sm:10px;
+  --shadow:0 10px 30px rgba(0,0,0,0.45);
+  --tap:44px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Vazirmatn","IRANSans",system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"SF Mono",monospace;
+}
+[data-theme="light"]{
+  --bg:#f5f7fb;
+  --bg-elev:#ffffff;
+  --bg-soft:#eef1f7;
+  --panel:rgba(255,255,255,0.78);
+  --panel-solid:#ffffff;
+  --border:rgba(15,23,42,0.08);
+  --border-strong:rgba(15,23,42,0.16);
+  --text:#0f172a;
+  --text-dim:#475569;
+  --text-mute:#64748b;
+  --accent:#0891b2;
+  --accent-2:#2563eb;
+  --accent-soft:rgba(8,145,178,0.10);
+  --purple:#7c3aed;
+  --purple-soft:rgba(124,58,237,0.10);
+  --shadow:0 10px 30px rgba(15,23,42,0.08);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.5;overscroll-behavior-y:none}
+body{min-height:100dvh;padding-top:var(--safe-top);padding-bottom:var(--safe-bot)}
+[dir="rtl"]{font-family:"Vazirmatn","IRANSans",var(--font)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--accent);text-decoration:none}
+::selection{background:var(--accent-soft);color:var(--text)}
+
+/* ---------- Layout ---------- */
+.app{display:flex;flex-direction:column;min-height:100dvh}
+.topbar{
+  position:sticky;top:0;z-index:30;
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px calc(10px + var(--safe-top)) 14px;
+  background:linear-gradient(180deg,var(--bg) 60%,rgba(11,13,18,0));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+[data-theme="light"] .topbar{background:linear-gradient(180deg,var(--bg) 60%,rgba(245,247,251,0))}
+.brand{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.brand-logo{
+  width:34px;height:34px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent-2),var(--accent));
+  display:grid;place-items:center;color:#0b0d12;font-weight:800;
+  box-shadow:0 4px 14px rgba(34,211,238,0.25);
+}
+.brand-title{font-weight:700;font-size:15px;letter-spacing:0.2px}
+.brand-sub{font-size:11px;color:var(--text-dim)}
+.icon-btn{
+  width:var(--tap);height:var(--tap);border-radius:12px;
+  background:var(--bg-elev);border:1px solid var(--border);
+  display:grid;place-items:center;color:var(--text);cursor:pointer;
+  transition:transform .1s ease, background .15s ease;
+}
+.icon-btn:active{transform:scale(0.96);background:var(--bg-soft)}
+.icon-btn svg{width:20px;height:20px}
+
+.main{flex:1;padding:14px;padding-bottom:calc(92px + var(--safe-bot))}
+.bottom-nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  padding:8px 10px calc(8px + var(--safe-bot)) 10px;
+  background:var(--panel);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-top:1px solid var(--border);
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+}
+.nav-btn{
+  background:transparent;border:1px solid transparent;border-radius:12px;
+  color:var(--text-dim);padding:6px 2px;display:flex;flex-direction:column;align-items:center;gap:2px;
+  cursor:pointer;font-size:10.5px;min-height:var(--tap);justify-content:center;
+}
+.nav-btn.active{color:var(--accent);background:var(--accent-soft);border-color:rgba(34,211,238,0.25)}
+.nav-btn svg{width:20px;height:20px}
+
+/* ---------- Panels & cards ---------- */
+.panel{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:var(--shadow);
+}
+.panel + .panel{margin-top:12px}
+.panel h2{margin:0 0 10px 0;font-size:16px;letter-spacing:0.2px}
+.panel h3{margin:14px 0 8px 0;font-size:14px;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.muted{color:var(--text-dim);font-size:13px}
+.card{
+  background:var(--bg-elev);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:12px;
+}
+.card + .card{margin-top:8px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row > *{min-width:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.spacer{flex:1}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:var(--tap);padding:10px 14px;border-radius:12px;
+  border:1px solid var(--border-strong);background:var(--bg-elev);color:var(--text);
+  cursor:pointer;font-weight:600;font-size:14px;transition:transform .08s ease, background .15s;
+  white-space:nowrap;
+}
+.btn:active{transform:scale(0.98)}
+.btn.primary{background:linear-gradient(135deg,var(--accent-2),var(--accent));color:#0b0d12;border-color:transparent}
+.btn.ghost{background:transparent}
+.btn.danger{background:rgba(239,68,68,0.12);color:var(--danger);border-color:rgba(239,68,68,0.3)}
+.btn.purple{background:var(--purple-soft);color:var(--purple);border-color:rgba(168,85,247,0.3)}
+.btn[disabled]{opacity:0.5;cursor:not-allowed}
+.btn.full{width:100%}
+
+/* ---------- Inputs ---------- */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.field label{font-size:12px;color:var(--text-dim);font-weight:600;letter-spacing:0.3px}
+.input, .select, .textarea{
+  width:100%;min-height:var(--tap);padding:10px 12px;border-radius:12px;
+  background:var(--bg-elev);border:1px solid var(--border-strong);color:var(--text);
+  font-size:15px;outline:none;transition:border-color .15s, box-shadow .15s;
+}
+.textarea{min-height:120px;resize:vertical;font-family:var(--mono);font-size:13px;line-height:1.5}
+.input:focus, .select:focus, .textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;
+  background:var(--bg-elev);border:1px solid var(--border-strong);font-size:12px;color:var(--text-dim);
+  cursor:pointer;user-select:none;
+}
+.chip.active{background:var(--accent-soft);color:var(--accent);border-color:rgba(34,211,238,0.35)}
+.chip.purple.active{background:var(--purple-soft);color:var(--purple);border-color:rgba(168,85,247,0.35)}
+
+/* ---------- Drop zone ---------- */
+.drop{
+  border:1.5px dashed var(--border-strong);border-radius:var(--radius);
+  padding:22px;text-align:center;color:var(--text-dim);background:var(--bg-elev);
+  transition:border-color .15s, background .15s;
+}
+.drop.drag{border-color:var(--accent);background:var(--accent-soft);color:var(--text)}
+.drop strong{color:var(--text)}
+
+/* ---------- Lists ---------- */
+.list{display:flex;flex-direction:column;gap:6px}
+.list-item{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;
+  background:var(--bg-elev);border:1px solid var(--border);cursor:pointer;
+}
+.list-item:active{background:var(--bg-soft)}
+.list-item .meta{font-size:12px;color:var(--text-dim)}
+.list-item .title{font-weight:600;font-size:14px}
+
+/* ---------- File tree ---------- */
+.tree{font-family:var(--mono);font-size:13px}
+.tree-row{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:8px;cursor:pointer}
+.tree-row:hover{background:var(--bg-soft)}
+.tree-row.active{background:var(--accent-soft);color:var(--accent)}
+.tree-row .name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tree-row .caret{width:14px;color:var(--text-mute)}
+.tree-indent{display:inline-block;width:14px}
+
+/* ---------- Editor ---------- */
+.editor-wrap{
+  display:flex;flex-direction:column;border:1px solid var(--border);border-radius:12px;
+  background:var(--bg-elev);overflow:hidden;
+}
+.editor-bar{display:flex;align-items:center;gap:6px;padding:8px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.editor-bar .path{font-family:var(--mono);font-size:12px;color:var(--text-dim);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.editor-area{position:relative;min-height:260px;max-height:60vh;overflow:auto}
+.editor-area textarea{
+  width:100%;min-height:260px;padding:12px;border:0;outline:0;resize:vertical;
+  background:transparent;color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.55;
+  tab-size:2;
+}
+
+/* ---------- Badges & alerts ---------- */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600}
+.badge.ok{background:rgba(16,185,129,0.12);color:var(--success)}
+.badge.warn{background:rgba(245,158,11,0.12);color:var(--warn)}
+.badge.err{background:rgba(239,68,68,0.12);color:var(--danger)}
+.badge.info{background:var(--accent-soft);color:var(--accent)}
+.badge.purple{background:var(--purple-soft);color:var(--purple)}
+
+.alert{
+  padding:10px 12px;border-radius:12px;border:1px solid var(--border);
+  background:var(--bg-elev);font-size:13px;color:var(--text-dim);
+}
+.alert.ok{border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.08);color:var(--success)}
+.alert.warn{border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08);color:var(--warn)}
+.alert.err{border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.08);color:var(--danger)}
+.alert.info{border-color:rgba(34,211,238,0.3);background:var(--accent-soft);color:var(--accent)}
+
+/* ---------- Toast ---------- */
+.toasts{position:fixed;left:0;right:0;bottom:calc(92px + var(--safe-bot));z-index:60;display:flex;flex-direction:column;gap:6px;padding:0 12px;pointer-events:none}
+.toast{
+  pointer-events:auto;padding:10px 12px;border-radius:12px;
+  background:var(--panel-solid);border:1px solid var(--border-strong);
+  box-shadow:var(--shadow);font-size:13px;display:flex;gap:8px;align-items:flex-start;
+  animation:toastIn .2s ease;
+}
+.toast.ok{border-color:rgba(16,185,129,0.4)}
+.toast.err{border-color:rgba(239,68,68,0.4)}
+.toast.warn{border-color:rgba(245,158,11,0.4)}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- Modal ---------- */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  z-index:80;display:none;align-items:flex-end;justify-content:center;padding:12px;
+}
+.modal-backdrop.open{display:flex}
+.modal{
+  width:100%;max-width:560px;max-height:86dvh;overflow:auto;
+  background:var(--panel-solid);border:1px solid var(--border-strong);border-radius:18px;
+  padding:16px;box-shadow:var(--shadow);
+}
+.modal h3{margin:0 0 10px 0;font-size:16px}
+.modal-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+@media(min-width:640px){
+  .modal-backdrop{align-items:center}
+}
+
+/* ---------- Progress ---------- */
+.progress{height:6px;background:var(--bg-soft);border-radius:999px;overflow:hidden}
+.progress > div{height:100%;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .2s}
+
+/* ---------- Tables ---------- */
+.table{width:100%;border-collapse:collapse;font-size:13px}
+.table th,.table td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:start;vertical-align:top}
+.table th{color:var(--text-dim);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.4px}
+
+/* ---------- Wizard ---------- */
+.wizard-step{display:none}
+.wizard-step.active{display:block}
+.wizard-progress{display:flex;gap:4px;margin-bottom:12px}
+.wizard-progress > div{flex:1;height:4px;background:var(--bg-soft);border-radius:999px}
+.wizard-progress > div.done{background:var(--accent)}
+.wizard-progress > div.current{background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+
+/* ---------- Architecture diagram ---------- */
+.arch{display:flex;flex-direction:column;gap:10px}
+.arch-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.arch-node{
+  padding:10px 12px;border-radius:12px;border:1px solid var(--border-strong);
+  background:var(--bg-elev);font-size:12px;min-width:110px;text-align:center;
+}
+.arch-node.primary{border-color:rgba(34,211,238,0.4);background:var(--accent-soft);color:var(--accent)}
+.arch-node.secondary{border-color:rgba(168,85,247,0.4);background:var(--purple-soft);color:var(--purple)}
+.arch-arrow{text-align:center;color:var(--text-mute);font-size:18px;line-height:1}
+
+/* ---------- Scrollbar ---------- */
+*::-webkit-scrollbar{width:10px;height:10px}
+*::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:999px}
+*::-webkit-scrollbar-track{background:transparent}
+
+/* ---------- Utility ---------- */
+.hidden{display:none !important}
+.center{text-align:center}
+.mono{font-family:var(--mono)}
+.small{font-size:12px}
+.nowrap{white-space:nowrap}
+.sep{height:1px;background:var(--border);margin:10px 0}
+.kbd{font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:6px;background:var(--bg-soft);border:1px solid var(--border)}
+.pill{padding:3px 8px;border-radius:999px;background:var(--bg-soft);font-size:11px;color:var(--text-dim)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot.ok{background:var(--success)}
+.dot.warn{background:var(--warn)}
+.dot.err{background:var(--danger)}
+.dot.idle{background:var(--text-mute)}
+
+@media(min-width:900px){
+  .main{max-width:1100px;margin:0 auto}
+  .grid-2-lg{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true">⚒</div>
+      <div style="min-width:0">
+        <div class="brand-title" data-i18n="app.title">Local Backend Forge</div>
+        <div class="brand-sub" data-i18n="app.subtitle">AI-powered backend architect</div>
+      </div>
+    </div>
+    <button class="icon-btn" id="btnLang" title="Language" aria-label="Language">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"/></svg>
+    </button>
+    <button class="icon-btn" id="btnTheme" title="Theme" aria-label="Theme">
+      <svg id="iconTheme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+    <button class="icon-btn" id="btnMenu" title="Menu" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </header>
+
+  <!-- Main -->
+  <main class="main" id="main">
+    <!-- Views injected here -->
+  </main>
+
+  <!-- Bottom nav -->
+  <nav class="bottom-nav" id="bottomNav" aria-label="Primary">
+    <button class="nav-btn active" data-view="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h14V10"/></svg>
+      <span data-i18n="nav.dashboard">Home</span>
+    </button>
+    <button class="nav-btn" data-view="wizard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 6 6.5.5-5 4.5 1.5 6.5L12 17l-5.5 3.5L8 14l-5-4.5 6.5-.5z"/></svg>
+      <span data-i18n="nav.wizard">Wizard</span>
+    </button>
+    <button class="nav-btn" data-view="import">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+      <span data-i18n="nav.import">Import</span>
+    </button>
+    <button class="nav-btn" data-view="explore">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>
+      <span data-i18n="nav.explore">Project</span>
+    </button>
+    <button class="nav-btn" data-view="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      <span data-i18n="nav.settings">Settings</span>
+    </button>
+  </nav>
+
+  <!-- Toasts -->
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+    <div class="modal" id="modalContent"></div>
+  </div>
+</div>
+
+<!-- Optional external libraries (loaded on demand). Core works without them. -->
+<script>
+/* ============================================================
+   Local Backend Forge — single-file application
+   All functionality below is real; no mocks.
+   ============================================================ */
+(function(){
+"use strict";
+
+/* ---------- i18n ---------- */
+const I18N = {
+  en:{
+    "app.title":"Local Backend Forge",
+    "app.subtitle":"AI-powered backend architect",
+    "nav.dashboard":"Home","nav.wizard":"Wizard","nav.import":"Import","nav.explore":"Project","nav.settings":"Settings",
+    "dash.title":"Your projects",
+    "dash.empty":"No projects yet. Start a new one.",
+    "dash.new":"New project",
+    "dash.importBackup":"Import backup",
+    "dash.search":"Search projects",
+    "dash.recent":"Recent",
+    "dash.all":"All projects",
+    "import.title":"Universal file import",
+    "import.drop":"Drop files here or tap to choose",
+    "import.hint":"Source code, configs, SQL dumps, OpenAPI, Markdown, images, ZIP archives and more. Nothing is uploaded without your consent.",
+    "import.progress":"Analyzing",
+    "import.files":"files",
+    "import.clear":"Clear",
+    "import.addToProject":"Add to project",
+    "wizard.title":"Backend project wizard",
+    "wizard.next":"Next","wizard.back":"Back","wizard.finish":"Generate project","wizard.skip":"Skip",
+    "wizard.step.project":"About the project",
+    "wizard.step.stack":"Technology stack",
+    "wizard.step.data":"Data & storage",
+    "wizard.step.auth":"Authentication",
+    "wizard.step.deploy":"Hosting & deployment",
+    "wizard.step.review":"Review & generate",
+    "gen.title":"Architecture recommendation",
+    "gen.choose":"Choose architecture",
+    "gen.generate":"Generate backend",
+    "explore.title":"Project workspace",
+    "explore.files":"Files",
+    "explore.editor":"Editor",
+    "explore.db":"Database",
+    "explore.api":"API docs",
+    "explore.test":"Validation",
+    "explore.versions":"Versions",
+    "explore.export":"Export",
+    "settings.title":"Settings",
+    "settings.language":"Language",
+    "settings.theme":"Theme",
+    "settings.ai":"AI provider",
+    "settings.storage":"Storage",
+    "settings.about":"About",
+    "settings.privacy":"Privacy & security",
+    "common.save":"Save","common.cancel":"Cancel","common.delete":"Delete","common.confirm":"Confirm",
+    "common.close":"Close","common.copy":"Copy","common.copied":"Copied",
+    "common.yes":"Yes","common.no":"No","common.ok":"OK","common.error":"Error",
+    "common.none":"None","common.loading":"Loading…",
+    "status.saved":"Saved","status.saving":"Saving…","status.failed":"Save failed",
+  },
+  fa:{
+    "app.title":"کوره بک‌اند محلی",
+    "app.subtitle":"معمار بک‌اند هوشمند",
+    "nav.dashboard":"خانه","nav.wizard":"جادوگر","nav.import":"ورود","nav.explore":"پروژه","nav.settings":"تنظیمات",
+    "dash.title":"پروژه‌های شما",
+    "dash.empty":"هنوز پروژه‌ای ندارید. یکی بسازید.",
+    "dash.new":"پروژه جدید",
+    "dash.importBackup":"ورود نسخه پشتیبان",
+    "dash.search":"جستجوی پروژه‌ها",
+    "dash.recent":"اخیر",
+    "dash.all":"همه پروژه‌ها",
+    "import.title":"ورود یکتای فایل",
+    "import.drop":"فایل‌ها را اینجا رها کنید یا برای انتخاب ضربه بزنید",
+    "import.hint":"کد منبع، پیکربندی، دامپ SQL، OpenAPI، Markdown، تصاویر، آرشیو ZIP و بیشتر. هیچ‌چیز بدون رضایت شما بارگذاری نمی‌شود.",
+    "import.progress":"در حال تحلیل",
+    "import.files":"فایل",
+    "import.clear":"پاک کردن",
+    "import.addToProject":"افزودن به پروژه",
+    "wizard.title":"جادوگر پروژه بک‌اند",
+    "wizard.next":"بعدی","wizard.back":"قبلی","wizard.finish":"ساخت پروژه","wizard.skip":"رد شدن",
+    "wizard.step.project":"درباره پروژه",
+    "wizard.step.stack":"پشته فناوری",
+    "wizard.step.data":"داده و ذخیره‌سازی",
+    "wizard.step.auth":"احراز هویت",
+    "wizard.step.deploy":"میزبانی و استقرار",
+    "wizard.step.review":"بازبینی و ساخت",
+    "gen.title":"پیشنهاد معماری",
+    "gen.choose":"انتخاب معماری",
+    "wizard.generate":"ساخت بک‌اند",
+    "explore.title":"فضای کار پروژه",
+    "explore.files":"فایل‌ها",
+    "explore.editor":"ویرایشگر",
+    "explore.db":"پایگاه داده",
+    "explore.api":"مستندات API",
+    "explore.test":"اعتبارسنجی",
+    "explore.versions":"نسخه‌ها",
+    "explore.export":"خروجی",
+    "settings.title":"تنظیمات",
+    "settings.language":"زبان",
+    "settings.theme":"پوسته",
+    "settings.ai":"ارائه‌دهنده هوش مصنوعی",
+    "settings.storage":"ذخیره‌سازی",
+    "settings.about":"درباره",
+    "settings.privacy":"حریم خصوصی و امنیت",
+    "common.save":"ذخیره","common.cancel":"لغو","common.delete":"حذف","common.confirm":"تایید",
+    "common.close":"بستن","common.copy":"کپی","common.copied":"کپی شد",
+    "common.yes":"بله","common.no":"خیر","common.ok":"تایید","common.error":"خطا",
+    "common.none":"هیچ","common.loading":"در حال بارگذاری…",
+    "status.saved":"ذخیره شد","status.saving":"در حال ذخیره…","status.failed":"ذخیره ناموفق",
+  }
+};
+
+const State = {
+  lang: "en",
+  theme: "dark",
+  view: "dashboard",
+  projects: [],
+  currentProjectId: null,
+  currentFile: null,
+  importFiles: [],
+  wizard: { step:0, answers:{} },
+  db: null,
+  dbReady: false,
+  saveTimer: null,
+  saveState: "idle", // idle | saving | saved | failed
+};
+
+/* ---------- Utilities ---------- */
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+const el = (tag, attrs={}, children=[]) => {
+  const e = document.createElement(tag);
+  for(const k in attrs){
+    if(k === "class") e.className = attrs[k];
+    else if(k === "html") e.innerHTML = attrs[k];
+    else if(k === "text") e.textContent = attrs[k];
+    else if(k.startsWith("on") && typeof attrs[k] === "function") e.addEventListener(k.slice(2), attrs[k]);
+    else if(k === "dataset") Object.assign(e.dataset, attrs[k]);
+    else if(k === "style" && typeof attrs[k] === "object") Object.assign(e.style, attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  (Array.isArray(children)?children:[children]).forEach(c=>{
+    if(c==null) return;
+    if(typeof c === "string" || typeof c === "number") e.appendChild(document.createTextNode(c));
+    else e.appendChild(c);
+  });
+  return e;
+};
+const uid = () => "p_" + Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+const now = () => Date.now();
+const fmtDate = (t) => {
+  try{ return new Date(t).toLocaleString(State.lang==="fa"?"fa-IR":"en-US",{dateStyle:"medium",timeStyle:"short"}); }
+  catch{ return String(t); }
+};
+const escapeHtml = (s) => String(s??"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const bytesFmt = (n) => {
+  if(n==null) return "—";
+  const u=["B","KB","MB","GB"]; let i=0;
+  while(n>=1024 && i<u.length-1){n/=1024;i++;}
+  return n.toFixed(n<10&&i>0?1:0)+" "+u[i];
+};
+const extOf = (name) => {
+  const i = name.lastIndexOf("."); return i<0 ? "" : name.slice(i+1).toLowerCase();
+};
+const basename = (p) => p.split(/[\\/]/).pop();
+const dirname = (p) => { const i=p.search(/[\\/][^\\/]*$/); return i<0 ? "" : p.slice(0,i); };
+const joinPath = (a,b) => a ? a.replace(/\/$/,"")+"/"+b : b;
+
+function toast(msg, type="info", ms=2600){
+  const t = el("div",{class:"toast "+(type||""), text: msg});
+  $("#toasts").appendChild(t);
+  setTimeout(()=>{ t.style.opacity="0"; t.style.transform="translateY(8px)"; setTimeout(()=>t.remove(),200); }, ms);
+}
+
+function modal({title, body, actions=[]}){
+  const mb = $("#modalBackdrop");
+  const mc = $("#modalContent");
+  mc.innerHTML = "";
+  mc.appendChild(el("h3",{text:title}));
+  if(typeof body === "string") mc.appendChild(el("div",{html:body}));
+  else if(body instanceof Node) mc.appendChild(body);
+  const row = el("div",{class:"modal-actions"});
+  actions.forEach(a=>{
+    const b = el("button",{class:"btn "+(a.kind||""), text:a.label, onclick:()=>{
+      if(a.onClick) a.onClick(close); else close();
+    }});
+    row.appendChild(b);
+  });
+  mc.appendChild(row);
+  mb.classList.add("open");
+  function close(){ mb.classList.remove("open"); }
+  mb.onclick = (e)=>{ if(e.target===mb) close(); };
+  return { close };
+}
+function confirmDialog(title, message, onYes){
+  modal({
+    title,
+    body: el("div",{class:"muted", text:message}),
+    actions:[
+      {label: I18N[State.lang]["common.cancel"], onClick:(c)=>c()},
+      {label: I18N[State.lang]["common.confirm"], kind:"primary", onClick:(c)=>{ c(); onYes && onYes(); }}
+    ]
+  });
+}
+
+/* ---------- i18n apply ---------- */
+function t(key){ return (I18N[State.lang] && I18N[State.lang][key]) || I18N.en[key] || key; }
+function applyI18n(){
+  $$("[data-i18n]").forEach(n=>{
+    const k = n.getAttribute("data-i18n");
+    n.textContent = t(k);
+  });
+  document.documentElement.lang = State.lang;
+  document.documentElement.dir = State.lang === "fa" ? "rtl" : "ltr";
+}
+
+/* ---------- Theme ---------- */
+function applyTheme(){
+  document.documentElement.setAttribute("data-theme", State.theme);
+}
+
+/* ---------- IndexedDB wrapper ---------- */
+const DB_NAME = "backend_forge";
+const DB_VERSION = 1;
+const STORES = {
+  projects: "projects",
+  files: "files",
+  versions: "versions",
+  settings: "settings",
+};
+
+function openDB(){
+  return new Promise((resolve,reject)=>{
+    if(!("indexedDB" in window)){ reject(new Error("IndexedDB unavailable")); return; }
+    const req = indexedDB.open(DB_NAME, DB_VERSION);
+    req.onupgradeneeded = () => {
+      const db = req.result;
+      if(!db.objectStoreNames.contains(STORES.projects)){
+        const s = db.createObjectStore(STORES.projects,{keyPath:"id"});
+        s.createIndex("updatedAt","updatedAt");
+        s.createIndex("name","name");
+      }
+      if(!db.objectStoreNames.contains(STORES.files)){
+        const s = db.createObjectStore(STORES.files,{keyPath:"id"});
+        s.createIndex("projectId","projectId");
+        s.createIndex("path","path");
+      }
+      if(!db.objectStoreNames.contains(STORES.versions)){
+        const s = db.createObjectStore(STORES.versions,{keyPath:"id"});
+        s.createIndex("fileId","fileId");
+      }
+      if(!db.objectStoreNames.contains(STORES.settings)){
+        db.createObjectStore(STORES.settings,{keyPath:"key"});
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+    req.onblocked = () => reject(new Error("IndexedDB blocked"));
+  });
+}
+function tx(storeNames, mode="readonly"){
+  return State.db.transaction(storeNames, mode);
+}
+function idbReq(req){
+  return new Promise((res,rej)=>{ req.onsuccess=()=>res(req.result); req.onerror=()=>rej(req.error); });
+}
+async function idbGet(store, key){
+  return idbReq(tx(store).objectStore(store).get(key));
+}
+async function idbPut(store, value){
+  return new Promise((res,rej)=>{
+    const r = tx(store,"readwrite").objectStore(store).put(value);
+    r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error);
+  });
+}
+async function idbDel(store, key){
+  return new Promise((res,rej)=>{
+    const r = tx(store,"readwrite").objectStore(store).delete(key);
+    r.onsuccess=()=>res(); r.onerror=()=>rej(r.error);
+  });
+}
+async function idbAll(store){
+  return idbReq(tx(store).objectStore(store).getAll());
+}
+async function idbByIndex(store, indexName, value){
+  return idbReq(tx(store).objectStore(store).index(indexName).getAll(value));
+}
+async function idbCount(store){
+  return idbReq(tx(store).objectStore(store).count());
+}
+
+/* ---------- Settings persistence ---------- */
+async function loadSettings(){
+  try{
+    const lang = await idbGet(STORES.settings,"lang");
+    const theme = await idbGet(STORES.settings,"theme");
+    const ai = await idbGet(STORES.settings,"ai");
+    if(lang && lang.value) State.lang = lang.value;
+    if(theme && theme.value) State.theme = theme.value;
+    if(ai && ai.value) State.ai = ai.value;
+  }catch(e){ console.warn("settings load failed", e); }
+}
+async function saveSetting(key, value){
+  try{ await idbPut(STORES.settings,{key,value}); }catch(e){ console.warn(e); }
+}
+
+/* ---------- File type detection & analysis ---------- */
+const TEXT_EXTS = new Set([
+  "js","mjs","cjs","ts","tsx","jsx","json","jsonc","html","htm","css","scss","sass","less",
+  "php","phtml","py","pyw","rb","go","rs","java","kt","kts","cs","swift","c","h","cpp","hpp","cc","hh",
+  "sql","yaml","yml","toml","ini","conf","cfg","env","properties","xml","svg","md","markdown","txt","csv","tsv",
+  "sh","bash","zsh","ps1","bat","cmd","dockerfile","makefile","cmake","gradle","sbt",
+  "graphql","gql","proto","tf","hcl","nginx","log","rtf"
+]);
+const BINARY_IMAGE_EXTS = new Set(["png","jpg","jpeg","webp","gif","bmp","ico","avif"]);
+const ARCHIVE_EXTS = new Set(["zip","tar","gz","tgz","bz2","7z","rar"]);
+
+function detectLanguage(name, content){
+  const ext = extOf(name);
+  const map = {
+    js:"javascript", mjs:"javascript", cjs:"javascript", jsx:"javascript",
+    ts:"typescript", tsx:"typescript",
+    py:"python", rb:"ruby", go:"go", rs:"rust",
+    java:"java", kt:"kotlin", kts:"kotlin", cs:"csharp", swift:"swift",
+    c:"c", h:"c", cpp:"cpp", hpp:"cpp",
+    php:"php", phtml:"php",
+    html:"html", htm:"html", xml:"xml", svg:"svg",
+    css:"css", scss:"scss", sass:"sass", less:"less",
+    json:"json", jsonc:"json", yaml:"yaml", yml:"yaml", toml:"toml", ini:"ini",
+    sql:"sql", md:"markdown", markdown:"markdown", txt:"text",
+    sh:"shell", bash:"shell", zsh:"shell", ps1:"powershell", bat:"batch",
+    graphql:"graphql", gql:"graphql", proto:"protobuf",
+    csv:"csv", tsv:"csv", env:"dotenv", properties:"properties",
+    dockerfile:"dockerfile", makefile:"makefile"
+  };
+  if(map[ext]) return map[ext];
+  if(/dockerfile/i.test(name)) return "dockerfile";
+  if(/makefile/i.test(name)) return "makefile";
+  if(content && content.startsWith("<?php")) return "php";
+  if(content && /^#!.*python/i.test(content)) return "python";
+  if(content && /^#!.*node/i.test(content)) return "javascript";
+  return "text";
+}
+
+function analyzeTextContent(name, content){
+  const lang = detectLanguage(name, content);
+  const result = {
+    kind:"text",
+    language: lang,
+    size: content.length,
+    lines: content.split(/\r?\n/).length,
+    findings: [],
+    imports: [],
+    routes: [],
+    envVars: [],
+    tables: [],
+    endpoints: [],
+    dependencies: [],
+  };
+
+  // Generic findings
+  if(/password|secret|api[_-]?key|token/i.test(content) && !/process\.env|getenv|os\.environ|\$_ENV|os\.getenv/i.test(content)){
+    result.findings.push({level:"warn", msg:"Possible hardcoded secret detected"});
+  }
+  if(/eval\s*\(/.test(content) && lang !== "markdown"){
+    result.findings.push({level:"warn", msg:"Use of eval() — potential security risk"});
+  }
+  if(/TODO|FIXME|HACK|XXX/.test(content)){
+    const m = content.match(/(TODO|FIXME|HACK|XXX)[:\s]+[^\n]*/g) || [];
+    m.slice(0,5).forEach(x=>result.findings.push({level:"info", msg:x.trim()}));
+  }
+
+  // Language-specific
+  if(lang === "javascript" || lang === "typescript"){
+    const reqs = content.match(/(?:require\(['"][^'"]+['"]\)|import\s+[^'"]*from\s+['"][^'"]+['"]|import\s+['"][^'"]+['"])/g) || [];
+    result.imports = reqs.map(r=>r.trim());
+    const deps = content.match(/(?:require\(['"]([^'"]+)['"]\)|from\s+['"]([^'"]+)['"]|import\s+['"]([^'"]+)['"])/g) || [];
+    deps.forEach(d=>{
+      const m = d.match(/['"]([^'"/][^'"]*)['"]/);
+      if(m && !m[1].startsWith(".") && !m[1].startsWith("/")){
+        const pkg = m[1].startsWith("@") ? m[1].split("/").slice(0,2).join("/") : m[1].split("/")[0];
+        if(!result.dependencies.includes(pkg)) result.dependencies.push(pkg);
+      }
+    });
+    if(/express|fastify|koa|hapi/.test(content)){
+      result.findings.push({level:"info", msg:"Node.js web framework detected"});
+    }
+    // routes
+    const routeMatches = content.match(/(?:app|router)\.(get|post|put|patch|delete)\s*\(\s*['"]([^'"]+)['"]/g) || [];
+    routeMatches.forEach(r=>{
+      const m = r.match(/\.(get|post|put|patch|delete)\s*\(\s*['"]([^'"]+)['"]/);
+      if(m) result.routes.push({method:m[1].toUpperCase(), path:m[2]});
+    });
+  }
+  if(lang === "php"){
+    const uses = content.match(/use\s+[A-Z][\w\\]+/g) || [];
+    result.imports = uses.map(u=>u.trim());
+    if(/Route::|@route|\/\*\*\s*@OA/.test(content)){
+      result.findings.push({level:"info", msg:"PHP routing/annotations detected"});
+    }
+    const routes = content.match(/Route::(get|post|put|patch|delete|resource|any)\s*\(\s*['"]([^'"]+)['"]/g) || [];
+    routes.forEach(r=>{
+      const m = r.match(/Route::(\w+)\s*\(\s*['"]([^'"]+)['"]/);
+      if(m) result.routes.push({method:m[1].toUpperCase(), path:m[2]});
+    });
+    if(/\$_GET|\$_POST|\$_REQUEST|\$_COOKIE/.test(content) && !/htmlspecialchars|filter_input|filter_var/i.test(content)){
+      result.findings.push({level:"warn", msg:"Raw superglobals without visible sanitization"});
+    }
+  }
+  if(lang === "python"){
+    const imps = content.match(/^(?:import|from)\s+[\w.]+/gm) || [];
+    result.imports = imps.map(s=>s.trim());
+    if(/@(app|router)\.(get|post|put|patch|delete)\s*\(/.test(content)){
+      const rxs = content.match(/@(?:app|router)\.(get|post|put|patch|delete)\s*\(\s*['"]([^'"]+)['"]/g) || [];
+      rxs.forEach(r=>{
+        const m = r.match(/@(?:app|router)\.(get|post|put|patch|delete)\s*\(\s*['"]([^'"]+)['"]/);
+        if(m) result.routes.push({method:m[1].toUpperCase(), path:m[2]});
+      });
+    }
+  }
+  if(lang === "sql"){
+    const tables = content.match(/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?[`"']?(\w+)[`"']?/gi) || [];
+    tables.forEach(t=>{
+      const m = t.match(/CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?[`"']?(\w+)[`"']?/i);
+      if(m) result.tables.push(m[1]);
+    });
+  }
+  if(lang === "json"){
+    try{
+      const j = JSON.parse(content);
+      if(j.openapi || j.swagger){
+        result.findings.push({level:"info", msg:"OpenAPI/Swagger specification detected"});
+        if(j.paths){
+          Object.keys(j.paths).forEach(p=>{
+            Object.keys(j.paths[p]).forEach(m=>{
+              if(["get","post","put","patch","delete"].includes(m))
+                result.routes.push({method:m.toUpperCase(), path:p});
+            });
+          });
+        }
+      }
+      if(j.dependencies) result.dependencies = Object.keys(j.dependencies);
+      if(j.scripts) result.findings.push({level:"info", msg:"package.json scripts: "+Object.keys(j.scripts).join(", ")});
+    }catch(e){ result.findings.push({level:"err", msg:"Invalid JSON: "+e.message}); }
+  }
+  if(lang === "yaml" || lang === "yml"){
+    if(/(^|\n)\s*openapi\s*:/i.test(content)) result.findings.push({level:"info", msg:"OpenAPI YAML detected"});
+    if(/(^|\n)\s*services\s*:/i.test(content)) result.findings.push({level:"info", msg:"Docker Compose file detected"});
+  }
+  if(lang === "markdown"){
+    const h = content.match(/^#+\s+.+$/gm) || [];
+    result.findings.push({level:"info", msg:"Markdown with "+h.length+" headings"});
+  }
+  if(lang === "dotenv" || /(^|\/)\.env(\.|$)/i.test(name)){
+    const vars = content.match(/^[A-Z_][A-Z0-9_]*\s*=/gm) || [];
+    result.envVars = vars.map(v=>v.replace(/\s*=\s*$/,""));
+  }
+
+  return result;
+}
+
+async function analyzeFile(file){
+  const name = file.name || "unnamed";
+  const ext = extOf(name);
+  const entry = {
+    id: "f_" + Math.random().toString(36).slice(2,10),
+    name,
+    size: file.size,
+    type: file.type || "application/octet-stream",
+    ext,
+    importedAt: now(),
+    status: "pending",
+  };
+
+  // Binary image — keep metadata only
+  if(BINARY_IMAGE_EXTS.has(ext) || (file.type && file.type.startsWith("image/"))){
+    entry.kind = "image";
+    entry.status = "metadata";
+    entry.preview = await readAsDataURL(file);
+    entry.findings = [{level:"info", msg:"Image file — metadata only (not parsed)"}];
+    return entry;
+  }
+  // Archive — report limitation unless we can parse
+  if(ARCHIVE_EXTS.has(ext)){
+    entry.kind = "archive";
+    entry.status = "unsupported";
+    entry.findings = [{level:"warn", msg:"Archive format detected. Full extraction requires an external library (e.g. JSZip). Listing as imported file only."}];
+    return entry;
+  }
+  // PDF/DOCX — report limitation
+  if(["pdf","docx","doc","xls","xlsx","ppt","pptx"].includes(ext)){
+    entry.kind = "document";
+    entry.status = "unsupported";
+    entry.findings = [{level:"warn", msg:"Binary document format — cannot be parsed in-browser without an external library. Consider exporting to text/Markdown."}];
+    return entry;
+  }
+
+  // Try text
+  const isLikelyText = TEXT_EXTS.has(ext) || (file.type && (file.type.startsWith("text/") || file.type === "application/json" || file.type === "application/xml")) || file.size < 2_000_000;
+  if(!isLikelyText){
+    entry.kind = "binary";
+    entry.status = "unsupported";
+    entry.findings = [{level:"warn", msg:"File appears to be binary or of unknown type. Not parsed."}];
+    return entry;
+  }
+
+  try{
+    const text = await readAsText(file);
+    entry.kind = "text";
+    entry.content = text;
+    entry.status = "analyzed";
+    const analysis = analyzeTextContent(name, text);
+    Object.assign(entry, analysis);
+    if(!entry.findings || entry.findings.length===0){
+      entry.findings = [{level:"ok", msg:"Parsed successfully ("+analysis.language+")"}];
+    }
+  }catch(e){
+    entry.kind = "text";
+    entry.status = "error";
+    entry.findings = [{level:"err", msg:"Failed to read as text: "+e.message}];
+  }
+  return entry;
+}
+
+function readAsText(file){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = () => res(r.result);
+    r.onerror = () => rej(r.error || new Error("read error"));
+    r.readAsText(file);
+  });
+}
+function readAsDataURL(file){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = () => res(r.result);
+    r.onerror = () => rej(r.error || new Error("read error"));
+    r.readAsDataURL(file);
+  });
+}
+
+/* ---------- Project management ---------- */
+async function createProject({name, description=""}){
+  const project = {
+    id: uid(),
+    name: name || "Untitled project",
+    description,
+    createdAt: now(),
+    updatedAt: now(),
+    wizard: { step:0, answers:{} },
+    analysis: { files:[], summary:null },
+    architecture: null,
+    generated: false,
+  };
+  await idbPut(STORES.projects, project);
+  State.projects.unshift(project);
+  return project;
+}
+async function loadProjects(){
+  const all = await idbAll(STORES.projects);
+  all.sort((a,b)=>b.updatedAt-a.updatedAt);
+  State.projects = all;
+}
+async function updateProject(p){
+  p.updatedAt = now();
+  await idbPut(STORES.projects, p);
+  const i = State.projects.findIndex(x=>x.id===p.id);
+  if(i>=0) State.projects[i] = p;
+  else State.projects.unshift(p);
+}
+async function deleteProject(id){
+  await idbDel(STORES.projects, id);
+  // delete associated files
+  const files = await idbByIndex(STORES.files,"projectId",id);
+  for(const f of files){ await idbDel(STORES.files, f.id); }
+  State.projects = State.projects.filter(p=>p.id!==id);
+  if(State.currentProjectId === id){ State.currentProjectId = null; State.currentFile = null; }
+}
+
+/* ---------- File storage per project ---------- */
+async function saveProjectFile(projectId, path, content, meta={}){
+  const id = projectId + "::" + path;
+  const existing = await idbGet(STORES.files, id);
+  const file = {
+    id,
+    projectId,
+    path,
+    content: typeof content === "string" ? content : "",
+    language: meta.language || detectLanguage(path, typeof content === "string" ? content : ""),
+    createdAt: existing ? existing.createdAt : now(),
+    updatedAt: now(),
+    size: (content||"").length,
+  };
+  await idbPut(STORES.files, file);
+  // Create a version snapshot
+  await idbPut(STORES.versions, {
+    id: "v_" + Math.random().toString(36).slice(2,10),
+    fileId: id,
+    projectId,
+    path,
+    content: file.content,
+    createdAt: now(),
+    note: meta.note || "auto"
+  });
+  return file;
+}
+async function listProjectFiles(projectId){
+  return idbByIndex(STORES.files,"projectId",projectId);
+}
+async function deleteProjectFile(id){
+  await idbDel(STORES.files, id);
+  // also delete versions
+  const versions = await idbByIndex(STORES.versions,"fileId",id);
+  for(const v of versions){ await idbDel(STORES.versions, v.id); }
+}
+async function fileVersions(fileId){
+  const vs = await idbByIndex(STORES.versions,"fileId",fileId);
+  vs.sort((a,b)=>b.createdAt-a.createdAt);
+  return vs;
+}
+
+/* ---------- Architecture recommendation engine ---------- */
+/* Rule-based engine using wizard answers + analyzed evidence. */
+function recommendArchitecture(wizard, evidence){
+  const a = wizard.answers || {};
+  const score = (stack) => {
+    let s = 0;
+    // Hosting preference
+    if(a.hosting === "cpanel" || a.hosting === "shared"){
+      if(stack.lang === "php") s += 40;
+      if(stack.lang === "node") s -= 10;
+    }
+    if(a.hosting === "vps" || a.hosting === "cloud"){
+      if(stack.lang === "node") s += 20;
+      if(stack.lang === "python") s += 15;
+      if(stack.lang === "go") s += 10;
+    }
+    if(a.hosting === "serverless"){
+      if(stack.lang === "node") s += 25;
+      if(stack.lang === "python") s += 15;
+    }
+    // Database preference
+    if(a.db === "mysql" && stack.db === "mysql") s += 20;
+    if(a.db === "postgres" && stack.db === "postgres") s += 20;
+    if(a.db === "sqlite" && stack.db === "sqlite") s += 20;
+    // Evidence boosts
+    if(evidence.languages && evidence.languages.php > 0 && stack.lang === "php") s += 20;
+    if(evidence.languages && evidence.languages.javascript > 0 && stack.lang === "node") s += 15;
+    if(evidence.languages && evidence.languages.python > 0 && stack.lang === "python") s += 15;
+    if(evidence.frameworks){
+      if(evidence.frameworks.express && stack.lang === "node") s += 10;
+      if(evidence.frameworks.laravel && stack.lang === "php") s += 10;
+      if(evidence.frameworks.fastapi && stack.lang === "python") s += 10;
+    }
+    // Complexity
+    if(a.complexity === "simple"){
+      if(stack.lang === "php" || stack.lang === "node") s += 5;
+    }
+    if(a.complexity === "high"){
+      if(stack.lang === "node" || stack.lang === "go") s += 10;
+    }
+    return s;
+  };
+
+  const stacks = [
+    { id:"node-express", label:"Node.js + Express", lang:"node", db:"postgres", framework:"express",
+      desc:"JavaScript/TypeScript backend with Express. Great ecosystem, strong async I/O, excellent for APIs and real-time features." },
+    { id:"php-vanilla", label:"PHP (vanilla, PDO)", lang:"php", db:"mysql", framework:"vanilla",
+      desc:"Simple PHP backend using PDO. Runs on virtually any shared host. Low setup cost, broad compatibility." },
+    { id:"php-laravel", label:"PHP + Laravel", lang:"php", db:"mysql", framework:"laravel",
+      desc:"Laravel framework — elegant syntax, built-in auth, ORM, queues, migrations. Best for rapid feature-rich apps." },
+    { id:"python-fastapi", label:"Python + FastAPI", lang:"python", db:"postgres", framework:"fastapi",
+      desc:"Modern async Python framework with automatic OpenAPI docs. Excellent for data-heavy or AI-integrated backends." },
+    { id:"python-flask", label:"Python + Flask", lang:"python", db:"sqlite", framework:"flask",
+      desc:"Lightweight Python framework. Simple, flexible, good for small to mid-size projects." },
+    { id:"go-stdlib", label:"Go (stdlib + sqlx)", lang:"go", db:"postgres", framework:"stdlib",
+      desc:"High-performance compiled backend. Excellent for high-traffic services and low resource use." },
+  ];
+
+  const ranked = stacks.map(s => ({ ...s, score: score(s) })).sort((a,b)=>b.score-a.score);
+  const best = ranked[0];
+  return { recommended: best, ranked, evidence };
+}
+
+/* ---------- Code generators ---------- */
+/* Each generator returns a map of { path: content } */
+
+const Generators = {
+  "node-express": genNodeExpress,
+  "php-vanilla": genPhpVanilla,
+  "php-laravel": genPhpLaravelSkeleton,
+  "python-fastapi": genPythonFastAPI,
+  "python-flask": genPythonFlask,
+  "go-stdlib": genGoStdlib,
+};
+
+function genNodeExpress(ctx){
+  const {projectName, tables, auth, features} = ctx;
+  const files = {};
+  files["package.json"] = JSON.stringify({
+    name: projectName.toLowerCase().replace(/\s+/g,"-"),
+    version: "1.0.0",
+    description: "Generated backend",
+    main: "src/index.js",
+    scripts: {
+      start: "node src/index.js",
+      dev: "node --watch src/index.js",
+      test: "node --test test/"
+    },
+    dependencies: {
+      express: "^4.19.2",
+      "cors": "^2.8.5",
+      helmet: "^7.1.0",
+      "express-rate-limit": "^7.4.0",
+      dotenv: "^16.4.5",
+      better: undefined,
+    },
+    devDependencies: {}
+  }, null, 2);
+  // Use better-sqlite3 or pg depending on db
+  if(ctx.db === "postgres"){
+    files["package.json"] = files["package.json"].replace('"better": undefined,', '"pg": "^8.12.0",');
+  } else {
+    files["package.json"] = files["package.json"].replace('"better": undefined,', '"better-sqlite3": "^11.3.0",');
+  }
+
+  files[".env.example"] = [
+    "PORT=3000",
+    "NODE_ENV=development",
+    ctx.db === "postgres" ? "DATABASE_URL=postgres://user:pass@localhost:5432/db" : "DATABASE_URL=./data.db",
+    auth ? "JWT_SECRET=change-me-to-a-long-random-string" : "",
+    "LOG_LEVEL=info",
+  ].filter(Boolean).join("\n");
+
+  files["README.md"] = readmeNode(ctx);
+
+  files["src/index.js"] = `import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+import { router as apiRouter } from "./routes/api.js";
+import { errorHandler } from "./middleware/error.js";
+import { db } from "./db.js";
+
+const app = express();
+app.use(helmet());
+app.use(cors({ origin: process.env.CORS_ORIGIN || "*", credentials: true }));
+app.use(express.json({ limit: "1mb" }));
+app.use(rateLimit({ windowMs: 60_000, limit: 120, standardHeaders: true, legacyHeaders: false }));
+
+app.get("/health", (_req, res) => res.json({ ok: true, time: new Date().toISOString() }));
+app.use("/api", apiRouter);
+app.use(errorHandler);
+
+const port = Number(process.env.PORT || 3000);
+app.listen(port, () => {
+  console.log(\`Server listening on http://localhost:\${port}\`);
+});
+
+process.on("SIGINT", () => { try { db.close?.(); } catch {} process.exit(0); });
+`;
+
+  files["src/db.js"] = ctx.db === "postgres" ? dbNodePg() : dbNodeSqlite();
+
+  files["src/middleware/error.js"] = `export function errorHandler(err, req, res, next){
+  console.error("[error]", err);
+  const status = err.status || 500;
+  res.status(status).json({
+    error: { code: err.code || "INTERNAL", message: err.message || "Internal error" }
+  });
+}
+export function notFound(req, res, next){ next(Object.assign(new Error("Not found"), { status: 404, code: "NOT_FOUND" })); }
+`;
+
+  files["src/middleware/auth.js"] = auth ? `import jwt from "jsonwebtoken";
+export function requireAuth(req, res, next){
+  const h = req.headers.authorization || "";
+  const m = h.match(/^Bearer\\s+(.+)$/);
+  if(!m) return res.status(401).json({ error: { code: "UNAUTHORIZED", message: "Missing token" } });
+  try {
+    req.user = jwt.verify(m[1], process.env.JWT_SECRET);
+    next();
+  } catch { return res.status(401).json({ error: { code: "UNAUTHORIZED", message: "Invalid token" } }); }
+}
+` : `export function requireAuth(req, res, next){ next(); }
+`;
+
+  if(auth){
+    files["package.json"] = files["package.json"].replace('"express-rate-limit": "^7.4.0",', '"express-rate-limit": "^7.4.0",\n      "jsonwebtoken": "^9.0.2",\n      "bcryptjs": "^2.4.3",');
+    files["src/routes/auth.js"] = `import { Router } from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { db } from "../db.js";
+
+export const router = Router();
+
+router.post("/register", async (req, res, next) => {
+  try {
+    const { email, password } = req.body || {};
+    if(!email || !password) return res.status(400).json({ error: { code:"BAD_INPUT", message:"email and password required" }});
+    const hash = await bcrypt.hash(password, 12);
+    const stmt = db.prepare ? db.prepare("INSERT INTO users(email, password_hash) VALUES (?, ?) RETURNING id, email") : null;
+    let row;
+    if(stmt){ row = stmt.get(email, hash); }
+    else {
+      db.run("INSERT INTO users(email, password_hash) VALUES ($1, $2)", [email, hash]);
+      row = { email };
+    }
+    const token = jwt.sign({ sub: row.id || row.email, email: row.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    res.status(201).json({ token, user: { email: row.email } });
+  } catch(e){ next(e); }
+});
+
+router.post("/login", async (req, res, next) => {
+  try {
+    const { email, password } = req.body || {};
+    const row = db.prepare ? db.prepare("SELECT * FROM users WHERE email = ?").get(email)
+                           : (await db.query("SELECT * FROM users WHERE email = $1", [email])).rows[0];
+    if(!row) return res.status(401).json({ error:{ code:"UNAUTHORIZED", message:"Invalid credentials" }});
+    const ok = await bcrypt.compare(password, row.password_hash);
+    if(!ok) return res.status(401).json({ error:{ code:"UNAUTHORIZED", message:"Invalid credentials" }});
+    const token = jwt.sign({ sub: row.id, email: row.email }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    res.json({ token, user: { email: row.email } });
+  } catch(e){ next(e); }
+});
+`;
+  }
+
+  files["src/routes/api.js"] = genNodeApiRoutes(ctx);
+
+  files["src/lib/validate.js"] = `export function badInput(message){ const e = new Error(message); e.status = 400; e.code = "BAD_INPUT"; return e; }
+export function requireFields(body, fields){
+  for(const f of fields){ if(body[f] === undefined || body[f] === null || body[f] === "") throw badInput("Missing field: "+f); }
+}
+`;
+
+  files["migrations/0001_init.sql"] = genSqlMigrations(ctx);
+
+  files["test/health.test.js"] = `import { test } from "node:test";
+import assert from "node:assert";
+test("placeholder", () => { assert.ok(true); });
+`;
+
+  files[".gitignore"] = "node_modules/\n.env\ndata.db\n*.log\n";
+  return files;
+}
+
+function dbNodePg(){
+  return `import pg from "pg";
+const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+pool.on("error", (e) => console.error("pg error", e));
+export const db = {
+  query: (text, params) => pool.query(text, params),
+  async close(){ await pool.end(); }
+};
+`;
+}
+function dbNodeSqlite(){
+  return `import Database from "better-sqlite3";
+const path = process.env.DATABASE_URL && !process.env.DATABASE_URL.startsWith(".") ? "./data.db" : (process.env.DATABASE_URL || "./data.db");
+export const db = new Database(path);
+db.pragma("journal_mode = WAL");
+`;
+}
+
+function genNodeApiRoutes(ctx){
+  const { tables, auth } = ctx;
+  const lines = [];
+  lines.push(`import { Router } from "express";`);
+  if(auth) lines.push(`import { requireAuth } from "../middleware/auth.js";`);
+  lines.push(`import { requireFields, badInput } from "../lib/validate.js";`);
+  if(ctx.db === "postgres") lines.push(`import { db } from "../db.js";`);
+  else lines.push(`import { db } from "../db.js";`);
+  lines.push(`export const router = Router();`);
+  lines.push("");
+  if(auth) lines.push(`import { router as authRouter } from "./auth.js";\nrouter.use("/auth", authRouter);\n`);
+
+  (tables || []).forEach(tbl => {
+    const name = tbl.name;
+    const cols = tbl.columns || [];
+    const pk = cols.find(c=>c.pk) || { name:"id" };
+    const fields = cols.filter(c => !c.pk && c.name !== "created_at" && c.name !== "updated_at").map(c=>c.name);
+
+    lines.push(`// --- ${name} ---`);
+    lines.push(`router.get("/${name}", ${auth?"requireAuth, ":""}async (req, res, next) => {`);
+    lines.push(`  try {`);
+    if(ctx.db === "postgres"){
+      lines.push(`    const r = await db.query("SELECT * FROM ${name} ORDER BY ${pk.name} DESC LIMIT 100");`);
+      lines.push(`    res.json({ data: r.rows });`);
+    } else {
+      lines.push(`    const rows = db.prepare("SELECT * FROM ${name} ORDER BY ${pk.name} DESC LIMIT 100").all();`);
+      lines.push(`    res.json({ data: rows });`);
+    }
+    lines.push(`  } catch(e){ next(e); }`);
+    lines.push(`});`);
+
+    lines.push(`router.post("/${name}", ${auth?"requireAuth, ":""}async (req, res, next) => {`);
+    lines.push(`  try {`);
+    lines.push(`    requireFields(req.body, ${JSON.stringify(fields.slice(0,3))});`);
+    const insCols = fields.join(", ");
+    const placeholdersPg = fields.map((_,i)=>"$"+(i+1)).join(", ");
+    const placeholdersSq = fields.map(()=>"?").join(", ");
+    const vals = fields.map(f=>`req.body.${f}`).join(", ");
+    if(ctx.db === "postgres"){
+      lines.push(`    const r = await db.query("INSERT INTO ${name}(${insCols}) VALUES (${placeholdersPg}) RETURNING *", [${vals}]);`);
+      lines.push(`    res.status(201).json({ data: r.rows[0] });`);
+    } else {
+      lines.push(`    const info = db.prepare("INSERT INTO ${name}(${insCols}) VALUES (${placeholdersSq})").run(${vals});`);
+      lines.push(`    const row = db.prepare("SELECT * FROM ${name} WHERE ${pk.name} = ?").get(info.lastInsertRowid);`);
+      lines.push(`    res.status(201).json({ data: row });`);
+    }
+    lines.push(`  } catch(e){ next(e); }`);
+    lines.push(`});`);
+
+    lines.push(`router.get("/${name}/:${pk.name}", ${auth?"requireAuth, ":""}async (req, res, next) => {`);
+    lines.push(`  try {`);
+    if(ctx.db === "postgres"){
+      lines.push(`    const r = await db.query("SELECT * FROM ${name} WHERE ${pk.name} = $1", [req.params.${pk.name}]);`);
+      lines.push(`    if(!r.rows[0]) return res.status(404).json({ error:{ code:"NOT_FOUND", message:"Not found" }});`);
+      lines.push(`    res.json({ data: r.rows[0] });`);
+    } else {
+      lines.push(`    const row = db.prepare("SELECT * FROM ${name} WHERE ${pk.name} = ?").get(req.params.${pk.name});`);
+      lines.push(`    if(!row) return res.status(404).json({ error:{ code:"NOT_FOUND", message:"Not found" }});`);
+      lines.push(`    res.json({ data: row });`);
+    }
+    lines.push(`  } catch(e){ next(e); }`);
+    lines.push(`});`);
+
+    lines.push(`router.put("/${name}/:${pk.name}", ${auth?"requireAuth, ":""}async (req, res, next) => {`);
+    lines.push(`  try {`);
+    const sets = fields.map((f,i)=>`${f} = ${ctx.db==="postgres"?"$"+(i+1):"?"}`).join(", ");
+    if(ctx.db === "postgres"){
+      lines.push(`    const r = await db.query("UPDATE ${name} SET ${sets} WHERE ${pk.name} = $${fields.length+1} RETURNING *", [${vals}, req.params.${pk.name}]);`);
+      lines.push(`    if(!r.rows[0]) return res.status(404).json({ error:{ code:"NOT_FOUND", message:"Not found" }});`);
+      lines.push(`    res.json({ data: r.rows[0] });`);
+    } else {
+      lines.push(`    const info = db.prepare("UPDATE ${name} SET ${sets} WHERE ${pk.name} = ?").run(${vals}, req.params.${pk.name});`);
+      lines.push(`    if(info.changes === 0) return res.status(404).json({ error:{ code:"NOT_FOUND", message:"Not found" }});`);
+      lines.push(`    const row = db.prepare("SELECT * FROM ${name} WHERE ${pk.name} = ?").get(req.params.${pk.name});`);
+      lines.push(`    res.json({ data: row });`);
+    }
+    lines.push(`  } catch(e){ next(e); }`);
+    lines.push(`});`);
+
+    lines.push(`router.delete("/${name}/:${pk.name}", ${auth?"requireAuth, ":""}async (req, res, next) => {`);
+    lines.push(`  try {`);
+    if(ctx.db === "postgres"){
+      lines.push(`    const r = await db.query("DELETE FROM ${name} WHERE ${pk.name} = $1 RETURNING ${pk.name}", [req.params.${pk.name}]);`);
+      lines.push(`    if(r.rowCount === 0) return res.status(404).json({ error:{ code:"NOT_FOUND", message:"Not found" }});`);
+    } else {
+      lines.push(`    const info = db.prepare("DELETE FROM ${name} WHERE ${pk.name} = ?").run(req.params.${pk.name});`);
+      lines.push(`    if(info.changes === 0) return res.status(404).json({ error:{ code:"NOT_FOUND", message:"Not found" }});`);
+    }
+    lines.push(`    res.status(204).end();`);
+    lines.push(`  } catch(e){ next(e); }`);
+    lines.push(`});`);
+    lines.push("");
+  });
+
+  return lines.join("\n");
+}
+
+function readmeNode(ctx){
+  return `# ${ctx.projectName}
+
+Generated backend — **${ctx.stack.label}**.
+
+## Prerequisites
+- Node.js 20+
+${ctx.db === "postgres" ? "- PostgreSQL 14+ and a database URL" : "- Nothing else (SQLite file is auto-created)"}
+
+## Setup
+1. Copy \`.env.example\` to \`.env\` and adjust values.
+2. Install dependencies:
+   \`\`\`
+   npm install
+   \`\`\`
+3. Run migrations (SQL is in \`migrations/0001_init.sql\`).
+4. Start the server:
+   \`\`\`
+   npm run dev
+   \`\`\`
+
+## API
+Base URL: \`http://localhost:3000/api\`
+${ctx.auth ? "- Authentication: Bearer JWT (see \`/api/auth/register\` and \`/api/auth/login\`)" : "- No authentication required (add middleware if needed)"}
+
+## Tables
+${(ctx.tables||[]).map(t=>"- \`"+t.name+"\`").join("\n")}
+
+## Notes
+- This project was generated locally. Review all files before deploying.
+- Never commit \`.env\`. Use a secret manager in production.
+`;
+}
+
+function genSqlMigrations(ctx){
+  const lines = [];
+  (ctx.tables || []).forEach(tbl => {
+    lines.push(`CREATE TABLE IF NOT EXISTS ${tbl.name} (`);
+    const cols = tbl.columns || [];
+    const defs = cols.map(c => {
+      let def = `  ${c.name} ${sqlTypeFor(c, ctx.db)}`;
+      if(c.pk) def += " PRIMARY KEY";
+      if(ctx.db === "postgres" && c.pk && /int/i.test(c.type||"")) def = `  ${c.name} SERIAL PRIMARY KEY`;
+      if(!c.nullable && !c.pk) def += " NOT NULL";
+      if(c.unique) def += " UNIQUE";
+      if(c.default !== undefined && c.default !== null && c.default !== "") def += ` DEFAULT ${c.default}`;
+      return def;
+    });
+    lines.push(defs.join(",\n"));
+    lines.push(`);`);
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+function sqlTypeFor(c, db){
+  const t = (c.type||"text").toLowerCase();
+  if(db === "postgres"){
+    if(/int/.test(t)) return "INTEGER";
+    if(/bool/.test(t)) return "BOOLEAN";
+    if(/json/.test(t)) return "JSONB";
+    if(/text|str|string|varchar/.test(t)) return "TEXT";
+    if(/date/.test(t)) return "TIMESTAMP";
+    return "TEXT";
+  } else {
+    if(/int/.test(t)) return "INTEGER";
+    if(/bool/.test(t)) return "INTEGER";
+    if(/json/.test(t)) return "TEXT";
+    if(/text|str|string|varchar/.test(t)) return "TEXT";
+    if(/date/.test(t)) return "TEXT";
+    return "TEXT";
+  }
+}
+
+/* ---------- PHP vanilla generator ---------- */
+function genPhpVanilla(ctx){
+  const files = {};
+  files["README.md"] = `# ${ctx.projectName}\n\nPHP backend (vanilla, PDO).\n\n## Setup\n1. Place files in your web root.\n2. Copy \`.env.example\` to \`.env\`.\n3. Import \`migrations/0001_init.sql\` into your MySQL database.\n4. Ensure \`public/index.php\` is the entry point (route all requests to it via .htaccess).\n`;
+  files[".env.example"] = [
+    "APP_ENV=development",
+    "DB_HOST=127.0.0.1",
+    "DB_NAME=app",
+    "DB_USER=root",
+    "DB_PASS=",
+    ctx.auth ? "JWT_SECRET=change-me" : "",
+  ].filter(Boolean).join("\n");
+  files["public/.htaccess"] = `RewriteEngine On\nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !-d\nRewriteRule ^ index.php [QSA,L]\n`;
+  files["public/index.php"] = `<?php
+declare(strict_types=1);
+require __DIR__ . '/../src/bootstrap.php';
+
+$method = $_SERVER['REQUEST_METHOD'];
+$uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+$uri = preg_replace('#^/index\\.php#', '', $uri);
+$uri = rtrim($uri, '/') ?: '/';
+
+header('Content-Type: application/json; charset=utf-8');
+
+try {
+  $matched = false;
+  ${genPhpRoutes(ctx)}
+  if (!$matched) { http_json(404, ['error' => ['code' => 'NOT_FOUND', 'message' => 'Not found']]); }
+} catch (Throwable $e) {
+  error_log('[error] ' . $e->getMessage());
+  http_json(500, ['error' => ['code' => 'INTERNAL', 'message' => 'Internal error']]);
+}
+`;
+  files["src/bootstrap.php"] = `<?php
+declare(strict_types=1);
+$envFile = dirname(__DIR__) . '/.env';
+if (is_file($envFile)) {
+  foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+    if (str_starts_with(trim($line), '#')) continue;
+    [$k, $v] = array_map('trim', explode('=', $line, 2));
+    if (!array_key_exists($k, $_ENV)) putenv("$k=$v");
+  }
+}
+require __DIR__ . '/lib/http.php';
+require __DIR__ . '/lib/db.php';
+${ctx.auth ? "require __DIR__ . '/lib/auth.php';" : ""}
+`;
+  files["src/lib/http.php"] = `<?php
+declare(strict_types=1);
+function http_json(int $status, $body): void {
+  http_response_code($status);
+  echo json_encode($body, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+  exit;
+}
+function input_json(): array {
+  $raw = file_get_contents('php://input') ?: '';
+  $data = json_decode($raw, true);
+  return is_array($data) ? $data : [];
+}
+function require_fields(array $data, array $fields): void {
+  foreach ($fields as $f) {
+    if (!array_key_exists($f, $data) || $data[$f] === '' || $data[$f] === null) {
+      http_json(400, ['error' => ['code' => 'BAD_INPUT', 'message' => "Missing field: $f"]]);
+    }
+  }
+}
+`;
+  files["src/lib/db.php"] = `<?php
+declare(strict_types=1);
+function db(): PDO {
+  static $pdo = null;
+  if ($pdo === null) {
+    $host = getenv('DB_HOST') ?: '127.0.0.1';
+    $name = getenv('DB_NAME') ?: 'app';
+    $user = getenv('DB_USER') ?: 'root';
+    $pass = getenv('DB_PASS') ?: '';
+    $dsn = "mysql:host=$host;dbname=$name;charset=utf8mb4";
+    $pdo = new PDO($dsn, $user, $pass, [
+      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+      PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+      PDO::ATTR_EMULATE_PREPARES => false,
+    ]);
+  }
+  return $pdo;
+}
+`;
+  if(ctx.auth){
+    files["src/lib/auth.php"] = `<?php
+declare(strict_types=1);
+// Minimal HMAC-based token (not JWT). Replace with a proper JWT library for production.
+function token_issue(array $payload): string {
+  $secret = getenv('JWT_SECRET') ?: 'change-me';
+  $head = base64url_encode(json_encode(['alg' => 'HS256', 'typ' => 'token']));
+  $body = base64url_encode(json_encode($payload + ['iat' => time(), 'exp' => time() + 604800]));
+  $sig  = base64url_encode(hash_hmac('sha256', "$head.$body", $secret, true));
+  return "$head.$body.$sig";
+}
+function token_verify(string $token): ?array {
+  $parts = explode('.', $token);
+  if (count($parts) !== 3) return null;
+  [$h, $b, $s] = $parts;
+  $secret = getenv('JWT_SECRET') ?: 'change-me';
+  if (!hash_equals(hash_hmac('sha256', "$h.$b", $secret, true), base64url_decode($s))) return null;
+  $payload = json_decode(base64url_decode($b), true);
+  if (!is_array($payload)) return null;
+  if (($payload['exp'] ?? 0) < time()) return null;
+  return $payload;
+}
+function base64url_encode(string $d): string { return rtrim(strtr(base64_encode($d), '+/', '-_'), '='); }
+function base64url_decode(string $d): string { return base64_decode(strtr($d, '-_', '+/')); }
+function require_auth(): array {
+  $h = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+  if (!preg_match('/^Bearer\\s+(.+)$/i', $h, $m)) http_json(401, ['error' => ['code' => 'UNAUTHORIZED', 'message' => 'Missing token']]);
+  $p = token_verify($m[1]);
+  if (!$p) http_json(401, ['error' => ['code' => 'UNAUTHORIZED', 'message' => 'Invalid token']]);
+  return $p;
+}
+`;
+  }
+  files["migrations/0001_init.sql"] = genSqlMigrations({...ctx, db:"mysql"});
+  files[".gitignore"] = ".env\nvendor/\n*.log\n";
+  return files;
+}
+
+function genPhpRoutes(ctx){
+  const lines = [];
+  if(ctx.auth){
+    lines.push(`if ($method === 'POST' && $uri === '/api/auth/register') {
+    $in = input_json(); require_fields($in, ['email','password']);
+    $hash = password_hash($in['password'], PASSWORD_BCRYPT);
+    $st = db()->prepare('INSERT INTO users(email, password_hash) VALUES (?, ?)');
+    $st->execute([$in['email'], $hash]);
+    $token = token_issue(['sub' => (int) db()->lastInsertId(), 'email' => $in['email']]);
+    http_json(201, ['token' => $token, 'user' => ['email' => $in['email']]]);
+  }
+  if ($method === 'POST' && $uri === '/api/auth/login') {
+    $in = input_json(); require_fields($in, ['email','password']);
+    $st = db()->prepare('SELECT * FROM users WHERE email = ?'); $st->execute([$in['email']]);
+    $row = $st->fetch();
+    if (!$row || !password_verify($in['password'], $row['password_hash'])) http_json(401, ['error' => ['code'=>'UNAUTHORIZED','message'=>'Invalid credentials']]);
+    $token = token_issue(['sub' => (int) $row['id'], 'email' => $row['email']]);
+    http_json(200, ['token' => $token, 'user' => ['email' => $row['email']]]);
+  }`);
+  }
+  (ctx.tables || []).forEach(tbl => {
+    const name = tbl.name;
+    const cols = tbl.columns || [];
+    const pk = cols.find(c=>c.pk) || { name:"id" };
+    const fields = cols.filter(c => !c.pk && c.name !== "created_at" && c.name !== "updated_at").map(c=>c.name);
+    lines.push(`if ($method === 'GET' && preg_match('#^/${name}$#', $uri)) {
+    ${ctx.auth ? "$user = require_auth();" : ""}
+    $rows = db()->query('SELECT * FROM ${name} ORDER BY ${pk.name} DESC LIMIT 100')->fetchAll();
+    http_json(200, ['data' => $rows]);
+  }`);
+    lines.push(`if ($method === 'POST' && preg_match('#^/${name}$#', $uri)) {
+    ${ctx.auth ? "$user = require_auth();" : ""}
+    $in = input_json(); require_fields($in, [${fields.slice(0,3).map(f=>"'"+f+"'").join(",")}]);
+    $cols = [${fields.map(f=>"'"+f+"'").join(",")}];
+    $sql = 'INSERT INTO ${name} (' . implode(',', $cols) . ') VALUES (' . implode(',', array_fill(0, count($cols), '?')) . ')';
+    $st = db()->prepare($sql);
+    $st->execute(array_map(fn($c)=>$in[$c] ?? null, $cols));
+    $id = db()->lastInsertId();
+    $row = db()->prepare('SELECT * FROM ${name} WHERE ${pk.name} = ?'); $row->execute([$id]);
+    http_json(201, ['data' => $row->fetch()]);
+  }`);
+    lines.push(`if ($method === 'GET' && preg_match('#^/${name}/(\\d+)$#', $uri, $m)) {
+    ${ctx.auth ? "$user = require_auth();" : ""}
+    $st = db()->prepare('SELECT * FROM ${name} WHERE ${pk.name} = ?'); $st->execute([$m[1]]);
+    $row = $st->fetch();
+    if (!$row) http_json(404, ['error' => ['code'=>'NOT_FOUND','message'=>'Not found']]);
+    http_json(200, ['data' => $row]);
+  }`);
+    lines.push(`if ($method === 'DELETE' && preg_match('#^/${name}/(\\d+)$#', $uri, $m)) {
+    ${ctx.auth ? "$user = require_auth();" : ""}
+    $st = db()->prepare('DELETE FROM ${name} WHERE ${pk.name} = ?'); $st->execute([$m[1]]);
+    if ($st->rowCount() === 0) http_json(404, ['error' => ['code'=>'NOT_FOUND','message'=>'Not found']]);
+    http_response_code(204); exit;
+  }`);
+  });
+  return lines.join("\n  ");
+}
+
+/* ---------- Laravel skeleton (honest: minimal) ---------- */
+function genPhpLaravelSkeleton(ctx){
+  const files = {};
+  files["README.md"] = `# ${ctx.projectName}\n\nLaravel skeleton generated locally.\n\n**Important**: This is a structural skeleton (routes, migrations, basic controllers). Install Laravel via Composer and merge these files into a real Laravel project. Full Laravel generation requires running \`composer create-project\` which cannot be done inside a browser.\n`;
+  files["routes/api.php"] = `<?php
+use Illuminate\\Support\\Facades\\Route;
+${(ctx.tables||[]).map(t=>`Route::apiResource('${t.name}', App\\Http\\Controllers\\${capitalize(t.name)}Controller::class);`).join("\n")}
+`;
+  (ctx.tables||[]).forEach(tbl=>{
+    files[`database/migrations/0001_create_${tbl.name}_table.php`] = `<?php
+use Illuminate\\Database\\Migrations\\Migration;
+use Illuminate\\Database\\Schema\\Blueprint;
+use Illuminate\\Support\\Facades\\Schema;
+return new class extends Migration {
+  public function up(): void {
+    Schema::create('${tbl.name}', function (Blueprint $table) {
+      $table->id();
+      ${(tbl.columns||[]).filter(c=>!c.pk).map(c=>`$table-> ${laravelCol(c)};`).join("\n      ")}
+      $table->timestamps();
+    });
+  }
+  public function down(): void { Schema::dropIfExists('${tbl.name}'); }
+};
+`;
+    files[`app/Http/Controllers/${capitalize(tbl.name)}Controller.php`] = `<?php
+namespace App\\Http\\Controllers;
+use Illuminate\\Http\\Request;
+use Illuminate\\Support\\Facades\\DB;
+class ${capitalize(tbl.name)}Controller extends Controller {
+  public function index(){ return response()->json(['data' => DB::table('${tbl.name}')->latest()->limit(100)->get()]); }
+  public function store(Request $r){ $id = DB::table('${tbl.name}')->insertGetId($r->all()); return response()->json(['data' => DB::table('${tbl.name}')->find($id)], 201); }
+  public function show($id){ $row = DB::table('${tbl.name}')->find($id); if(!$row) abort(404); return response()->json(['data'=>$row]); }
+  public function update(Request $r, $id){ DB::table('${tbl.name}')->where('id',$id)->update($r->all()); return response()->json(['data'=>DB::table('${tbl.name}')->find($id)]); }
+  public function destroy($id){ if(!DB::table('${tbl.name}')->where('id',$id)->delete()) abort(404); return response()->noContent(); }
+}
+`;
+  });
+  return files;
+}
+function capitalize(s){ return s ? s.charAt(0).toUpperCase()+s.slice(1) : s; }
+function laravelCol(c){
+  const t = (c.type||"text").toLowerCase();
+  if(/int/.test(t)) return `integer('${c.name}')`;
+  if(/bool/.test(t)) return `boolean('${c.name}')`;
+  if(/json/.test(t)) return `json('${c.name}')`;
+  if(/date/.test(t)) return `timestamp('${c.name}')`;
+  return `text('${c.name}')`;
+}
+
+/* ---------- Python FastAPI generator ---------- */
+function genPythonFastAPI(ctx){
+  const files = {};
+  files["README.md"] = `# ${ctx.projectName}\n\nPython FastAPI backend.\n\n## Setup\n\`\`\`\npython -m venv .venv\nsource .venv/bin/activate\npip install -r requirements.txt\nalembic upgrade head\nuvicorn app.main:app --reload\n\`\`\`\n`;
+  files["requirements.txt"] = [
+    "fastapi==0.115.0",
+    "uvicorn[standard]==0.30.6",
+    "pydantic==2.9.2",
+    "python-dotenv==1.0.1",
+    ctx.db === "postgres" ? "asyncpg==0.29.0" : "aiosqlite==0.20.0",
+    "databases==0.9.0",
+    "alembic==1.13.2",
+    ctx.auth ? "passlib[bcrypt]==1.7.4" : "",
+    ctx.auth ? "python-jose[cryptography]==3.3.0" : "",
+  ].filter(Boolean).join("\n");
+  files[".env.example"] = [
+    "DATABASE_URL=" + (ctx.db === "postgres" ? "postgresql+asyncpg://user:pass@localhost:5432/db" : "sqlite+aiosqlite:///./data.db"),
+    ctx.auth ? "JWT_SECRET=change-me" : "",
+  ].filter(Boolean).join("\n");
+  files["app/main.py"] = `from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.routers import api
+from app.db import engine
+
+app = FastAPI(title="${ctx.projectName}", version="1.0.0")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+app.include_router(api.router, prefix="/api")
+
+@app.get("/health")
+async def health():
+    return {"ok": True}
+`;
+  files["app/db.py"] = ctx.db === "postgres"
+    ? `from databases import Database
+from dotenv import load_dotenv
+import os
+load_dotenv()
+database = Database(os.getenv("DATABASE_URL", "postgresql+asyncpg://user:pass@localhost/db").replace("+asyncpg",""))
+async def connect_db(): await database.connect()
+async def disconnect_db(): await database.disconnect()
+`
+    : `from databases import Database
+from dotenv import load_dotenv
+import os
+load_dotenv()
+database = Database(os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./data.db").replace("+aiosqlite",""))
+`;
+  files["app/routers/api.py"] = genFastAPIRoutes(ctx);
+  files["migrations/0001_init.sql"] = genSqlMigrations(ctx);
+  files["tests/test_health.py"] = `from fastapi.testclient import TestClient
+from app.main import app
+client = TestClient(app)
+def test_health():
+    r = client.get("/health")
+    assert r.status_code == 200
+    assert r.json()["ok"] is True
+`;
+  files[".gitignore"] = ".env\n__pycache__/\n*.pyc\n.venv/\ndata.db\n";
+  return files;
+}
+function genFastAPIRoutes(ctx){
+  const lines = [];
+  lines.push(`from fastapi import APIRouter, HTTPException, Depends`);
+  lines.push(`from pydantic import BaseModel`);
+  lines.push(`from app.db import database`);
+  if(ctx.auth){
+    lines.push(`from app.auth import require_auth, hash_password, verify_password, create_token`);
+  }
+  lines.push(`router = APIRouter()`);
+  if(ctx.auth){
+    lines.push(`class AuthIn(BaseModel): email: str; password: str`);
+    lines.push(`@router.post("/auth/register", status_code=201)
+async def register(body: AuthIn):
+    h = hash_password(body.password)
+    q = "INSERT INTO users(email, password_hash) VALUES (:e, :h) RETURNING id"
+    try:
+        rid = await database.execute(q, {"e": body.email, "h": h})
+    except Exception:
+        raise HTTPException(400, "email exists")
+    return {"token": create_token({"sub": rid, "email": body.email}), "user": {"email": body.email}}
+@router.post("/auth/login")
+async def login(body: AuthIn):
+    row = await database.fetch_one("SELECT * FROM users WHERE email=:e", {"e": body.email})
+    if not row or not verify_password(body.password, row["password_hash"]):
+        raise HTTPException(401, "Invalid credentials")
+    return {"token": create_token({"sub": row["id"], "email": row["email"]}), "user": {"email": row["email"]}}
+`);
+  }
+  (ctx.tables||[]).forEach(tbl=>{
+    const name = tbl.name;
+    const cols = tbl.columns || [];
+    const pk = cols.find(c=>c.pk) || { name:"id" };
+    const fields = cols.filter(c => !c.pk && c.name !== "created_at" && c.name !== "updated_at");
+    lines.push(`class ${capitalize(name)}In(BaseModel):`);
+    fields.forEach(f=>{ lines.push(`    ${f.name}: ${pyType(f)}`); });
+    lines.push(`@router.get("/${name}")
+async def list_${name}(${ctx.auth?"user: dict = Depends(require_auth)":""}):
+    rows = await database.fetch_all("SELECT * FROM ${name} ORDER BY ${pk.name} DESC LIMIT 100")
+    return {"data": [dict(r) for r in rows]}
+@router.post("/${name}", status_code=201)
+async def create_${name}(body: ${capitalize(name)}In${ctx.auth?", user: dict = Depends(require_auth)":""}):
+    cols = ${JSON.stringify(fields.map(f=>f.name))}
+    vals = {c: getattr(body, c) for c in cols}
+    q = "INSERT INTO ${name}(" + ",".join(cols) + ") VALUES (" + ",".join(":"+c for c in cols) + ") RETURNING *"
+    row = await database.fetch_one(q, vals)
+    return {"data": dict(row)}
+@router.get("/${name}/{${pk.name}}")
+async def get_${name}(${pk.name}: int${ctx.auth?", user: dict = Depends(require_auth)":""}):
+    row = await database.fetch_one("SELECT * FROM ${name} WHERE ${pk.name} = :id", {"id": ${pk.name}})
+    if not row: raise HTTPException(404, "Not found")
+    return {"data": dict(row)}
+@router.delete("/${name}/{${pk.name}}", status_code=204)
+async def del_${name}(${pk.name}: int${ctx.auth?", user: dict = Depends(require_auth)":""}):
+    r = await database.execute("DELETE FROM ${name} WHERE ${pk.name} = :id", {"id": ${pk.name}})
+    if not r: raise HTTPException(404, "Not found")
+`);
+  });
+  return lines.join("\n");
+}
+function pyType(c){
+  const t = (c.type||"text").toLowerCase();
+  if(/int/.test(t)) return "int";
+  if(/bool/.test(t)) return "bool";
+  if(/json/.test(t)) return "dict";
+  return "str";
+}
+
+/* ---------- Python Flask generator ---------- */
+function genPythonFlask(ctx){
+  const files = {};
+  files["README.md"] = `# ${ctx.projectName}\n\nFlask backend.\n\n\`\`\`\npython -m venv .venv && source .venv/bin/activate\npip install -r requirements.txt\nflask --app app run --debug\n\`\`\`\n`;
+  files["requirements.txt"] = ["flask==3.0.3","python-dotenv==1.0.1"].join("\n");
+  files[".env.example"] = "FLASK_DEBUG=1\n";
+  files["app/__init__.py"] = `from flask import Flask
+def create_app():
+    app = Flask(__name__)
+    from .routes import api
+    app.register_blueprint(api, url_prefix="/api")
+    @app.get("/health")
+    def health(): return {"ok": True}
+    return app
+`;
+  files["app/routes.py"] = `from flask import Blueprint, request, jsonify
+api = Blueprint("api", __name__)
+@api.get("/ping")
+def ping(): return {"pong": True}
+`;
+  files[".gitignore"] = ".env\n__pycache__/\n*.pyc\n.venv/\n";
+  return files;
+}
+
+/* ---------- Go stdlib generator ---------- */
+function genGoStdlib(ctx){
+  const files = {};
+  files["README.md"] = `# ${ctx.projectName}\n\nGo backend (stdlib).\n\n\`\`\`\ngo mod tidy\ngo run ./cmd/server\n\`\`\`\n`;
+  files["go.mod"] = `module ${ctx.projectName.toLowerCase().replace(/\s+/g,"-")}\n\ngo 1.22\n`;
+  files["cmd/server/main.go"] = `package main
+import (
+  "fmt"
+  "log"
+  "net/http"
+  "os"
+  "${ctx.projectName.toLowerCase().replace(/\s+/g,"-")}/internal/server"
+)
+func main() {
+  port := os.Getenv("PORT")
+  if port == "" { port = "3000" }
+  srv := server.New()
+  fmt.Println("listening on", port)
+  log.Fatal(http.ListenAndServe(":"+port, srv))
+}
+`;
+  files["internal/server/server.go"] = `package server
+import "net/http"
+func New() http.Handler {
+  mux := http.NewServeMux()
+  mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Content-Type", "application/json")
+    w.Write([]byte(\`{"ok":true}\`))
+  })
+  return mux
+}
+`;
+  files[".gitignore"] = "*.exe\n*.db\n.env\n";
+  return files;
+}
+
+/* ---------- Validation engine ---------- */
+function validateProject(project, files){
+  const results = [];
+  const paths = files.map(f=>f.path);
+  // Required files
+  const required = ["README.md"];
+  required.forEach(r=>{
+    if(paths.includes(r)) results.push({status:"passed", msg:`Required file present: ${r}`});
+    else results.push({status:"failed", msg:`Missing recommended file: ${r}`});
+  });
+  // JSON validity
+  files.filter(f=>extOf(f.path)==="json").forEach(f=>{
+    try{ JSON.parse(f.content||"{}"); results.push({status:"passed", msg:`Valid JSON: ${f.path}`}); }
+    catch(e){ results.push({status:"failed", msg:`Invalid JSON ${f.path}: ${e.message}`}); }
+  });
+  // Env example
+  if(paths.includes(".env.example")) results.push({status:"passed", msg:"Environment template present"});
+  else results.push({status:"not-tested", msg:"No .env.example — ensure secrets are documented"});
+  // SQL syntax (basic)
+  files.filter(f=>extOf(f.path)==="sql").forEach(f=>{
+    const c = f.content||"";
+    if(/CREATE\s+TABLE/i.test(c)) results.push({status:"passed", msg:`SQL migration present: ${f.path}`});
+    else results.push({status:"static", msg:`SQL file without CREATE TABLE: ${f.path}`});
+  });
+  // Secrets in source
+  files.filter(f=>/\.(js|ts|php|py|go|java|rb)$/.test(f.path)).forEach(f=>{
+    if(/(password|secret|api[_-]?key)\s*[:=]\s*['"][^'"]{6,}['"]/i.test(f.content||"")){
+      results.push({status:"failed", msg:`Possible hardcoded secret in ${f.path}`});
+    }
+  });
+  // Cross-file references: package.json deps vs imports
+  const pkg = files.find(f=>f.path==="package.json");
+  if(pkg){
+    try{
+      const j = JSON.parse(pkg.content);
+      const declared = Object.keys(j.dependencies||{});
+      const imports = new Set();
+      files.filter(f=>/\.(js|ts)$/.test(f.path) && f.path!=="package.json").forEach(f=>{
+        (f.content||"").match(/from\s+['"]([^'"]+)['"]/g)?.forEach(m=>{
+          const mm = m.match(/['"]([^'"]+)['"]/);
+          if(mm && !mm[1].startsWith(".") && !mm[1].startsWith("/")){
+            const p = mm[1].startsWith("@") ? mm[1].split("/").slice(0,2).join("/") : mm[1].split("/")[0];
+            imports.add(p);
+          }
+        });
+      });
+      imports.forEach(p=>{
+        if(declared.includes(p)) results.push({status:"passed", msg:`Dependency declared: ${p}`});
+        else results.push({status:"failed", msg:`Imported but not declared in package.json: ${p}`});
+      });
+    }catch{}
+  }
+  if(results.length === 0) results.push({status:"static", msg:"No automated checks applicable"});
+  return results;
+}
+
+/* ---------- ZIP export (minimal, real implementation) ---------- */
+/* We implement a small, real ZIP writer (store method, no compression) that produces valid archives. */
+const Zip = (()=>{
+  const enc = new TextEncoder();
+  function crc32(buf){
+    let c, table = Zip._table || (Zip._table = (()=>{
+      const t = new Uint32Array(256);
+      for(let n=0;n<256;n++){
+        c = n;
+        for(let k=0;k<8;k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+        t[n] = c;
+      }
+      return t;
+    })());
+    let crc = 0xFFFFFFFF;
+    for(let i=0;i<buf.length;i++) crc = table[(crc ^ buf[i]) & 0xFF] ^ (crc >>> 8);
+    return (crc ^ 0xFFFFFFFF) >>> 0;
+  }
+  function dosTime(d){
+    const t = ((d.getHours()&0x1F)<<11) | ((d.getMinutes()&0x3F)<<5) | ((d.getSeconds()/2)&0x1F);
+    const dt = (((d.getFullYear()-1980)&0x7F)<<9) | (((d.getMonth()+1)&0x0F)<<5) | (d.getDate()&0x1F);
+    return { time: t&0xFFFF, date: dt&0xFFFF };
+  }
+  function writeU16(v){ return new Uint8Array([v&0xFF,(v>>>8)&0xFF]); }
+  function writeU32(v){ return new Uint8Array([v&0xFF,(v>>>8)&0xFF,(v>>>16)&0xFF,(v>>>24)&0xFF]); }
+  async function build(entries){
+    // entries: [{path, data: Uint8Array}]
+    const chunks = [];
+    const central = [];
+    let offset = 0;
+    for(const e of entries){
+      const nameBytes = enc.encode(e.path);
+      const data = e.data;
+      const crc = crc32(data);
+      const size = data.length;
+      const d = new Date();
+      const {time, date} = dosTime(d);
+      // Local file header
+      const local = new Uint8Array(30 + nameBytes.length + size);
+      const dv = new DataView(local.buffer);
+      dv.setUint32(0, 0x04034b50, true); // sig
+      dv.setUint16(4, 20, true); // version
+      dv.setUint16(6, 0, true);  // flags
+      dv.setUint16(8, 0, true);  // method: store
+      dv.setUint16(10, time, true);
+      dv.setUint16(12, date, true);
+      dv.setUint32(14, crc, true);
+      dv.setUint32(18, size, true); // compressed
+      dv.setUint32(22, size, true); // uncompressed
+      dv.setUint16(26, nameBytes.length, true);
+      dv.setUint16(28, 0, true); // extra len
+      local.set(nameBytes, 30);
+      local.set(data, 30 + nameBytes.length);
+      chunks.push(local);
+      // Central directory
+      const cd = new Uint8Array(46 + nameBytes.length);
+      const cv = new DataView(cd.buffer);
+      cv.setUint32(0, 0x02014b50, true);
+      cv.setUint16(4, 20, true); // version made by
+      cv.setUint16(6, 20, true); // version needed
+      cv.setUint16(8, 0, true);
+      cv.setUint16(10, 0, true);
+      cv.setUint16(12, time, true);
+      cv.setUint16(14, date, true);
+      cv.setUint32(16, crc, true);
+      cv.setUint32(20, size, true);
+      cv.setUint32(24, size, true);
+      cv.setUint16(28, nameBytes.length, true);
+      cv.setUint16(30, 0, true);
+      cv.setUint16(32, 0, true);
+      cv.setUint16(34, 0, true);
+      cv.setUint16(36, 0, true);
+      cv.setUint32(38, 0, true);
+      cv.setUint32(42, offset, true);
+      cd.set(nameBytes, 46);
+      central.push(cd);
+      offset += local.length;
+    }
+    const cdStart = offset;
+    let cdSize = 0;
+    central.forEach(c=>{ chunks.push(c); cdSize += c.length; });
+    // End of central directory
+    const eocd = new Uint8Array(22);
+    const ev = new DataView(eocd.buffer);
+    ev.setUint32(0, 0x06054b50, true);
+    ev.setUint16(4, 0, true);
+    ev.setUint16(6, 0, true);
+    ev.setUint16(8, entries.length, true);
+    ev.setUint16(10, entries.length, true);
+    ev.setUint32(12, cdSize, true);
+    ev.setUint32(16, cdStart, true);
+    ev.setUint16(20, 0, true);
+    chunks.push(eocd);
+    // Concat
+    let total = 0; chunks.forEach(c=>total+=c.length);
+    const out = new Uint8Array(total);
+    let p = 0;
+    for(const c of chunks){ out.set(c, p); p += c.length; }
+    return out;
+  }
+  return { build };
+})();
+
+async function exportProjectZip(project){
+  const files = await listProjectFiles(project.id);
+  const entries = files.map(f => ({
+    path: f.path,
+    data: new TextEncoder().encode(f.content || "")
+  }));
+  if(entries.length === 0){
+    entries.push({ path: "README.md", data: new TextEncoder().encode("# "+project.name+"\n\nEmpty project.\n") });
+  }
+  const bytes = await Zip.build(entries);
+  const blob = new Blob([bytes], { type: "application/zip" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = (project.name || "project").replace(/[^\w\-]+/g,"_") + ".zip";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+}
+
+async function exportBackupJSON(){
+  const projects = await idbAll(STORES.projects);
+  const files = await idbAll(STORES.files);
+  const versions = await idbAll(STORES.versions);
+  const settings = await idbAll(STORES.settings);
+  const backup = { v:1, exportedAt: now(), projects, files, versions, settings };
+  const blob = new Blob([JSON.stringify(backup)], { type:"application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "backend-forge-backup-" + new Date().toISOString().slice(0,10) + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+}
+
+async function importBackupJSON(file){
+  const text = await readAsText(file);
+  let data;
+  try{ data = JSON.parse(text); }catch(e){ throw new Error("Invalid JSON backup"); }
+  if(!data || data.v !== 1 || !Array.isArray(data.projects)) throw new Error("Unsupported backup format");
+  // Conflict detection
+  const existing = await idbAll(STORES.projects);
+  const existingIds = new Set(existing.map(p=>p.id));
+  const conflicts = data.projects.filter(p=>existingIds.has(p.id));
+  if(conflicts.length){
+    await new Promise((resolve)=>{
+      modal({
+        title:"Conflicts detected",
+        body: el("div",{class:"muted", text:`${conflicts.length} project(s) already exist. They will be overwritten.`}),
+        actions:[
+          {label:"Cancel", onClick:(c)=>{ c(); resolve(); }},
+          {label:"Overwrite", kind:"primary", onClick:async (c)=>{ c(); await doImport(data); resolve(); }}
+        ]
+      });
+    });
+  } else {
+    await doImport(data);
+  }
+}
+async function doImport(data){
+  for(const p of data.projects) await idbPut(STORES.projects, p);
+  for(const f of data.files) await idbPut(STORES.files, f);
+  for(const v of data.versions) await idbPut(STORES.versions, v);
+  for(const s of data.settings) await idbPut(STORES.settings, s);
+  await loadProjects();
+}
+
+/* ---------- Views ---------- */
+const Views = {};
+
+/* --- Dashboard --- */
+Views.dashboard = () => {
+  const root = el("div");
+  root.appendChild(el("div",{class:"row", style:{marginBottom:"10px"}},[
+    el("h2",{style:{margin:0, flex:1}, text:t("dash.title")}),
+    el("button",{class:"btn ghost", text:t("dash.importBackup"), onclick:()=>{
+      const inp = document.createElement("input");
+      inp.type="file"; inp.accept="application/json,.json";
+      inp.onchange = async ()=>{
+        if(inp.files && inp.files[0]){
+          try{ await importBackupJSON(inp.files[0]); toast("Backup imported","ok"); render(); }
+          catch(e){ toast("Import failed: "+e.message,"err"); }
+        }
+      };
+      inp.click();
+    }}),
+    el("button",{class:"btn primary", text:"+ "+t("dash.new"), onclick:()=>openNewProjectDialog()}),
+  ]));
+  const search = el("input",{class:"input", placeholder:t("dash.search"), style:{marginBottom:"10px"}});
+  root.appendChild(search);
+
+  const list = el("div",{class:"list", id:"projectList"});
+  root.appendChild(list);
+  function draw(q=""){
+    list.innerHTML = "";
+    const qq = q.trim().toLowerCase();
+    const items = State.projects.filter(p => !qq || p.name.toLowerCase().includes(qq) || (p.description||"").toLowerCase().includes(qq));
+    if(items.length === 0){
+      list.appendChild(el("div",{class:"alert info", text: State.projects.length===0 ? t("dash.empty") : "No matches"}));
+      return;
+    }
+    items.forEach(p=>{
+      const row = el("div",{class:"list-item", onclick:()=>{ State.currentProjectId = p.id; navigate("explore"); }});
+      row.appendChild(el("div",{style:{flex:1, minWidth:0}},[
+        el("div",{class:"title", text:p.name}),
+        el("div",{class:"meta", text: fmtDate(p.updatedAt) + " • " + (p.generated?"Generated":"Draft")}),
+      ]));
+      row.appendChild(el("button",{class:"btn ghost", text:"⋯", onclick:(e)=>{
+        e.stopPropagation();
+        openProjectMenu(p);
+      }}));
+      list.appendChild(row);
+    });
+  }
+  search.oninput = ()=>draw(search.value);
+  draw();
+  return root;
+};
+
+function openNewProjectDialog(){
+  const body = el("div");
+  const name = el("input",{class:"input", placeholder:"Project name", value:"My backend"});
+  const desc = el("textarea",{class:"textarea", placeholder:"Short description (optional)"});
+  body.appendChild(el("div",{class:"field"},[el("label",{text:"Name"}), name]));
+  body.appendChild(el("div",{class:"field"},[el("label",{text:"Description"}), desc]));
+  modal({
+    title: t("dash.new"),
+    body,
+    actions:[
+      {label:t("common.cancel"), onClick:(c)=>c()},
+      {label:t("common.save"), kind:"primary", onClick:async (c)=>{
+        const p = await createProject({name:name.value.trim()||"Untitled", description:desc.value.trim()});
+        State.currentProjectId = p.id;
+        c(); render();
+      }}
+    ]
+  });
+}
+function openProjectMenu(p){
+  modal({
+    title: p.name,
+    body: el("div",{class:"muted"},[
+      el("div",{text:"Created: "+fmtDate(p.createdAt)}),
+      el("div",{text:"Updated: "+fmtDate(p.updatedAt)}),
+      el("div",{text:"Description: "+(p.description||"—"), style:{marginTop:"6px"}}),
+    ]),
+    actions:[
+      {label:"Open", kind:"primary", onClick:(c)=>{ c(); State.currentProjectId = p.id; navigate("explore"); }},
+      {label:"Duplicate", onClick:async (c)=>{
+        const copy = {...p, id: uid(), name: p.name+" (copy)", createdAt: now(), updatedAt: now()};
+        await idbPut(STORES.projects, copy);
+        const files = await listProjectFiles(p.id);
+        for(const f of files){ await saveProjectFile(copy.id, f.path, f.content, {language:f.language}); }
+        await loadProjects(); c(); render();
+      }},
+      {label:"Export ZIP", onClick:async (c)=>{ c(); try{ await exportProjectZip(p); toast("ZIP exported","ok"); }catch(e){ toast("Export failed","err"); } }},
+      {label:"Delete", kind:"danger", onClick:(c)=>{
+        confirmDialog("Delete project?", "This will permanently delete the project and all its files.", async ()=>{
+          await deleteProject(p.id); await loadProjects(); c(); render();
+        });
+      }},
+      {label:t("common.close"), onClick:(c)=>c()},
+    ]
+  });
+}
+
+/* --- Import view --- */
+Views.import = () => {
+  const root = el("div");
+  root.appendChild(el("h2",{text:t("import.title")}));
+  root.appendChild(el("div",{class:"muted", style:{marginBottom:"10px"}, text:t("import.hint")}));
+
+  const drop = el("div",{class:"drop", text:""});
+  drop.innerHTML = `<strong>${t("import.drop")}</strong>`;
+  const fileInput = el("input",{type:"file", multiple:true, style:{display:"none"}});
+  drop.appendChild(fileInput);
+  drop.onclick = ()=>fileInput.click();
+  ["dragenter","dragover"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add("drag");}));
+  ["dragleave","drop"].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove("drag");}));
+  drop.addEventListener("drop", async e=>{
+    const files = [];
+    if(e.dataTransfer?.items){
+      for(const it of e.dataTransfer.items){
+        if(it.kind === "file"){
+          const f = it.getAsFile(); if(f) files.push(f);
+        }
+      }
+    } else if(e.dataTransfer?.files){
+      for(const f of e.dataTransfer.files) files.push(f);
+    }
+    await handleImportFiles(files);
+  });
+  fileInput.onchange = async ()=>{
+    if(fileInput.files){ await handleImportFiles(Array.from(fileInput.files)); fileInput.value=""; }
+  };
+  root.appendChild(drop);
+
+  const prog = el("div",{class:"progress", style:{marginTop:"10px", display:"none"}},[el("div",{style:{width:"0%"}})]);
+  root.appendChild(prog);
+
+  const list = el("div",{class:"list", style:{marginTop:"10px"}});
+  root.appendChild(list);
+
+  const bar = el("div",{class:"row", style:{marginTop:"10px"}});
+  const clearBtn = el("button",{class:"btn ghost", text:t("import.clear"), onclick:()=>{ State.importFiles = []; drawList(); }});
+  const addBtn = el("button",{class:"btn primary", text:t("import.addToProject"), onclick:()=>addImportedToProject()});
+  bar.appendChild(clearBtn); bar.appendChild(el("div",{class:"spacer"})); bar.appendChild(addBtn);
+  root.appendChild(bar);
+
+  function drawList(){
+    list.innerHTML = "";
+    if(State.importFiles.length === 0){
+      list.appendChild(el("div",{class:"muted", text:"No files imported yet."}));
+      return;
+    }
+    State.importFiles.forEach(f=>{
+      const row = el("div",{class:"list-item"});
+      const statusDot = el("span",{class:"dot "+(f.status==="analyzed"?"ok":f.status==="unsupported"||f.status==="error"?"err":"idle")});
+      row.appendChild(statusDot);
+      row.appendChild(el("div",{style:{flex:1, minWidth:0}},[
+        el("div",{class:"title", text:f.name}),
+        el("div",{class:"meta", text: bytesFmt(f.size) + " • " + (f.language||f.kind||"unknown") + (f.lines?" • "+f.lines+" lines":"")}),
+      ]));
+      (f.findings||[]).slice(0,2).forEach(fi=>{
+        row.appendChild(el("span",{class:"badge "+(fi.level==="ok"?"ok":fi.level==="warn"?"warn":fi.level==="err"?"err":"info"), text: fi.msg}));
+      });
+      list.appendChild(row);
+    });
+  }
+  drawList();
+
+  async function handleImportFiles(files){
+    if(!files.length) return;
+    prog.style.display = "block";
+    const bar = prog.firstElementChild;
+    let done = 0;
+    for(const f of files){
+      try{
+        const entry = await analyzeFile(f);
+        State.importFiles.push(entry);
+      }catch(e){
+        State.importFiles.push({id:"f_"+Math.random().toString(36).slice(2,8), name:f.name, size:f.size, status:"error", findings:[{level:"err", msg:e.message}]});
+      }
+      done++;
+      bar.style.width = Math.round(done/files.length*100) + "%";
+    }
+    drawList();
+    setTimeout(()=>{ prog.style.display="none"; bar.style.width="0%"; }, 600);
+    toast(`Imported ${files.length} ${t("import.files")}`, "ok");
+  }
+
+  async function addImportedToProject(){
+    if(State.importFiles.length === 0){ toast("Nothing to add","warn"); return; }
+    let pid = State.currentProjectId;
+    if(!pid){
+      const p = await createProject({name:"Imported project"});
+      pid = p.id; State.currentProjectId = pid;
+    }
+    for(const f of State.importFiles){
+      if(f.content !== undefined){
+        await saveProjectFile(pid, f.name, f.content, {language:f.language});
+      }
+    }
+    const project = State.projects.find(p=>p.id===pid);
+    if(project){
+      project.analysis = project.analysis || { files:[], summary:null };
+      project.analysis.files = State.importFiles.map(f=>({
+        id:f.id, name:f.name, size:f.size, language:f.language, status:f.status, findings:f.findings, routes:f.routes, tables:f.tables, dependencies:f.dependencies, envVars:f.envVars
+      }));
+      await updateProject(project);
+    }
+    toast("Added to project","ok");
+    State.importFiles = [];
+    drawList();
+    navigate("explore");
+  }
+
+  return root;
+};
+
+/* --- Wizard --- */
+const WIZARD_STEPS = [
+  { key:"project", titleKey:"wizard.step.project", render: renderStepProject },
+  { key:"stack", titleKey:"wizard.step.stack", render: renderStepStack },
+  { key:"data", titleKey:"wizard.step.data", render: renderStepData },
+  { key:"auth", titleKey:"wizard.step.auth", render: renderStepAuth },
+  { key:"deploy", titleKey:"wizard.step.deploy", render: renderStepDeploy },
+  { key:"review", titleKey:"wizard.step.review", render: renderStepReview },
+];
+
+function ensureProjectForWizard(){
+  if(!State.currentProjectId){
+    const p = { id: uid(), name:"New backend", description:"", createdAt:now(), updatedAt:now(), wizard:{step:0,answers:{}}, analysis:{files:[],summary:null}, architecture:null, generated:false };
+    State.projects.unshift(p);
+    idbPut(STORES.projects, p).catch(()=>{});
+    State.currentProjectId = p.id;
+  }
+  const p = currentProject();
+  p.wizard = p.wizard || { step:0, answers:{} };
+  State.wizard = p.wizard;
+}
+function currentProject(){ return State.projects.find(p=>p.id===State.currentProjectId); }
+
+Views.wizard = () => {
+  ensureProjectForWizard();
+  const root = el("div");
+  root.appendChild(el("h2",{text:t("wizard.title")}));
+  const progress = el("div",{class:"wizard-progress"});
+  WIZARD_STEPS.forEach((_,i)=>{
+    const d = el("div");
+    if(i < State.wizard.step) d.classList.add("done");
+    else if(i === State.wizard.step) d.classList.add("current");
+    progress.appendChild(d);
+  });
+  root.appendChild(progress);
+
+  const step = WIZARD_STEPS[State.wizard.step];
+  const stepBox = el("div",{class:"panel"});
+  stepBox.appendChild(el("h3",{text:t(step.titleKey)}));
+  stepBox.appendChild(step.render());
+  root.appendChild(stepBox);
+
+  const nav = el("div",{class:"row", style:{marginTop:"10px"}});
+  if(State.wizard.step > 0){
+    nav.appendChild(el("button",{class:"btn ghost", text:"← "+t("wizard.back"), onclick:()=>{ State.wizard.step--; persistWizard(); render(); }}));
+  }
+  nav.appendChild(el("div",{class:"spacer"}));
+  if(State.wizard.step < WIZARD_STEPS.length-1){
+    nav.appendChild(el("button",{class:"btn primary", text:t("wizard.next")+" →", onclick:()=>{ State.wizard.step++; persistWizard(); render(); }}));
+  } else {
+    nav.appendChild(el("button",{class:"btn primary", text:t("wizard.finish"), onclick:()=>generateFromWizard()}));
+  }
+  root.appendChild(nav);
+  return root;
+};
+
+async function persistWizard(){
+  const p = currentProject(); if(!p) return;
+  p.wizard = State.wizard;
+  await updateProject(p);
+}
+
+function field(labelText, node){
+  return el("div",{class:"field"},[el("label",{text:labelText}), node]);
+}
+function chipGroup(options, selected, onChange){
+  const wrap = el("div",{class:"row"});
+  options.forEach(o=>{
+    const c = el("div",{class:"chip"+(selected===o.value?" active":""), text:o.label, onclick:()=>{ onChange(o.value); }});
+    wrap.appendChild(c);
+  });
+  return wrap;
+}
+
+function renderStepProject(){
+  const p = currentProject();
+  const a = State.wizard.answers;
+  const name = el("input",{class:"input", value: a.projectName || p.name || "", oninput:()=>{ a.projectName = name.value; }});
+  const desc = el("textarea",{class:"textarea", value: a.projectDescription || p.description || "", oninput:()=>{ a.projectDescription = desc.value; }});
+  const purpose = el("textarea",{class:"textarea", value: a.purpose || "", placeholder:"e.g. Task management SaaS for small teams", oninput:()=>{ a.purpose = purpose.value; }});
+  const complexity = chipGroup([
+    {label:"Simple (CRUD)", value:"simple"},
+    {label:"Medium", value:"medium"},
+    {label:"High (real-time, AI, etc.)", value:"high"},
+  ], a.complexity || "simple", v=>{ a.complexity = v; render(); });
+  const box = el("div");
+  box.appendChild(field("Project name", name));
+  box.appendChild(field("Short description", desc));
+  box.appendChild(field("What does it do? (purpose)", purpose));
+  box.appendChild(field("Expected complexity", complexity));
+  return box;
+}
+function renderStepStack(){
+  const a = State.wizard.answers;
+  const evidence = gatherEvidence();
+  const suggested = suggestStack(evidence);
+  const lang = chipGroup([
+    {label:"Node.js (Express)", value:"node"},
+    {label:"PHP", value:"php"},
+    {label:"Python (FastAPI)", value:"python"},
+    {label:"Go", value:"go"},
+  ], a.lang || suggested.lang, v=>{ a.lang = v; render(); });
+  const box = el("div");
+  box.appendChild(field("Backend language", lang));
+  if(suggested.reason) box.appendChild(el("div",{class:"alert info", text:"Suggestion: "+suggested.reason}));
+  return box;
+}
+function renderStepData(){
+  const a = State.wizard.answers;
+  const db = chipGroup([
+    {label:"PostgreSQL", value:"postgres"},
+    {label:"MySQL", value:"mysql"},
+    {label:"SQLite", value:"sqlite"},
+  ], a.db || "postgres", v=>{ a.db = v; render(); });
+  const tablesText = el("textarea",{class:"textarea", value: a.tablesText || "", placeholder:"e.g.\nusers: id, email (unique), password_hash\nposts: id, user_id, title, body, created_at", oninput:()=>{ a.tablesText = tablesText.value; }});
+  const box = el("div");
+  box.appendChild(field("Database", db));
+  box.appendChild(field("Tables (one per line, fields comma-separated)", tablesText));
+  return box;
+}
+function renderStepAuth(){
+  const a = State.wizard.answers;
+  const auth = chipGroup([
+    {label:"Yes (email + password)", value:"yes"},
+    {label:"No", value:"no"},
+  ], a.auth || "no", v=>{ a.auth = v; render(); });
+  const box = el("div");
+  box.appendChild(field("Authentication required?", auth));
+  return box;
+}
+function renderStepDeploy(){
+  const a = State.wizard.answers;
+  const hosting = chipGroup([
+    {label:"Shared / cPanel", value:"shared"},
+    {label:"VPS / Cloud", value:"vps"},
+    {label:"Serverless", value:"serverless"},
+    {label:"Unsure", value:"unsure"},
+  ], a.hosting || "unsure", v=>{ a.hosting = v; render(); });
+  const box = el("div");
+  box.appendChild(field("Hosting target", hosting));
+  return box;
+}
+function renderStepReview(){
+  const a = State.wizard.answers;
+  const evidence = gatherEvidence();
+  const rec = recommendArchitecture({answers:a}, evidence);
+  const box = el("div");
+  box.appendChild(el("h3",{text:"Recommended"}));
+  box.appendChild(el("div",{class:"card"},[
+    el("div",{class:"title", text: rec.recommended.label}),
+    el("div",{class:"muted", text: rec.recommended.desc}),
+    el("div",{class:"row", style:{marginTop:"8px"}},[
+      el("span",{class:"badge info", text: "Lang: "+rec.recommended.lang}),
+      el("span",{class:"badge purple", text: "DB: "+rec.recommended.db}),
+    ]),
+  ]));
+  box.appendChild(el("h3",{text:"Alternatives"}));
+  rec.ranked.slice(1,4).forEach(r=>{
+    box.appendChild(el("div",{class:"card"},[
+      el("div",{class:"title", text: r.label}),
+      el("div",{class:"muted", text: r.desc}),
+    ]));
+  });
+  // Store selection
+  a._chosen = rec.recommended.id;
+  return box;
+}
+
+function gatherEvidence(){
+  const p = currentProject();
+  const files = (p && p.analysis && p.analysis.files) || [];
+  const langs = {};
+  const frameworks = {};
+  let deps = [];
+  files.forEach(f=>{
+    if(f.language){ langs[f.language] = (langs[f.language]||0)+1; }
+    if(f.dependencies) deps = deps.concat(f.dependencies);
+    if((f.findings||[]).some(x=>/express/i.test(x.msg))) frameworks.express = true;
+    if((f.findings||[]).some(x=>/laravel/i.test(x.msg))) frameworks.laravel = true;
+    if((f.findings||[]).some(x=>/fastapi/i.test(x.msg))) frameworks.fastapi = true;
+  });
+  return { languages: langs, frameworks, dependencies: deps };
+}
+function suggestStack(evidence){
+  const L = evidence.languages || {};
+  const top = Object.entries(L).sort((a,b)=>b[1]-a[1])[0];
+  if(!top) return { lang:"node", reason:"" };
+  if(top[0] === "php") return { lang:"php", reason:"PHP files detected in your imports." };
+  if(["javascript","typescript"].includes(top[0])) return { lang:"node", reason:"JavaScript/TypeScript files detected." };
+  if(top[0] === "python") return { lang:"python", reason:"Python files detected." };
+  if(top[0] === "go") return { lang:"go", reason:"Go files detected." };
+  return { lang:"node", reason:"" };
+}
+
+async function generateFromWizard(){
+  const a = State.wizard.answers;
+  const p = currentProject(); if(!p) return;
+  const stackId = a._chosen || "node-express";
+  const gen = Generators[stackId];
+  if(!gen){ toast("Generator unavailable: "+stackId,"err"); return; }
+  const tables = parseTablesText(a.tablesText || "");
+  const ctx = {
+    projectName: a.projectName || p.name || "My backend",
+    stack: { id: stackId, label: stackId, lang: a.lang || "node", db: a.db || "postgres" },
+    db: a.db || "postgres",
+    auth: a.auth === "yes",
+    features: [],
+    tables,
+  };
+  // Adjust stack object for known ids
+  const stackMeta = {
+    "node-express": { label:"Node.js + Express", lang:"node", db: ctx.db },
+    "php-vanilla":  { label:"PHP (vanilla)",    lang:"php",  db:"mysql" },
+    "php-laravel":  { label:"PHP + Laravel",    lang:"php",  db:"mysql" },
+    "python-fastapi":{ label:"Python + FastAPI", lang:"python", db: ctx.db },
+    "python-flask": { label:"Python + Flask",   lang:"python", db:"sqlite" },
+    "go-stdlib":    { label:"Go (stdlib)",      lang:"go",   db:"postgres" },
+  }[stackId] || { label: stackId, lang:"node", db:"postgres" };
+  ctx.stack = stackMeta;
+
+  toast("Generating project…","info");
+  const filesMap = gen(ctx);
+  for(const path in filesMap){
+    await saveProjectFile(p.id, path, filesMap[path]);
+  }
+  p.architecture = { stack: stackMeta, tables, auth: ctx.auth };
+  p.generated = true;
+  await updateProject(p);
+  toast("Project generated","ok");
+  navigate("explore");
+}
+
+function parseTablesText(text){
+  const tables = [];
+  text.split(/\n+/).map(l=>l.trim()).filter(Boolean).forEach(line=>

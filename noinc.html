@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NONONICK — Digital Architecture & Creative Technology</title>
+    <meta name="description" content="NONONICK builds sophisticated web systems, digital architecture, and creative technology solutions grounded in editorial quality and engineering rigor.">
+    <meta name="keywords" content="Digital Architecture, Web Systems, Creative Technology, Web Development, UI/UX Design">
+    <link rel="canonical" href="https://nononick.com/">
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="NONONICK — Digital Architecture & Creative Technology">
+    <meta property="og:description" content="Building sophisticated web systems and digital architecture grounded in engineering rigor.">
+    <meta property="og:url" content="https://nononick.com/">
+    
+    <!-- Hreflang -->
+    <link rel="alternate" hreflang="en" href="https://nononick.com/">
+    <link rel="alternate" hreflang="fa" href="https://nononick.com/fa">
+    <link rel="alternate" hreflang="x-default" href="https://nononick.com/">
+
+    <!-- Fonts (Using system/CDN fallback for immediate execution; locally host in production) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "NONONICK",
+      "description": "Digital Architecture and Creative Technology Studio.",
+      "url": "https://nononick.com",
+      "areaServed": "Worldwide",
+      "serviceType": ["Web Development", "Digital Architecture", "Creative Technology"]
+    }
+    </script>
+
+    <style>
+        /* =========================================
+           1. DESIGN TOKENS & CSS VARIABLES
+           ========================================= */
+        :root {
+            /* Colors: Cinematic Dark */
+            --bg-deep: #050507;
+            --bg-surface: #0A0A0D;
+            --bg-elevated: #121216;
+            --bg-input: #1A1A20;
+            
+            --text-primary: #EAEAF0;
+            --text-secondary: #8A8A96;
+            --text-tertiary: #555560;
+            
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-medium: rgba(255, 255, 255, 0.12);
+            
+            --accent-blue: #2962FF;
+            --accent-cyan: #00E5FF;
+            --accent-glow: rgba(41, 98, 255, 0.15);
+
+            /* Typography */
+            --font-en: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-fa: 'Vazirmatn', 'Inter', sans-serif;
+            
+            /* Spacing & Grid */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --space-xl: 8rem;
+            
+            --container-max: 1320px;
+            --grid-gap: 2rem;
+
+            /* Motion */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-fast: 200ms;
+            --duration-normal: 400ms;
+            --duration-slow: 800ms;
+        }
+
+        [dir="rtl"] {
+            --font-en: var(--font-fa); /* Fallback */
+        }
+
+        /* =========================================
+           2. RESET & BASE STYLES
+           ========================================= */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html { 
+            scroll-behavior: smooth; 
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-en);
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color var(--duration-normal) var(--ease-out-expo);
+        }
+
+        [dir="rtl"] body { font-family: var(--font-fa); }
+
+        a { color: inherit; text-decoration: none; }
+        img { max-width: 100%; display: block; }
+        button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+        input, textarea, select { font: inherit; color: inherit; }
+
+        /* Accessibility: Focus States */
+        :focus-visible {
+            outline: 2px solid var(--accent-cyan);
+            outline-offset: 4px;
+            border-radius: 2px;
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* =========================================
+           3. TYPOGRAPHY SYSTEM
+           ========================================= */
+        .t-display {
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -0.03em;
+        }
+
+        .t-h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
+        .t-h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
+        .t-h3 { font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 600; line-height: 1.3; }
+        .t-h4 { font-size: 1.25rem; font-weight: 600; line-height: 1.4; }
+        
+        .t-body-lg { font-size: 1.25rem; line-height: 1.6; color: var(--text-secondary); }
+        .t-body { font-size: 1rem; line-height: 1.7; color: var(--text-secondary); }
+        .t-caption { font-size: 0.875rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-tertiary); }
+        
+        .t-mono { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; }
+
+        /* =========================================
+           4. LAYOUT & COMPONENTS
+           ========================================= */
+        .container {
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--grid-gap);
+        }
+
+        .section {
+            padding: var(--space-xl) 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.75rem;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            border-radius: 4px;
+            transition: all var(--duration-fast) var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg-deep);
+        }
+        .btn-primary:hover { background: var(--accent-cyan); color: var(--bg-deep); }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-medium);
+        }
+        .btn-secondary:hover { border-color: var(--text-primary); background: rgba(255,255,255,0.03); }
+
+        /* Cards & Surfaces */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: var(--space-md);
+            transition: all var(--duration-normal) var(--ease-out-expo);
+        }
+        .card:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: var(--space-sm) 0;
+            background: rgba(5, 5, 7, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+        }
+        .nav-links {
+            display: flex;
+            gap: var(--space-md);
+            list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color var(--duration-fast);
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        
+        .lang-switch {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-medium);
+            border-radius: 4px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Mobile Nav */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-surface);
+                padding: var(--space-md);
+                border-bottom: 1px solid var(--border-subtle);
+            }
+        }
+
+        /* Forms */
+        .form-group { margin-bottom: var(--space-md); }
+        .form-label { display: block; margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 500; color: var(--text-secondary); }
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            color: var(--text-primary);
+            transition: border-color var(--duration-fast);
+        }
+        .form-input:focus { border-color: var(--accent-blue); outline: none; }
+        .form-input.error { border-color: #ff4444; }
+        .form-error { color: #ff4444; font-size: 0.8125rem; margin-top: 0.25rem; display: none; }
+        .form-error.visible { display: block; }
+
+        /* Lab Canvas */
+        .lab-canvas-wrap {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        #labCanvas { width: 100%; height: 500px; display: block; }
+        .lab-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity var(--duration-slow) var(--ease-out-expo), transform var(--duration-slow) var(--ease-out-expo);
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Utility */
+        .text-accent { color: var(--accent-cyan); }
+        .mt-sm { margin-top: var(--space-sm); }
+        .mt-md { margin-top: var(--space-md); }
+        .mt-lg { margin-top: var(--space-lg); }
+        .mb-md { margin-bottom: var(--space-md); }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="nav" role="navigation" aria-label="Main Navigation">
+        <div class="container nav-inner">
+            <a href="#/" class="nav-logo" data-i18n="brand">NONONICK</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#/manifesto" data-i18n="nav.manifesto">Manifesto</a></li>
+                <li><a href="#/services" data-i18n="nav.services">Services</a></li>
+                <li><a href="#/portfolio" data-i18n="nav.portfolio">Portfolio</a></li>
+                <li><a href="#/codex" data-i18n="nav.codex">Codex</a></li>
+                <li><a href="#/lab" data-i18n="nav.lab">Lab</a></li>
+                <li><a href="#/contact" data-i18n="nav.contact">Contact</a></li>
+            </ul>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button class="lang-switch" id="langSwitch" aria-label="Switch Language">FA / EN</button>
+                <button class="btn btn-secondary" style="padding: 0.5rem 1rem; display: none;" id="mobileMenuBtn" aria-label="Toggle Menu">☰</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="app" role="main" style="padding-top: 80px;">
+        <!-- Content injected by JS Router -->
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="section" style="padding: var(--space-lg) 0; border-top: 1px solid var(--border-subtle); border-bottom: none;">
+        <div class="container">
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                <div>
+                    <h3 class="t-h4 mb-md" data-i18n="footer.brand">NONONICK</h3>
+                    <p class="t-body" data-i18n="footer.tagline">Digital Architecture & Creative Technology. Building systems that endure.</p>
+                </div>
+                <div>
+                    <h4 class="t-caption mb-md" data-i18n="footer.navigate">Navigate</h4>
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <li><a href="#/services" data-i18n="nav.services">Services</a></li>
+                        <li><a href="#/codex" data-i18n="nav.codex">Codex</a></li>
+                        <li><a href="#/contact" data-i18n="nav.contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="t-caption mb-md" data-i18n="footer.connect">Connect</h4>
+                    <p class="t-body">hello@nononick.com</p>
+                    <p class="t-body mt-sm">Tehran / Global</p>
+                </div>
+            </div>
+            <div style="margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                <p class="t-caption">© 2024 NONONICK. All rights reserved.</p>
+                <p class="t-caption" data-i18n="footer.built">Engineered with intention.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* =========================================
+           1. DATA & INTERNATIONALIZATION (i18n)
+           ========================================= */
+        const i18n = {
+            en: {
+                brand: "NONONICK",
+                "nav.manifesto": "Manifesto",
+                "nav.services": "Services",
+                "nav.portfolio": "Portfolio",
+                "nav.codex": "Codex",
+                "nav.lab": "Lab",
+                "nav.contact": "Contact",
+                "footer.brand": "NONONICK",
+                "footer.tagline": "Digital Architecture & Creative Technology. Building systems that endure.",
+                "footer.navigate": "Navigate",
+                "footer.connect": "Connect",
+                "footer.built": "Engineered with intention.",
+                "home.hero.title": "Architecture for the Digital Epoch.",
+                "home.hero.sub": "We design and engineer sophisticated web systems, digital products, and creative technology solutions. Grounded in editorial quality and technical rigor.",
+                "home.hero.cta1": "Explore Services",
+                "home.hero.cta2": "Read Manifesto",
+                "home.manifesto.title": "The Manifesto",
+                "home.manifesto.p1": "Technology should solve real problems, not create new ones. Design should communicate meaning, not merely decorate. Quality must be demonstrable, not assumed.",
+                "home.manifesto.p2": "We reject the ephemeral. We build digital infrastructure that respects the user's time, the client's investment, and the integrity of the craft.",
+                "services.title": "Capabilities & Services",
+                "services.sub": "We build custom digital systems tailored to complex business requirements. No templates. No compromises.",
+                "contact.title": "Initiate a Project",
+                "contact.sub": "Tell us about your challenge. We review every inquiry personally and respond within 48 hours.",
+                "contact.name": "Full Name",
+                "contact.email": "Email Address",
+                "contact.company": "Company / Organization",
+                "contact.message": "Project Details & Objectives",
+                "contact.submit": "Submit Inquiry",
+                "contact.success": "Inquiry received. We will be in touch shortly.",
+                "contact.error": "Submission failed. Please check your inputs.",
+                "lab.title": "The Lab: Generative Kufic Grid",
+                "lab.sub": "An interactive exploration of square-Kufic-inspired geometric patterns. Adjust the parameters to generate unique structural compositions.",
+                "lab.density": "Grid Density",
+                "lab.weight": "Line Weight",
+                "lab.rotation": "Rotation",
+                "lab.generate": "Regenerate Pattern"
+            },
+            fa: {
+                brand: "نُونُونیک",
+                "nav.manifesto": "مانیفست",
+                "nav.services": "خدمات",
+                "nav.portfolio": "نمونه‌کارها",
+                "nav.codex": "کدکس",
+                "nav.lab": "آزمایشگاه",
+                "nav.contact": "تماس",
+                "footer.brand": "نُونُونیک",
+                "footer.tagline": "معماری دیجیتال و فناوری خلاق. ساخت سیستم‌هایی که ماندگارند.",
+                "footer.navigate": "مسیریابی",
+                "footer.connect": "ارتباط",
+                "footer.built": "مهندسی‌شده با قصد و نیت.",
+                "home.hero.title": "معماری برای عصر دیجیتال.",
+                "home.hero.sub": "ما سیستم‌های وب پیچیده، محصولات دیجیتال و راهکارهای فناوری خلاق را طراحی و مهندسی می‌کنیم. مبتنی بر کیفیت ادبی و دقت فنی.",
+                "home.hero.cta1": "کاوش خدمات",
+                "home.hero.cta2": "خواندن مانیفست",
+                "home.manifesto.title": "مانیفست",
+                "home.manifesto.p1": "فناوری باید مسائل واقعی را حل کند، نه اینکه مسائل جدیدی ایجاد کند. طراحی باید معنا را منتقل کند، نه اینکه صرفاً تزئین باشد. کیفیت باید قابل اثبات باشد، نه مفروض.",
+                "home.manifesto.p2": "ما زوال‌پذیری را رد می‌کنیم. ما زیرساخت‌های دیجیتالی می‌سازیم که به زمان کاربر، سرمایه مشتری و صداقت حرفه احترام می‌گذارند.",
+                "services.title": "توانمندی‌ها و خدمات",
+                "services.sub": "ما سیستم‌های دیجیتال سفارشی را متناسب با نیازهای پیچیده کسب‌وکار می‌سازیم. بدون قالب. بدون سازش.",
+                "contact.title": "شروع یک پروژه",
+                "contact.sub": "درباره چالش خود به ما بگویید. ما هر درخواست را شخصاً بررسی کرده و ظرف ۴۸ ساعت پاسخ می‌دهیم.",
+                "contact.name": "نام و نام خانوادگی",
+                "contact.email": "آدرس ایمیل",
+                "contact.company": "شرکت / سازمان",
+                "contact.message": "جزئیات و اهداف پروژه",
+                "contact.submit": "ارسال درخواست",
+                "contact.success": "درخواست دریافت شد. به زودی با شما تماس خواهیم گرفت.",
+                "contact.error": "ارسال ناموفق بود. لطفاً ورودی‌ها را بررسی کنید.",
+                "lab.title": "آزمایشگاه: شبکه هندسی کوفی",
+                "lab.sub": "یک کاوش تعاملی در الگوهای هندسی الهام‌گرفته از خط کوفی مربعی. پارامترها را تنظیم کنید تا ترکیبات ساختاری منحصربه‌فرد ایجاد کنید.",
+                "lab.density": "تراکم شبکه",
+                "lab.weight": "ضخامت خط",
+                "lab.rotation": "چرخش",
+                "lab.generate": "بازتولید الگو"
+            }
+        };
+
+        // Editorial Content (Codex Articles)
+        const articles = {
+            en: [
+                {
+                    id: "state-architecture",
+                    title: "The Architecture of State: Beyond the MVC Paradigm",
+                    category: "Web Engineering",
+                    date: "2024-05-12",
+                    excerpt: "Modern web systems require a rethinking of state management. We explore how unidirectional data flow and immutable state trees create more predictable, maintainable architectures than traditional MVC patterns.",
+                    content: `<p>The Model-View-Controller (MVC) paradigm served the early web well, but as applications grew in complexity, the tight coupling between models and views became a liability. State mutated unpredictably, leading to cascading bugs and难以维护的代码.</p>
+                    <h3>The Shift to Unidirectional Flow</h3>
+                    <p>By enforcing a unidirectional data flow, we decouple the source of truth from its representations. The state becomes an immutable tree. Views do not mutate state directly; they dispatch intentions (actions). A centralized reducer processes these actions to produce the next state.</p>
+                    <p>This is not merely a technical preference; it is an architectural discipline. It makes state transitions explicit, testable, and reversible. When a bug occurs, we do not hunt through the codebase for rogue mutations; we inspect the action log.</p>
+                    <h3>System Boundaries</h3>
+                    <p>True architectural rigor requires strict boundaries. The domain logic (the actual business rules) must be isolated from the framework, the UI, and the database. This is the core of Hexagonal Architecture applied to the frontend. When your business logic has no dependencies on React, Vue, or the DOM, it becomes immortal.</p>`
+                },
+                {
+                    id: "monumental-typography",
+                    title: "Monumental Typography in Digital Spaces",
+                    category: "Design & Typography",
+                    date: "2024-04-28",
+                    excerpt: "Large-scale typography in digital interfaces is not just about making text big. It requires a deep understanding of optical adjustments, vertical rhythm, and the psychological weight of letterforms to maintain readability and hierarchy.",
+                    content: `<p>When we scale typography to monumental proportions in digital environments, we are not simply increasing the font-size property. We are altering the spatial dynamics of the entire interface.</p>
+                    <h3>Optical Adjustments at Scale</h3>
+                    <p>As type size increases, the perceived weight of the strokes increases disproportionately. A 400-weight font at 120px will look significantly heavier than the same font at 16px. To compensate, we must often drop the font-weight by 100 or 200 units for display sizes, and tighten the letter-spacing to prevent the word from dissolving into individual characters.</p>
+                    <h3>The Vertical Rhythm</h3>
+                    <p>Monumental type disrupts standard baseline grids. The solution is not to abandon the grid, but to establish a modular scale that accommodates the massive display type while maintaining a harmonious relationship with the body text. This requires calculating line-heights not as fixed multipliers, but as dynamic values that respond to the specific metrics of the chosen typeface.</p>`
+                }
+            ],
+            fa: [
+                {
+                    id: "state-architecture",
+                    title: "معماری وضعیت: فراتر از پارادایم MVC",
+                    category: "مهندسی وب",
+                    date: "2024-05-12",
+                    excerpt: "سیستم‌های وب مدرن نیازمند بازاندیشی در مدیریت وضعیت هستند. ما بررسی می‌کنیم که چگونه جریان داده یک‌طرفه و درخت‌های وضعیت تغییرناپذیر، معماری‌هایی قابل‌پیش‌بینی‌تر و قابل‌نگهداری‌تر از الگوهای سنتی MVC ایجاد می‌کنند.",
+                    content: `<p>پارادایم مدل-نما-کنترل‌کننده (MVC) در وب اولیه به خوبی خدمت کرد، اما با پیچیده‌تر شدن برنامه‌ها، وابستگی شدید بین مدل‌ها و نماها به یک نقطه ضعف تبدیل شد. وضعیت به طور غیرقابل پیش‌بینی تغییر می‌کرد و منجر به باگ‌های آبشاری و کدهای غیرقابل نگهداری می‌شد.</p>
+                    <h3>حرکت به سمت جریان یک‌طرفه</h3>
+                    <p>با اعمال جریان داده یک‌طرفه، ما منبع حقیقت را از نمایش‌های آن جدا می‌کنیم. وضعیت به یک درخت تغییرناپذیر تبدیل می‌شود. نماها وضعیت را مستقیماً تغییر نمی‌دهند؛ آن‌ها intentions (اکشن‌ها) را ارسال می‌کنند. یک reducer متمرکز این اکشن‌ها را پردازش کرده و وضعیت بعدی را تولید می‌کند.</p>
+                    <p>این صرفاً یک ترجیح فنی نیست؛ یک نظم معماری است. این کار انتقال‌های وضعیت را صریح، قابل آزمایش و قابل بازگشت می‌کند.</p>
+                    <h3>مرزهای سیستم</h3>
+                    <p>دقت معماری واقعی نیازمند مرزهای سخت‌گیرانه است. منطق دامنه (قواعد واقعی کسب‌وکار) باید از فریم‌ورک، رابط کاربری و پایگاه داده ایزوله باشد. این هسته اصلی معماری شش‌ضلعی است که در فرانت‌اند اعمال می‌شود.</p>`
+                },
+                {
+                    id: "monumental-typography",
+                    title: "تایپوگرافی یادمانی در فضاهای دیجیتال",
+                    category: "طراحی و تایپوگرافی",
+                    date: "2024-04-28",
+                    excerpt: "تایپوگرافی در مقیاس بزرگ در رابط‌های دیجیتال تنها به معنای بزرگ کردن متن نیست. این امر نیازمند درک عمیق از تنظیمات بصری، ریتم عمودی و وزن روان‌شناختی حروف است تا خوانایی و سلسله‌مراتب حفظ شود.",
+                    content: `<p>وقتی تایپوگرافی را به ابعاد یادمانی در محیط‌های دیجیتال مقیاس می‌دهیم، صرفاً ویژگی font-size را افزایش نمی‌دهیم. ما در حال تغییر دینامیک فضایی کل رابط هستیم.</p>
+                    <h3>تنظیمات بصری در مقیاس</h3>
+                    <p>با افزایش اندازه تایپ، وزن ادراک‌شده خطوط به طور نامتناسبی افزایش می‌یابد. یک فونت با وزن 400 در اندازه 120px به طور قابل توجهی سنگین‌تر از همان فونت در 16px به نظر می‌رسد. برای جبران این موضوع، اغلب باید وزن فونت را برای اندازه‌های نمایشی 100 یا 200 واحد کاهش دهیم.</p>
+                    <h3>ریتم عمودی</h3>
+                    <p>تایپ یادمانی شبکه‌های پایه استاندارد را مختل می‌کند. راه‌حل رها کردن شبکه نیست، بلکه ایجاد یک مقیاس ماژولار است که تایپ نمایشی عظیم را در خود جای دهد و در عین حال رابطه هماهنگی با متن بدنه حفظ کند.</p>`
+                }
+            ]
+        };
+
+        /* =========================================
+           2. APPLICATION STATE & ROUTER
+           ========================================= */
+        let state = {
+            lang: localStorage.getItem('nn_lang') || 'en',
+            currentRoute: '/'
+        };
+
+        function setLang(lang) {
+            state.lang = lang;
+            localStorage.setItem('nn_lang', lang);
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+            updateUI();
+            renderRoute();
+        }
+
+        function t(key) {
+            return i18n[state.lang][key] || key;
+        }
+
+        function updateUI() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                el.textContent = t(key);
+            });
+            document.getElementById('langSwitch').textContent = state.lang === 'en' ? 'FA / فارسی' : 'EN / English';
+        }
+
+        // Simple Hash Router
+        function getRoute() {
+            const hash = window.location.hash.slice(1) || '/';
+            return hash;
+        }
+
+        function navigate(path) {
+            window.location.hash = path;
+        }
+
+        window.addEventListener('hashchange', renderRoute);
+
+        /* =========================================
+           3. PAGE RENDERERS
+           ========================================= */
+        function renderRoute() {
+            const route = getRoute();
+            state.currentRoute = route;
+            const app = document.getElementById('app');
+            
+            // Update active nav
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                a.classList.toggle('active', a.getAttribute('href') === `#${route}`);
+            });
+
+            // Route matching
+            if (route === '/' || route === '') {
+                app.innerHTML = renderHome();
+            } else if (route === '/manifesto') {
+                app.innerHTML = renderManifesto();
+            } else if (route === '/services') {
+                app.innerHTML = renderServices();
+            } else if (route === '/portfolio') {
+                app.innerHTML = renderPortfolio();
+            } else if (route === '/codex') {
+                app.innerHTML = renderCodex();
+            } else if (route.startsWith('/codex/')) {
+                const id = route.split('/')[2];
+                app.innerHTML = renderArticle(id);
+            } else if (route === '/lab') {
+                app.innerHTML = renderLab();
+                initLab();
+            } else if (route === '/about') {
+                app.innerHTML = renderAbout();
+            } else if (route === '/contact') {
+                app.innerHTML = renderContact();
+                initContactForm();
+            } else {
+                app.innerHTML = `<div class="container section"><h1 class="t-h1">404 - Not Found</h1><p class="t-body mt-md">The page you are looking for does not exist.</p><a href="#/" class="btn btn-primary mt-lg">Return Home</a></div>`;
+            }
+
+            // Re-apply i18n to new content
+            updateUI();
+            // Trigger animations
+            observeAnimations();
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // --- HOME PAGE ---
+        function renderHome() {
+            const currentArticles = articles[state.lang];
+            return `
+            <!-- 01: Threshold -->
+            <section class="section" style="min-height: 90vh; display: flex; align-items: center; position: relative; overflow: hidden;">
+                <div class="container" style="position: relative; z-index: 2;">
+                    <div class="fade-in">
+                        <p class="t-caption mb-md" style="color: var(--accent-cyan);">Digital Architecture · Web Systems · Creative Technology</p>
+                        <h1 class="t-display mb-md" data-i18n="home.hero.title">${t('home.hero.title')}</h1>
+                        <p class="t-body-lg mb-lg" style="max-width: 640px;" data-i18n="home.hero.sub">${t('home.hero.sub')}</p>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <a href="#/services" class="btn btn-primary" data-i18n="home.hero.cta1">${t('home.hero.cta1')}</a>
+                            <a href="#/manifesto" class="btn btn-secondary" data-i18n="home.hero.cta2">${t('home.hero.cta2')}</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Generative Background Element -->
+                <div style="position: absolute; top: 0; right: 0; width: 50%; height: 100%; opacity: 0.15; pointer-events: none;">
+                    <canvas id="heroBgCanvas" style="width: 100%; height: 100%;"></canvas>
+                </div>
+            </section>
+
+            <!-- 02: Manifesto Extract -->
+            <section class="section">
+                <div class="container">
+                    <div class="fade-in">
+                        <p class="t-caption mb-md" data-i18n="home.manifesto.title">${t('home.manifesto.title')}</p>
+                        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg);">
+                            <div>
+                                <p class="t-h3" data-i18n="home.manifesto.p1">${t('home.manifesto.p1')}</p>
+                            </div>
+                            <div>
+                                <p class="t-h3" style="color: var(--text-tertiary);" data-i18n="home.manifesto.p2">${t('home.manifesto.p2')}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 03: Selected Works (Portfolio Preview) -->
+            <section class="section">
+                <div class="container">
+                    <div class="fade-in" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: var(--space-lg);">
+                        <div>
+                            <p class="t-caption mb-sm">Selected Works</p>
+                            <h2 class="t-h1">Evidence of Craft</h2>
+                        </div>
+                        <a href="#/portfolio" class="btn btn-secondary">View All →</a>
+                    </div>
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                        <div class="card fade-in">
+                            <div style="height: 240px; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-deep)); border-radius: 4px; margin-bottom: var(--space-md); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-subtle);">
+                                <span class="t-mono" style="color: var(--text-tertiary);">System Architecture</span>
+                            </div>
+                            <h3 class="t-h4 mb-sm">Enterprise Resource Platform</h3>
+                            <p class="t-body">A custom ERP system built for a manufacturing conglomerate. Handled complex state, real-time inventory, and multi-tenant architecture.</p>
+                            <p class="t-caption mt-md">Web Engineering · 2023</p>
+                        </div>
+                        <div class="card fade-in">
+                            <div style="height: 240px; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-deep)); border-radius: 4px; margin-bottom: var(--space-md); display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-subtle);">
+                                <span class="t-mono" style="color: var(--text-tertiary);">Editorial Design</span>
+                            </div>
+                            <h3 class="t-h4 mb-sm">Architectural Journal Digital</h3>
+                            <p class="t-body">A high-performance, editorially driven digital publication. Custom typography system, advanced grid layouts, and optimized reading experience.</p>
+                            <p class="t-caption mt-md">Digital Publishing · 2024</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 05: Codex Highlights -->
+            <section class="section">
+                <div class="container">
+                    <div class="fade-in" style="margin-bottom: var(--space-lg);">
+                        <p class="t-caption mb-sm">The Codex</p>
+                        <h2 class="t-h1">Knowledge & Engineering Notes</h2>
+                    </div>
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                        ${currentArticles.map(a => `
+                            <a href="#/codex/${a.id}" class="card fade-in" style="text-decoration: none;">
+                                <p class="t-caption mb-sm">${a.category} · ${a.date}</p>
+                                <h3 class="t-h4 mb-sm">${a.title}</h3>
+                                <p class="t-body">${a.excerpt}</p>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+            </section>
+
+            <!-- 07: Contact CTA -->
+            <section class="section" style="text-align: center;">
+                <div class="container fade-in">
+                    <p class="t-caption mb-md">Ready to build?</p>
+                    <h2 class="t-h1 mb-lg">Let's engineer your next system.</h2>
+                    <a href="#/contact" class="btn btn-primary">Initiate Project</a>
+                </div>
+            </section>
+            `;
+        }
+
+        // --- MANIFESTO PAGE ---
+        function renderManifesto() {
+            return `
+            <section class="section" style="min-height: 60vh; display: flex; align-items: center;">
+                <div class="container">
+                    <div class="fade-in">
+                        <p class="t-caption mb-md">The Manifesto</p>
+                        <h1 class="t-display mb-lg">Principles of Making.</h1>
+                    </div>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container" style="max-width: 800px;">
+                    <div class="fade-in">
+                        <h2 class="t-h2 mb-md">01. Technology as Infrastructure</h2>
+                        <p class="t-body-lg mb-lg">We do not build technology for technology's sake. Code is infrastructure. It must be robust, scalable, and maintainable. We reject hype-driven development in favor of proven, battle-tested architectures. Every dependency is evaluated; every abstraction is justified.</p>
+                        
+                        <h2 class="t-h2 mb-md">02. Design as Communication</h2>
+                        <p class="t-body-lg mb-lg">Design is not decoration; it is the articulation of meaning. Visual hierarchy, typography, and spatial rhythm are tools to guide the user, reduce cognitive load, and communicate the brand's core value. We design for clarity first, aesthetics second.</p>
+                        
+                        <h2 class="t-h2 mb-md">03. Knowledge as a Compounding Asset</h2>
+                        <p class="t-body-lg mb-lg">The digital landscape changes rapidly, but fundamental principles endure. We invest heavily in understanding the "why" behind the "how". Our Codex is not a marketing blog; it is a repository of hard-won engineering insights, design philosophies, and strategic frameworks. We share what we learn to elevate the entire discipline.</p>
+
+                        <h2 class="t-h2 mb-md">04. The Ethics of Craft</h2>
+                        <p class="t-body-lg mb-lg">We believe in the ethics of craft. This means respecting the user's time by building fast, accessible interfaces. It means respecting the client's investment by delivering systems that actually solve their business problems. It means respecting the environment by writing efficient code that minimizes computational waste.</p>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        // --- SERVICES PAGE ---
+        function renderServices() {
+            return `
+            <section class="section" style="min-height: 50vh; display: flex; align-items: center;">
+                <div class="container">
+                    <div class="fade-in">
+                        <p class="t-caption mb-md">Capabilities</p>
+                        <h1 class="t-display mb-md" data-i18n="services.title">${t('services.title')}</h1>
+                        <p class="t-body-lg" style="max-width: 700px;" data-i18n="services.sub">${t('services.sub')}</p>
+                    </div>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                        <div class="card fade-in">
+                            <h3 class="t-h3 mb-md">Custom Web Systems</h3>
+                            <p class="t-body mb-md">End-to-end development of complex web applications. From SaaS platforms to internal enterprise tools. We handle the architecture, database design, API development, and frontend implementation.</p>
+                            <ul class="t-body" style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-tertiary);">
+                                <li>→ System Architecture & Database Design</li>
+                                <li>→ RESTful & GraphQL API Development</li>
+                                <li>→ Complex State Management</li>
+                            </ul>
+                        </div>
+                        <div class="card fade-in">
+                            <h3 class="t-h3 mb-md">Digital Product Design</h3>
+                            <p class="t-body mb-md">User experience and interface design for digital products. We focus on information architecture, usability, and creating cohesive design systems that scale.</p>
+                            <ul class="t-body" style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-tertiary);">
+                                <li>→ Information Architecture & Wireframing</li>
+                                <li>→ UI Design & Design Systems</li>
+                                <li>→ Usability Testing & Iteration</li>
+                            </ul>
+                        </div>
+                        <div class="card fade-in">
+                            <h3 class="t-h3 mb-md">Editorial & Content Platforms</h3>
+                            <p class="t-body mb-md">High-performance websites for publishers, journals, and content-heavy brands. Custom CMS integrations, advanced typography, and optimized reading experiences.</p>
+                            <ul class="t-body" style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-tertiary);">
+                                <li>→ Custom CMS Development</li>
+                                <li>→ Advanced Typography & Grid Systems</li>
+                                <li>→ Performance & SEO Optimization</li>
+                            </ul>
+                        </div>
+                        <div class="card fade-in">
+                            <h3 class="t-h3 mb-md">Technical Consulting</h3>
+                            <p class="t-body mb-md">Strategic guidance for technical teams. Architecture reviews, performance audits, and technology stack selection. We help you make informed decisions that prevent costly rewrites.</p>
+                            <ul class="t-body" style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-tertiary);">
+                                <li>→ Architecture Reviews & Audits</li>
+                                <li>→ Performance Optimization</li>
+                                <li>→ Technology Stack Selection</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        // --- PORTFOLIO PAGE ---
+        function renderPortfolio() {
+            return `
+            <section class="section" style="min-height: 50vh; display: flex; align-items: center;">
+                <div class="container">
+                    <div class="fade-in">
+                        <p class="t-caption mb-md">Portfolio</p>
+                        <h1 class="t-display mb-md">Selected Works.</h1>
+                        <p class="t-body-lg" style="max-width: 700px;">A curated selection of projects demonstrating our approach to digital architecture, system design, and editorial quality.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <div class="grid" style="grid-template-columns: 1fr; gap: var(--space-lg);">
+                        <div class="card fade-in" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); align-items: center;">
+                            <div style="height: 400px; background: var(--bg-elevated); border-radius: 4px; border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center;">
+                                <span class="t-mono">Project Visual</span>
+                            </div>
+                            <div>
+                                <p class="t-caption mb-sm">Enterprise · 2023</p>
+                                <h2 class="t-h2 mb-md">Resource Management Platform</h2>
+                                <p class="t-body mb-md">A comprehensive ERP system for a manufacturing client. Replaced a legacy desktop application with a modern, responsive web system. Handled complex relational data, real-time updates, and multi-tenant isolation.</p>
+                                <p class="t-body"><strong>Stack:</strong> React, Node.js, PostgreSQL, Redis.</p>
+                                <p class="t-body"><strong>Outcome:</strong> 40% reduction in operational processing time.</p>
+                            </div>
+                        </div>
+                        <div class="card fade-in" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); align-items: center;">
+                            <div>
+                                <p class="t-caption mb-sm">Publishing · 2024</p>
+                                <h2 class="t-h2 mb-md">Architectural Journal Digital</h2>
+                                <p class="t-body mb-md">A digital publication for a prominent architecture firm. Focused on editorial excellence, custom typography, and a seamless reading experience across devices. Implemented a headless CMS for editorial flexibility.</p>
+                                <p class="t-body"><strong>Stack:</strong> Next.js, Sanity CMS, Vercel.</p>
+                                <p class="t-body"><strong>Outcome:</strong> Lighthouse performance score of 98. 3x increase in reader engagement time.</p>
+                            </div>
+                            <div style="height: 400px; background: var(--bg-elevated); border-radius: 4px; border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: center;">
+                                <span class="t-mono">Project Visual</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        // --- CODEX PAGE ---
+        function renderCodex() {
+            const currentArticles = articles[state.lang];
+            return `
+            <section class="section" style="min-height: 50vh; display: flex; align-items: center;">
+                <div class="container">
+                    <div class="fade-in">
+                        <p class="t-caption mb-md">The Codex</p>
+                        <h1 class="t-display mb-md">Knowledge Library.</h1>
+                        <p class="t-body-lg" style="max-width: 700px;">Editorial notes, engineering field reports, and philosophical inquiries into digital craft. No filler. No SEO spam. Just substance.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
+                        ${currentArticles.map(a => `
+                            <a href="#/codex/${a.id}" class="card fade-in" style="text-decoration: none;">
+                                <p class="t-caption mb-sm">${a.category} · ${a.date}</p>
+                                <h3 class="t-h3 mb-md">${a.title}</h3>
+                                <p class="t-body">${a.excerpt}</p>
+                                <p class="btn btn-secondary mt-md" style="pointer-events: none;">Read Article →</p>
+                            </a>
+                        `).join('')}
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        // --- ARTICLE PAGE ---
+        function renderArticle(id) {
+            const currentArticles = articles[state.lang];
+            const article = currentArticles.find(a => a.id === id);
+            if (!article) return `<div class="container section"><h1>Article Not Found</h1></div>`;
+            
+            return `
+            <section class="section" style="padding-top: var(--space-lg);">
+                <div class="container" style="max-width: 800px;">
+                    <div class="fade-in">
+                        <a href="#/codex" class="t-caption" style="display: inline-block; margin-bottom: var(--space-md); color: var(--accent-cyan);">← Back to Codex</a>
+                        <p class="t-caption mb-sm">${article.category} · ${article.date}</p>
+                        <h1 class="t-h1 mb-lg">${article.title}</h1>
+                        <p class="t-body-lg mb-lg" style="color: var(--text-primary);">${article.excerpt}</p>
+                        <div class="article-content t-body" style="color: var(--text-secondary);">
+                            ${article.content}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        // --- LAB PAGE ---
+        function renderLab() {
+            return `
+            <section class="section" style="min-height: 40vh; display: flex; align-items: center;">
+                <div class="container">
+                    <div class="fade-in">
+                        <p class="t-caption mb-md">The Lab</p>
+                        <h1 class="t-display mb-md" data-i18n="lab.title">${t('lab.title')}</h1>
+                        <p class="t-body-lg" style="max-width: 700px;" data-i18n="lab.sub">${t('lab.sub')}</p>
+                    </div>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <div class="lab-canvas-wrap fade-in">
+                        <canvas id="labCanvas"></canvas>
+                        <div class="lab-controls">
+                            <div>
+                                <label class="form-label" data-i18n="lab.density">${t('lab.density')}</label>
+                                <input type="range" id="labDensity" min="5" max="30" value="15" class="form-input" style="padding: 0;">
+                            </div>
+                            <div>
+                                <label class="form-label" data-i18n="lab.weight">${t('lab.weight')}</label>
+                                <input type="range" id="labWeight" min="1" max="10" value="3" class="form-input" style="padding: 0;">
+                            </div>
+                            <div>
+                                <label class="form-label" data-i18n="lab.rotation">${t('lab.rotation')}</label>
+                                <input type="range" id="labRotation" min="0" max="360" value="45" class="form-input" style="padding: 0;">
+                            </div>
+                            <div style="display: flex; align-items: flex-end;">
+                                <button id="labGenerate" class="btn btn-primary" style="width: 100%;" data-i18n="lab.generate">${t('lab.generate')}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        function initLab() {
+            const canvas = document.getElementById('labCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            const densityInput = document.getElementById('labDensity');
+            const weightInput = document.getElementById('labWeight');
+            const rotationInput = document.getElementById('labRotation');
+            const generateBtn = document.getElementById('labGenerate');
+
+            function resizeCanvas() {
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = 500;
+                drawPattern();
+            }
+
+            function drawPattern() {
+                const w = canvas.width;
+                const h = canvas.height;
+                const density = parseInt(densityInput.value);
+                const weight = parseInt(weightInput.value);
+                const rotation = parseInt(rotationInput.value);
+
+                ctx.clearRect(0, 0, w, h);
+                ctx.fillStyle = '#0A0A0D';
+                ctx.fillRect(0, 0, w, h);
+
+                ctx.save();
+                ctx.translate(w / 2, h / 2);
+                ctx.rotate((rotation * Math.PI) / 180);
+                ctx.translate(-w / 2, -h / 2);
+
+                const cellSize = Math.min(w, h) / density;
+                const offsetX = (w - (cellSize * density)) / 2;
+                const offsetY = (h - (cellSize * density)) / 2;
+
+                ctx.strokeStyle = '#00E5FF';
+                ctx.lineWidth = weight;
+                ctx.lineCap = 'square';
+
+                // Generate pseudo-random Kufic-like pattern
+                const seed = Date.now();
+                function pseudoRandom(x, y) {
+                    let n = Math.sin(x * 12.9898 + y * 78.233 + seed * 0.001) * 43758.5453;
+                    return n - Math.floor(n);
+                }
+
+                for (let i = 0; i < density; i++) {
+                    for (let j = 0; j < density; j++) {
+                        const x = offsetX + i * cellSize;
+                        const y = offsetY + j * cellSize;
+                        const r = pseudoRandom(i, j);
+
+                        if (r > 0.6) {
+                            ctx.beginPath();
+                            ctx.moveTo(x, y);
+                            ctx.lineTo(x + cellSize, y);
+                            ctx.stroke();
+                        }
+                        if (r > 0.3 && r < 0.7) {
+                            ctx.beginPath();
+                            ctx.moveTo(x, y);
+                            ctx.lineTo(x, y + cellSize);
+                            ctx.stroke();
+                        }
+                        if (r > 0.8) {
+                            ctx.beginPath();
+                            ctx.arc(x + cellSize/2, y + cellSize/2, cellSize/4, 0, Math.PI * 2);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                ctx.restore();
+            }
+
+            densityInput.addEventListener('input', drawPattern);
+            weightInput.addEventListener('input', drawPattern);
+            rotationInput.addEventListener('input', drawPattern);
+            generateBtn.addEventListener('click', drawPattern);
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+        }
+
+        // --- ABOUT PAGE ---
+        function renderAbout() {
+            return `
+            <section class="section" style="min-height: 60vh; display: flex; align-items: center;">
+                <div class="container">
+                    <div class="fade-in">
+                        <p class="t-caption mb-md">About NONONICK</p>
+                        <h1 class="t-display mb-lg">The Studio.</h1>
+                    </div>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container" style="max-width: 800px;">
+                    <div class="fade-in">
+                        <p class="t-body-lg mb-lg">NONONICK is a digital architecture and creative technology studio. We operate at the intersection of rigorous engineering, editorial design, and strategic thinking.</p>
+                        <p class="t-body mb-lg">We are not a traditional agency. We do not rely on templates, nor do we chase fleeting design trends. We build bespoke digital systems for clients who value longevity, performance, and intellectual substance.</p>
+                        <h2 class="t-h2 mb-md">Methodology</h2>
+                        <p class="t-body mb-lg">Our process begins with deep inquiry. We do not start by drawing wireframes; we start by understanding the business problem, the user's context, and the technical constraints. Only when the problem is clearly defined do we begin to architect the solution.</p>
+                        <p class="t-body mb-lg">We believe in small, senior teams. Every project is led by experienced architects and designers who write the code and craft the pixels. There is no disconnect between the vision and the implementation.</p>
+                    </div>
+                </div>
+            </section>
+            `;
+        }
+
+        // --- CONTACT PAGE ---
+        function renderContact() {
+            return `
+            <section class="section" style="min-height: 50vh; display: flex; align-items: center;">
+                <div class="container">
+                    <div class="fade-in">
+                        <p class="t-caption mb-md">Contact</p>
+                        <h1 class="t-display mb-md" data-i18n="contact.title">${t('contact.title')}</h1>
+                        <p class="t-body-lg" style="max-width: 700px;" data-i18n="contact.sub">${t('contact.sub')}</p>
+                    </div>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container" style="max-width: 700px;">
+                    <form id="contactForm" class="fade-in" novalidate>
+                        <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="form-group">
+                                <label for="name" class="form-label" data-i18n="contact.name">${t('contact.name')}</label>
+                                <input type="text" id="name" name="name" class="form-input" required>
+                                <p class="form-error" id="nameError">Name is required.</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label" data-i18n="contact.email">${t('contact.email')}</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                                <p class="form-error" id="emailError">Valid email is required.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="company" class="form-label" data-i18n="contact.company">${t('contact.company')}</label>
+                            <input type="text" id="company" name="company" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="form-label" data-i18n="contact.message">${t('contact.message')}</label>
+                            <textarea id="message" name="message" class="form-input" rows="6" required></textarea>
+                            <p class="form-error" id="messageError">Project details are required.</p>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="submitBtn" data-i18n="contact.submit">${t('contact.submit')}</button>
+                        <div id="formStatus" class="mt-md t-body" style="display: none;"></div>
+                    </form>
+                </div>
+            </section>
+            `;
+        }
+
+        function initContactForm() {
+            const form = document.getElementById('contactForm');
+            if (!form) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Reset errors
+                form.querySelectorAll('.form-input').forEach(i => i.classList.remove('error'));
+                form.querySelectorAll('.form-error').forEach(e => e.classList.remove('visible'));
+                
+                const name = document.getElementById('name');
+                const email = document.getElementById('email');
+                const message = document.getElementById('message');
+                const status = document.getElementById('formStatus');
+                const btn = document.getElementById('submitBtn');
+
+                let isValid = true;
+
+                if (!name.value.trim()) {
+                    name.classList.add('error');
+                    document.getElementById('nameError').classList.add('visible');
+                    isValid = false;
+                }
+                if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+                    email.classList.add('error');
+                    document.getElementById('emailError').classList.add('visible');
+                    isValid = false;
+                }
+                if (!message.value.trim()) {
+                    message.classList.add('error');
+                    document.getElementById('messageError').classList.add('visible');
+                    isValid = false;
+                }
+
+                if (!isValid) return;
+
+                // Simulate submission
+                btn.disabled = true;
+                btn.textContent = '...';
+                status.style.display = 'block';
+                status.style.color = 'var(--text-secondary)';
+                status.textContent = 'Submitting...';
+
+                // In production, this would be a fetch to /api/submit.php
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Simulate success (Replace with actual API response handling)
+                btn.disabled = false;
+                btn.textContent = t('contact.submit');
+                status.style.color = 'var(--accent-cyan)';
+                status.textContent = t('contact.success');
+                form.reset();
+            });
+        }
+
+        /* =========================================
+           4. UTILITIES & INITIALIZATION
+           ========================================= */
+        function observeAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        }
+
+        // Hero Background Canvas
+        function initHeroBg() {
+            const canvas = document.getElementById('heroBgCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            function resize() {
+                canvas.width = canvas.parentElement.offsetWidth;
+                canvas.height = canvas.parentElement.offsetHeight;
+                draw();
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = 'rgba(0, 229, 255, 0.3)';
+                ctx.lineWidth = 1;
+
+                // Draw subtle geometric grid
+                const step = 60;
+                for (let x = 0; x < canvas.width; x += step) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < canvas.height; y += step) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
+                }
+
+                // Add some accent nodes
+                ctx.fillStyle = 'rgba(41, 98, 255, 0.5)';
+                for (let i = 0; i < 15; i++) {
+                    const x = Math.random() * canvas.width;
+                    const y = Math.random() * canvas.height;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+        }
+
+        // Mobile Menu
+        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        // Language Switch
+        document.getElementById('langSwitch').addEventListener('click', () => {
+            setLang(state.lang === 'en' ? 'fa' : 'en');
+        });
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            setLang(state.lang);
+            initHeroBg();
+        });
+    </script>
+</body>
+</html>

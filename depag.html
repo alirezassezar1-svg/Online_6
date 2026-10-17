@@ -1,0 +1,1169 @@
+<html lang="fa" dir="rtl"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0a0e17">
+  <title>Agent Architect | معمار هوشمند سیستم</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0a0e17;--bg2:#0f1520;--bg3:#161d2b;--card:#121a27;--border:#1e2a3a;--primary:#6366f1;--primary-light:#818cf8;--glow:rgba(99,102,241,.3);--accent:#22d3ee;--success:#10b981;--danger:#ef4444;--warning:#f59e0b;--text:#e8eef7;--muted:#8b9cb3;--dim:#5a6a80;--radius:16px;--safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);--hh:56px;--th:64px;--touch:48px}
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%;overflow:hidden;font-family:'Vazirmatn',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+    .app{display:flex;flex-direction:column;height:100%;height:100dvh;padding-top:var(--safe-t);padding-bottom:var(--safe-b)}
+    .header{height:var(--hh);min-height:var(--hh);background:linear-gradient(180deg,#12182a,#0f1520);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0;position:relative;z-index:40}
+    .header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary),var(--accent),transparent);opacity:.55}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.05rem}
+    .logo-i{width:34px;height:34px;background:linear-gradient(135deg,#4f46e5,#06b6d4);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;box-shadow:0 0 18px var(--glow)}
+    .badge{font-size:.58rem;font-weight:700;background:linear-gradient(135deg,#6366f1,#a855f7);padding:2px 7px;border-radius:999px}
+    .net{font-size:.68rem;padding:3px 8px;border-radius:999px;border:1px solid}
+    .net.on{color:var(--success);background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.35)}
+    .net.off{color:var(--warning);background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.35)}
+    .ha{display:flex;gap:6px;align-items:center}
+    .ib{width:var(--touch);height:var(--touch);border-radius:12px;border:none;background:var(--bg3);color:var(--text);font-size:1.15rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .ib.p{background:linear-gradient(135deg,var(--primary),#4f46e5);color:#fff;box-shadow:0 4px 12px var(--glow)}
+    .main{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:14px 14px 20px}
+    .panel{display:none;animation:up .28s ease}.panel.active{display:block}
+    @keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .pt{font-size:1.35rem;font-weight:750;margin-bottom:4px}.pd{color:var(--muted);font-size:.88rem;margin-bottom:16px}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+    .st{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:12px 6px;text-align:center}
+    .st .v{font-size:1.15rem;font-weight:700;color:var(--primary-light)}.st .l{font-size:.65rem;color:var(--dim);margin-top:2px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px}
+    .ct{font-weight:650;font-size:.95rem;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .ct .n{width:24px;height:24px;background:var(--primary);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700}
+    .fg{margin-bottom:14px}label{display:block;font-size:.82rem;font-weight:550;margin-bottom:6px}
+    input[type=text],input[type=number],input[type=url],select,textarea{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px;color:var(--text);font-family:inherit;font-size:16px;appearance:none;-webkit-appearance:none}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--glow)}
+    textarea{min-height:100px;resize:vertical;line-height:1.55}
+    select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%238b9cb3' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 14px center;padding-left:36px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:380px){.row{grid-template-columns:1fr}}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:var(--touch);padding:0 16px;border-radius:12px;border:none;font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer}
+    .btn:active{transform:scale(.97);opacity:.9}
+    .btn-p{background:linear-gradient(135deg,var(--primary),#4f46e5);color:#fff;box-shadow:0 4px 14px var(--glow)}
+    .btn-s{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+    .btn-d{background:rgba(239,68,68,.14);color:var(--danger);border:1px solid rgba(239,68,68,.3)}
+    .btn-n{background:linear-gradient(135deg,#3b82f6,#06b6d4);color:#fff}
+    .btn-sm{min-height:40px;padding:0 12px;font-size:.82rem;border-radius:10px}
+    .btn-b{width:100%}.btn-r{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .btn-r.sc{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}.btn-r.sc::-webkit-scrollbar{display:none}
+    .btn.sel{border-color:var(--primary);box-shadow:0 0 0 1px var(--primary);color:var(--primary-light)}
+    .tg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(min-width:400px){.tg{grid-template-columns:repeat(3,1fr)}}
+    .tool{background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;cursor:pointer;position:relative;min-height:96px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+    .tool.on{border-color:var(--primary);background:rgba(99,102,241,.12);box-shadow:0 0 0 1px var(--primary)}
+    .tool .c{position:absolute;top:8px;left:8px;width:20px;height:20px;border-radius:50%;background:var(--primary);color:#fff;font-size:.65rem;display:none;align-items:center;justify-content:center}
+    .tool.on .c{display:flex}.tool .i{font-size:1.45rem;margin-bottom:6px}.tool .n{font-weight:600;font-size:.8rem}.tool .d{font-size:.68rem;color:var(--dim);margin-top:2px}
+    .kb{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;gap:10px}
+    .kb .inf{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+    .kb .ic{width:40px;height:40px;background:var(--bg3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+    .sw{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:12px;min-height:44px}
+    .sw .sub{font-size:.72rem;color:var(--dim);margin-top:2px}
+    .switch{position:relative;width:52px;height:32px;flex-shrink:0}
+    .switch input{opacity:0;width:0;height:0}
+    .sl{position:absolute;cursor:pointer;inset:0;background:var(--border);border-radius:32px;transition:.25s}
+    .sl:before{position:absolute;content:"";height:26px;width:26px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+    input:checked+.sl{background:var(--primary)}input:checked+.sl:before{transform:translateX(20px)}
+    input[type=range]{width:100%;height:28px;-webkit-appearance:none;background:transparent}
+    input[type=range]::-webkit-slider-runnable-track{height:6px;background:var(--border);border-radius:3px}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--primary);margin-top:-9px;box-shadow:0 2px 8px var(--glow)}
+    .ac{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;cursor:pointer}
+    .ac .l{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+    .av{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+    .empty{text-align:center;padding:32px 12px;color:var(--dim)}.empty .i{font-size:2.4rem;margin-bottom:8px;opacity:.4}
+    .note{background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(34,211,238,.05));border:1px dashed rgba(99,102,241,.4);border-radius:14px;padding:14px;font-size:.82rem;color:var(--muted);line-height:1.55}
+    .note strong{color:var(--primary-light)}.note a{color:var(--accent)}
+    .tabbar{height:var(--th);min-height:var(--th);background:rgba(15,21,32,.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;flex-shrink:0;z-index:50}
+    .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--dim);font-size:.65rem;font-weight:500;border:none;background:none;padding:6px 2px;min-height:48px;cursor:pointer}
+    .tab .ti{font-size:1.25rem}.tab.active{color:var(--primary-light)}
+    .chat{position:fixed;inset:0;background:var(--bg);z-index:100;display:none;flex-direction:column;padding-top:var(--safe-t);padding-bottom:var(--safe-b)}
+    .chat.open{display:flex}
+    .graph{position:fixed;inset:0;background:var(--bg);z-index:110;display:none;flex-direction:column;padding-top:var(--safe-t);padding-bottom:var(--safe-b)}
+    .graph.open{display:flex}
+    .setv{position:fixed;inset:0;background:var(--bg);z-index:120;display:none;flex-direction:column;padding-top:var(--safe-t);padding-bottom:var(--safe-b)}
+    .setv.open{display:flex}
+    .setb{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 24px}
+    #gnet{flex:1;position:relative;width:100%;overflow:hidden}#gnet canvas{display:block}
+    .gleg{padding:8px 12px calc(8px + var(--safe-b));font-size:.68rem;color:var(--dim);display:flex;gap:12px;justify-content:center;flex-wrap:wrap;border-top:1px solid var(--border);background:var(--bg2)}
+    .gleg b{font-weight:600}
+    .ctop{height:var(--hh);display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0}
+    .ctop h3{font-size:1rem;font-weight:650}
+    .msgs{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;display:flex;flex-direction:column;gap:10px}
+    .msg{max-width:90%;padding:12px 14px;border-radius:16px;font-size:.9rem;line-height:1.6;animation:mi .25s ease}
+    @keyframes mi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+    .msg.u{align-self:flex-start;background:linear-gradient(135deg,var(--primary),#4f46e5);color:#fff;border-bottom-right-radius:4px}
+    .msg.a{align-self:flex-end;background:var(--bg3);border:1px solid var(--border);border-bottom-left-radius:4px}
+    .msg .m{font-size:.68rem;opacity:.7;margin-bottom:3px}
+    .msg .tag{margin-top:8px;padding:7px 10px;border-radius:10px;font-size:.75rem}
+    .msg .tag.kb{background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.25)}
+    .msg .tag.tool{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.3)}
+    .msg .tag.net{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3)}
+    .msg .tag.think{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25)}
+    .msg .tag.cloud{background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.3)}
+    .msg .tag.llm{background:rgba(168,85,247,.14);border:1px solid rgba(168,85,247,.4)}
+    .msg .tag.srv{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35)}
+    .msg.th{align-self:flex-end;background:var(--bg3);border:1px dashed var(--border);color:var(--muted);font-size:.85rem}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:4px}
+    .chip{background:var(--bg3);border:1px solid var(--border);border-radius:999px;padding:9px 14px;font-size:.75rem;color:var(--muted);cursor:pointer}
+    .chip:active{border-color:var(--primary);color:var(--text)}
+    .cbar{padding:10px 12px;padding-bottom:max(10px,var(--safe-b));border-top:1px solid var(--border);display:flex;gap:8px;background:var(--bg2);flex-shrink:0}
+    .cbar input{flex:1;min-height:48px;font-size:16px;border-radius:14px;padding:12px 16px}
+    .cbar .btn{min-width:52px;min-height:48px;border-radius:14px;padding:0;font-size:1.2rem}
+    .cbar .btn.mic{min-width:48px;font-size:1.05rem}
+    .cbar .btn.mic.rec{background:rgba(239,68,68,.2);color:var(--danger);border-color:var(--danger);animation:pul 1s infinite}
+    @keyframes pul{50%{opacity:.55}}
+    .ov{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:flex-end;justify-content:center;z-index:200;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .ov.show{display:flex}
+    .modal{background:var(--card);border:1px solid var(--border);border-radius:20px 20px 0 0;width:100%;max-height:80vh;overflow:hidden;animation:su .3s ease;padding-bottom:var(--safe-b)}
+    @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+    .mh{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .mb{padding:16px 18px;overflow-y:auto;max-height:55vh;-webkit-overflow-scrolling:touch}
+    .mf{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:10px}.mf .btn{flex:1}
+    pre{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;font-size:.75rem;overflow-x:auto;direction:ltr;text-align:left;white-space:pre-wrap;word-break:break-all;line-height:1.5}
+    .toast{position:fixed;bottom:calc(var(--th) + var(--safe-b) + 16px);left:50%;transform:translateX(-50%) translateY(80px);background:var(--bg3);border:1px solid var(--border);padding:12px 20px;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.4);z-index:300;transition:transform .3s cubic-bezier(.34,1.4,.64,1);font-size:.9rem;font-weight:500;max-width:90%;text-align:center}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+    .main::-webkit-scrollbar,.msgs::-webkit-scrollbar,.setb::-webkit-scrollbar{width:0}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="logo"><div class="logo-i">◈</div><span>Architect</span><span class="badge">v25</span><span class="net on" id="netSt">● آنلاین</span></div>
+    <div class="ha">
+      <button class="ib" onclick="save()">💾</button>
+      <button class="ib" onclick="openSet()">⚙️</button>
+      <button class="ib p" onclick="openChat()">▶</button>
+    </div>
+  </header>
+
+  <main class="main" id="main">
+    <div class="panel active" id="p-basic">
+      <h2 class="pt">معمار هوشمند سیستم</h2>
+      <p class="pd">دانش حداکثری: ایندکس هیبریدی + حافظه خودآمیز + ۹ منبع زنده + مدل محلی</p>
+      <div class="stats">
+        <div class="st"><div class="v" id="sT">8</div><div class="l">ابزار</div></div>
+        <div class="st"><div class="v" id="sK">0</div><div class="l">دانش</div></div>
+        <div class="st"><div class="v" id="sC">0</div><div class="l">قطعه</div></div>
+        <div class="st"><div class="v" id="sN">ON</div><div class="l">شبکه</div></div>
+      </div>
+      <div class="card">
+        <div class="ct"><span class="n">۱</span> هویت</div>
+        <div class="fg"><label>نام</label><input type="text" id="name" value="معمار هوشمند"></div>
+        <div class="fg"><label>نقش</label><textarea id="desc" rows="3">معمار سیستم‌عامل و نرم‌افزار با ۲۰ سال تجربه. تخصص در طراحی هسته، زمان‌بندی، حافظه، همزمانی، سیستم‌های توزیع‌شده و تصمیم‌گیری مهندسی.</textarea></div>
+        <div class="row">
+          <div class="fg"><label>آواتار</label><input type="text" id="avatar" value="🧠" maxlength="2" style="font-size:1.4rem;text-align:center"></div>
+          <div class="fg"><label>سبک استدلال</label>
+            <select id="style">
+              <option value="architect" selected>معمار سیستم</option>
+              <option value="analyst">تحلیل‌گر</option>
+              <option value="mentor">مربی</option>
+              <option value="strict">سخت‌گیر منطقی</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="note"><strong>🧠 موتور دانش حداکثری</strong><br>
+        BM25 + امبدینگ n-gram + بسط پرس‌وجو + حافظه خودآمیز + منابع زنده (ویکی/Stack/HN/GitHub/arXiv/CrossRef/Wikidata/لغت‌نامه) → سپس لایه هوش: <strong>آفلاین-اول</strong> (Qwen محلی → WebLLM → Gemini → ابری).</div>
+    </div>
+
+    <div class="panel" id="p-prompt">
+      <h2 class="pt">شخصیت و اصول</h2>
+      <p class="pd">چارچوب فکری معمار (به‌عنوان System Prompt به مدل ارسال می‌شود)</p>
+      <div class="card">
+        <div class="btn-r sc" style="margin-top:0;margin-bottom:12px">
+          <button class="btn btn-s btn-sm" onclick="tpl('os')">🖥️ سیستم‌عامل</button>
+          <button class="btn btn-s btn-sm" onclick="tpl('arch')">🏗️ معماری</button>
+          <button class="btn btn-s btn-sm" onclick="tpl('debug')">🔧 دیباگ</button>
+          <button class="btn btn-s btn-sm" onclick="tpl('tradeoff')">⚖️ سبک‌سنگین</button>
+        </div>
+        <div class="fg"><label>اصول فکری</label>
+          <textarea id="prompt" rows="12">تو یک معمار سیستم‌عامل و نرم‌افزار با ۲۰ سال تجربه هستی به نام «{{name}}».
+
+اصول تصمیم‌گیری:
+1. اول مسئله را دقیق تعریف کن
+2. محدودیت‌ها و فرضیات را روشن کن
+3. گزینه‌ها را با مزایا/معایب مقایسه کن
+4. trade-off را صریح بگو
+5. توصیه عملی و قابل اجرا بده
+6. اگر داده کم است، بگو چه چیزی کم است
+
+حوزه تخصص: هسته OS، زمان‌بندی، حافظه مجازی، همزمانی، سیستم فایل، شبکه، امنیت، مقیاس‌پذیری، قابلیت اطمینان.
+
+سبک: شفاف، منطقی، بدون حاشیه اضافی، مهندسی.</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="p-tools">
+      <h2 class="pt">ابزارها</h2>
+      <p class="pd">محلی + اینترنت + استدلال + مدل زبانی</p>
+      <div class="card"><div class="tg" id="tools"></div></div>
+    </div>
+
+    <div class="panel" id="p-knowledge">
+      <h2 class="pt">دانش حداکثری</h2>
+      <p class="pd">ایندکس هیبریدی + حافظه + منابع زنده + گراف</p>
+      <div class="card">
+        <div class="ct">📚 افزودن دانش</div>
+        <div class="btn-r" style="margin-top:0;margin-bottom:12px">
+          <button class="btn btn-s btn-sm" onclick="addKB('text')">📝 متن</button>
+          <button class="btn btn-s btn-sm" onclick="addKB('qa')">❓ Q&A</button>
+          <button class="btn btn-s btn-sm" onclick="addKB('principle')">📐 اصل</button>
+          <button class="btn btn-n btn-sm" onclick="addUrl()">🌐 وب</button>
+          <button class="btn btn-p btn-sm" onclick="openGraph()">🕸️ گراف</button>
+        </div>
+        <div id="kbList"></div>
+        <div class="empty" id="kbEmpty" style="display:none"><div class="i">📚</div><p>هنوز دانشی اضافه نکرده‌ای</p></div>
+      </div>
+      <div class="card">
+        <div class="ct">🧮 ایندکس و حافظه</div>
+        <div class="note" style="margin-bottom:12px" id="idxSt">—</div>
+        <div class="sw"><div><strong>حافظه خودآمیز</strong><div class="sub">هر پرسش‌وپاسخ چت به دانش تبدیل شود</div></div><label class="switch"><input type="checkbox" id="useMem" checked onchange="saveSet();queueRebuild()"><span class="sl"></span></label></div>
+        <div class="sw"><div><strong>ذخیره خودکار یافته‌های آنلاین</strong><div class="sub">نتایج منابع در دانش محلی بایگانی شود</div></div><label class="switch"><input type="checkbox" id="autoSave" onchange="saveSet()"><span class="sl"></span></label></div>
+        <div class="btn-r" style="margin-top:0">
+          <button class="btn btn-s btn-sm" onclick="rebuildIndex();renderIdxStats();toast('ایندکس بازسازی شد')">♻️ بازسازی ایندکس</button>
+          <button class="btn btn-s btn-sm" onclick="showRet()">🔎 گزارش آخرین بازیابی</button>
+          <button class="btn btn-s btn-sm" onclick="loadOSKnowledge()">🖥️ دانش OS</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ct">🌐 منابع آنلاین زنده (بدون کلید)</div>
+        <div id="srcList"></div>
+        <div class="note" style="margin-top:6px">مسیریباند هوشمند: پرسش کدی → Stack/GitHub · خبری → HN · علمی → arXiv/CrossRef · تعریفی → ویکی/Wikidata/لغت‌نامه. حداکثر ۴ منبع موازی در هر پرسش.</div>
+      </div>
+      <div class="card">
+        <div class="ct">خواندن صفحه</div>
+        <div class="fg"><label>URL</label><input type="url" id="url" placeholder="https://..." dir="ltr" style="text-align:left"></div>
+        <button class="btn btn-n btn-b" onclick="fetchPage()">📥 دریافت و ایندکس</button>
+      </div>
+    </div>
+
+    <div class="panel" id="p-ai">
+      <h2 class="pt">اتصال‌ها</h2>
+      <p class="pd">تنظیم هر لایه — کنترل روشن/خاموش و ترتیب در ⚙️</p>
+      <div class="card">
+        <div class="ct">🔌 پل محلی — سرور سازگار با OpenAI</div>
+        <div class="fg"><label>Base URL</label><input type="text" id="locUrl" value="http://127.0.0.1:8080/v1" dir="ltr" style="text-align:left"></div>
+        <div class="row">
+          <div class="fg"><label>نام مدل</label><input type="text" id="locModel" value="qwen2.5-coder-3b" dir="ltr" style="text-align:left"></div>
+          <div class="fg"><label>کلید (اختیاری)</label><input type="text" id="locKey" placeholder="empty" dir="ltr" style="text-align:left"></div>
+        </div>
+        <button class="btn btn-n btn-b" onclick="probeLocal()">🔍 جستجوی خودکار سرور</button>
+        <div class="kb" style="margin-top:10px;margin-bottom:0"><div class="inf"><div class="ic">📡</div><div style="min-width:0"><div style="font-weight:600;font-size:.85rem">وضعیت: <span id="locSt">در انتظار بررسی</span></div><div class="sub" style="font-size:.7rem;color:var(--dim)">llama-server:8080 · Ollama:11434 · LM Studio:1234 · LAN: http://192.168.x.x:port/v1</div></div></div></div>
+      </div>
+      <div class="card">
+        <div class="ct">🧬 WebLLM مرورگر (WebGPU)</div>
+        <div class="fg"><label>مدل</label>
+          <select id="llmModel">
+            <option value="SmolLM2-360M-Instruct-q4f16_1-MLC">SmolLM2 360M (~250MB)</option>
+            <option value="Qwen2.5-0.5B-Instruct-q4f16_1-MLC" selected>Qwen2.5 0.5B (~400MB)</option>
+            <option value="Llama-3.2-1B-Instruct-q4f16_1-MLC">Llama 3.2 1B (~800MB)</option>
+            <option value="Phi-3.5-mini-instruct-q4f16_1-MLC">Phi-3.5 mini (~2.3GB)</option>
+          </select>
+        </div>
+        <button class="btn btn-n btn-b" onclick="loadWebLLM()">⬇️ دانلود و آماده‌سازی مدل</button>
+        <div class="kb" style="margin-top:10px;margin-bottom:0"><div class="inf"><div class="ic">📊</div><div style="min-width:0"><div style="font-weight:600;font-size:.85rem">وضعیت: <span id="llmSt">بارگذاری نشده</span></div><div class="sub" style="font-size:.7rem;color:var(--dim)">نیازمند مرورگر با WebGPU (Chrome/Edge)</div></div></div></div>
+      </div>
+      <div class="card">
+        <div class="ct">🔑 Gemini (کلید رایگان اختیاری)</div>
+        <div class="fg"><label>کلید Gemini</label><input type="text" id="gemKey" placeholder="AIza..." dir="ltr" style="text-align:left"></div>
+        <div class="fg"><label>مدل Gemini</label><input type="text" id="gemModel" value="gemini-2.5-flash" dir="ltr" style="text-align:left"></div>
+        <div class="note">کلید رایگان: <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> — بدون کلید هم لایه ابری رایگان فعال است.</div>
+      </div>
+    </div>
+
+    <div class="panel" id="p-agents">
+      <h2 class="pt">ذخیره‌ها</h2>
+      <div class="card">
+        <div id="alist"></div>
+        <button class="btn btn-p btn-b" style="margin-top:12px" onclick="newA()">➕ جدید</button>
+      </div>
+    </div>
+
+    <div class="panel" id="p-export">
+      <h2 class="pt">خروجی</h2>
+      <div class="card">
+        <div class="ct">پیکربندی</div>
+        <button class="btn btn-p btn-b" onclick="dl()">دانلود JSON</button>
+        <button class="btn btn-s btn-b" style="margin-top:8px" onclick="cp()">کپی</button>
+        <button class="btn btn-s btn-b" style="margin-top:8px" onclick="show()">مشاهده</button>
+      </div>
+      <div class="card">
+        <div class="ct">📜 تاریخچه چت</div>
+        <button class="btn btn-n btn-b" onclick="dlHist()">⬇️ دانلود Markdown</button>
+        <button class="btn btn-s btn-b" style="margin-top:8px" onclick="dlHistJSON()">⬇️ دانلود JSON</button>
+        <button class="btn btn-s btn-b" style="margin-top:8px" onclick="pdfHist()">🖨️ چاپ / PDF</button>
+        <button class="btn btn-s btn-b" style="margin-top:8px" onclick="cpHist()">📋 کپی تاریخچه</button>
+        <div class="note" style="margin-top:12px"><strong id="hCount">0</strong> پیام در تاریخچه ذخیره شده (محلی).</div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="tabbar">
+    <button class="tab active" data-p="basic" onclick="go('basic')"><span class="ti">🧠</span>پایه</button>
+    <button class="tab" data-p="prompt" onclick="go('prompt')"><span class="ti">✍️</span>اصول</button>
+    <button class="tab" data-p="tools" onclick="go('tools')"><span class="ti">🛠️</span>ابزار</button>
+    <button class="tab" data-p="knowledge" onclick="go('knowledge')"><span class="ti">📚</span>دانش</button>
+    <button class="tab" data-p="more" onclick="go('more')"><span class="ti">⋯</span>بیشتر</button>
+  </nav>
+</div>
+
+<div class="chat" id="chat">
+  <div class="ctop">
+    <button class="ib" onclick="closeChat()">←</button>
+    <h3 id="cTitle">معمار هوشمند</h3>
+    <div style="display:flex;gap:6px">
+      <button class="ib" onclick="showRet()" title="گزارش بازیابی">🔎</button>
+      <button class="ib" onclick="dlHist()" title="دانلود تاریخچه">⬇</button>
+      <button class="ib" onclick="clr()">🗑</button>
+    </div>
+  </div>
+  <div class="msgs" id="msgs"></div>
+  <div class="cbar">
+    <button class="btn btn-s mic" id="micB" onclick="mic()">🎙</button>
+    <input type="text" id="cin" placeholder="مسئله یا سوال..." onkeydown="if(event.key==='Enter')send()">
+    <button class="btn btn-p" onclick="send()">➤</button>
+  </div>
+</div>
+
+<div class="graph" id="graphV">
+  <div class="ctop">
+    <button class="ib" onclick="closeGraph()">←</button>
+    <h3>🕸️ گراف دانش</h3>
+    <button class="ib" onclick="openGraph()">⟳</button>
+  </div>
+  <div id="gnet"></div>
+  <div class="gleg">
+    <span><b style="color:#818cf8">●</b> تخصص OS</span>
+    <span><b style="color:#22d3ee">●</b> متن</span>
+    <span><b style="color:#10b981">●</b> Q&A</span>
+    <span><b style="color:#f59e0b">●</b> اصل/حافظه</span>
+    <span><b style="color:#a855f7">●</b> وب</span>
+  </div>
+</div>
+
+<div class="setv" id="setV">
+  <div class="ctop">
+    <button class="ib" onclick="closeSet()">←</button>
+    <h3>⚙️ تنظیمات موتور</h3>
+    <button class="ib" onclick="saveSet();toast('تنظیمات ذخیره شد')">✓</button>
+  </div>
+  <div class="setb">
+    <div class="card">
+      <div class="ct">حالت اولویت لایه‌ها</div>
+      <div class="btn-r sc" style="margin-top:0;margin-bottom:10px">
+        <button class="btn btn-s btn-sm" id="m1" onclick="setMode('offline-first')">📴 آفلاین-اول</button>
+        <button class="btn btn-s btn-sm" id="m2" onclick="setMode('online-first')">🌐 آنلاین-اول</button>
+        <button class="btn btn-s btn-sm" id="m3" onclick="setMode('offline-only')">🔒 فقط آفلاین</button>
+        <button class="btn btn-s btn-sm" id="m4" onclick="setMode('online-only')">☁️ فقط آنلاین</button>
+      </div>
+      <div class="note" id="modeNote"></div>
+    </div>
+    <div class="card">
+      <div class="ct">🧩 ترتیب و روشن/خاموش لایه‌های هوش</div>
+      <div id="layerList"></div>
+      <div class="note" style="margin-top:6px">⚡ تست · ▲▼ ترتیب · سوئیچ روشن/خاموش. در آفلاین-اول حتی با اینترنت روشن، اول مدل محلی جواب می‌دهد.</div>
+    </div>
+    <div class="card">
+      <div class="ct">📚 بازیابی و دانش</div>
+      <div class="sw"><div><strong>دانش محلی (KB)</strong></div><label class="switch"><input type="checkbox" id="useKB" checked onchange="saveSet()"><span class="sl"></span></label></div>
+      <div class="sw"><div><strong>ابزارهای محلی</strong></div><label class="switch"><input type="checkbox" id="useTools" checked onchange="saveSet()"><span class="sl"></span></label></div>
+      <div class="sw"><div><strong>منابع آنلاین زنده</strong><div class="sub">ویکی/Stack/HN/GitHub/arXiv/… — فقط آنلاین</div></div><label class="switch"><input type="checkbox" id="useWeb" checked onchange="saveSet()"><span class="sl"></span></label></div>
+      <div class="sw"><div><strong>استدلال ساختاریافته</strong></div><label class="switch"><input type="checkbox" id="useReason" checked onchange="saveSet()"><span class="sl"></span></label></div>
+      <div class="sw"><div><strong>دانش تخصصی OS</strong></div><label class="switch"><input type="checkbox" id="useDomain" checked onchange="saveSet()"><span class="sl"></span></label></div>
+      <div class="sw"><div><strong>بسط پرس‌وجو (هم‌معنی + PRF)</strong></div><label class="switch"><input type="checkbox" id="useExp" checked onchange="saveSet()"><span class="sl"></span></label></div>
+      <div class="fg"><label>آستانه شباهت ایندکس: <span id="thV">25</span></label>
+        <input type="range" id="th" min="5" max="70" value="25" oninput="$('thV').textContent=this.value;saveSet()">
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">💬 چت و ورودی</div>
+      <div class="sw"><div><strong>پاسخ استریمینگ زنده</strong></div><label class="switch"><input type="checkbox" id="useStream" checked onchange="saveSet()"><span class="sl"></span></label></div>
+      <div class="sw"><div><strong>پروب خودکار سرور محلی هنگام شروع</strong></div><label class="switch"><input type="checkbox" id="autoProbe" checked onchange="saveSet()"><span class="sl"></span></label></div>
+      <div class="row">
+        <div class="fg"><label>حداکثر پیام تاریخچه</label><input type="number" id="histMax" value="300" min="50" max="2000" onchange="saveSet()"></div>
+        <div class="fg"><label>زبان ورودی صوتی</label>
+          <select id="vLang" onchange="saveSet()">
+            <option value="fa-IR" selected>فارسی</option><option value="en-US">English</option>
+            <option value="ar-SA">العربية</option><option value="tr-TR">Türkçe</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">🗄️ داده‌ها</div>
+      <button class="btn btn-s btn-b" onclick="dlSet()">⬇️ خروجی تنظیمات موتور (JSON)</button>
+      <button class="btn btn-s btn-b" style="margin-top:8px" onclick="impSet()">⬆️ ورود تنظیمات از JSON</button>
+      <button class="btn btn-s btn-b" style="margin-top:8px" onclick="resetSet()">♻️ بازنشانی تنظیمات موتور</button>
+      <button class="btn btn-d btn-b" style="margin-top:8px" onclick="wipeAll()">🧨 پاک‌سازی کل داده‌ها</button>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="ov" onclick="if(event.target===this)closeM()">
+  <div class="modal">
+    <div class="mh"><h3 id="mt">JSON</h3><button class="ib" onclick="closeM()" style="width:40px;height:40px">✕</button></div>
+    <div class="mb"><pre id="mb"></pre></div>
+    <div class="mf"><button class="btn btn-s" onclick="closeM()">بستن</button><button class="btn btn-p" onclick="cpm()">کپی</button></div>
+  </div>
+</div>
+<div class="toast" id="toast">ذخیره شد</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+/* ========== Domain Knowledge ========== */
+const DOMAIN = [
+  {k:['زمان‌بندی','scheduler','scheduling','اولویت','priority'], t:'زمان‌بندی',
+   a:`در طراحی زمان‌بند (Scheduler) چند اصل کلیدی دارم:
+1) **هدف را روشن کن**: throughput، latency، fairness، یا real-time؟
+2) **الگوریتم‌ها**:
+   • Round-Robin: ساده، fair، latency قابل پیش‌بینی
+   • Priority + Aging: از starvation جلوگیری می‌کند
+   • CFS (Linux): fair share بر اساس vruntime
+   • Real-time (FIFO/RR): برای deadlineهای سخت
+3) **Trade-off**: پیچیدگی پیاده‌سازی در برابر عدالت و پیش‌بینی‌پذیری
+4) **توصیه عملی**: برای سیستم عمومی CFS یا priority با aging؛ برای embedded، RR با quantum کوچک.`},
+  {k:['حافظه','memory','virtual memory','paging','page','swap'], t:'مدیریت حافظه',
+   a:`مدیریت حافظه مجازی ستون فقرات OS است:
+1) **جداسازی آدرس**: هر process فضای مجازی مستقل دارد
+2) **صفحه (Page) vs قطعه (Segment)**: صفحه ساده‌تر و رایج‌تر است
+3) **Page Fault**: فرصت برای demand paging و working set
+4) **Replacement**: LRU تقریبی (Clock)، یا CLOCK-Pro
+5) **Thrashing**: وقتی working set از RAM بیشتر شود — راه‌حل: load control
+6) **توصیه**: همیشه TLB و locality را در طراحی در نظر بگیر؛ بدون آن عملکرد نابود می‌شود.`},
+  {k:['همزمانی','concurrency','mutex','lock','deadlock','race','thread'], t:'همزمانی',
+   a:`همزمانی جایی است که باگ‌های ظریف متولد می‌شوند:
+1) **Race Condition**: دو thread بدون همگام‌سازی به داده مشترک دسترسی دارند
+2) **راه‌حل‌ها**: mutex، semaphore، atomic operations، RCU
+3) **Deadlock**: چهار شرط Coffman — برای جلوگیری یکی را نقض کن (معمولاً lock ordering)
+4) **اولویت وارونگی**: با priority inheritance حل می‌شود
+5) **اصل**: هرچه lock کوتاه‌تر و fine-grainedتر، scalability بهتر — ولی پیچیدگی بیشتر
+6) **توصیه**: اول correctness، بعد performance. lock-free فقط وقتی اندازه‌گیری کرده باشی.`},
+  {k:['سیستم فایل','filesystem','fs','inode','journal'], t:'سیستم فایل',
+   a:`سیستم فایل باید هم سریع باشد هم در برابر قطع برق مقاوم:
+1) **ساختار**: inode + directory tree + data blocks
+2) **Consistency**: journaling (ext4, NTFS) یا copy-on-write (ZFS, Btrfs)
+3) **Trade-off**: journaling سریع‌تر برای metadata؛ CoW قوی‌تر برای snapshot و checksum
+4) **عملکرد**: block size، readahead، page cache حیاتی‌اند
+5) **توصیه**: برای سرور عمومی ext4 یا XFS؛ برای data integrity بالا ZFS/Btrfs.`},
+  {k:['هسته','kernel','monolithic','microkernel','driver'], t:'معماری هسته',
+   a:`انتخاب معماری هسته تصمیم بنیادین است:
+1) **Monolithic** (Linux): همه در kernel space — سریع، پیچیده، یک باگ می‌تواند کل سیستم را بخواباند
+2) **Microkernel** (Minix, seL4): سرویس‌ها در user space — امن‌تر، isolation بهتر، IPC هزینه دارد
+3) **Hybrid** (Windows NT, modern macOS): وسط
+4) **اصل من**: برای performance-critical و driver زیاد → monolithic با ماژول؛ برای safety-critical → microkernel یا separation kernel
+5) **درس ۲۰ ساله**: abstraction غلط گران‌تر از کد زیاد است.`},
+  {k:['توزیع','distributed','consensus','raft','paxos','replication'], t:'سیستم توزیع‌شده',
+   a:`سیستم توزیع‌شده یعنی پذیرش failure به عنوان حالت عادی:
+1) **CAP**: Consistency، Availability، Partition tolerance — حداکثر دو تا
+2) **Consensus**: Raft ساده‌تر از Paxos برای پیاده‌سازی
+3) **Replication**: primary-backup ساده؛ multi-leader پیچیده‌تر
+4) **Idempotency**: در شبکه retry اجتناب‌ناپذیر است
+5) **توصیه**: اول single-node درست کار کند، بعد توزیع کن. premature distribution ریشه بسیاری از فجایع است.`},
+  {k:['امنیت','security','isolation','sandbox','permission','privilege'], t:'امنیت',
+   a:`امنیت لایه‌لایه ساخته می‌شود، نه با یک دیوار:
+1) **Least Privilege**: هر جزء فقط همان دسترسی که لازم دارد
+2) **Isolation**: process، container، VM، یا hardware (TrustZone)
+3) **Attack surface**: هر syscall و هر interface یک سطح حمله است
+4) **Defense in depth**: یک لایه کافی نیست
+5) **توصیه**: امنیت را از روز اول در معماری بگذار؛ بعداً اضافه کردن معمولاً ناقص و گران است.`},
+  {k:['عملکرد','performance','latency','throughput','bottleneck','optimize'], t:'عملکرد',
+   a:`بهینه‌سازی بدون اندازه‌گیری حدس است:
+1) **اندازه‌گیری اول**: CPU، memory، IO، lock contention
+2) **قانون ۸۰/۲۰**: معمولاً بخش کوچکی از کد گلوگاه است
+3) **Cache-friendly**: locality مهم‌تر از الگوریتم fancy در بسیاری موارد
+4) **Async vs Thread**: برای IO-bound، event-driven؛ برای CPU-bound، thread pool
+5) **توصیه**: اول درست کار کند، بعد سریع. اما معماری را طوری ننویس که بعداً بهینه‌سازی غیرممکن شود.`},
+];
+
+const TOOLS0 = [
+  {id:'calc',name:'ماشین‌حساب',desc:'محاسبه',icon:'🧮',on:true},
+  {id:'time',name:'زمان',desc:'تاریخ/ساعت',icon:'🕐',on:true},
+  {id:'rand',name:'تصادفی',desc:'عدد تصادفی',icon:'🎲',on:false},
+  {id:'reason',name:'استدلال',desc:'تحلیل ساختاری',icon:'🧠',on:true},
+  {id:'web_search',name:'جستجوی وب',desc:'جستجو',icon:'🔍',on:true},
+  {id:'web_fetch',name:'خواندن وب',desc:'دریافت صفحه',icon:'📥',on:true},
+  {id:'wiki',name:'ویکی‌پدیا',desc:'دانشنامه آزاد',icon:'📖',on:true},
+  {id:'domain',name:'دانش OS',desc:'تخصص معماری',icon:'🖥️',on:true},
+];
+
+/* ========== Engine config ========== */
+let CFG = {mode:'offline-first', order:['local','webllm','gem','cloud']};
+const SWID = {local:'useLocal', webllm:'useLLM', gem:'useGem', cloud:'useCloud'};
+const OFFL = ['local','webllm'];
+let S = {tools: JSON.parse(JSON.stringify(TOOLS0)), kb: [], agents: JSON.parse(localStorage.getItem('ab_arch_a')||'[]'), online: navigator.onLine, curId: null};
+let H = []; try{H=JSON.parse(localStorage.getItem('ab_arch_h')||'[]');}catch(e){H=[];}
+let MEM = []; try{MEM=JSON.parse(localStorage.getItem('ab_arch_m')||'[]');}catch(e){MEM=[];}
+let LLM=null, REC=null, LASTRET='';
+const more = ['ai','agents','export'];
+
+/* =====================================================
+   MAX-KNOWLEDGE ENGINE: normalize → tokens → hashed
+   n-gram embeddings → inverted index → BM25 + cosine
+   hybrid → query expansion (synonyms + PRF)
+===================================================== */
+const DIM=256;
+const STOP={};('the a an of and or to in for on with is are was were be been being این که را و به از با در است شد می نه آن چه هر چون پس اگر تا یا but if then than that this these those').split(' ').forEach(w=>STOP[w]=1);
+function norm(s){return String(s).toLowerCase()
+  .replace(/[\u064B-\u0652\u0640]/g,'')
+  .replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/‌/g,'')
+  .replace(/[؟?!.،,;:؛«»()"'\-\[\]{}()/\\|@#$%^&*+=<>~`_/\\]/g,' ')
+  .replace(/\s+/g,' ').trim();}
+function toks(s){return norm(s).split(' ').filter(t=>t.length>1);}
+function ngrams(s,n){const out=[];const t=norm(s).replace(/ /g,'');for(let i=0;i<=t.length-n;i++)out.push(t.slice(i,i+n));return out;}
+function hash32(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function vecOf(text){const v=new Float32Array(DIM);toks(text).forEach(t=>{v[hash32(t)%DIM]+=1;});const gs=ngrams(text,4);for(let i=0;i<gs.length;i++)v[hash32(gs[i])%DIM]+=0.5;let n=0;for(let i=0;i<DIM;i++)n+=v[i]*v[i];n=Math.sqrt(n)||1;for(let i=0;i<DIM;i++)v[i]/=n;return v;}
+function cos(a,b){let s=0;for(let i=0;i<DIM;i++)s+=a[i]*b[i];return s;}
+function chunkText(text){
+  const parts=String(text).replace(/\r/g,'').split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const raw=[];let cur='';
+  for(const p of parts){ if((cur+'\n'+p).trim().length>500&&cur){raw.push(cur.trim());cur=p;} else cur=(cur?cur+'\n':'')+p; }
+  if(cur.trim())raw.push(cur.trim());
+  const out=[];
+  for(const c of raw){
+    if(c.length>900){ const sents=c.split(/(?<=[.!?؟])\s+/); let b=''; for(const s of sents){ if((b+' '+s).length>700&&b){out.push(b);b=s;} else b=(b?b+' ':'')+s; } if(b)out.push(b); }
+    else out.push(c);
+  }
+  return out.length?out:[String(text).slice(0,700)];
+}
+let IDX={chunks:[],df:{},N:0,avgdl:1};
+let RB=null; function queueRebuild(){clearTimeout(RB);RB=setTimeout(rebuildIndex,250);}
+function rebuildIndex(){
+  const docs=[];
+  DOMAIN.forEach(d=>docs.push({src:'domain',title:d.t,text:d.a}));
+  S.kb.forEach(k=>docs.push({src:'kb',title:k.title,text:k.content}));
+  if($('useMem').checked)MEM.forEach(m=>docs.push({src:'mem',title:m.title,text:m.content}));
+  const chunks=[];
+  docs.forEach(d=>chunkText(d.text).forEach((c,i)=>{
+    chunks.push({doc:d,i,text:c,terms:{},len:0,v:vecOf(d.title+' '+c),tv:vecOf(d.title)});
+  }));
+  const df={};let tot=0;
+  chunks.forEach(ch=>{
+    const ts=toks(ch.text);ch.len=ts.length;tot+=ts.length;const seen={};
+    ts.forEach(t=>{ch.terms[t]=(ch.terms[t]||0)+1;if(!seen[t]){seen[t]=1;df[t]=(df[t]||0)+1;}});
+  });
+  IDX={chunks,df,N:chunks.length,avgdl:tot/Math.max(1,chunks.length)};
+  $('sC').textContent=IDX.N; renderIdxStats();
+}
+function renderIdxStats(){
+  $('idxSt').innerHTML=`🧮 <strong>${IDX.N}</strong> قطعه ایندکس‌شده · <strong>${Object.keys(IDX.df).length}</strong> واژه واژگان · 💾 <strong>${MEM.length}</strong> خاطره · 📚 <strong>${S.kb.length}</strong> منبع محلی`;
+}
+function bm25(ch,qts){
+  let s=0;
+  for(const t of qts){
+    const tf=ch.terms[t]||0;if(!tf)continue;
+    const df=IDX.df[t]||0;
+    const idf=Math.log(1+(IDX.N-df+0.5)/(df+0.5));
+    s+=idf*((tf*2.2)/(tf+1.5*(1-0.75+0.75*ch.len/IDX.avgdl)));
+  }
+  return s;
+}
+function srcAllowed(src){
+  if(src==='domain')return $('useDomain').checked&&toolOn('domain');
+  if(src==='kb')return $('useKB').checked;
+  if(src==='mem')return $('useMem').checked;
+  return true;
+}
+function searchIndex(q,topK){
+  if(!IDX.N)return[];
+  const qts=toks(q),qv=vecOf(q);
+  let maxB=1e-9,maxT=1e-9;
+  const rows=[];
+  for(const ch of IDX.chunks){
+    if(!srcAllowed(ch.doc.src))continue;
+    const b=bm25(ch,qts), c=Math.max(0,cos(ch.v,qv)), tb=Math.max(0,cos(ch.tv,qv));
+    if(b>maxB)maxB=b; if(tb>maxT)maxT=tb;
+    rows.push({ch,b,c,tb});
+  }
+  rows.forEach(r=>{ r.s=0.6*(r.b/maxB)+0.3*r.c+0.1*(r.tb/maxT); if(r.ch.doc.src==='domain')r.s*=1.12; });
+  rows.sort((a,b)=>b.s-a.s);
+  return rows.slice(0,topK||4);
+}
+const SYN=[['زمانبندی','scheduling','scheduler'],['حافظه','memory','paging','swap'],['همزمانی','concurrency','thread','lock'],['بنبست','deadlock'],['سیستمفایل','filesystem','inode'],['هسته','kernel','microkernel'],['توزیع','distributed','consensus','raft'],['امنیت','security'],['عملکرد','performance','latency','throughput'],['کش','cache'],['شبکه','network'],['صف','queue']];
+function expandQuery(q,hits){
+  if(!$('useExp').checked)return q;
+  const nq=norm(q);const add=[];
+  SYN.forEach(g=>{if(g.some(w=>nq.includes(w)))g.forEach(w=>{if(!nq.includes(w)&&!add.includes(w))add.push(w);});});
+  if(hits&&hits[0]){
+    const tf={};toks(hits[0].ch.text).forEach(t=>{if(t.length>4&&!STOP[t])tf[t]=(tf[t]||0)+1;});
+    Object.keys(tf).sort((a,b)=>tf[b]-tf[a]).slice(0,3).forEach(t=>{if(!add.includes(t))add.push(t);});
+  }
+  return add.length? q+' '+add.slice(0,6).join(' ') : q;
+}
+
+/* ========== Live free sources (no key) + intent router ========== */
+async function jget(u,ms){const r=await fetch(u,{signal:AbortSignal.timeout(ms||9000)});if(!r.ok)throw new Error(r.status);return r.json();}
+function stripHtml(h){return h.replace(/<pre[^>]*>[\s\S]*?<\/pre>/g,' ').replace(/<[^>]+>/g,' ').replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\s+/g,' ').trim();}
+async function wikiSrc(q){const out=[];for(const lang of ['fa','en']){try{const d=await jget(`https://${lang}.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrsearch=${encodeURIComponent(q)}&gsrlimit=2&prop=extracts&exintro=1&explaintext=1&exsentences=5`);const ps=d&&d.query&&d.query.pages;if(ps)Object.values(ps).forEach(p=>{if(p.extract)out.push({title:p.title,text:p.extract.slice(0,700),url:`https://${lang}.wikipedia.org/?curid=${p.pageid}`,src:'wiki'});});}catch(e){}}return out;}
+async function wikidataSrc(q){const d=await jget(`https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(q)}&language=fa&uselang=fa&format=json&origin=*&limit=2`);return (d.search||[]).map(e=>({title:e.label||'',text:(e.description||''),url:e.concepturi||'',src:'wikidata'})).filter(x=>x.text);}
+async function stackSrc(q){const d=await jget(`https://api.stackexchange.com/2.3/search/advanced?order=desc&sort=relevance&site=stackoverflow&q=${encodeURIComponent(q)}&pagesize=3&filter=withbody`);return (d.items||[]).map(i=>({title:stripHtml(i.title),text:stripHtml(i.body||'').slice(0,700),url:i.link,src:'stack'}));}
+async function hnSrc(q){const d=await jget(`https://hn.algolia.com/api/v1/search?query=${encodeURIComponent(q)}&tags=story&hitsPerPage=3`);return (d.hits||[]).map(h=>({title:h.title||'',text:`${h.points} امتیاز · ${h.num_comments} نظر · ${h.url||''}`,url:`https://news.ycombinator.com/item?id=${h.objectID}`,src:'hn'}));}
+async function ghSrc(q){const d=await jget(`https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&per_page=3`);return (d.items||[]).map(i=>({title:i.full_name,text:(i.description||'')+' ⭐'+i.stargazers_count,url:i.html_url,src:'gh'}));}
+async function arxivSrc(q){const proxy='https://api.allorigins.win/raw?url='+encodeURIComponent(`http://export.arxiv.org/api/query?search_query=all:${encodeURIComponent(q)}&max_results=3`);const r=await fetch(proxy,{signal:AbortSignal.timeout(10000)});const xml=await r.text();const doc=new DOMParser().parseFromString(xml,'text/xml');return [...doc.querySelectorAll('entry')].map(e=>({title:(e.querySelector('title')?.textContent||'').replace(/\s+/g,' ').trim(),text:(e.querySelector('summary')?.textContent||'').replace(/\s+/g,' ').slice(0,600),url:e.querySelector('id')?.textContent||'',src:'arxiv'}));}
+async function crossrefSrc(q){const d=await jget(`https://api.crossref.org/works?query=${encodeURIComponent(q)}&rows=3&select=title,DOI,URL,author,published`);return ((d.message&&d.message.items)||[]).map(i=>({title:(i.title||[''])[0],text:(i.author||[]).slice(0,2).map(a=>(a.family||'')+' '+(a.given||'')).join('، ')+(i.published&&i.published['date-parts']?' ('+i.published['date-parts'][0][0]+')':'')+' · DOI: '+(i.DOI||''),url:i.URL||('https://doi.org/'+(i.DOI||'')),src:'scholar'}));}
+async function dictSrc(q){const ws=norm(q).split(' ').filter(t=>/[a-z]{3,}/.test(t)).slice(0,2);const out=[];for(const t of ws){try{const d=await jget(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(t)}`);const m=d[0]&&d[0].meanings&&d[0].meanings[0];if(m)out.push({title:t,text:m.partOfSpeech+': '+m.definitions[0].definition.slice(0,400),url:'https://dictionaryapi.dev/',src:'dict'});}catch(e){}}return out;}
+async function ddgSrc(q){try{const api='https://api.duckduckgo.com/?q='+encodeURIComponent(q)+'&format=json&no_html=1&skip_disambig=1';const proxy='https://api.allorigins.win/raw?url='+encodeURIComponent(api);const r=await fetch(proxy,{signal:AbortSignal.timeout(9000)});const d=await r.json();let t=d.AbstractText||d.Answer||'';if(!t&&d.RelatedTopics&&d.RelatedTopics.length)t=d.RelatedTopics.slice(0,3).map(x=>x.Text||'').filter(Boolean).join(' | ');return t?[{title:q.slice(0,60),text:t.slice(0,800),url:d.AbstractURL||'',src:'ddg'}]:[];}catch(e){return[];}}
+const SOURCES=[
+  {id:'wiki',name:'ویکی‌پدیا fa/en',icon:'📖',on:true,f:wikiSrc},
+  {id:'wikidata',name:'Wikidata',icon:'🧿',on:true,f:wikidataSrc},
+  {id:'stack',name:'Stack Overflow',icon:'💬',on:true,f:stackSrc},
+  {id:'hn',name:'Hacker News',icon:'📰',on:true,f:hnSrc},
+  {id:'ddg',name:'DuckDuckGo',icon:'🦆',on:true,f:ddgSrc},
+  {id:'gh',name:'GitHub',icon:'🐙',on:false,f:ghSrc},
+  {id:'arxiv',name:'arXiv',icon:'🎓',on:false,f:arxivSrc},
+  {id:'scholar',name:'CrossRef',icon:'📄',on:false,f:crossrefSrc},
+  {id:'dict',name:'لغت‌نامه EN',icon:'🔤',on:false,f:dictSrc},
+];
+try{const so=JSON.parse(localStorage.getItem('ab_arch_src')||'null');if(so)SOURCES.forEach(s=>{if(typeof so[s.id]==='boolean')s.on=so[s.id];});}catch(e){}
+function saveSrc(){const o={};SOURCES.forEach(s=>o[s.id]=s.on);localStorage.setItem('ab_arch_src',JSON.stringify(o));}
+function rSrcList(){
+  $('srcList').innerHTML=SOURCES.map(s=>`<div class="sw" style="min-height:38px;margin-bottom:8px"><div><strong>${s.icon} ${s.name}</strong></div><label class="switch"><input type="checkbox" ${s.on?'checked':''} onchange="srcTog('${s.id}',this.checked)"><span class="sl"></span></label></div>`).join('');
+}
+function srcTog(id,v){const s=SOURCES.find(x=>x.id===id);if(s){s.on=v;saveSrc();}}
+function intentSrcs(q){
+  const n=norm(q);const list=[];
+  if(/کد|code|bug|api|npm|git|python|javascript|js|خطا|ارور|error|stack|regex|الگوریتم|algorithm|پیاده|implement|compile/.test(n))list.push('stack','gh','hn');
+  if(/آخرین|جدید|news|release|version|نسخه|اعلان|launch|update/.test(n))list.push('hn','ddg');
+  if(/مقاله|paper|research|پژوهش|arxiv|doi|survey|مطالعه/.test(n))list.push('arxiv','scholar');
+  if(/یعنی|چیست|تعریف|معنی|definition|what is|معادل/.test(n))list.push('wiki','wikidata','dict');
+  ['wiki','wikidata','ddg','stack','hn','gh','arxiv','scholar','dict'].forEach(s=>{if(!list.includes(s))list.push(s);});
+  return list;
+}
+async function fetchSources(q){
+  const order=intentSrcs(q).filter(id=>{const s=SOURCES.find(x=>x.id===id);return s&&s.on;}).slice(0,4);
+  const t0=Date.now();const rep=[];const results=[];
+  await Promise.allSettled(order.map(async id=>{
+    const s=SOURCES.find(x=>x.id===id);const st=Date.now();
+    try{const r=await s.f(q);rep.push(`${s.icon} ${s.name}: ✅ ${r.length} نتیجه (${Date.now()-st}ms)`);if(r.length)results.push(...r);}
+    catch(e){rep.push(`${s.icon} ${s.name}: ❌ ${e.message||'خطا'} (${Date.now()-st}ms)`);}
+  }));
+  return {results, rep, ms:Date.now()-t0};
+}
+
+/* ========== engine snap / settings ========== */
+function engineSnap(){
+  return {mode:CFG.mode, order:CFG.order.slice(),
+    useKB:$('useKB').checked, useTools:$('useTools').checked, useWeb:$('useWeb').checked,
+    useReason:$('useReason').checked, useDomain:$('useDomain').checked, useExp:$('useExp').checked,
+    useMem:$('useMem').checked, autoSave:$('autoSave').checked,
+    th:+$('th').value, useStream:$('useStream').checked, autoProbe:$('autoProbe').checked,
+    histMax:+$('histMax').value, vLang:$('vLang').value,
+    useLocal:$('useLocal').checked, useLLM:$('useLLM').checked, useGem:$('useGem').checked, useCloud:$('useCloud').checked};
+}
+function applyEngine(j){
+  if(!j)return;
+  if(j.mode)CFG.mode=j.mode;
+  if(Array.isArray(j.order)&&j.order.length)CFG.order=j.order.filter(id=>SWID[id]);
+  ['useKB','useTools','useWeb','useReason','useDomain','useExp','useMem','autoSave','useStream','autoProbe','useLocal','useLLM','useGem','useCloud'].forEach(k=>{if(typeof j[k]==='boolean')$(k).checked=j[k];});
+  if(j.th!=null){$('th').value=j.th;$('thV').textContent=j.th;}
+  if(j.histMax!=null)$('histMax').value=j.histMax;
+  if(j.vLang)$('vLang').value=j.vLang;
+}
+function saveSet(){localStorage.setItem('ab_arch_s',JSON.stringify(engineSnap()));}
+function loadSet(){try{const j=JSON.parse(localStorage.getItem('ab_arch_s')||'null');if(j)applyEngine(j);}catch(e){}}
+
+function init(){
+  loadSet();
+  rTools(); rKB(); rAgents(); rSrcList(); stats(); netUI(); hCount(); setModeUI(); rSetLayers();
+  rebuildIndex();
+  window.addEventListener('online',()=>{S.online=true;netUI();toast('آنلاین');rSetLayers();});
+  window.addEventListener('offline',()=>{S.online=false;netUI();toast('آفلاین');rSetLayers();});
+  try{const c=localStorage.getItem('ab_arch_c');if(c)apply(JSON.parse(c));}catch(e){}
+  if($('autoProbe').checked&&$('useLocal').checked)setTimeout(()=>probeLocal(true),1200);
+}
+function netUI(){const e=$('netSt');if(S.online){e.textContent='● آنلاین';e.className='net on';$('sN').textContent='ON';}else{e.textContent='○ آفلاین';e.className='net off';$('sN').textContent='OFF';}}
+function go(id){
+  if(id==='more'){const c=document.querySelector('.panel.active');const cid=c?c.id.replace('p-',''):'basic';let i=more.indexOf(cid);i=(i+1)%more.length;id=more[i];}
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const p=$('p-'+id);if(p)p.classList.add('active');
+  const map={basic:'basic',prompt:'prompt',tools:'tools',knowledge:'knowledge'};
+  const tid=map[id]||'more';const t=document.querySelector(`.tab[data-p="${tid}"]`);if(t)t.classList.add('active');
+  $('main').scrollTop=0;
+}
+function openSet(){$('setV').classList.add('open');setModeUI();rSetLayers();}
+function closeSet(){saveSet();$('setV').classList.remove('open');}
+function setMode(v){CFG.mode=v;saveSet();setModeUI();toast('حالت: '+modeFa(v));}
+function modeFa(v){return{'offline-first':'آفلاین-اول','online-first':'آنلاین-اول','offline-only':'فقط آفلاین','online-only':'فقط آنلاین'}[v]||v;}
+function setModeUI(){
+  ['m1','m2','m3','m4'].forEach(i=>$(i).classList.remove('sel'));
+  const mp={'offline-first':'m1','online-first':'m2','offline-only':'m3','online-only':'m4'};
+  if(mp[CFG.mode])$(mp[CFG.mode]).classList.add('sel');
+  $('modeNote').innerHTML={
+    'offline-first':'ترتیب: <strong>پل محلی (Qwen شما) → WebLLM</strong> → دانش ایندکس‌شده؛ آنلاین (Gemini/ابری/منابع زنده) فقط جایگزین — حتی با اینترنت روشن.',
+    'online-first':'اول Gemini/ابری/منابع زنده؛ بعد لایه‌های محلی.',
+    'offline-only':'بدون شبکه: فقط مدل محلی + ایندکس + ابزارها. همه درخواست‌های وب مسدود.',
+    'online-only':'فقط لایه‌های ابری و منابع زنده.'
+  }[CFG.mode]||'';
+}
+function layerMeta(id){
+  if(id==='local')return{ic:'🔌',n:'پل محلی (Qwen اپ شما / Ollama)',st:$('locSt').textContent||'—',on:$('useLocal').checked};
+  if(id==='webllm')return{ic:'🧬',n:'WebLLM مرورگر',st:LLM?'آماده ✅':'بارگذاری نشده',on:$('useLLM').checked};
+  if(id==='gem')return{ic:'🔑',n:'Gemini',st:$('gemKey').value.trim()?'کلید دارد':'بدون کلید',on:$('useGem').checked};
+  return{ic:'☁️',n:'هوش ابری رایگان (Pollinations)',st:S.online?'آنلاین':'آفلاین',on:$('useCloud').checked};
+}
+function rSetLayers(){
+  $('layerList').innerHTML=CFG.order.map((id,i)=>{const m=layerMeta(id);
+    return `<div class="kb"><div class="inf"><div class="ic">${m.ic}</div><div style="min-width:0"><div style="font-weight:600;font-size:.86rem">${i+1}. ${m.n}</div><div style="font-size:.7rem;color:var(--dim)">${esc(m.st)}</div></div></div>
+    <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+      <button class="btn btn-s btn-sm" onclick="testLayer('${id}')">⚡</button>
+      <button class="btn btn-s btn-sm" onclick="mvLayer('${id}',-1)">▲</button>
+      <button class="btn btn-s btn-sm" onclick="mvLayer('${id}',1)">▼</button>
+      <label class="switch"><input type="checkbox" id="${SWID[id]}" ${m.on?'checked':''} onchange="saveSet();rSetLayers()"><span class="sl"></span></label>
+    </div></div>`;}).join('');
+}
+function mvLayer(id,d){const i=CFG.order.indexOf(id),j=i+d;if(i<0||j<0||j>=CFG.order.length)return;[CFG.order[i],CFG.order[j]]=[CFG.order[j],CFG.order[i]];saveSet();rSetLayers();}
+async function testLayer(id){
+  toast('تست '+layerMeta(id).n+'...');
+  const msgs=[{role:'system',content:'فقط با یک کلمه جواب بده.'},{role:'user',content:'سلام تست'}];
+  try{
+    if(id==='local')await localChat(msgs,null);
+    if(id==='webllm'){if(!LLM)throw new Error('مدل بارگذاری نشده');await llmChat(msgs,null);}
+    if(id==='gem')await gemChat(msgs,null);
+    if(id==='cloud')await cloudChat(msgs,null);
+    toast('✅ لایه سالم است');
+  }catch(e){toast('❌ '+(e.message||'خطا'));}
+  rSetLayers();
+}
+
+/* ========== tools / kb ========== */
+function rTools(){$('tools').innerHTML=S.tools.map(t=>`<div class="tool ${t.on?'on':''}" onclick="tog('${t.id}')"><div class="c">✓</div><div class="i">${t.icon}</div><div class="n">${t.name}</div><div class="d">${t.desc}</div></div>`).join('');stats();}
+function tog(id){const t=S.tools.find(x=>x.id===id);if(t){t.on=!t.on;rTools();}}
+function toolOn(id){return S.tools.some(t=>t.id===id&&t.on);}
+function addKB(type){
+  let title='',content='';
+  if(type==='text'){title=prompt('عنوان:')||'متن';content=prompt('محتوا:')||'';}
+  else if(type==='qa'){title=prompt('سوال:')||'سوال';content=prompt('پاسخ:')||'';}
+  else{title=prompt('نام اصل:')||'اصل';content=prompt('توضیح:')||'';}
+  if(!content)return;
+  S.kb.push({id:Date.now(),type,title,content});rKB();queueRebuild();toast('اضافه و ایندکس شد');
+}
+function addUrl(){const u=prompt('URL:');if(!u)return;$('url').value=u;fetchPage();}
+async function fetchPage(){
+  const url=$('url').value.trim();if(!url)return toast('URL لازم است');
+  if(!S.online)return toast('آفلاین هستید');
+  toast('در حال دریافت...');
+  try{
+    const proxy='https://api.allorigins.win/raw?url='+encodeURIComponent(url);
+    const res=await fetch(proxy,{signal:AbortSignal.timeout(15000)});
+    let text=await res.text();
+    text=text.replace(/<script[^>]*>[\s\S]*?<\/script>/gi,' ').replace(/<style[^>]*>[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().slice(0,6000);
+    if(text.length<30)throw new Error('محتوای کافی نیست');
+    const title=url.replace(/^https?:\/\//,'').split('/')[0]||'وب';
+    S.kb.push({id:Date.now(),type:'web',title,content:text,url});
+    rKB();queueRebuild();$('url').value='';toast('به دانش اضافه و ایندکس شد');
+  }catch(e){toast('خطا: '+(e.message||'ناموفق'));}
+}
+function loadOSKnowledge(){DOMAIN.forEach(d=>{S.kb.push({id:Date.now()+Math.random(),type:'principle',title:d.t,content:d.a});});rKB();queueRebuild();toast('دانش OS بارگذاری شد');}
+function rKB(){
+  const list=$('kbList'),empty=$('kbEmpty');
+  if(!S.kb.length){list.innerHTML='';empty.style.display='block';stats();return;}
+  empty.style.display='none';
+  const ic={text:'📝',qa:'❓',principle:'📐',web:'🌐'};
+  list.innerHTML=S.kb.map(k=>`<div class="kb"><div class="inf"><div class="ic">${ic[k.type]||'📄'}</div><div style="min-width:0"><div style="font-weight:550;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(k.title)}</div><div style="font-size:.7rem;color:var(--dim)">${k.type}</div></div></div><button class="btn btn-d btn-sm" onclick="rmKB(${k.id})">حذف</button></div>`).join('');
+  stats();
+}
+function rmKB(id){S.kb=S.kb.filter(k=>k.id!==id);rKB();queueRebuild();}
+function tpl(t){
+  const T={os:`تو معمار سیستم‌عامل با ۲۰ سال تجربه هستی.\nاول مسئله را تعریف کن، محدودیت‌ها را بگو، گزینه‌ها را با trade-off مقایسه کن، بعد توصیه عملی بده.\nتخصص: زمان‌بندی، حافظه، همزمانی، سیستم‌فایل، هسته.`,
+    arch:`تو معمار نرم‌افزار ارشد هستی.\nاصول: separation of concerns، loose coupling، high cohesion، fail-fast، observability.\nهر پیشنهاد را با دلیل و جایگزین ممکن بیان کن.`,
+    debug:`تو متخصص دیباگ سیستم هستی.\nروش: reproduce → isolate → hypothesize → test → fix → verify.\nهرگز بدون داده حدس نزن. لاگ، متریک و فرضیه را جدا نگه دار.`,
+    tradeoff:`تو تصمیم‌گیرنده مهندسی هستی.\nهر گزینه را با: مزایا، معایب، هزینه، ریسک و برگشت‌پذیری مقایسه کن.\nدر پایان یک توصیه واضح با شرایط بده.`};
+  if(T[t]){$('prompt').value=T[t];toast('اعمال شد');}
+}
+
+/* ========== local tools / reasoning ========== */
+function localTool(q){
+  if(!$('useTools').checked)return null;
+  const low=q.toLowerCase();
+  if(toolOn('calc')){
+    const m=q.replace(/[×x]/gi,'*').replace(/÷/g,'/').match(/[\d\s+\-*\/\.()]+/);
+    if(m&&/[+\-*\/]/.test(m[0])){
+      try{const e=m[0].replace(/\s/g,'');
+        if(/^[\d+\-*\/\.()]+$/.test(e)){const r=Function('"use strict";return('+e+')')();
+          if(typeof r==='number'&&isFinite(r))return{name:'ماشین‌حساب',text:`${e} = ${r}`};}}catch(e){}
+    }
+  }
+  if(toolOn('time')&&/ساعت|تاریخ|وقت|زمان|امروز/.test(low)){
+    const n=new Date();
+    return{name:'زمان',text:`${n.toLocaleDateString('fa-IR',{weekday:'long',year:'numeric',month:'long',day:'numeric'})} — ${n.toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}`};
+  }
+  if(toolOn('rand')&&/تصادفی|شانسی|قرعه/.test(low)){
+    const m=low.match(/بین\s*(\d+)\s*تا\s*(\d+)/);
+    if(m){const a=+m[1],b=+m[2];return{name:'تصادفی',text:`عدد: ${Math.floor(Math.random()*(b-a+1))+a}`};}
+    return{name:'تصادفی',text:`عدد: ${Math.floor(Math.random()*100)+1}`};
+  }
+  return null;
+}
+function reasonAbout(q, context){
+  if(!$('useReason').checked||!toolOn('reason'))return null;
+  const style=$('style').value, low=q.toLowerCase();
+  const isDesign=/چطور|چگونه|طراحی|معماری|انتخاب|بهتر است|مقایسه|تفاوت|چرا|راهکار|حل|مشکل|بهینه/.test(low);
+  const isWhat=/چیست|یعنی چی|تعریف|معنی/.test(low);
+  if(!isDesign&&!isWhat&&!context)return null;
+  let out='';
+  if(context)out+=`### درک مسئله\n${context.slice(0,400)}\n\n`;
+  if(isDesign||style==='architect'){
+    out+=`### رویکرد من (معمار سیستم)\n1. **تعریف مسئله**: ${q.slice(0,120)}\n2. **محدودیت‌های معمول**: عملکرد، پیچیدگی، قابلیت نگهداری، زمان تحویل\n3. **گزینه‌ها را با trade-off بسنج**\n4. **توصیه را مشروط به شرایط بگو**\n\n`;
+  }
+  if(style==='strict')out+=`فرضیات را صریح کن. بدون داده، نتیجه‌گیری قطعی نکن.\n`;
+  return out||null;
+}
+
+/* ========== LLM layers ========== */
+function locEndpoint(){let base=$('locUrl').value.trim().replace(/\/+$/,'');if(!base)return null;if(/\/v1$/.test(base))return base+'/chat/completions';return base+'/v1/chat/completions';}
+async function localChat(msgs,set){
+  const ep=locEndpoint();if(!ep)throw new Error('no base');
+  const headers={'Content-Type':'application/json'};
+  const key=$('locKey').value.trim();if(key)headers['Authorization']='Bearer '+key;
+  const res=await fetch(ep,{method:'POST',headers,signal:AbortSignal.timeout(90000),body:JSON.stringify({model:$('locModel').value.trim()||'local',messages:msgs,stream:true,temperature:0.6})});
+  if(!res.ok)throw new Error('local '+res.status);
+  let out='',bufAll='',buf='';const rd=res.body?res.body.getReader():null;const dec=new TextDecoder();
+  const eat=(chunk)=>{buf+=chunk;bufAll+=chunk;const lines=buf.split('\n');buf=lines.pop();
+    for(const ln of lines){const s=ln.trim();if(!s.startsWith('data:'))continue;const d=s.slice(5).trim();if(!d||d==='[DONE]')continue;
+      try{const j=JSON.parse(d);const c=(j.choices&&j.choices[0]&&((j.choices[0].delta&&j.choices[0].delta.content)||(j.choices[0].message&&j.choices[0].message.content)))||'';if(c){out+=c;if(set)set(out);}}catch(e){}}};
+  if(rd){while(true){const r=await rd.read();if(r.done)break;eat(dec.decode(r.value,{stream:true}));}eat('\n');}
+  else eat(await res.text());
+  if(!out){try{const j=JSON.parse(bufAll);const c=(j.choices&&j.choices[0]&&((j.choices[0].delta&&j.choices[0].delta.content)||(j.choices[0].message&&j.choices[0].message.content)))||'';if(c){out=c;if(set)set(out);}}catch(e){}}
+  if(!out)throw new Error('empty');
+  return out;
+}
+async function probeLocal(silent){
+  const ports=[8080,11434,1234,5000,8000,4000,9090,3000,11435];
+  $('locSt').textContent='در حال جستجو...';
+  for(const p of ports){for(const path of ['/v1/models','/models']){
+    try{const r=await fetch(`http://127.0.0.1:${p}${path}`,{signal:AbortSignal.timeout(1200)});
+      if(r.ok){const j=await r.json().catch(()=>null);const m=j&&j.data&&j.data[0]&&j.data[0].id;
+        $('locUrl').value=`http://127.0.0.1:${p}/v1`;if(m)$('locModel').value=m;$('useLocal').checked=true;
+        $('locSt').textContent='متصل ✅ پورت '+p+(m?' — '+m:'');if(!silent)toast('سرور محلی پیدا شد ✅');rSetLayers();saveSet();return true;}}catch(e){}}}
+  $('locSt').textContent='سروری روی دستگاه پیدا نشد';if(!silent)toast('سرور محلی پیدا نشد — تنظیم دستی یا LAN');rSetLayers();return false;
+}
+async function loadWebLLM(){
+  if(!navigator.gpu){$('llmSt').textContent='WebGPU در دسترس نیست';return toast('مرورگر WebGPU ندارد (Chrome/Edge)');}
+  $('llmSt').textContent='در حال دانلود مدل...';toast('دانلود مدل شروع شد');
+  try{const mod=await import('https://esm.run/@mlc-ai/web-llm');
+    LLM=await mod.CreateMLCEngine($('llmModel').value,{initProgressCallback:(r)=>{$('llmSt').textContent='دانلود: '+Math.round((r.progress||0)*100)+'%';}});
+    $('llmSt').textContent='آماده ✅';$('useLLM').checked=true;saveSet();rSetLayers();toast('مدل آماده است');
+  }catch(e){$('llmSt').textContent='خطا: '+(e.message||e);toast('خطا در بارگذاری مدل');}
+}
+async function llmChat(msgs,set){
+  const r=await LLM.chat.completions.create({messages,temperature:0.6,stream:true});
+  let out='';for await(const ch of r){const d=ch.choices&&ch.choices[0]&&ch.choices[0].delta&&ch.choices[0].delta.content||'';if(d){out+=d;if(set)set(out);}}
+  if(!out)throw new Error('empty');return out;
+}
+async function gemChat(msgs,set){
+  const key=$('gemKey').value.trim();if(!key)throw new Error('no key');
+  const sys=msgs[0].content;
+  const contents=msgs.slice(1).map(m=>({role:m.role==='user'?'user':'model',parts:[{text:m.content}]}));
+  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent($('gemModel').value||'gemini-2.5-flash')}:generateContent?key=${encodeURIComponent(key)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({systemInstruction:{parts:[{text:sys}]},contents}),signal:AbortSignal.timeout(30000)});
+  if(!res.ok)throw new Error('gemini '+res.status);
+  const d=await res.json();
+  const out=((d.candidates&&d.candidates[0]&&d.candidates[0].content&&d.candidates[0].content.parts)||[]).map(p=>p.text).join('');
+  if(!out)throw new Error('empty');if(set)set(out);return out;
+}
+async function cloudChat(msgs,set){
+  const res=await fetch('https://text.pollinations.ai/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:msgs,private:true,seed:Math.floor(Math.random()*1e6)}),signal:AbortSignal.timeout(45000)});
+  if(!res.ok)throw new Error('cloud '+res.status);
+  const out=(await res.text()).trim();if(!out)throw new Error('empty');if(set)set(out);return out;
+}
+function buildMsgs(q,ctx){
+  const sys=($('prompt').value||'تو یک معمار سیستم باتجربه هستی.')
+    +'\n\nنام تو: '+($('name').value||'معمار')+'\nسبک پاسخ: '+$('style').value
+    +(ctx?'\n\nزمینه بازیابی‌شده (اولویت با این است):\n'+ctx:'')
+    +'\n\nقوانین: پاسخ فارسی روان و ساختاریافته بده؛ trade-offها را صریح بگو؛ اگر زمینه کافی نیست صادقانه بگو چه داده‌ای کم است؛ بدون حاشیه.';
+  const msgs=[{role:'system',content:sys}];
+  H.slice(-8).forEach(m=>msgs.push({role:m.r==='u'?'user':'assistant',content:String(m.t).slice(0,2000)}));
+  msgs.push({role:'user',content:q});
+  return msgs;
+}
+function layerReady(id){
+  if(id==='local')return $('useLocal').checked&&!!locEndpoint();
+  if(id==='webllm')return !!LLM&&$('useLLM').checked;
+  if(id==='gem')return $('useGem').checked&&!!$('gemKey').value.trim()&&S.online;
+  if(id==='cloud')return $('useCloud').checked&&S.online;
+  return false;
+}
+function activeOrder(){
+  const off=CFG.order.filter(id=>OFFL.includes(id)), on=CFG.order.filter(id=>!OFFL.includes(id));
+  if(CFG.mode==='offline-only')return off;
+  if(CFG.mode==='online-only')return on;
+  if(CFG.mode==='online-first')return on.concat(off);
+  return off.concat(on);
+}
+function firstReady(){for(const id of activeOrder())if(layerReady(id))return layerMeta(id).n;return null;}
+
+/* ========== MAIN BRAIN (max-knowledge) ========== */
+async function think(q,set){
+  const low=q.toLowerCase(), M=CFG.mode;
+  const onOK=S.online&&M!=='offline-only';
+  const offOK=M!=='online-only';
+
+  const lt=localTool(q); if(lt)return{text:lt.text,tool:lt.name,tags:[]};
+
+  const hasUrl=/https?:\/\//.test(q);
+  if(hasUrl&&onOK&&toolOn('web_fetch')){
+    try{const proxy='https://api.allorigins.win/raw?url='+encodeURIComponent(q.match(/https?:\/\/[^\s]+/)[0]);
+      const res=await fetch(proxy,{signal:AbortSignal.timeout(12000)});let t=await res.text();
+      t=t.replace(/<script[^>]*>[\s\S]*?<\/script>/gi,' ').replace(/<style[^>]*>[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+      if(t.length>40)return{text:'خلاصه صفحه:\n'+t.slice(0,900)+'...',tool:'خواندن وب',tags:['net']};}catch(e){}
+  }
+
+  /* --- hybrid index retrieval (offline) --- */
+  let hits=offOK?searchIndex(q,5):[];
+  const q2=expandQuery(q,hits);
+  if(q2!==q){
+    const h2=offOK?searchIndex(q2,5):[];
+    const seen=new Set(hits.map(h=>h.ch.doc.title+'#'+h.ch.i));
+    h2.forEach(h=>{const k=h.ch.doc.title+'#'+h.ch.i;if(!seen.has(k)){seen.add(k);hits.push(h);}});
+    hits.sort((a,b)=>b.s-a.s);hits=hits.slice(0,5);
+  }
+  const th=(+$('th').value||25)/100;
+  hits=hits.filter(h=>h.s>=th);
+  const srcFa={domain:'دانش تخصصی',kb:'دانش محلی',mem:'حافظه'};
+  let ctx='',srcs=[];
+  hits.slice(0,3).forEach(h=>{ctx+=`【${srcFa[h.ch.doc.src]||'دانش'}: ${h.ch.doc.title}】\n${h.ch.text}\n\n`;if(!srcs.includes(h.ch.doc.title))srcs.push(h.ch.doc.title);});
+
+  /* --- live sources (online, intent-routed) --- */
+  let srcResults=[],srcRep=[];
+  const gate=/چیست|کیست|کجاست|تعریف|معنی|تاریخچه|چطور|چگونه|مقایسه|؟|\?/.test(low)||q.length>10;
+  if(onOK&&gate&&$('useWeb').checked){
+    const fr=await fetchSources(q);
+    srcResults=fr.results;srcRep=fr.rep;
+    let used=0;
+    for(const r of srcResults){
+      if(ctx.length>3200||used>=3)break;
+      ctx+=`【${r.src}: ${r.title}】\n${r.text}\n\n`;srcs.push(r.title);used++;
+    }
+    if($('autoSave').checked&&srcResults.length){
+      srcResults.slice(0,2).forEach(r=>S.kb.push({id:Date.now()+Math.random(),type:'web',title:'['+r.src+'] '+r.title,content:r.text,url:r.url}));
+      rKB();queueRebuild();
+    }
+  }
+  LASTRET=`پرسش: ${q}\nبسط: ${q2!==q?q2:'(بدون بسط)'}\nآستانه: ${th}\n\n— قطعات ایندکس —\n`+
+    (hits.length?hits.slice(0,8).map(h=>`${h.s.toFixed(3)} | bm25=${h.b.toFixed(2)} cos=${h.c.toFixed(2)} [${h.ch.doc.src}] ${h.ch.doc.title} #${h.ch.i}`).join('\n'):'(بدون برخورد)')+
+    `\n\n— منابع آنلاین —\n`+(srcRep.length?srcRep.join('\n'):'(فعال نشد)');
+
+  /* --- AI layers (offline-first) --- */
+  if(activeOrder().some(layerReady)){
+    const msgs=buildMsgs(q,ctx);
+    for(const id of activeOrder()){
+      if(!layerReady(id))continue;
+      try{
+        if(id==='local'){const out=await localChat(msgs,set);return{text:out,tags:['srv'],src:srcs[0]||null,tool:'سرور محلی: '+($('locModel').value||'Qwen')};}
+        if(id==='webllm'){const out=await llmChat(msgs,set);return{text:out,tags:['llm'],src:srcs[0]||null,tool:'WebLLM'};}
+        if(id==='gem'){const out=await gemChat(msgs,set);return{text:out,tags:['cloud'],src:srcs[0]||null,tool:'Gemini'};}
+        if(id==='cloud'){const out=await cloudChat(msgs,set);return{text:out,tags:['cloud'],src:srcs[0]||null,tool:'هوش ابری'};}
+      }catch(e){}
+    }
+  }
+
+  /* --- fallback: retrieved knowledge itself --- */
+  if(hits.length){
+    const h=hits[0];
+    let text=`📚 ${h.ch.doc.title}\n\n${h.ch.text}`;
+    if(hits[1])text+=`\n\n➕ مرتبط دیگر: ${hits[1].ch.doc.title}\n${hits[1].ch.text.slice(0,400)}`;
+    const r=reasonAbout(q,h.ch.text);if(r)text=r+'\n'+text;
+    return{text,tool:'بازیابی هیبریدی دانش',tags:['think'],src:h.ch.doc.title};
+  }
+  if(srcResults.length){
+    let text=srcResults.slice(0,4).map(r=>`• ${r.title}\n${r.text.slice(0,300)}`).join('\n\n');
+    const r=reasonAbout(q,null);if(r)text=r+'\n'+text;
+    return{text,tool:'منابع آنلاین زنده',tags:['net'],src:srcResults[0].title};
+  }
+
+  if(/اسم|کی هستی|who are you|تجربه/.test(low))return{text:`من ${$('name').value||'معمار'} هستم — معمار سیستم با چارچوب فکری ۲۰ ساله و موتور دانش حداکثری.`,tags:[]};
+  if(/چیکار|قابلیت|چه کار/.test(low))return{text:`• حالت: ${modeFa(M)} · لایه فعال: ${firstReady()||'موتور محلی'}\n• ایندکس: ${IDX.N} قطعه · حافظه: ${MEM.length}\n• منابع زنده: ${onOK?'مجاز':'مسدود'}\n\nمسئله‌ات را بگو.`,tags:[]};
+  if(/خداحافظ|بای|bye/.test(low))return{text:'موفق باشی. معماری خوب، تصمیم‌های سخت را ساده می‌کند.',tags:[]};
+  if($('useReason').checked&&/چطور|چگونه|طراحی|بهتر|انتخاب|چرا|مشکل|راه/.test(low)){
+    const r=reasonAbout(q,null);
+    return{text:(r||'')+`برای پاسخ دقیق‌تر:\n• محدودیت‌ها را بگو (latency؟ throughput؟ تیم؟)\n• دانش مرتبط اضافه کن تا ایندکس شود\n• دکمه 🔎 گزارش بازیابی را ببین`,tags:['think']};
+  }
+  return{text:`در دانش چیزی مرتبط پیدا نکردم.${onOK?' منابع زنده هم نتیجه‌ای نداشتند — پرسش را دقیق‌تر بپرس یا بگو «جستجو کن ...».':' (حالت آفلاین: وب مسدود است.)'}\n\nیا دانش/اصل مرتبط اضافه کن تا ایندکس شود.`,tags:[]};
+}
+function showRet(){$('mt').textContent='گزارش بازیابی';$('mb').textContent=LASTRET||'هنوز بازیابی انجام نشده';$('ov').classList.add('show');}
+
+/* ========== chat / history / memory ========== */
+function pushH(r,t,meta){H.push(Object.assign({r,t,ts:Date.now()},meta||{}));const mx=Math.max(50,+$('histMax').value||300);if(H.length>mx)H=H.slice(-mx);localStorage.setItem('ab_arch_h',JSON.stringify(H));hCount();}
+function hCount(){$('hCount').textContent=H.length;}
+function pushMem(q,a){MEM.push({id:Date.now(),title:q.slice(0,90),content:String(a).slice(0,1200)});if(MEM.length>150)MEM=MEM.slice(-150);localStorage.setItem('ab_arch_m',JSON.stringify(MEM));queueRebuild();renderIdxStats();}
+function msgHtml(m){
+  const n=esc($('name').value||'معمار');
+  if(m.r==='u')return `<div class="msg u"><div class="m">شما</div>${esc(m.t)}</div>`;
+  let t=`<div class="msg a"><div class="m">${n}</div>${esc(m.t).replace(/\n/g,'<br>')}`;
+  if(m.src)t+=`<div class="tag kb">📚 ${esc(m.src)}</div>`;
+  if(m.tool)t+=`<div class="tag tool">🛠️ ${esc(m.tool)}</div>`;
+  (m.tags||[]).forEach(g=>{
+    if(g==='net')t+=`<div class="tag net">🌐 اینترنت</div>`;
+    if(g==='think')t+=`<div class="tag think">🧠 استدلال</div>`;
+    if(g==='cloud')t+=`<div class="tag cloud">☁️ هوش ابری</div>`;
+    if(g==='llm')t+=`<div class="tag llm">🧬 روی دستگاه</div>`;
+    if(g==='srv')t+=`<div class="tag srv">🔌 Qwen محلی</div>`;
+  });
+  return t+'</div>';
+}
+function renderMsgs(){
+  const box=$('msgs'),n=$('name').value||'معمار';
+  if(!H.length){
+    box.innerHTML=`<div class="msg a"><div class="m">${esc(n)}</div>سلام. مسئله‌ات را بگو — تعریف می‌کنم، گزینه‌ها را می‌سنجم و با دانش حداکثری جواب می‌دهم.</div>
+    <div class="chips">
+      <span class="chip" onclick="ask('deadlock چیست و چطور جلوگیری می‌شود؟')">deadlock چیست؟</span>
+      <span class="chip" onclick="ask('مقایسه monolithic و microkernel')">monolithic vs microkernel</span>
+      <span class="chip" onclick="ask('طراحی زمان‌بند برای سیستم real-time')">زمان‌بند real-time</span>
+      <span class="chip" onclick="ask('مقاله اصلی Raft چیست؟')">🎓 Raft paper</span>
+      <span class="chip" onclick="ask('2+2*10')">🧮 2+2*10</span>
+    </div>`;return;
+  }
+  box.innerHTML=H.map(msgHtml).join('');box.scrollTop=box.scrollHeight;
+}
+function ask(t){$('cin').value=t;send();}
+async function send(){
+  const inp=$('cin'),text=inp.value.trim();if(!text)return;
+  const box=$('msgs'),n=$('name').value||'معمار';
+  if(!H.length)box.innerHTML='';
+  box.insertAdjacentHTML('beforeend',`<div class="msg u"><div class="m">شما</div>${esc(text)}</div>`);
+  pushH('u',text);inp.value='';box.scrollTop=box.scrollHeight;
+  const fr=firstReady();
+  const th=document.createElement('div');th.className='msg th';
+  th.innerHTML=`<div class="m">${esc(n)}</div>${fr?'در حال گفتگو با '+esc(fr)+'...':'در حال بازیابی دانش...'}`;
+  box.appendChild(th);box.scrollTop=box.scrollHeight;
+  let node=null,body=null;
+  const set=$('useStream').checked?(t)=>{if(!node){th.remove();node=document.createElement('div');node.className='msg a';node.innerHTML=`<div class="m">${esc(n)}</div><span class="bd"></span>`;box.appendChild(node);body=node.querySelector('.bd');}body.innerHTML=esc(t).replace(/\n/g,'<br>');box.scrollTop=box.scrollHeight;}:null;
+  const res=await think(text,set);
+  th.remove();
+  pushH('a',res.text,{tags:res.tags,tool:res.tool,src:res.src});
+  if($('useMem').checked&&res.text.length>40)pushMem(text,res.text);
+  renderMsgs();
+}
+function openChat(){$('chat').classList.add('open');$('cTitle').textContent=$('name').value||'معمار';renderMsgs();$('cin').focus();}
+function closeChat(){$('chat').classList.remove('open');}
+function clr(){if(H.length&&!confirm('کل تاریخچه چت پاک شود؟'))return;H=[];localStorage.setItem('ab_arch_h','[]');hCount();renderMsgs();toast('پاک شد');}
+function mic(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return toast('مرورگر از ورودی صوتی پشتیبانی نمی‌کند');
+  if(REC){REC.stop();REC=null;$('micB').classList.remove('rec');return;}
+  REC=new SR();REC.lang=$('vLang').value||'fa-IR';REC.interimResults=false;
+  $('micB').classList.add('rec');toast('🎙 گوش می‌کنم...');
+  REC.onresult=e=>{$('cin').value=($('cin').value+' '+e.results[0][0].transcript).trim();};
+  REC.onerror=()=>toast('خطای صوتی');REC.onend=()=>{REC=null;$('micB').classList.remove('rec');};
+  REC.start();
+}
+function histMD(){const n=$('name').value||'معمار';return `# تاریخچه چت «${n}»\nexport: ${new Date().toLocaleString('fa-IR')}\n\n`+H.map(m=>`### ${m.r==='u'?'👤 شما':'🤖 '+n} — ${new Date(m.ts).toLocaleString('fa-IR')}\n\n${m.t}\n`).join('\n---\n\n');}
+function blobDl(text,fname,mime){const b=new Blob(['\ufeff'+text],{type:mime||'text/plain;charset=utf-8'});const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=fname;a.click();URL.revokeObjectURL(u);}
+function dlHist(){if(!H.length)return toast('تاریخچه خالی است');blobDl(histMD(),('chat-'+Date.now()+'.md'),'text/markdown;charset=utf-8');toast('دانلود Markdown');}
+function dlHistJSON(){if(!H.length)return toast('تاریخچه خالی است');blobDl(JSON.stringify({agent:$('name').value,exportedAt:new Date().toISOString(),history:H},null,2),('chat-'+Date.now()+'.json'),'application/json');toast('دانلود JSON');}
+function cpHist(){if(!H.length)return toast('تاریخچه خالی است');navigator.clipboard.writeText(histMD());toast('کپی شد');}
+function pdfHist(){
+  if(!H.length)return toast('تاریخچه خالی است');
+  const n=esc($('name').value||'معمار');
+  const w=window.open('','_blank');if(!w)return toast('مرورگر پنجره چاپ را بست');
+  w.document.write(`<html dir="rtl" lang="fa"><head><meta charset="utf-8"><title>تاریخچه ${n}</title><style>body{font-family:Tahoma,'Vazirmatn',sans-serif;padding:28px;line-height:1.8;color:#111}h1{font-size:18px}.m{border-bottom:1px solid #ddd;margin:14px 0;padding-bottom:10px}.r{font-weight:bold;color:#555;font-size:12px;margin-bottom:6px}pre{white-space:pre-wrap;font-family:inherit;font-size:14px;margin:0}</style></head><body><h1>📜 تاریخچه چت «${n}» — ${new Date().toLocaleString('fa-IR')}</h1>`+H.map(m=>`<div class="m"><div class="r">${m.r==='u'?'👤 شما':' '+n} — ${new Date(m.ts).toLocaleString('fa-IR')}</div><pre>${esc(m.t)}</pre></div>`).join('')+`<scr`+`ipt>setTimeout(()=>window.print(),300)</scr`+`ipt></body></html>`);
+  w.document.close();
+}
+
+/* ========== graph (vector similarity) ========== */
+let GNET=null;
+function buildGraph(){
+  const items=[];
+  DOMAIN.forEach(d=>items.push({id:'d:'+d.t,label:d.t,group:'domain',text:d.a}));
+  S.kb.forEach(k=>items.push({id:'k:'+k.id,label:k.title,group:k.type||'text',text:k.content}));
+  items.forEach(it=>{it.vl=vecOf(it.label);it.vt=vecOf(String(it.text).slice(0,1500));});
+  const nodes=items.map(it=>({id:it.id,label:String(it.label).slice(0,26),group:it.group,title:String(it.text).slice(0,220)}));
+  const edges=[];
+  for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
+    const s=Math.max(cos(items[i].vl,items[j].vt),cos(items[j].vl,items[i].vt));
+    if(s>=0.14)edges.push({from:items[i].id,to:items[j].id,value:s});
+  }
+  return {nodes,edges};
+}
+function openGraph(){
+  $('graphV').classList.add('open');
+  const g=buildGraph();const host=$('gnet');host.innerHTML='';
+  if(!g.nodes.length){host.innerHTML='<div class="empty"><div class="i">🕸️</div><p>دانشی برای نمایش نیست</p></div>';return;}
+  if(window.vis){
+    const colors={domain:'#6366f1',text:'#22d3ee',qa:'#10b981',principle:'#f59e0b',web:'#a855f7'};
+    const nodes=new vis.DataSet(g.nodes.map(n=>({id:n.id,label:n.label,shape:'dot',size:n.group==='domain'?20:14,color:{background:colors[n.group]||'#8b9cb3',border:'rgba(255,255,255,.15)',highlight:{background:'#ffffff',border:'#6366f1'}},font:{color:'#e8eef7',size:12,face:'Vazirmatn'},title:n.title})));
+    const edges=new vis.DataSet(g.edges.map(e=>({from:e.from,to:e.to,width:1+e.value*3,color:{color:'#2a3a52',highlight:'#6366f1'},smooth:{type:'dynamic'}})));
+    try{if(GNET)GNET.destroy();GNET=new vis.Network(host,{nodes,edges},{physics:{barnesHut:{gravitationalConstant:-2800,springLength:120,springConstant:.04}},interaction:{hover:true,zoomSpeed:.6},layout:{randomSeed:7}});return;}catch(e){}
+  }
+  fallbackGraph(host,g);
+}
+function fallbackGraph(host,g){
+  const c=document.createElement('canvas');host.appendChild(c);
+  const dpr=window.devicePixelRatio||1;
+  c.width=host.clientWidth*dpr;c.height=host.clientHeight*dpr;c.style.width='100%';c.style.height='100%';
+  const N=g.nodes.map(n=>({...n,x:c.width/2+(Math.random()-.5)*c.width*.6,y:c.height/2+(Math.random()-.5)*c.height*.6,vx:0,vy:0}));
+  const idx={};N.forEach((n,i)=>idx[n.id]=i);
+  const E=g.edges.map(e=>[idx[e.from],idx[e.to]]).filter(p=>p[0]!=null&&p[1]!=null);
+  const colors={domain:'#6366f1',text:'#22d3ee',qa:'#10b981',principle:'#f59e0b',web:'#a855f7'};
+  let tick=0;
+  (function step(){
+    tick++;
+    for(let i=0;i<N.length;i++)for(let j=i+1;j<N.length;j++){const a=N[i],b=N[j];let dx=a.x-b.x,dy=a.y-b.y;let d2=dx*dx+dy*dy||1;const d=Math.sqrt(d2);const f=1400*dpr*dpr/d2;dx/=d;dy/=d;a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f;}
+    E.forEach(p=>{const a=N[p[0]],b=N[p[1]];let dx=b.x-a.x,dy=b.y-a.y;const d=Math.sqrt(dx*dx+dy*dy)||1;const f=(d-130*dpr)*.012;dx/=d;dy/=d;a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f;});
+    N.forEach(n=>{n.vx+=(c.width/2-n.x)*.003;n.vy+=(c.height/2-n.y)*.003;n.vx*=.82;n.vy*=.82;n.x+=n.vx;n.y+=n.vy;});
+    const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);
+    x.strokeStyle='#26364c';x.lineWidth=1*dpr;x.beginPath();
+    E.forEach(p=>{x.moveTo(N[p[0]].x,N[p[0]].y);x.lineTo(N[p[1]].x,N[p[1]].y);});x.stroke();
+    N.forEach(n=>{x.fillStyle=colors[n.group]||'#8b9cb3';x.beginPath();x.arc(n.x,n.y,(n.group==='domain'?11:8)*dpr,0,7);x.fill();x.fillStyle='#e8eef7';x.font=(11*dpr)+'px Vazirmatn, Tahoma';x.textAlign='center';x.fillText(n.label,n.x,n.y+22*dpr);});
+    if(tick<350)requestAnimationFrame(step);
+  })();
+}
+function closeGraph(){$('graphV').classList.remove('open');if(GNET){GNET.destroy();GNET=null;}}
+
+/* ========== settings data ops ========== */
+function dlSet(){blobDl(JSON.stringify(engineSnap(),null,2),'architect-engine.json','application/json');toast('دانلود تنظیمات');}
+function impSet(){const s=prompt('JSON تنظیمات را بچسبان:');if(!s)return;try{applyEngine(JSON.parse(s));saveSet();setModeUI();rSetLayers();toast('اعمال شد');}catch(e){toast('JSON نامعتبر');}}
+function resetSet(){
+  CFG={mode:'offline-first',order:['local','webllm','gem','cloud']};
+  ['useKB','useTools','useWeb','useReason','useDomain','useExp','useMem','useStream','autoProbe','useLocal','useCloud'].forEach(i=>$(i).checked=true);
+  $('useLLM').checked=false;$('useGem').checked=false;$('autoSave').checked=false;
+  $('th').value=25;$('thV').textContent=25;$('histMax').value=300;$('vLang').value='fa-IR';
+  saveSet();setModeUI();rSetLayers();toast('بازنشانی شد');
+}
+function wipeAll(){if(!confirm('همه داده‌ها (ذخیره‌ها، تاریخچه، حافظه، تنظیمات) پاک شود؟'))return;['ab_arch_a','ab_arch_c','ab_arch_h','ab_arch_s','ab_arch_m','ab_arch_src'].forEach(k=>localStorage.removeItem(k));location.reload();}
+
+/* ========== config / agents ========== */
+function cfg(){
+  return{id:S.curId||Date.now(),name:$('name').value,description:$('desc').value,avatar:$('avatar').value,style:$('style').value,prompt:$('prompt').value,tools:S.tools.filter(t=>t.on).map(t=>t.id),knowledge:S.kb,
+    settings:{useKB:$('useKB').checked,useTools:$('useTools').checked,useWeb:$('useWeb').checked,useReason:$('useReason').checked,useDomain:$('useDomain').checked,th:+$('th').value,useCloud:$('useCloud').checked,useGem:$('useGem').checked,gemKey:$('gemKey').value,gemModel:$('gemModel').value,useLLM:$('useLLM').checked,llmModel:$('llmModel').value,useLocal:$('useLocal').checked,locUrl:$('locUrl').value,locModel:$('locModel').value,locKey:$('locKey').value},
+    engine:engineSnap(),updatedAt:new Date().toISOString(),version:'architect-25'};
+}
+function save(){
+  const c=cfg();const i=S.agents.findIndex(a=>a.id===c.id);
+  if(i>=0)S.agents[i]=c;else{S.agents.push(c);S.curId=c.id;}
+  localStorage.setItem('ab_arch_a',JSON.stringify(S.agents));localStorage.setItem('ab_arch_c',JSON.stringify(c));saveSet();
+  rAgents();stats();toast('ذخیره شد');
+}
+function apply(c){
+  S.curId=c.id;$('name').value=c.name||'';$('desc').value=c.description||'';$('avatar').value=c.avatar||'🧠';$('style').value=c.style||'architect';$('prompt').value=c.prompt||'';
+  if(c.tools){S.tools.forEach(t=>t.on=c.tools.includes(t.id));rTools();}
+  if(c.knowledge){S.kb=c.knowledge;rKB();}
+  if(c.settings){const s=c.settings;
+    $('useKB').checked=s.useKB??true;$('useTools').checked=s.useTools??true;$('useWeb').checked=s.useWeb??true;$('useReason').checked=s.useReason??true;$('useDomain').checked=s.useDomain??true;$('th').value=s.th??25;$('thV').textContent=s.th??25;
+    $('useCloud').checked=s.useCloud??true;$('useGem').checked=s.useGem??false;$('gemKey').value=s.gemKey||'';$('gemModel').value=s.gemModel||'gemini-2.5-flash';
+    $('useLLM').checked=(s.useLLM&&LLM)?true:false;$('llmModel').value=s.llmModel||$('llmModel').value;
+    $('useLocal').checked=s.useLocal??true;$('locUrl').value=s.locUrl||'http://127.0.0.1:8080/v1';$('locModel').value=s.locModel||'qwen2.5-coder-3b';$('locKey').value=s.locKey||'';}
+  if(c.engine)applyEngine(c.engine);
+  setModeUI();rSetLayers();queueRebuild();
+}
+function rAgents(){
+  const el=$('alist');
+  if(!S.agents.length){el.innerHTML='<div class="empty"><div class="i">🗂️</div><p>خالی</p></div>';return;}
+  el.innerHTML=S.agents.map(a=>`<div class="ac" onclick="loadA(${a.id})"><div class="l"><div class="av">${a.avatar||'🧠'}</div><div style="min-width:0"><div style="font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(a.name)}</div><div style="font-size:.72rem;color:var(--dim)">${a.style||'architect'}</div></div></div><button class="btn btn-d btn-sm" onclick="event.stopPropagation();delA(${a.id})">حذف</button></div>`).join('');
+}
+function loadA(id){const a=S.agents.find(x=>x.id===id);if(a){apply(a);go('basic');toast('بارگذاری');}}
+function delA(id){if(!confirm('حذف؟'))return;S.agents=S.agents.filter(x=>x.id!==id);localStorage.setItem('ab_arch_a',JSON.stringify(S.agents));rAgents();stats();toast('حذف شد');}
+function newA(){S.curId=null;S.kb=[];S.tools=JSON.parse(JSON.stringify(TOOLS0));$('name').value='معمار جدید';$('desc').value='';$('prompt').value='';rTools();rKB();queueRebuild();go('basic');toast('آماده');}
+function show(){$('mt').textContent='JSON';$('mb').textContent=JSON.stringify(cfg(),null,2);$('ov').classList.add('show');}
+function dl(){const c=cfg(),b=new Blob([JSON.stringify(c,null,2)],{type:'application/json'});const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=(c.name||'architect')+'.json';a.click();URL.revokeObjectURL(u);toast('دانلود');}
+function cp(){navigator.clipboard.writeText(JSON.stringify(cfg(),null,2));toast('کپی');}
+function cpm(){navigator.clipboard.writeText($('mb').textContent);toast('کپی');}
+function closeM(){$('ov').classList.remove('show');}
+function stats(){$('sT').textContent=S.tools.filter(t=>t.on).length;$('sK').textContent=S.kb.length;$('sA').textContent=S.agents.length;}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+init();
+</script>
+</body></html>

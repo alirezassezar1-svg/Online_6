@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PROJECTVERSE</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0c;
+            --bg-secondary: #121216;
+            --bg-tertiary: #1a1a20;
+            --text-primary: #e0e0e5;
+            --text-secondary: #a0a0b0;
+            --accent-blue: #00e5ff;
+            --accent-violet: #b388ff;
+            --accent-success: #00e676;
+            --accent-warning: #ffab00;
+            --accent-error: #ff5252;
+            --border: #2a2a35;
+            --radius: 8px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Vazirmatn", sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        [dir="rtl"] body { font-family: "Vazirmatn", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+        /* Layout */
+        .app-container { display: flex; min-height: 100vh; }
+        
+        .sidebar {
+            width: 260px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 20px;
+            max-width: 100%;
+        }
+
+        /* Mobile Nav */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            z-index: 101;
+            padding: 0 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hamburger { background: none; border: none; color: var(--text-primary); font-size: 24px; cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .mobile-header { display: flex; }
+            .sidebar { transform: translateX(-100%); }
+            [dir="rtl"] .sidebar { transform: translateX(100%); }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 80px 15px 20px; }
+        }
+
+        /* Components */
+        .logo { padding: 0 20px 20px; font-size: 20px; font-weight: 700; color: var(--accent-blue); letter-spacing: 1px; border-bottom: 1px solid var(--border); margin-bottom: 10px;}
+        
+        .nav-item {
+            display: block;
+            padding: 12px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        [dir="rtl"] .nav-item { border-left: none; border-right: 3px solid transparent; }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--bg-tertiary);
+            color: var(--accent-blue);
+            border-left-color: var(--accent-blue);
+        }
+        [dir="rtl"] .nav-item:hover, [dir="rtl"] .nav-item.active { border-right-color: var(--accent-blue); }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        .btn-primary { background: var(--accent-blue); color: #000; }
+        .btn-primary:hover { background: #33eaff; }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+        .btn-danger { background: var(--accent-error); color: #fff; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--text-secondary); }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        .form-control:focus { outline: none; border-color: var(--accent-blue); }
+        select.form-control { appearance: none; }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge-verified { background: rgba(0, 230, 118, 0.2); color: var(--accent-success); }
+        .badge-unverified { background: rgba(255, 171, 0, 0.2); color: var(--accent-warning); }
+        .badge-private { background: rgba(255, 82, 82, 0.2); color: var(--accent-error); }
+
+        .grid { display: grid; gap: 20px; }
+        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            z-index: 1000;
+            display: none;
+            box-shadow: var(--shadow);
+        }
+        .toast.show { display: block; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8); z-index: 200;
+            display: none; align-items: center; justify-content: center;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 24px; width: 90%; max-width: 600px;
+            max-height: 90vh; overflow-y: auto;
+        }
+
+        .studio-output {
+            background: var(--bg-primary); border: 1px solid var(--border);
+            padding: 16px; border-radius: var(--radius); font-family: monospace;
+            white-space: pre-wrap; word-break: break-word; font-size: 13px;
+            max-height: 400px; overflow-y: auto;
+        }
+
+        .empty-state { text-align: center; padding: 40px; color: var(--text-secondary); }
+        
+        /* Luxury Studio Specifics */
+        .luxury-preview {
+            background: linear-gradient(135deg, #000 0%, #111 100%);
+            border: 1px solid #333;
+            padding: 40px;
+            text-align: center;
+            font-family: 'Georgia', serif;
+        }
+        .luxury-preview h2 { color: #e0e0e0; font-weight: 300; letter-spacing: 2px; margin-bottom: 10px;}
+        .luxury-preview p { color: #888; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="mobile-header">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <div style="font-weight:700; color:var(--accent-blue)">PROJECTVERSE</div>
+        <button class="btn btn-sm btn-secondary" onclick="toggleLang()" id="langToggleMobile">FA</button>
+    </div>
+
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">PROJECTVERSE</div>
+            <nav id="mainNav"></nav>
+            <div style="padding: 20px; border-top: 1px solid var(--border); margin-top: 20px;">
+                <button class="btn btn-secondary btn-sm" style="width:100%; margin-bottom:8px" onclick="toggleLang()" id="langToggle">Switch to Persian</button>
+                <button class="btn btn-secondary btn-sm" style="width:100%" onclick="exportAllData()">Export Backup</button>
+            </div>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+            <!-- Dynamic Content Rendered Here -->
+        </main>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <script>
+    /* =========================================
+       PROJECTVERSE CORE ENGINE
+       ========================================= */
+
+    // 1. INTERNATIONALIZATION (i18n)
+    const i18n = {
+        en: {
+            dashboard: "Dashboard", projects: "All Projects", intake: "Import / Intake", audit: "Technical Audit",
+            studio_docs: "Documentation Studio", studio_ads: "Advertising Studio", studio_cv: "CV & Admin Studio",
+            studio_lux: "Luxury Portfolio", studio_books: "Books & Guides", studio_mag: "Magazine Studio",
+            studio_news: "Newsroom", portfolio: "Portfolio Website", export: "Export Center",
+            integrations: "Integrations", settings: "Settings & Backups",
+            add_project: "Add New Project", search_placeholder: "Search projects...",
+            no_projects: "No projects found. Start by importing or adding one.",
+            project_name: "Project Name", purpose: "Purpose & Problem Solved", type: "Project Type",
+            demo_url: "Live Demo URL", repo_url: "Repository URL", platform: "Hosting Platform",
+            tech_stack: "Technologies Used", status: "Status", role: "Your Role",
+            save: "Save", cancel: "Cancel", delete: "Delete", edit: "Edit",
+            verified: "Verified", unverified: "Unverified", confidential: "Confidential",
+            confirm_delete: "Are you sure you want to delete this project? This cannot be undone.",
+            export_success: "Backup exported successfully.",
+            import_success: "Projects imported successfully.",
+            import_error: "Failed to import file. Please check the format.",
+            lang_switch: "Switch to Persian",
+            generate: "Generate Content", copy_clipboard: "Copy to Clipboard",
+            studio_a_desc: "Generate marketing copy, social posts, and landing page text.",
+            studio_b_desc: "Generate ATS-friendly CV bullets, cover letters, and admin docs.",
+            studio_c_desc: "Generate luxury, editorial-style portfolio presentations.",
+            studio_d_desc: "Generate technical chapters, tutorials, and educational guides.",
+            studio_e_desc: "Generate magazine-style features and project stories.",
+            studio_f_desc: "Generate release notes, changelogs, and development updates."
+        },
+        fa: {
+            dashboard: "داشبورد", projects: "همه پروژه‌ها", intake: "وارد کردن / ثبت", audit: "بررسی فنی",
+            studio_docs: "استودیو مستندات", studio_ads: "استودیو تبلیغات", studio_cv: "استودیو رزومه و اداری",
+            studio_lux: "پورتفولیوی لوکس", studio_books: "کتاب‌ها و راهنماها", studio_mag: "استودیو مجله",
+            studio_news: "اتاق خبر", portfolio: "وب‌سایت پورتفولیو", export: "مرکز خروجی",
+            integrations: "یکپارچه‌سازی", settings: "تنظیمات و پشتیبان‌گیری",
+            add_project: "افزودن پروژه جدید", search_placeholder: "جستجوی پروژه‌ها...",
+            no_projects: "پروژه‌ای یافت نشد. با وارد کردن یا افزودن یک پروژه شروع کنید.",
+            project_name: "نام پروژه", purpose: "هدف و مشکل حل‌شده", type: "نوع پروژه",
+            demo_url: "لینک دمو", repo_url: "لینک مخزن", platform: "پلتفرم میزبانی",
+            tech_stack: "تکنولوژی‌های استفاده‌شده", status: "وضعیت", role: "نقش شما",
+            save: "ذخیره", cancel: "انصراف", delete: "حذف", edit: "ویرایش",
+            verified: "تایید شده", unverified: "تایید نشده", confidential: "محرمانه",
+            confirm_delete: "آیا از حذف این پروژه مطمئن هستید؟ این عمل قابل بازگشت نیست.",
+            export_success: "پشتیبان با موفقیت خروجی گرفته شد.",
+            import_success: "پروژه‌ها با موفقیت وارد شدند.",
+            import_error: "خطا در وارد کردن فایل. لطفاً فرمت را بررسی کنید.",
+            lang_switch: "Switch to English",
+            generate: "تولید محتوا", copy_clipboard: "کپی به کلیپ‌بورد",
+            studio_a_desc: "تولید متن تبلیغاتی، پست‌های شبکه‌های اجتماعی و متن لندینگ پیج.",
+            studio_b_desc: "تولید موارد رزومه ATS-friendly، کاور لتر و مستندات اداری.",
+            studio_c_desc: "تولید ارائه‌های پورتفولیوی لوکس و سرمقاله‌ای.",
+            studio_d_desc: "تولید فصل‌های فنی، آموزش‌ها و راهنماهای آموزشی.",
+            studio_e_desc: "تولید ویژگی‌های مجله‌ای و داستان‌های پروژه.",
+            studio_f_desc: "تولید یادداشت‌های انتشار، تغییرات و به‌روزرسانی‌های توسعه."
+        }
+    };
+
+    let currentLang = localStorage.getItem('pv_lang') || 'en';
+    
+    function t(key) { return i18n[currentLang][key] || key; }
+
+    function toggleLang() {
+        currentLang = currentLang === 'en' ? 'fa' : 'en';
+        localStorage.setItem('pv_lang', currentLang);
+        document.documentElement.lang = currentLang;
+        document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
+        renderApp();
+    }
+
+    // 2. DATABASE (IndexedDB)
+    const DB_NAME = 'ProjectVerseDB';
+    const DB_VERSION = 1;
+    let db;
+
+    function initDB() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_NAME, DB_VERSION);
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('projects')) {
+                    const store = db.createObjectStore('projects', { keyPath: 'id' });
+                    store.createIndex('name_en', 'name_en', { unique: false });
+                    store.createIndex('status', 'status', { unique: false });
+                }
+            };
+            request.onsuccess = (event) => { db = event.target.result; resolve(db); };
+            request.onerror = (event) => reject(event.target.error);
+        });
+    }
+
+    function dbTransaction(storeName, mode) {
+        const tx = db.transaction(storeName, mode);
+        return tx.objectStore(storeName);
+    }
+
+    async function dbAdd(project) {
+        return new Promise((resolve, reject) => {
+            const store = dbTransaction('projects', 'readwrite');
+            const req = store.put(project);
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    async function dbGetAll() {
+        return new Promise((resolve, reject) => {
+            const store = dbTransaction('projects', 'readonly');
+            const req = store.getAll();
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    async function dbGet(id) {
+        return new Promise((resolve, reject) => {
+            const store = dbTransaction('projects', 'readonly');
+            const req = store.get(id);
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    async function dbDelete(id) {
+        return new Promise((resolve, reject) => {
+            const store = dbTransaction('projects', 'readwrite');
+            const req = store.delete(id);
+            req.onsuccess = () => resolve();
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    // 3. STATE & ROUTING
+    let state = {
+        projects: [],
+        currentView: 'dashboard',
+        editingProject: null,
+        searchQuery: ''
+    };
+
+    const routes = [
+        { id: 'dashboard', icon: '📊', label: 'dashboard' },
+        { id: 'projects', icon: '📁', label: 'projects' },
+        { id: 'intake', icon: '📥', label: 'intake' },
+        { id: 'audit', icon: '🔍', label: 'audit' },
+        { id: 'studio_docs', icon: '📄', label: 'studio_docs' },
+        { id: 'studio_ads', icon: '📢', label: 'studio_ads' },
+        { id: 'studio_cv', icon: '📝', label: 'studio_cv' },
+        { id: 'studio_lux', icon: '💎', label: 'studio_lux' },
+        { id: 'studio_books', icon: '📚', label: 'studio_books' },
+        { id: 'studio_mag', icon: '📰', label: 'studio_mag' },
+        { id: 'studio_news', icon: '📰', label: 'studio_news' },
+        { id: 'portfolio', icon: '🌐', label: 'portfolio' },
+        { id: 'export', icon: '📦', label: 'export' },
+        { id: 'integrations', icon: '🔗', label: 'integrations' },
+        { id: 'settings', icon: '⚙️', label: 'settings' }
+    ];
+
+    function navigate(viewId) {
+        state.currentView = viewId;
+        window.location.hash = viewId;
+        renderApp();
+        if (window.innerWidth <= 768) toggleSidebar(false);
+    }
+
+    function toggleSidebar(forceState) {
+        const sidebar = document.getElementById('sidebar');
+        const isOpen = sidebar.classList.contains('open');
+        if (forceState === false || isOpen) sidebar.classList.remove('open');
+        else sidebar.classList.add('open');
+    }
+
+    // 4. UI RENDERING
+    function renderApp() {
+        // Update Nav
+        const nav = document.getElementById('mainNav');
+        nav.innerHTML = routes.map(r => `
+            <a class="nav-item ${state.currentView === r.id ? 'active' : ''}" onclick="navigate('${r.id}')">
+                ${r.icon} ${t(r.label)}
+            </a>
+        `).join('');
+
+        // Update Lang Buttons
+        document.getElementById('langToggle').textContent = t('lang_switch');
+        document.getElementById('langToggleMobile').textContent = currentLang === 'en' ? 'FA' : 'EN';
+
+        // Render Main Content
+        const main = document.getElementById('mainContent');
+        main.innerHTML = renderView(state.currentView);
+    }
+
+    function renderView(viewId) {
+        switch(viewId) {
+            case 'dashboard': return renderDashboard();
+            case 'projects': return renderProjects();
+            case 'intake': return renderIntake();
+            case 'audit': return renderAudit();
+            case 'studio_ads': return renderStudio('A', t('studio_a_desc'));
+            case 'studio_cv': return renderStudio('B', t('studio_b_desc'));
+            case 'studio_lux': return renderStudio('C', t('studio_c_desc'));
+            case 'studio_docs': return renderStudio('D', t('studio_d_desc'));
+            case 'studio_mag': return renderStudio('E', t('studio_e_desc'));
+            case 'studio_news': return renderStudio('F', t('studio_f_desc'));
+            case 'portfolio': return renderPortfolioGen();
+            case 'export': return renderExport();
+            case 'integrations': return renderIntegrations();
+            case 'settings': return renderSettings();
+            default: return renderDashboard();
+        }
+    }
+
+    // 5. VIEWS IMPLEMENTATION
+
+    function renderDashboard() {
+        const total = state.projects.length;
+        const verified = state.projects.filter(p => p.status === 'working').length;
+        const confidential = state.projects.filter(p => p.is_confidential).length;
+
+        return `
+            <h1 style="margin-bottom:20px">${t('dashboard')}</h1>
+            <div class="grid grid-3">
+                <div class="card">
+                    <h3 style="color:var(--text-secondary); font-size:14px">Total Projects</h3>
+                    <p style="font-size:32px; font-weight:700; color:var(--accent-blue)">${total}</p>
+                </div>
+                <div class="card">
+                    <h3 style="color:var(--text-secondary); font-size:14px">Active / Working</h3>
+                    <p style="font-size:32px; font-weight:700; color:var(--accent-success)">${verified}</p>
+                </div>
+                <div class="card">
+                    <h3 style="color:var(--text-secondary); font-size:14px">Confidential</h3>
+                    <p style="font-size:32px; font-weight:700; color:var(--accent-error)">${confidential}</p>
+                </div>
+            </div>
+            <div class="card" style="margin-top:20px">
+                <h2 style="margin-bottom:16px">Quick Actions</h2>
+                <button class="btn btn-primary" onclick="navigate('intake')" style="margin-right:10px; margin-bottom:10px">+ ${t('add_project')}</button>
+                <button class="btn btn-secondary" onclick="navigate('projects')" style="margin-bottom:10px">View ${t('projects')}</button>
+            </div>
+        `;
+    }
+
+    function renderProjects() {
+        const filtered = state.projects.filter(p => 
+            p.name_en.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+            (p.name_fa && p.name_fa.includes(state.searchQuery))
+        );
+
+        return `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px">
+                <h1>${t('projects')}</h1>
+                <button class="btn btn-primary" onclick="navigate('intake')">+ ${t('add_project')}</button>
+            </div>
+            <div class="form-group" style="max-width:400px; margin-bottom:20px">
+                <input type="text" class="form-control" placeholder="${t('search_placeholder')}" value="${state.searchQuery}" oninput="state.searchQuery=this.value; renderApp()">
+            </div>
+            <div class="grid grid-2">
+                ${filtered.length === 0 ? `<div class="empty-state card">${t('no_projects')}</div>` : 
+                filtered.map(p => `
+                    <div class="card">
+                        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:10px">
+                            <h3>${currentLang === 'fa' && p.name_fa ? p.name_fa : p.name_en}</h3>
+                            <div>
+                                ${p.is_confidential ? `<span class="badge badge-private">${t('confidential')}</span>` : ''}
+                                <span class="badge ${p.tech_verified ? 'badge-verified' : 'badge-unverified'}">
+                                    ${p.tech_verified ? t('verified') : t('unverified')}
+                                </span>
+                            </div>
+                        </div>
+                        <p style="color:var(--text-secondary); font-size:13px; margin-bottom:10px">${p.purpose || 'No description'}</p>
+                        <p style="font-size:12px; color:var(--text-secondary); margin-bottom:16px">
+                            <strong>Type:</strong> ${p.type || 'N/A'} | <strong>Status:</strong> ${p.status || 'N/A'}
+                        </p>
+                        <div style="display:flex; gap:8px">
+                            <button class="btn btn-secondary btn-sm" onclick="editProject('${p.id}')">${t('edit')}</button>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete('${p.id}')">${t('delete')}</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function renderIntake() {
+        const p = state.editingProject || {
+            id: crypto.randomUUID(), name_en: '', name_fa: '', purpose: '', type: 'web_app', 
+            demo_url: '', repo_url: '', platform: '', tech_stack: [], status: 'working', 
+            role: '', ai_assisted: false, is_confidential: false, tech_verified: false,
+            created_at: new Date().toISOString()
+        };
+
+        return `
+            <h1 style="margin-bottom:20px">${state.editingProject ? t('edit') : t('add_project')}</h1>
+            <div class="card">
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label>${t('project_name')} (EN)</label>
+                        <input class="form-control" id="f_name_en" value="${p.name_en}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>${t('project_name')} (FA)</label>
+                        <input class="form-control" id="f_name_fa" value="${p.name_fa || ''}" dir="rtl">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>${t('purpose')}</label>
+                    <textarea class="form-control" id="f_purpose" rows="3">${p.purpose || ''}</textarea>
+                </div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label>${t('type')}</label>
+                        <select class="form-control" id="f_type">
+                            <option value="web_app" ${p.type==='web_app'?'selected':''}>Web App</option>
+                            <option value="website" ${p.type==='website'?'selected':''}>Website</option>
+                            <option value="ai_tool" ${p.type==='ai_tool'?'selected':''}>AI Tool</option>
+                            <option value="dev_tool" ${p.type==='dev_tool'?'selected':''}>Developer Tool</option>
+                            <option value="saas" ${p.type==='saas'?'selected':''}>SaaS</option>
+                            <option value="api" ${p.type==='api'?'selected':''}>API / Backend</option>
+                            <option value="mobile" ${p.type==='mobile'?'selected':''}>Mobile App</option>
+                            <option value="other" ${p.type==='other'?'selected':''}>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>${t('status')}</label>
+                        <select class="form-control" id="f_status">
+                            <option value="working" ${p.status==='working'?'selected':''}>Working</option>
+                            <option value="partial" ${p.status==='partial'?'selected':''}>Partially Working</option>
+                            <option value="experimental" ${p.status==='experimental'?'selected':''}>Experimental</option>
+                            <option value="archived" ${p.status==='archived'?'selected':''}>Archived</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label>${t('demo_url')}</label>
+                        <input class="form-control" id="f_demo_url" value="${p.demo_url || ''}" type="url">
+                    </div>
+                    <div class="form-group">
+                        <label>${t('repo_url')}</label>
+                        <input class="form-control" id="f_repo_url" value="${p.repo_url || ''}" type="url">
+                    </div>
+                </div>
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label>${t('platform')}</label>
+                        <input class="form-control" id="f_platform" value="${p.platform || ''}" placeholder="GitHub Pages, Cloudflare, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label>${t('tech_stack')} (Comma separated)</label>
+                        <input class="form-control" id="f_tech_stack" value="${(p.tech_stack || []).join(', ')}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>${t('role')}</label>
+                    <input class="form-control" id="f_role" value="${p.role || ''}">
+                </div>
+                <div style="display:flex; gap:20px; margin-bottom:20px; flex-wrap:wrap">
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer">
+                        <input type="checkbox" id="f_ai_assisted" ${p.ai_assisted ? 'checked' : ''}> AI-Assisted Development
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer">
+                        <input type="checkbox" id="f_confidential" ${p.is_confidential ? 'checked' : ''}> Mark as Confidential
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer">
+                        <input type="checkbox" id="f_verified" ${p.tech_verified ? 'checked' : ''}> Tech Stack Verified by Source Code
+                    </label>
+                </div>
+                <div style="display:flex; gap:10px">
+                    <button class="btn btn-primary" onclick="saveProject()">${t('save')}</button>
+                    <button class="btn btn-secondary" onclick="state.editingProject=null; navigate('projects')">${t('cancel')}</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderAudit() {
+        return `
+            <h1 style="margin-bottom:20px">${t('audit')}</h1>
+            <div class="card">
+                <h3>Technical Analysis Engine</h3>
+                <p style="color:var(--text-secondary); margin: 10px 0 20px">
+                    To analyze a project's actual source code without exposing secrets or requiring backend execution, 
+                    upload a <code>package.json</code>, <code>composer.json</code>, or a ZIP file of the source code. 
+                    The engine will parse dependencies and file structures locally in your browser.
+                </p>
+                <div class="form-group">
+                    <label>Select Project to Audit</label>
+                    <select class="form-control" id="audit_project">
+                        <option value="">-- Select --</option>
+                        ${state.projects.map(p => `<option value="${p.id}">${p.name_en}</option>`).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Upload Source Manifest (package.json / composer.json)</label>
+                    <input type="file" class="form-control" id="audit_file" accept=".json,.zip">
+                </div>
+                <button class="btn btn-primary" onclick="runAudit()">Run Local Analysis</button>
+                <div id="audit_results" style="margin-top:20px"></div>
+            </div>
+        `;
+    }
+
+    function renderStudio(letter, desc) {
+        return `
+            <h1 style="margin-bottom:10px">Studio ${letter}</h1>
+            <p style="color:var(--text-secondary); margin-bottom:20px">${desc}</p>
+            <div class="card">
+                <div class="grid grid-2">
+                    <div class="form-group">
+                        <label>Select Project</label>
+                        <select class="form-control" id="studio_project" onchange="updateStudioPreview('${letter}')">
+                            <option value="">-- Select Project --</option>
+                            ${state.projects.filter(p => !p.is_confidential).map(p => `<option value="${p.id}">${p.name_en}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Target Language</label>
+                        <select class="form-control" id="studio_lang">
+                            <option value="en">English</option>
+                            <option value="fa">Persian</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="generateStudioContent('${letter}')">${t('generate')}</button>
+                <div id="studio_output" style="margin-top:20px"></div>
+            </div>
+        `;
+    }
+
+    function renderPortfolioGen() {
+        return `
+            <h1 style="margin-bottom:20px">${t('portfolio')}</h1>
+            <div class="card">
+                <p style="color:var(--text-secondary); margin-bottom:20px">
+                    Generate a static, responsive portfolio website from your verified projects. 
+                    Confidential projects are automatically excluded.
+                </p>
+                <button class="btn btn-primary" onclick="generatePortfolio()">Generate & Download HTML</button>
+            </div>
+        `;
+    }
+
+    function renderExport() {
+        return `
+            <h1 style="margin-bottom:20px">${t('export')}</h1>
+            <div class="card">
+                <h3>Data Export</h3>
+                <p style="color:var(--text-secondary); margin: 10px 0 20px">Export your entire database as a JSON backup, or export individual projects as CSV/Markdown.</p>
+                <button class="btn btn-primary" onclick="exportAllData()" style="margin-right:10px; margin-bottom:10px">Export Full JSON Backup</button>
+                <button class="btn btn-secondary" onclick="exportCSV()" style="margin-bottom:10px">Export CSV</button>
+            </div>
+            <div class="card">
+                <h3>Data Import</h3>
+                <p style="color:var(--text-secondary); margin: 10px 0 20px">Restore from a JSON backup or import new projects via CSV.</p>
+                <input type="file" id="import_file" accept=".json,.csv" style="margin-bottom:10px; color: var(--text-secondary)">
+                <br>
+                <button class="btn btn-secondary" onclick="importData()">Import File</button>
+            </div>
+        `;
+    }
+
+    function renderIntegrations() {
+        return `
+            <h1 style="margin-bottom:20px">${t('integrations')}</h1>
+            <div class="card">
+                <h3>GitHub & Cloudflare</h3>
+                <p style="color:var(--text-secondary); margin: 10px 0">
+                    <strong>Security Notice:</strong> To maintain local-first security and avoid exposing tokens in client-side code, 
+                    PROJECTVERSE does not use direct OAuth flows in the browser. 
+                </p>
+                <p style="color:var(--text-secondary); margin-bottom:20px">
+                    <strong>Workflow:</strong> Use the "Technical Audit" to upload <code>package.json</code> or source ZIPs directly from your repositories. 
+                    For automated syncing, use the provided CLI scripts (available in the documentation) or manually export/import JSON.
+                </p>
+                <div class="form-group">
+                    <label>GitHub Profile URL (For Metadata)</label>
+                    <input class="form-control" placeholder="https://github.com/username" id="gh_url">
+                </div>
+                <button class="btn btn-secondary" onclick="showToast('Profile URL saved locally.')">Save Profile Info</button>
+            </div>
+        `;
+    }
+
+    function renderSettings() {
+        return `
+            <h1 style="margin-bottom:20px">${t('settings')}</h1>
+            <div class="card">
+                <h3>Storage & Privacy</h3>
+                <p style="color:var(--text-secondary); margin: 10px 0">
+                    All data is stored locally in your browser's IndexedDB. 
+                    <strong>Warning:</strong> Clearing browser data will delete your projects. Always maintain regular JSON backups.
+                </p>
+                <button class="btn btn-danger" onclick="clearAllData()" style="margin-top:10px">Clear All Local Data</button>
+            </div>
+        `;
+    }
+
+    // 6. ACTIONS & LOGIC
+
+    async function saveProject() {
+        const project = {
+            id: state.editingProject ? state.editingProject.id : crypto.randomUUID(),
+            name_en: document.getElementById('f_name_en').value.trim(),
+            name_fa: document.getElementById('f_name_fa').value.trim(),
+            purpose: document.getElementById('f_purpose').value.trim(),
+            type: document.getElementById('f_type').value,
+            status: document.getElementById('f_status').value,
+            demo_url: document.getElementById('f_demo_url').value.trim(),
+            repo_url: document.getElementById('f_repo_url').value.trim(),
+            platform: document.getElementById('f_platform').value.trim(),
+            tech_stack: document.getElementById('f_tech_stack').value.split(',').map(s => s.trim()).filter(Boolean),
+            role: document.getElementById('f_role').value.trim(),
+            ai_assisted: document.getElementById('f_ai_assisted').checked,
+            is_confidential: document.getElementById('f_confidential').checked,
+            tech_verified: document.getElementById('f_verified').checked,
+            updated_at: new Date().toISOString(),
+            created_at: state.editingProject ? state.editingProject.created_at : new Date().toISOString()
+        };
+
+        if (!project.name_en) {
+            showToast("Project Name (EN) is required.", true);
+            return;
+        }
+
+        await dbAdd(project);
+        state.editingProject = null;
+        await loadProjects();
+        navigate('projects');
+        showToast("Project saved successfully.");
+    }
+
+    async function editProject(id) {
+        state.editingProject = await dbGet(id);
+        navigate('intake');
+    }
+
+    async function confirmDelete(id) {
+        if (confirm(t('confirm_delete'))) {
+            await dbDelete(id);
+            await loadProjects();
+            renderApp();
+            showToast("Project deleted.");
+        }
+    }
+
+    async function loadProjects() {
+        state.projects = await dbGetAll();
+    }
+
+    function exportAllData() {
+        const data = JSON.stringify(state.projects, null, 2);
+        downloadFile(data, 'projectverse_backup.json', 'application/json');
+        showToast(t('export_success'));
+    }
+
+    function exportCSV() {
+        const headers = ['id', 'name_en', 'name_fa', 'type', 'status', 'platform', 'repo_url', 'tech_stack'];
+        const csv = [
+            headers.join(','),
+            ...state.projects.map(p => headers.map(h => {
+                let val = p[h];
+                if (Array.isArray(val)) val = val.join('; ');
+                return `"${(val || '').toString().replace(/"/g, '""')}"`;
+            }).join(','))
+        ].join('\n');
+        downloadFile(csv, 'projectverse_export.csv', 'text/csv');
+    }
+
+    async function importData() {
+        const fileInput = document.getElementById('import_file');
+        if (!fileInput.files.length) return;
+        
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = async (e) => {
+            try {
+                if (file.name.endsWith('.json')) {
+                    const data = JSON.parse(e.target.result);
+                    if (Array.isArray(data)) {
+                        for (const p of data) {
+                            if (!p.id) p.id = crypto.randomUUID();
+                            await dbAdd(p);
+                        }
+                        await loadProjects();
+                        renderApp();
+                        showToast(t('import_success'));
+                    } else {
+                        throw new Error("Invalid JSON structure");
+                    }
+                } else if (file.name.endsWith('.csv')) {
+                    // Basic CSV parser
+                    const lines = e.target.result.split('\n').filter(l => l.trim());
+                    const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+                    for (let i = 1; i < lines.length; i++) {
+                        const vals = lines[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || [];
+                        const p = { id: crypto.randomUUID(), created_at: new Date().toISOString() };
+                        headers.forEach((h, idx) => {
+                            let val = (vals[idx] || '').replace(/^"|"$/g, '').trim();
+                            if (h === 'tech_stack') val = val.split(';').map(s => s.trim()).filter(Boolean);
+                            p[h] = val;
+                        });
+                        await dbAdd(p);
+                    }
+                    await loadProjects();
+                    renderApp();
+                    showToast(t('import_success'));
+                }
+            } catch (err) {
+                showToast(t('import_error') + " " + err.message, true);
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    async function clearAllData() {
+        if (confirm("Are you sure? This will delete ALL projects and cannot be undone.")) {
+            const tx = db.transaction('projects', 'readwrite');
+            tx.objectStore('projects').clear();
+            await loadProjects();
+            renderApp();
+            showToast("All data cleared.");
+        }
+    }
+
+    function runAudit() {
+        const projectId = document.getElementById('audit_project').value;
+        const fileInput = document.getElementById('audit_file');
+        const resultsDiv = document.getElementById('audit_results');
+
+        if (!projectId || !fileInput.files.length) {
+            resultsDiv.innerHTML = `<p style="color:var(--accent-error)">Please select a project and upload a manifest file.</p>`;
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            try {
+                const content = e.target.result;
+                let detected = [];
+                
+                if (fileInput.files[0].name === 'package.json') {
+                    const pkg = JSON.parse(content);
+                    const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+                    detected = Object.keys(deps).map(name => ({
+                        name,
+                        evidence: 'package.json',
+                        confidence: 'High (Declared Dependency)',
+                        role: deps[name]
+                    }));
+                } else {
+                    detected = [{ name: 'Unknown Format', evidence: fileInput.files[0].name, confidence: 'Low', role: 'Needs manual review' }];
+                }
+
+                // Update project in DB
+                const project = await dbGet(projectId);
+                const newTech = [...new Set([...(project.tech_stack || []), ...detected.map(d => d.name)])];
+                project.tech_stack = newTech;
+                project.tech_verified = true;
+                await dbAdd(project);
+                await loadProjects();
+
+                resultsDiv.innerHTML = `
+                    <div class="card" style="background:var(--bg-tertiary)">
+                        <h3>Analysis Complete</h3>
+                        <p style="color:var(--accent-success); margin:10px 0">Detected ${detected.length} technologies. Project marked as Verified.</p>
+                        <div style="max-height:200px; overflow-y:auto; font-size:13px">
+                            ${detected.map(d => `<div style="padding:5px 0; border-bottom:1px solid var(--border)"><strong>${d.name}</strong> <span class="badge badge-verified">${d.confidence}</span><br><span style="color:var(--text-secondary)">${d.role}</span></div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            } catch (err) {
+                resultsDiv.innerHTML = `<p style="color:var(--accent-error)">Error parsing file: ${err.message}</p>`;
+            }
+        };
+        reader.readAsText(fileInput.files[0]);
+    }
+
+    function generateStudioContent(letter) {
+        const projectId = document.getElementById('studio_project').value;
+        const lang = document.getElementById('studio_lang').value;
+        const outputDiv = document.getElementById('studio_output');
+
+        if (!projectId) {
+            outputDiv.innerHTML = `<p style="color:var(--accent-error)">Please select a project.</p>`;
+            return;
+        }
+
+        const p = state.projects.find(proj => proj.id === projectId);
+        if (!p) return;
+
+        let content = '';
+        const name = lang === 'fa' && p.name_fa ? p.name_fa : p.name_en;
+        const techStr = (p.tech_stack || []).join(', ') || 'Not specified';
+
+        switch(letter) {
+            case 'A': // Marketing
+                content = `🚀 ${lang === 'fa' ? 'معرفی' : 'Introducing'}: ${name}\n\n` +
+                          `${lang === 'fa' ? 'مشکل:' : 'Problem:'} ${p.purpose || 'N/A'}\n` +
+                          `${lang === 'fa' ? 'راه‌حل ما:' : 'Our Solution:'} A ${p.type} built with ${techStr}.\n\n` +
+                          `🔗 ${lang === 'fa' ? 'لینک دمو' : 'Live Demo'}: ${p.demo_url || 'N/A'}\n` +
+                          `💻 ${lang === 'fa' ? 'مخزن' : 'Source'}: ${p.repo_url || 'N/A'}\n\n` +
+                          `#WebDev #Tech #Portfolio`;
+                break;
+            case 'B': // CV
+                content = `**${name}** | ${p.type} | ${p.status}\n` +
+                          `- ${lang === 'fa' ? 'توسعه و پیاده‌سازی' : 'Developed and implemented'} ${p.purpose || 'core features'} using ${techStr}.\n` +
+                          `- ${lang === 'fa' ? 'نقش' : 'Role'}: ${p.role || 'Lead Developer'}.\n` +
+                          `- ${lang === 'fa' ? 'وضعیت' : 'Status'}: ${p.status === 'working' ? (lang === 'fa' ? 'فعال و در حال استفاده' : 'Active and in production') : p.status}.\n` +
+                          `- ${p.ai_assisted ? (lang === 'fa' ? 'توسعه با کمک هوش مصنوعی' : 'AI-assisted development workflow utilized for rapid prototyping.') : ''}`;
+                break;
+            case 'C': // Luxury
+                content = `<div class="luxury-preview">
+                    <h2>${name}</h2>
+                    <p>${p.purpose || 'A digital experience crafted with precision.'}</p>
+                    <p style="margin-top:20px; font-size:12px; letter-spacing:1px">TECHNOLOGY: ${techStr.toUpperCase()}</p>
+                </div>`;
+                break;
+            case 'D': // Books
+                content = `# Chapter: Building ${name}\n\n` +
+                          `## 1. Introduction\n${p.purpose || 'Overview of the project goals.'}\n\n` +
+                          `## 2. Technical Architecture\nThis project utilizes ${techStr}.\n\n` +
+                          `## 3. Implementation Steps\n- Step 1: Setup environment\n- Step 2: Core logic\n- Step 3: Deployment on ${p.platform || 'cloud'}\n\n` +
+                          `## 4. Challenges & Solutions\n[Detail specific technical challenges faced during development.]`;
+                break;
+            case 'E': // Magazine
+                content = `# Behind the Code: The Story of ${name}\n\n` +
+                          `*By [Your Name]*\n\n` +
+                          `In the ever-evolving landscape of ${p.type} development, ${name} stands out by addressing a critical need: ${p.purpose}.\n\n` +
+                          `## The Design Philosophy\nBuilt with ${techStr}, the architecture prioritizes performance and user experience...\n\n` +
+                          `## Technical Deep Dive\n[Insert detailed explanation of the most complex feature...]`;
+                break;
+            case 'F': // Newsroom
+                const date = new Date().toLocaleDateString(lang === 'fa' ? 'fa-IR' : 'en-US');
+                content = `# Release Notes: ${name}\n**Date:** ${date}\n\n` +
+                          `## What's New\n- Core features implemented for ${p.purpose}.\n- Tech stack finalized: ${techStr}.\n\n` +
+                          `## Status Update\nProject is currently **${p.status}**. \n\n` +
+                          `## Links\n- Demo: ${p.demo_url || 'N/A'}\n- Repo: ${p.repo_url || 'N/A'}`;
+                break;
+        }
+
+        const isHTML = content.startsWith('<div');
+        outputDiv.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
+                <h3>Generated Content</h3>
+                <button class="btn btn-sm btn-secondary" onclick="copyToClipboard(this)">📋 ${t('copy_clipboard')}</button>
+            </div>
+            ${isHTML ? content : `<div class="studio-output">${content}</div>`}
+        `;
+        
+        // Store raw text for copying if it's HTML
+        if (isHTML) outputDiv.dataset.raw = content;
+        else outputDiv.dataset.raw = content;
+    }
+
+    function copyToClipboard(btn) {
+        const text = btn.closest('.card').querySelector('.studio-output')?.innerText || 
+                     btn.closest('.card').querySelector('[data-raw]')?.dataset.raw || '';
+        navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = '✅ Copied!';
+            setTimeout(() => btn.textContent = `📋 ${t('copy_clipboard')}`, 2000);
+        });
+    }
+
+    function generatePortfolio() {
+        const publicProjects = state.projects.filter(p => !p.is_confidential);
+        const isFa = currentLang === 'fa';
+        
+        const projectCards = publicProjects.map(p => {
+            const name = isFa && p.name_fa ? p.name_fa : p.name_en;
+            return `
+                <div class="p-card">
+                    <h3>${name}</h3>
+                    <p>${p.purpose || ''}</p>
+                    <div class="tags">${(p.tech_stack || []).map(t => `<span>${t}</span>`).join('')}</div>
+                    <div class="links">
+                        ${p.demo_url ? `<a href="${p.demo_url}" target="_blank">Live Demo</a>` : ''}
+                        ${p.repo_url ? `<a href="${p.repo_url}" target="_blank">Source Code</a>` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        const html = `<!DOCTYPE html>
+<html lang="${currentLang}" dir="${isFa ? 'rtl' : 'ltr'}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <style>
+        body { font-family: sans-serif; background: #0a0a0c; color: #e0e0e5; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        h1 { color: #00e5ff; text-align: center; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 40px; }
+        .p-card { background: #121216; border: 1px solid #2a2a35; padding: 20px; border-radius: 8px; }
+        .p-card h3 { color: #b388ff; margin-top: 0; }
+        .tags { margin: 15px 0; }
+        .tags span { background: #1a1a20; padding: 4px 8px; border-radius: 12px; font-size: 12px; margin-right: 5px; }
+        .links a { color: #00e5ff; text-decoration: none; margin-right: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>${isFa ? 'پورتفولیوی من' : 'My Portfolio'}</h1>
+        <div class="grid">${projectCards}</div>
+    </div>
+</body>
+</html>`;
+
+        downloadFile(html, 'portfolio.html', 'text/html');
+        showToast("Portfolio generated and downloaded.");
+    }
+
+    // 7. UTILITIES
+    function downloadFile(content, filename, type) {
+        const blob = new Blob([content], { type });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.style.borderColor = isError ? 'var(--accent-error)' : 'var(--accent-success)';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // 8. INITIALIZATION
+    async function init() {
+        try {
+            await initDB();
+            await loadProjects();
+            
+            // Apply saved language
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
+            
+            // Handle hash routing
+            const hash = window.location.hash.replace('#', '');
+            if (hash && routes.find(r => r.id === hash)) {
+                state.currentView = hash;
+            }
+            
+            renderApp();
+        } catch (err) {
+            console.error("Init error:", err);
+            document.getElementById('mainContent').innerHTML = `
+                <div class="card" style="text-align:center; color:var(--accent-error)">
+                    <h2>Initialization Failed</h2>
+                    <p>IndexedDB might be disabled or unavailable in this browser/environment.</p>
+                    <p>Error: ${err.message}</p>
+                </div>
+            `;
+        }
+    }
+
+    window.addEventListener('hashchange', () => {
+        const hash = window.location.hash.replace('#', '');
+        if (hash && routes.find(r => r.id === hash)) {
+            state.currentView = hash;
+            renderApp();
+        }
+    });
+
+    init();
+    </script>
+</body>
+</html>

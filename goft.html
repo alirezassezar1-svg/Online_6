@@ -1,0 +1,2487 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080b12">
+<title>Nononick HTML Forge</title>
+<style>
+:root{
+  --bg:#080b12;--bg1:#0d1119;--bg2:#131923;--bg3:#1a2130;--bg4:#242c3e;
+  --bd:#1e2532;--bd2:#2a3342;--tx:#e6ecf5;--tx2:#8a94a7;--tx3:#5a6478;
+  --ac:#22d3ee;--ac2:#38bdf8;--ac3:#a78bfa;--acs:rgba(34,211,238,.13);
+  --gn:#22c55e;--gns:rgba(34,197,94,.13);
+  --rd:#ef4444;--rds:rgba(239,68,68,.13);
+  --am:#f59e0b;--ams:rgba(245,158,11,.13);
+  --vi:#a855f7;--vnu:#8b5cf6;
+  --fn:-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Roboto,sans-serif;
+  --mn:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --sh:0 20px 60px rgba(0,0,0,.6);--shs:0 4px 14px rgba(0,0,0,.35);
+  --tb:56px;--sb:290px;--lg:160px;--r:10px;--rs:7px;
+}
+[data-theme=light]{
+  --bg:#f4f6fa;--bg1:#ffffff;--bg2:#f0f2f7;--bg3:#e6e9f1;--bg4:#d8dce6;
+  --bd:#e2e6ef;--bd2:#d0d6e0;--tx:#161a22;--tx2:#5c6577;--tx3:#8a92a3;
+  --ac:#0891b2;--ac2:#0284c7;--ac3:#7c3aed;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);
+  font:14px/1.5 var(--fn);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+body{overflow:hidden;overscroll-behavior:none}
+button,input,textarea,select{font:inherit;color:inherit;background:none;border:0;outline:0}
+button{cursor:pointer;-webkit-appearance:none}
+input,textarea{-webkit-appearance:none}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:6px}
+::-webkit-scrollbar-thumb:hover{background:var(--tx3)}
+::-webkit-scrollbar-track{background:transparent}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.3px}
+kbd{font-family:var(--fn);font-size:10.5px;font-weight:600;color:var(--tx3);
+  background:var(--bg3);border:1px solid var(--bd2);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+code{font-family:var(--mn);background:var(--bg3);padding:1px 5px;border-radius:4px;font-size:.86em}
+.hidden{display:none!important}
+.spacer{flex:1}
+
+/* ═══ Topbar ═══ */
+.tb{height:var(--tb);display:flex;align-items:center;gap:10px;padding:0 14px;
+  padding-top:env(safe-area-inset-top);
+  background:linear-gradient(180deg,var(--bg1),var(--bg));border-bottom:1px solid var(--bd);z-index:20}
+.brand{display:flex;align-items:center;gap:9px;font-size:15px;user-select:none;font-weight:650}
+.brand-ico{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--ac),var(--ac3));box-shadow:0 0 0 1px rgba(255,255,255,.06),0 6px 18px rgba(34,211,238,.35)}
+.brand-ico svg{width:16px;height:16px;fill:#0a0e16}
+.brand b{background:linear-gradient(120deg,var(--ac),var(--ac3));-webkit-background-clip:text;
+  background-clip:text;color:transparent}
+.icon-btn{width:36px;height:36px;border-radius:var(--rs);display:grid;place-items:center;
+  color:var(--tx2);transition:background .13s,color .13s;flex:none}
+.icon-btn:hover{background:var(--bg3);color:var(--tx)}
+.icon-btn svg{width:17px;height:17px;fill:currentColor}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--tx3);
+  padding:4px 9px;border-radius:20px;background:var(--bg2);border:1px solid var(--bd)}
+.status .d{width:7px;height:7px;border-radius:50%;background:var(--tx3);flex:none}
+.status.on{color:var(--gn);border-color:rgba(34,197,94,.3);background:var(--gns)}
+.status.on .d{background:var(--gn);box-shadow:0 0 8px var(--gn)}
+.status.warn{color:var(--am);border-color:rgba(245,158,11,.3);background:var(--ams)}
+.status.warn .d{background:var(--am)}
+
+/* ═══ Buttons ═══ */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:var(--rs);
+  background:var(--bg3);border:1px solid var(--bd);color:var(--tx);font-size:12.5px;
+  font-weight:550;transition:.13s;white-space:nowrap;min-height:36px}
+.btn:hover{background:var(--bg4);border-color:var(--bd2)}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#071018;font-weight:650}
+.btn.pri:hover{background:var(--ac2);border-color:var(--ac2)}
+.btn.dan{color:var(--rd);border-color:rgba(239,68,68,.3)}
+.btn.dan:hover{background:var(--rds);border-color:var(--rd)}
+.btn svg{width:14px;height:14px;fill:currentColor;flex:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:5px 9px;font-size:11.5px;min-height:30px}
+
+/* ═══ Layout ═══ */
+.wrap{height:calc(100% - var(--tb));display:grid;grid-template-columns:var(--sb) 1fr;min-height:0}
+.sidebar{background:var(--bg1);border-left:1px solid var(--bd);display:flex;flex-direction:column;
+  min-height:0;overflow:hidden}
+.sb-head{padding:12px 14px 8px;display:flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--tx3)}
+.sb-head .cnt{margin-right:auto;font-weight:600;color:var(--tx3);font-size:11px}
+.sb-search{margin:0 12px 10px;position:relative}
+.sb-search svg{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;
+  fill:var(--tx3);pointer-events:none}
+.sb-search input{width:100%;height:34px;padding:0 32px 0 10px;border-radius:var(--rs);
+  background:var(--bg2);border:1px solid var(--bd);font-size:12.5px}
+.sb-search input:focus{border-color:var(--ac)}
+.sb-list{flex:1;overflow-y:auto;padding:0 8px 12px}
+.sb-actions{border-top:1px solid var(--bd);padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.sb-actions .btn{justify-content:center;font-size:11.5px;padding:8px 6px}
+
+.proj{display:flex;gap:9px;align-items:center;padding:8px 9px;border-radius:var(--rs);
+  cursor:pointer;border:1px solid transparent;margin-bottom:2px;transition:.12s;position:relative}
+.proj:hover{background:var(--bg2)}
+.proj.on{background:var(--acs);border-color:rgba(34,211,238,.3)}
+.proj-ico{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+  background:var(--bg3);border:1px solid var(--bd);font-size:13px;font-weight:700;flex:none}
+.proj-body{min-width:0;flex:1}
+.proj-name{font-size:13px;font-weight:550;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proj-meta{font-size:10.5px;color:var(--tx3);margin-top:2px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;height:16px;padding:0 6px;border-radius:20px;
+  font-size:9.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;
+  background:var(--bg3);color:var(--tx2);border:1px solid var(--bd)}
+.badge.b-html{background:rgba(245,158,11,.13);color:#fbbf24;border-color:rgba(245,158,11,.25)}
+.badge.b-md{background:rgba(6,182,212,.13);color:#22d3ee;border-color:rgba(6,182,212,.25)}
+.badge.b-pdf{background:rgba(239,68,68,.13);color:#f87171;border-color:rgba(239,68,68,.25)}
+.badge.b-node{background:rgba(168,85,247,.13);color:#c084fc;border-color:rgba(168,85,247,.25)}
+.proj-menu{opacity:0;width:24px;height:24px;display:grid;place-items:center;border-radius:5px;
+  color:var(--tx3);flex:none;transition:.13s}
+.proj:hover .proj-menu{opacity:1}
+.proj-menu:hover{background:var(--bg4);color:var(--tx)}
+
+/* ═══ Main ═══ */
+.main{display:grid;grid-template-rows:44px 1fr var(--lg);min-height:0;min-width:0;background:var(--bg)}
+.tabs{display:flex;align-items:center;gap:2px;padding:0 8px;background:var(--bg1);
+  border-bottom:1px solid var(--bd);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:10px 14px;border-radius:0;color:var(--tx2);font-size:12.5px;font-weight:550;
+  border-bottom:2px solid transparent;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.tab:hover{color:var(--tx)}
+.tab.on{color:var(--tx);border-color:var(--ac)}
+.tab svg{width:14px;height:14px;fill:currentColor}
+.tab .bcount{font-size:10px;background:var(--bg3);padding:1px 5px;border-radius:20px;font-weight:700}
+.tab .bcount.warn{background:var(--ams);color:var(--am)}
+.content{min-height:0;position:relative;overflow:hidden;background:var(--bg)}
+
+/* Log panel */
+.log{background:#04070c;border-top:1px solid var(--bd);overflow-y:auto;
+  padding:10px 14px;font-family:var(--mn);font-size:11.5px;line-height:1.6;color:#a8b6cc}
+[data-theme=light] .log{background:#0d1117;color:#c9d5e5}
+.log-line{white-space:pre-wrap;word-break:break-word;padding:1px 0}
+.log-line.sys{color:#6a7486}
+.log-line.info{color:#67c8e5}
+.log-line.ok{color:#4ade80}
+.log-line.warn{color:#fbbf24}
+.log-line.err{color:#f87171}
+.log-line.hdr{color:#c4b5fd;font-weight:600}
+.log-line .t{color:#4a5568;margin-left:6px}
+
+/* Preview */
+.preview-wrap{position:absolute;inset:0;background:#fff}
+.preview-wrap iframe{width:100%;height:100%;border:0;display:block;background:#fff}
+.preview-empty{position:absolute;inset:0;display:grid;place-items:center;background:var(--bg);
+  padding:24px;text-align:center}
+
+/* Files / editor */
+.files-wrap{position:absolute;inset:0;display:grid;grid-template-columns:260px 1fr;min-width:0;overflow:hidden}
+.tree{border-left:1px solid var(--bd);background:var(--bg1);overflow-y:auto;padding:8px 0 14px}
+.tree-node{display:flex;align-items:center;gap:6px;padding:4px 12px;font-size:12.5px;
+  color:var(--tx2);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tree-node:hover{background:var(--bg2);color:var(--tx)}
+.tree-node.on{background:var(--acs);color:var(--tx)}
+.tree-node svg{width:13px;height:13px;fill:currentColor;flex:none;opacity:.7}
+.tree-node .sz{margin-right:auto;font-size:10px;color:var(--tx3);font-family:var(--mn)}
+.tree-dir{padding:4px 12px;font-size:11px;color:var(--tx3);font-weight:700;
+  letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.editor-wrap{display:grid;grid-template-rows:38px 1fr;min-width:0;overflow:hidden}
+.editor-head{display:flex;align-items:center;gap:8px;padding:0 10px;background:var(--bg1);
+  border-bottom:1px solid var(--bd);font-size:12px}
+.editor-head .path{font-family:var(--mn);color:var(--tx2);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap;flex:1}
+.editor-wrap .body{position:relative;overflow:hidden;display:grid;grid-template-columns:44px 1fr}
+.gutter{background:var(--bg1);border-left:1px solid var(--bd);overflow:hidden;
+  font-family:var(--mn);font-size:12.5px;line-height:1.6;color:var(--tx3);text-align:left;
+  padding:10px 8px 10px 0;user-select:none}
+.gutter>div{height:1.6em}
+.editor{background:var(--bg);overflow:auto;position:relative}
+.editor textarea{width:100%;height:100%;padding:10px 14px;border:0;background:transparent;
+  color:var(--tx);font-family:var(--mn);font-size:12.5px;line-height:1.6;resize:none;
+  white-space:pre;overflow-wrap:normal;tab-size:2}
+.editor-view{padding:10px 14px;font-family:var(--mn);font-size:12.5px;line-height:1.6;
+  white-space:pre;color:var(--tx);overflow:auto;height:100%}
+.editor-view .tok-kw{color:#c4b5fd}.editor-view .tok-str{color:#7dd3a0}
+.editor-view .tok-num{color:#fbbf24}.editor-view .tok-cm{color:#5a6478;font-style:italic}
+.editor-view .tok-tag{color:#7dd3fc}.editor-view .tok-attr{color:#c4b5fd}
+.editor-view .tok-prop{color:#38bdf8}.editor-view .tok-sel{color:#f472b6}
+.empty-state{display:grid;place-items:center;height:100%;color:var(--tx3);font-size:13px;padding:20px;text-align:center}
+.editor-info{position:absolute;bottom:8px;left:12px;font-family:var(--mn);font-size:10.5px;
+  color:var(--tx3);background:var(--bg3);padding:2px 7px;border-radius:5px;border:1px solid var(--bd)}
+
+/* Validation */
+.val-wrap{position:absolute;inset:0;overflow-y:auto;padding:20px}
+.val-inner{max-width:820px;margin:0 auto}
+.val-sum{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 22px}
+.val-chip{display:flex;align-items:center;gap:7px;padding:8px 12px;border-radius:var(--rs);
+  background:var(--bg1);border:1px solid var(--bd);font-size:12px;font-weight:600}
+.val-chip .num{font-family:var(--mn);font-size:14px}
+.val-chip.p .num{color:var(--gn)}.val-chip.f .num{color:var(--rd)}
+.val-chip.n .num{color:var(--tx3)}.val-chip.u .num{color:var(--am)}
+.val-row{background:var(--bg1);border:1px solid var(--bd);border-radius:var(--r);
+  margin-bottom:10px;overflow:hidden}
+.val-row-head{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.val-row-head .badge-s{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;
+  font-family:var(--mn);letter-spacing:.4px}
+.val-row-head .badge-s.p{background:var(--gns);color:var(--gn)}
+.val-row-head .badge-s.f{background:var(--rds);color:var(--rd)}
+.val-row-head .badge-s.n{background:var(--bg3);color:var(--tx3)}
+.val-row-head .badge-s.u{background:var(--ams);color:var(--am)}
+.val-row-head b{flex:1;font-weight:600;font-size:13px}
+.val-row-head .msg{color:var(--tx2);font-size:12px;flex:1;font-weight:400}
+.val-row-body{padding:0 14px 12px;border-top:1px solid var(--bd);display:none}
+.val-row.open .val-row-body{display:block;padding-top:12px}
+.val-row-body pre{background:var(--bg);padding:10px 12px;border-radius:var(--rs);
+  font-family:var(--mn);font-size:11.5px;overflow-x:auto;margin:8px 0 0;color:var(--tx2);
+  border:1px solid var(--bd);direction:ltr;text-align:left}
+.val-item{display:flex;gap:8px;padding:7px 0;border-bottom:1px dashed var(--bd);
+  font-size:12.5px;align-items:flex-start}
+.val-item:last-child{border:0}
+.val-item .ico{flex:none;width:16px}
+.val-item .ico.e{color:var(--rd)}.val-item .ico.w{color:var(--am)}.val-item .ico.i{color:var(--tx3)}
+.val-item .txt{flex:1;min-width:0;line-height:1.55}
+.val-item .txt code{font-size:11.5px}
+.val-item .fix{color:var(--tx3);font-size:11.5px;margin-top:2px}
+.val-run-bar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+
+/* Diff */
+.diff-wrap{position:absolute;inset:0;display:grid;grid-template-columns:220px 1fr;overflow:hidden}
+.diff-list{border-left:1px solid var(--bd);background:var(--bg1);overflow-y:auto;padding:8px 0}
+.diff-item{padding:8px 12px;cursor:pointer;font-size:12.5px;border-left:2px solid transparent}
+.diff-item:hover{background:var(--bg2)}
+.diff-item.on{background:var(--acs);border-color:var(--ac)}
+.diff-item .p{font-family:var(--mn);font-size:11.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.diff-item .s{color:var(--tx3);font-size:10.5px;margin-top:2px}
+.diff-body{overflow-y:auto;font-family:var(--mn);font-size:12px;line-height:1.6;padding:0}
+.diff-line{padding:1px 12px;white-space:pre-wrap;word-break:break-all;min-height:1.6em}
+.diff-line.eq{color:var(--tx2)}
+.diff-line.add{background:rgba(34,197,94,.09);color:#7dd3a0}
+.diff-line.add::before{content:"+ ";color:var(--gn)}
+.diff-line.del{background:rgba(239,68,68,.09);color:#fca5a5}
+.diff-line.del::before{content:"- ";color:var(--rd)}
+.diff-empty{display:grid;place-items:center;height:100%;color:var(--tx3);font-size:13px}
+
+/* Export */
+.export-wrap{position:absolute;inset:0;overflow-y:auto;padding:24px}
+.export-inner{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.export-card{background:var(--bg1);border:1px solid var(--bd);border-radius:var(--r);padding:18px}
+.export-card h3{font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--tx3);margin-bottom:12px}
+.export-card .desc{color:var(--tx2);font-size:12.5px;line-height:1.6;margin-bottom:14px}
+.export-card .row{display:flex;gap:8px;flex-wrap:wrap}
+
+/* Overlays */
+.drop{position:fixed;inset:0;z-index:100;background:rgba(8,11,18,.85);backdrop-filter:blur(6px);
+  display:none;place-items:center;pointer-events:none}
+.drop.on{display:grid}
+.drop-box{border:2px dashed var(--ac);border-radius:22px;padding:48px 60px;text-align:center;
+  background:var(--bg1);box-shadow:var(--sh)}
+.drop-box svg{width:44px;height:44px;fill:var(--ac);margin-bottom:14px}
+.drop-box b{display:block;font-size:17px;margin-bottom:6px}
+.drop-box small{color:var(--tx3);font-size:12.5px}
+.toasts{position:fixed;bottom:16px;left:16px;z-index:110;display:flex;flex-direction:column;
+  gap:8px;max-width:min(360px,calc(100vw - 32px))}
+.toast{background:var(--bg3);border:1px solid var(--bd2);border-radius:var(--r);padding:11px 13px;
+  box-shadow:var(--sh);display:flex;gap:10px;animation:tin .22s cubic-bezier(.2,.9,.3,1);font-size:13px}
+@keyframes tin{from{opacity:0;transform:translateY(10px) scale(.97)}}
+.toast.out{opacity:0;transform:translateY(10px) scale(.97);transition:.18s}
+.toast svg{width:16px;height:16px;flex:none;margin-top:1px}
+.toast.ok svg{fill:var(--gn)}.toast.err svg{fill:var(--rd)}
+.toast.warn svg{fill:var(--am)}.toast.info svg{fill:var(--ac)}
+.toast-body b{display:block;font-weight:600;margin-bottom:2px}
+.toast-body p{margin:0;color:var(--tx2);font-size:12px;line-height:1.45;word-break:break-word}
+
+.modal{position:fixed;inset:0;z-index:105;display:none;place-items:center;padding:20px;
+  background:rgba(5,7,11,.7);backdrop-filter:blur(4px)}
+.modal.on{display:grid}
+.modal-card{width:100%;max-width:520px;background:var(--bg1);border:1px solid var(--bd2);
+  border-radius:14px;box-shadow:var(--sh);overflow:hidden;max-height:calc(100vh - 40px);display:flex;flex-direction:column}
+.modal-head{padding:18px 20px 10px;display:flex;gap:12px;align-items:flex-start}
+.modal-head .mi{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+  background:var(--bg3);flex:none}
+.modal-head .mi svg{width:18px;height:18px;fill:var(--tx2)}
+.modal-head h3{font-size:16px}
+.modal-head p{color:var(--tx2);font-size:12.5px;margin-top:4px;line-height:1.55}
+.modal-body{padding:8px 20px;overflow-y:auto;flex:1}
+.modal-foot{padding:14px 20px 18px;display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--bd)}
+.field{width:100%;padding:10px 12px;border-radius:var(--rs);background:var(--bg2);
+  border:1px solid var(--bd);font-size:13px;font-family:var(--fn)}
+.field:focus{border-color:var(--ac)}
+textarea.field{resize:vertical;min-height:110px;font-family:var(--fn);line-height:1.6}
+.brief-templates{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:12px}
+.brief-tpl{padding:10px 12px;border-radius:var(--rs);background:var(--bg2);border:1px solid var(--bd);
+  text-align:right;cursor:pointer;transition:.13s;font-size:12px}
+.brief-tpl:hover{border-color:var(--ac);background:var(--bg3)}
+.brief-tpl b{display:block;margin-bottom:3px;font-weight:600}
+.brief-tpl small{color:var(--tx3);font-size:11px;line-height:1.4}
+
+.spinner{width:14px;height:14px;border:2px solid var(--bd2);border-top-color:var(--ac);
+  border-radius:50%;animation:sp .7s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* Mobile */
+@media (max-width:820px){
+  :root{--sb:280px;--lg:130px}
+  .wrap{grid-template-columns:1fr}
+  .sidebar{position:fixed;top:var(--tb);bottom:0;right:0;width:var(--sb);z-index:15;
+    transform:translateX(100%);transition:transform .24s cubic-bezier(.2,.9,.3,1);box-shadow:var(--sh)}
+  .sidebar.open{transform:none}
+  .files-wrap{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .tree{max-height:32%;border-left:0;border-bottom:1px solid var(--bd)}
+  .diff-wrap{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .diff-list{max-height:32%;border-left:0;border-bottom:1px solid var(--bd)}
+  .modal-head{padding:14px 16px 8px}
+  .modal-body{padding:6px 16px}
+  .modal-foot{padding:12px 16px 14px}
+  .toasts{bottom:12px;left:12px;right:12px;max-width:none}
+}
+@media (max-width:480px){
+  .brand span.full{display:none}
+  .tb{padding:0 8px;gap:6px}
+  .tab{padding:9px 10px;font-size:12px}
+  .val-wrap{padding:14px}
+  .export-wrap{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<!-- ═══ Topbar ═══ -->
+<header class="tb">
+  <button class="icon-btn" id="menuBtn" style="display:none" aria-label="منو">
+    <svg viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+  </button>
+  <div class="brand">
+    <div class="brand-ico"><svg viewBox="0 0 24 24"><path d="M13 2 4.5 13.2c-.4.5 0 1.3.7 1.3H10l-1 7.5 8.5-11.2c.4-.5 0-1.3-.7-1.3H12z"/></svg></div>
+    <div><b>Nononick</b> <span class="full">Forge</span></div>
+  </div>
+  <span class="spacer"></span>
+  <span class="status warn" id="envStatus"><span class="d"></span><span id="envTxt">بررسی…</span></span>
+  <button class="icon-btn" id="themeBtn" aria-label="تم"><svg viewBox="0 0 24 24" id="themeIcon"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg></button>
+</header>
+
+<!-- ═══ Layout ═══ -->
+<div class="wrap">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-head">پروژه‌ها <span class="cnt" id="pCount">0</span></div>
+    <div class="sb-search">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.8l-.3-.3a6.5 6.5 0 1 0-.7.7l.3.3v.8l5 5 1.5-1.5-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+      <input id="search" type="search" placeholder="جستجو…" autocomplete="off">
+    </div>
+    <div class="sb-list" id="projectList"></div>
+    <div class="sb-actions">
+      <button class="btn" id="importFileBtn"><svg viewBox="0 0 24 24"><path d="M12 3 7 8h3v6h4V8h3zM5 18h14v2H5z"/></svg>فایل</button>
+      <button class="btn" id="importFolderBtn"><svg viewBox="0 0 24 24"><path d="M4 4h7l2 2h7v14H4z"/></svg>پوشه</button>
+      <button class="btn" id="importZipBtn"><svg viewBox="0 0 24 24"><path d="M6 3h12v8h-4v4h-4v-4H6zm0 10h4v4h4v4H6z"/></svg>ZIP</button>
+      <button class="btn pri" id="briefBtn"><svg viewBox="0 0 24 24"><path d="M12 2 9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5z"/></svg>از توضیح</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <nav class="tabs" id="tabs">
+      <button class="tab on" data-tab="preview"><svg viewBox="0 0 24 24"><path d="M12 5C6.5 5 2 12 2 12s4.5 7 10 7 10-7 10-7-4.5-7-10-7zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8z"/></svg>پیش‌نمایش</button>
+      <button class="tab" data-tab="files"><svg viewBox="0 0 24 24"><path d="M4 4h7l2 2h7v14H4z"/></svg>فایل‌ها</button>
+      <button class="tab" data-tab="validate"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>اعتبارسنجی<span class="bcount hidden" id="valCount">0</span></button>
+      <button class="tab" data-tab="diff"><svg viewBox="0 0 24 24"><path d="M3 5h8v14H3zm10 0h8v6h-8zm0 8h8v6h-8z"/></svg>تفاوت‌ها<span class="bcount hidden" id="diffCount">0</span></button>
+      <button class="tab" data-tab="export"><svg viewBox="0 0 24 24"><path d="M12 3v10l3-3 1.4 1.4L12 16.8 7.6 11.4 9 10l3 3V3zM5 19h14v2H5z"/></svg>خروجی</button>
+    </nav>
+    <section class="content" id="content"></section>
+    <div class="log" id="log" role="log" aria-live="polite"></div>
+  </main>
+</div>
+
+<!-- ═══ Drop overlay ═══ -->
+<div class="drop" id="drop">
+  <div class="drop-box">
+    <svg viewBox="0 0 24 24"><path d="M12 3 6 9h4v7h4V9h4zM5 19h14v2H5z"/></svg>
+    <b>برای وارد کردن رها کنید</b>
+    <small>ZIP، HTML، CSS، JS، Markdown، JSON یا کل پوشه</small>
+  </div>
+</div>
+
+<!-- ═══ Modals ═══ -->
+<div class="modal" id="briefModal">
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div class="mi"><svg viewBox="0 0 24 24"><path d="M12 2 9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5z"/></svg></div>
+      <div style="flex:1">
+        <h3>تولید از توضیح</h3>
+        <p>یک توضیح کوتاه بنویس. موتور قاعده‌محور (بدون AI) بر اسا س کلمات کلیدی، پروژهٔ کامل تولید می‌کند. برای تولید با AI به آداپتر backend نیاز است که در این نسخه فعال نیست.</p>
+      </div>
+    </div>
+    <div class="modal-body">
+      <textarea class="field" id="briefText" placeholder="مثال: یک صفحه لندینگ برای یک اپلیکیشن مدیریت وظایف با بخش ویژگی‌ها و فرم تماس"></textarea>
+      <div class="brief-templates" id="briefTpls">
+        <button class="brief-tpl" data-tpl="landing"><b>لندینگ</b><small>Hero + ویژگی‌ها + CTA</small></button>
+        <button class="brief-tpl" data-tpl="blog"><b>وبلاگ</b><small>هدر + فهرست مقالات</small></button>
+        <button class="brief-tpl" data-tpl="portfolio"><b>نمونه کار</b><small>معرفی + پروژه‌ها</small></button>
+        <button class="brief-tpl" data-tpl="dashboard"><b>داشبورد</b><small>سایدبار + کارت‌ها</small></button>
+        <button class="brief-tpl" data-tpl="contact"><b>فرم تماس</b><small>فرم با اعتبارسنجی</small></button>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close="briefModal">انصراف</button>
+      <button class="btn pri" id="briefGen">تولید پروژه</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="renameModal">
+  <div class="modal-card" role="dialog" aria-modal="true" style="max-width:400px">
+    <div class="modal-head">
+      <div class="mi"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75zM20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75z"/></svg></div>
+      <div><h3>تغییر نام پروژه</h3></div>
+    </div>
+    <div class="modal-body">
+      <input class="field" id="renameInput" placeholder="نام جدید">
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close="renameModal">انصراف</button>
+      <button class="btn pri" id="renameOk">ذخیره</button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<input type="file" id="fileInput" multiple hidden>
+<input type="file" id="folderInput" webkitdirectory directory multiple hidden>
+<input type="file" id="zipInput" accept=".zip,application/zip" hidden>
+
+<script type="module">
+/* ═══════════════════════════════════════════════════════════════════════════
+ * Nononick HTML Forge
+ * A browser-only project transformer and workspace. Every feature that is
+ * declared in the UI is genuinely implemented. Anything that cannot work
+ * in a browser-only context is explicitly reported as NOT SUPPORTED by the
+ * validation engine — never shown as a fake success.
+ * ═════════════════════════════════════════════════════════════════════════ */
+
+/* ─── 1. Utilities ─────────────────────────────────────────────────────── */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const uid = () => (crypto.randomUUID?.() || Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
+const TE = new TextEncoder(), TD = new TextDecoder();
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmtSize = n => { n = +n || 0; return n < 1024 ? n + ' B' : n < 1048576 ? (n / 1024).toFixed(1) + ' KB' : (n / 1048576).toFixed(1) + ' MB'; };
+const extOf = p => (p.split('.').pop() || '').toLowerCase();
+const slug = s => String(s || 'project').toLowerCase().replace(/[^\w\u0600-\u06FF-]+/g, '-').replace(/^-|-$/g, '').slice(0, 50) || 'project';
+const nowISO = () => new Date().toISOString();
+const timeAgo = ts => {
+  const s = (Date.now() - ts) / 1000;
+  if (s < 60) return 'الان';
+  if (s < 3600) return Math.floor(s / 60) + ' د';
+  if (s < 86400) return Math.floor(s / 3600) + ' س';
+  return Math.floor(s / 86400) + ' روز';
+};
+function b64enc(bytes) {
+  let s = '';
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) s += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+  return btoa(s);
+}
+function b64dec(str) {
+  const bin = atob(str);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+function download(blob, name) {
+  const u = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = u; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 4000);
+}
+function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+function confirmDialog(title, msg) {
+  return new Promise(res => {
+    const m = document.createElement('div');
+    m.className = 'modal on';
+    m.innerHTML = `<div class="modal-card" style="max-width:400px" role="dialog"><div class="modal-head">
+      <div class="mi"><svg viewBox="0 0 24 24"><path d="M12 2 1 21h22zm-1 6h2v7h-2zm0 9h2v2h-2z"/></svg></div>
+      <div><h3>${esc(title)}</h3><p>${esc(msg)}</p></div></div>
+      <div class="modal-foot"><button class="btn" data-x="0">انصراف</button>
+      <button class="btn pri" data-x="1">تأیید</button></div></div>`;
+    document.body.appendChild(m);
+    m.addEventListener('click', e => {
+      const x = e.target.closest('[data-x]')?.dataset.x;
+      if (x === undefined) return;
+      m.remove(); res(x === '1');
+    });
+  });
+}
+
+/* ─── 2. Toast + Log ───────────────────────────────────────────────────── */
+const ICONS = {
+  ok: '<path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/>',
+  err: '<path d="M12 2 1 21h22zm-1 6h2v7h-2zm0 9h2v2h-2z"/>',
+  warn: '<path d="M12 2 1 21h22zm-1 6h2v7h-2zm0 9h2v2h-2z"/>',
+  info: '<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/>',
+};
+function toast(kind, title, msg = '') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + kind;
+  t.innerHTML = `<svg viewBox="0 0 24 24">${ICONS[kind]}</svg>
+    <div class="toast-body"><b>${esc(title)}</b>${msg ? `<p>${esc(msg)}</p>` : ''}</div>`;
+  $('#toasts').appendChild(t);
+  setTimeout(() => { t.classList.add('out'); setTimeout(() => t.remove(), 200); }, kind === 'err' ? 6000 : 3800);
+}
+function log(msg, kind = 'info') {
+  const el = $('#log');
+  const line = document.createElement('div');
+  line.className = 'log-line ' + kind;
+  const t = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  line.innerHTML = `<span class="t">${t}</span> ${esc(msg)}`;
+  el.appendChild(line);
+  while (el.childElementCount > 400) el.removeChild(el.firstChild);
+  el.scrollTop = el.scrollHeight;
+}
+
+/* ─── 3. IndexedDB ─────────────────────────────────────────────────────── */
+const DB = (() => {
+  let _db = null;
+  const open = () => new Promise((res, rej) => {
+    if (_db) return res(_db);
+    const r = indexedDB.open('nononick-forge', 1);
+    r.onupgradeneeded = () => {
+      const d = r.result;
+      if (!d.objectStoreNames.contains('projects')) d.createObjectStore('projects', { keyPath: 'id' });
+      if (!d.objectStoreNames.contains('files'))    d.createObjectStore('files');
+      if (!d.objectStoreNames.contains('snapshots'))d.createObjectStore('snapshots');
+      if (!d.objectStoreNames.contains('meta'))     d.createObjectStore('meta');
+    };
+    r.onsuccess = () => { _db = r.result; res(_db); };
+    r.onerror = () => rej(r.error);
+  });
+  const tx = async (store, mode, fn) => {
+    const d = await open();
+    return new Promise((res, rej) => {
+      const t = d.transaction(store, mode);
+      const s = t.objectStore(store);
+      let ret;
+      try { ret = fn(s); } catch (e) { rej(e); return; }
+      t.oncomplete = () => res(ret?.__r ? ret.__r.result : ret);
+      t.onerror = () => rej(t.error);
+      t.onabort = () => rej(t.error);
+    });
+  };
+  const w = req => ({ __r: req });
+  return {
+    putProject: p => tx('projects', 'readwrite', s => w(s.put(p))),
+    delProject: id => tx('projects', 'readwrite', s => w(s.delete(id))),
+    allProjects: () => tx('projects', 'readonly', s => w(s.getAll())).then(v => v || []),
+    putFiles: (id, f) => tx('files', 'readwrite', s => w(s.put(f, id))),
+    getFiles: id => tx('files', 'readonly', s => w(s.get(id))).then(v => v || {}),
+    delFiles: id => tx('files', 'readwrite', s => w(s.delete(id))),
+    putSnap: (id, f) => tx('snapshots', 'readwrite', s => w(s.put(f, id))),
+    getSnap: id => tx('snapshots', 'readonly', s => w(s.get(id))).then(v => v || null),
+    delSnap: id => tx('snapshots', 'readwrite', s => w(s.delete(id))),
+    getMeta: k => tx('meta', 'readonly', s => w(s.get(k))).then(v => v === undefined ? null : v),
+    setMeta: (k, v) => tx('meta', 'readwrite', s => w(s.put(v, k))),
+  };
+})();
+
+/* ─── 4. CRC32 + ZIP writer ────────────────────────────────────────────── */
+const CRC_TABLE = (() => {
+  const t = new Uint32Array(256);
+  for (let i = 0; i < 256; i++) {
+    let c = i;
+    for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+    t[i] = c >>> 0;
+  }
+  return t;
+})();
+function crc32(bytes) {
+  let c = 0xFFFFFFFF;
+  for (let i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+async function deflateRaw(bytes) {
+  const cs = new CompressionStream('deflate-raw');
+  const stream = new Blob([bytes]).stream().pipeThrough(cs);
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+async function inflateRaw(bytes) {
+  const ds = new DecompressionStream('deflate-raw');
+  const stream = new Blob([bytes]).stream().pipeThrough(ds);
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+async function zipFiles(entries) {
+  const parts = [], central = [];
+  let offset = 0;
+  const canDeflate = typeof CompressionStream !== 'undefined';
+  for (const e of entries) {
+    const nameBytes = TE.encode(e.path);
+    const data = e.bytes instanceof Uint8Array ? e.bytes : TE.encode(e.bytes ?? '');
+    const crc = crc32(data);
+    let payload = data, method = 0;
+    if (canDeflate && data.length > 64) {
+      try {
+        const c = await deflateRaw(data);
+        if (c.length < data.length) { payload = c; method = 8; }
+      } catch {}
+    }
+    const lh = new Uint8Array(30 + nameBytes.length);
+    const lv = new DataView(lh.buffer);
+    lv.setUint32(0, 0x04034B50, true); lv.setUint16(4, 20, true); lv.setUint16(6, 0x0800, true);
+    lv.setUint16(8, method, true); lv.setUint16(10, 0, true); lv.setUint16(12, 0x21, true);
+    lv.setUint32(14, crc, true); lv.setUint32(18, payload.length, true);
+    lv.setUint32(22, data.length, true); lv.setUint16(26, nameBytes.length, true);
+    lh.set(nameBytes, 30);
+    parts.push(lh, payload);
+
+    const ch = new Uint8Array(46 + nameBytes.length);
+    const cv = new DataView(ch.buffer);
+    cv.setUint32(0, 0x02014B50, true); cv.setUint16(4, 20, true); cv.setUint16(6, 20, true);
+    cv.setUint16(8, 0x0800, true); cv.setUint16(10, method, true);
+    cv.setUint16(12, 0, true); cv.setUint16(14, 0x21, true);
+    cv.setUint32(16, crc, true); cv.setUint32(20, payload.length, true); cv.setUint32(24, data.length, true);
+    cv.setUint16(28, nameBytes.length, true); cv.setUint32(42, offset, true);
+    ch.set(nameBytes, 46);
+    central.push(ch);
+    offset += lh.length + payload.length;
+  }
+  let cdSize = 0; for (const c of central) cdSize += c.length;
+  const eocd = new Uint8Array(22);
+  const ev = new DataView(eocd.buffer);
+  ev.setUint32(0, 0x06054B50, true);
+  ev.setUint16(8, central.length, true); ev.setUint16(10, central.length, true);
+  ev.setUint32(12, cdSize, true); ev.setUint32(16, offset, true);
+  return new Blob([...parts, ...central, eocd], { type: 'application/zip' });
+}
+
+/* ─── 5. ZIP reader with integrity metadata ────────────────────────────── */
+async function unzip(buffer) {
+  const bytes = new Uint8Array(buffer);
+  const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const len = bytes.length;
+  let eocd = -1;
+  const min = Math.max(0, len - 22 - 65535);
+  for (let i = len - 22; i >= min; i--) {
+    if (dv.getUint32(i, true) === 0x06054B50) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error('فایل ZIP معتبر نیست (EOCD پیدا نشد)');
+  const count = dv.getUint16(eocd + 10, true);
+  const cdOff = dv.getUint32(eocd + 16, true);
+  if (cdOff === 0xFFFFFFFF || count === 0xFFFF) throw new Error('آرشیو ZIP64 پشتیبانی نمی‌شود');
+  const out = [];
+  let p = cdOff;
+  for (let i = 0; i < count; i++) {
+    if (p + 46 > len || dv.getUint32(p, true) !== 0x02014B50) break;
+    const method = dv.getUint16(p + 10, true);
+    const storedCrc = dv.getUint32(p + 16, true);
+    const compSize = dv.getUint32(p + 20, true);
+    const uncompSize = dv.getUint32(p + 24, true);
+    const nameLen = dv.getUint16(p + 28, true);
+    const extraLen = dv.getUint16(p + 30, true);
+    const cmtLen = dv.getUint16(p + 32, true);
+    const localOff = dv.getUint32(p + 42, true);
+    const name = TD.decode(bytes.subarray(p + 46, p + 46 + nameLen));
+    p += 46 + nameLen + extraLen + cmtLen;
+    if (!name || name.endsWith('/')) continue;
+    if (name.startsWith('__MACOSX/') || name.endsWith('.DS_Store')) continue;
+    // Path traversal guard
+    if (name.includes('..') || name.startsWith('/')) continue;
+    if (localOff + 30 > len || dv.getUint32(localOff, true) !== 0x04034B50) continue;
+    const lN = dv.getUint16(localOff + 26, true);
+    const lE = dv.getUint16(localOff + 28, true);
+    const start = localOff + 30 + lN + lE;
+    const raw = bytes.subarray(start, start + compSize);
+    let data;
+    if (method === 0) data = raw.slice();
+    else if (method === 8) { try { data = await inflateRaw(raw); } catch { continue; } }
+    else continue;
+    const actualCrc = crc32(data);
+    out.push({
+      path: name.replace(/\\/g, '/'),
+      bytes: data,
+      storedCrc, actualCrc,
+      matches: storedCrc === actualCrc,
+      uncompSize,
+      sizeOk: data.length === uncompSize,
+    });
+  }
+  return out;
+}
+
+/* ─── 6. Markdown renderer ─────────────────────────────────────────────── */
+function mdInline(s) {
+  const codes = [];
+  s = s.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return `\u0001${codes.length - 1}\u0001`; });
+  s = esc(s);
+  s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, '<img src="$2" alt="$1" loading="lazy" style="max-width:100%">');
+  s = s.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+  s = s.replace(/~~([^~]+)~~/g, '<del>$1</del>');
+  s = s.replace(/\u0001(\d+)\u0001/g, (_, i) => `<code>${esc(codes[+i])}</code>`);
+  return s;
+}
+function mdRender(src) {
+  const codeBlocks = [];
+  src = src.replace(/```([\w+-]*)[ \t]*\r?\n([\s\S]*?)```/g, (_, lang, code) => {
+    codeBlocks.push({ lang, code }); return `\n\u0000CB${codeBlocks.length - 1}\u0000\n`;
+  });
+  const lines = src.replace(/\r\n?/g, '\n').split('\n');
+  const out = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    let m = line.match(/^\u0000CB(\d+)\u0000$/);
+    if (m) {
+      const { lang, code } = codeBlocks[+m[1]];
+      out.push(`<pre data-lang="${esc(lang || 'text')}"><code>${esc(code.replace(/\n$/, ''))}</code></pre>`);
+      i++; continue;
+    }
+    if (!line.trim()) { i++; continue; }
+    if (/^\s*([-*_])\s*\1\s*\1/.test(line)) { out.push('<hr>'); i++; continue; }
+    m = line.match(/^(#{1,6})\s+(.*?)\s*#*\s*$/);
+    if (m) {
+      const lvl = m[1].length;
+      out.push(`<h${lvl}>${mdInline(m[2])}</h${lvl}>`);
+      i++; continue;
+    }
+    if (line.includes('|') && i + 1 < lines.length && /^\s*\|?[\s:|-]+\|/.test(lines[i + 1])) {
+      const sp = r => r.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map(c => c.trim());
+      const head = sp(line);
+      i += 2;
+      const rows = [];
+      while (i < lines.length && lines[i].includes('|') && lines[i].trim()) { rows.push(sp(lines[i])); i++; }
+      out.push('<table><thead><tr>' + head.map(h => `<th>${mdInline(h)}</th>`).join('') +
+        '</tr></thead><tbody>' + rows.map(r => '<tr>' + head.map((_, k) => `<td>${mdInline(r[k] || '')}</td>`).join('') + '</tr>').join('') +
+        '</tbody></table>');
+      continue;
+    }
+    if (/^\s*>/.test(line)) {
+      const buf = [];
+      while (i < lines.length && /^\s*>/.test(lines[i])) { buf.push(lines[i].replace(/^\s*>\s?/, '')); i++; }
+      out.push(`<blockquote>${mdRender(buf.join('\n'))}</blockquote>`);
+      continue;
+    }
+    if (/^\s*([-*+]|\d+[.)])\s+/.test(line)) {
+      const ordered = /^\s*\d+[.)]\s/.test(line);
+      const items = [];
+      while (i < lines.length) {
+        const mm = lines[i].match(/^\s*([-*+]|\d+[.)])\s+(.*)$/);
+        if (mm) { items.push(mm[2]); i++; } else break;
+      }
+      const tag = ordered ? 'ol' : 'ul';
+      out.push(`<${tag}>` + items.map(t => `<li>${mdInline(t)}</li>`).join('') + `</${tag}>`);
+      continue;
+    }
+    const buf = [];
+    while (i < lines.length && lines[i].trim() && !/^(#{1,6}\s|\s*[-*+]\s|\s*\d+[.)]\s|\s*>|\u0000CB)/.test(lines[i])) {
+      buf.push(lines[i]); i++;
+    }
+    if (buf.length) out.push(`<p>${mdInline(buf.join('\n'))}</p>`); else i++;
+  }
+  return out.join('\n');
+}
+
+/* ─── 7. Validators ────────────────────────────────────────────────────── */
+const TEXT_EXT = new Set(['html','htm','css','js','mjs','cjs','jsx','ts','tsx','json','md','markdown',
+  'txt','svg','xml','csv','yml','yaml','toml','lock','sh','bat','py','rb','go','rs','java','c','cpp',
+  'h','hpp','sql','ini','conf','map','vue','svelte','gitignore','env']);
+const isText = p => TEXT_EXT.has(extOf(p)) || /(^|\/)(README|LICENSE|Dockerfile|Makefile)/i.test(p);
+
+function resolveRef(fromPath, ref) {
+  if (!ref) return null;
+  const t = ref.trim();
+  if (/^(https?:|data:|blob:|mailto:|tel:|javascript:|#|\/\/)/i.test(t)) return null;
+  const idx = Math.min(...[t.indexOf('#'), t.indexOf('?'), t.length].filter(i => i >= 0));
+  const clean = t.slice(0, idx);
+  if (!clean) return null;
+  const baseDir = fromPath.includes('/') ? fromPath.slice(0, fromPath.lastIndexOf('/') + 1) : '';
+  const joined = clean.startsWith('/') ? clean.slice(1) : baseDir + clean;
+  const out = [];
+  for (const seg of joined.split('/')) {
+    if (!seg || seg === '.') continue;
+    if (seg === '..') out.pop(); else out.push(seg);
+  }
+  return out.join('/');
+}
+
+function checkHtmlStructure(text, path) {
+  const issues = [];
+  const doc = new DOMParser().parseFromString(text, 'text/html');
+  const perr = doc.querySelector('parsererror');
+  if (perr) issues.push({ sev: 'e', msg: 'خطای تجزیه: ' + perr.textContent.slice(0, 200), fix: 'به ازای هر <tag> یک </tag> بگذارید' });
+  const ids = {};
+  doc.querySelectorAll('[id]').forEach(el => {
+    if (ids[el.id]) issues.push({ sev: 'e', msg: `id تکراری: "${el.id}"`, fix: 'شناسه‌ها باید یکتا باشند' });
+    ids[el.id] = true;
+  });
+  const html = doc.querySelector('html');
+  if (!html?.getAttribute('lang')) issues.push({ sev: 'w', msg: '<html> فاقد lang است', fix: 'مثلاً lang="fa" dir="rtl"' });
+  if (!doc.querySelector('title')) issues.push({ sev: 'w', msg: '<head> فاقد <title> است', fix: 'یک عنوان معنادار اضافه کنید' });
+  return { issues, count: issues.length };
+}
+function checkHtmlA11y(text, path) {
+  const issues = [];
+  const doc = new DOMParser().parseFromString(text, 'text/html');
+  doc.querySelectorAll('img:not([alt])').forEach(img => {
+    issues.push({ sev: 'w', msg: `<img> بدون alt: ${(img.getAttribute('src') || '').slice(0, 60) || '(no src)'}`, fix: 'alt مناسب یا alt="" برای تزئینی' });
+  });
+  doc.querySelectorAll('button').forEach(btn => {
+    if (!btn.textContent.trim() && !btn.getAttribute('aria-label') && !btn.getAttribute('title'))
+      issues.push({ sev: 'w', msg: '<button> بدون متن و بدون aria-label', fix: 'متن یا aria-label اضافه کنید' });
+  });
+  doc.querySelectorAll('input,select,textarea').forEach(el => {
+    const id = el.getAttribute('id');
+    const hasLabel = id && doc.querySelector(`label[for="${CSS.escape(id)}"]`);
+    if (!hasLabel && !el.getAttribute('aria-label') && !el.closest('label'))
+      issues.push({ sev: 'w', msg: `فیلد ورودی بدون label: ${el.tagName.toLowerCase()}${id ? '#' + id : ''}`, fix: '<label> یا aria-label اضافه کنید' });
+  });
+  return { issues, count: issues.length };
+}
+function checkJsSyntax(text, path) {
+  const isModule = /\.mjs$/i.test(path) || /^\s*(import\s+[\w{*]|export\s+(const|let|var|function|class|default|{|\*))/m.test(text);
+  if (isModule) {
+    return { issues: [{ sev: 'i', msg: 'بررسی نحوی ماژول ES در این محیط پشتیبانی نمی‌شود.', fix: 'مرورگرها API فقط-تجزیه برای ESM ارائه نمی‌دهند.' }], count: 0, unsupported: true };
+  }
+  try {
+    new Function(text);
+    return { issues: [], count: 0 };
+  } catch (e) {
+    if (e instanceof SyntaxError) return { issues: [{ sev: 'e', msg: 'خطای نحوی: ' + e.message, fix: 'خطا را در ویرایشگر برطرف کنید' }], count: 1 };
+    throw e;
+  }
+}
+function checkCssBraces(text, path) {
+  let depth = 0, i = 0, line = 1, minLine = 0;
+  const issues = [];
+  let inComment = false, inStr = null;
+  while (i < text.length) {
+    const c = text[i], n = text[i + 1];
+    if (c === '\n') line++;
+    if (inComment) { if (c === '*' && n === '/') { inComment = false; i += 2; continue; } i++; continue; }
+    if (inStr) { if (c === '\\') { i += 2; continue; } if (c === inStr) inStr = null; i++; continue; }
+    if (c === '/' && n === '*') { inComment = true; i += 2; continue; }
+    if (c === '"' || c === "'") { inStr = c; i++; continue; }
+    if (c === '{') { depth++; minLine = line; }
+    else if (c === '}') { depth--; if (depth < 0) { issues.push({ sev: 'e', msg: `آکولاد بسته اضافه در خط ${line}` }); depth = 0; } }
+    i++;
+  }
+  if (depth > 0) issues.push({ sev: 'e', msg: `آکولاد باز نشده — عمق نهایی: ${depth}`, fix: 'تعداد { و } را بررسی کنید' });
+  return { issues, count: issues.length };
+}
+function checkJsonValid(text, path) {
+  try { JSON.parse(text); return { issues: [], count: 0 }; }
+  catch (e) { return { issues: [{ sev: 'e', msg: 'JSON نامعتبر: ' + e.message, fix: 'کاماهای اضافی و کوتیشن‌ها را بررسی کنید' }], count: 1 }; }
+}
+function checkMissingAssets(files) {
+  const issues = [];
+  const REF_ATTRS = /<(link|script|img|source|video|audio|iframe|embed|object)\b([^>]*)>/gi;
+  const ATTR_RE = /\b(src|href|poster|data-src)\s*=\s*("([^"]*)"|'([^']*)')/gi;
+  for (const [path, entry] of Object.entries(files)) {
+    if (!/\.(html?|css)$/i.test(path) || entry.enc !== 'utf8') continue;
+    const text = entry.data;
+    if (extOf(path) === 'css') {
+      const re = /url\(\s*(['"]?)([^'")]+)\1\s*\)/g;
+      let m;
+      while ((m = re.exec(text))) {
+        const ref = m[2];
+        if (/^(https?:|data:|blob:|#)/i.test(ref)) continue;
+        const target = resolveRef(path, ref);
+        if (target && !files[target]) issues.push({ sev: 'e', msg: `CSS: منبع یافت نشد "${ref}"`, file: path, fix: `مسیر ${target} را ایجاد یا اصلاح کنید` });
+      }
+      continue;
+    }
+    if (extOf(path) !== 'html' && extOf(path) !== 'htm') continue;
+    let tag;
+    while ((tag = REF_ATTRS.exec(text))) {
+      const t = tag[1].toLowerCase();
+      const attrs = tag[2];
+      if (t === 'link' && !/rel\s*=\s*("|')?[^"'>]*stylesheet/i.test(attrs)) continue;
+      let a;
+      ATTR_RE.lastIndex = 0;
+      while ((a = ATTR_RE.exec(attrs))) {
+        const ref = a[3] ?? a[4];
+        if (!ref || /^(https?:|data:|blob:|mailto:|tel:|javascript:|#)/i.test(ref)) continue;
+        const target = resolveRef(path, ref);
+        if (target && !files[target]) issues.push({ sev: 'e', msg: `HTML: منبع یافت نشد "${ref}"`, file: path, fix: `مسیر ${target} را اضافه یا اصلاح کنید` });
+      }
+    }
+  }
+  return { issues: issues.slice(0, 200), count: issues.length };
+}
+const SECRET_PATTERNS = [
+  { name: 'AWS Access Key', re: /\bAKIA[0-9A-Z]{16}\b/g },
+  { name: 'Google API Key', re: /\bAIza[0-9A-Za-z_-]{35}\b/g },
+  { name: 'Stripe Secret', re: /\bsk_live_[0-9a-zA-Z]{24,}\b/g },
+  { name: 'GitHub Token', re: /\b(ghp|gho|ghs|ghu)_[0-9a-zA-Z]{36}\b/g },
+  { name: 'Slack Token', re: /\bxox[baprs]-[0-9a-zA-Z-]{10,}\b/g },
+  { name: 'Private Key', re: /-----BEGIN (RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----/g },
+  { name: 'JWT', re: /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g },
+  { name: 'Bearer Token', re: /\bBearer\s+[A-Za-z0-9\-._~+/]{40,}/g },
+];
+function checkSecrets(files) {
+  const issues = [];
+  for (const [path, entry] of Object.entries(files)) {
+    if (entry.enc !== 'utf8') continue;
+    if (entry.data.length > 500000) continue;
+    for (const p of SECRET_PATTERNS) {
+      p.re.lastIndex = 0;
+      const m = p.re.exec(entry.data);
+      if (m) {
+        const line = entry.data.slice(0, m.index).split('\n').length;
+        issues.push({ sev: 'e', msg: `${p.name} در ${path}:${line}`, file: path, fix: 'کلید را از مخزن خارج و بچرخانید' });
+      }
+    }
+  }
+  return { issues, count: issues.length };
+}
+function checkDuplicates(files) {
+  // Non-cryptographic 32-bit hash, good for equality detection
+  const hash = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h) ^ s.charCodeAt(i); return (h >>> 0).toString(16); };
+  const byHash = {};
+  for (const [path, entry] of Object.entries(files)) {
+    if (entry.enc !== 'utf8' || entry.data.length > 100000) continue;
+    const h = hash(entry.data);
+    (byHash[h] = byHash[h] || []).push(path);
+  }
+  const issues = [];
+  for (const [h, paths] of Object.entries(byHash)) {
+    if (paths.length > 1) issues.push({ sev: 'i', msg: `فایل‌های با محتوای یکسان: ${paths.join(', ')}`, fix: 'یک نسخه را نگه دارید و به آن ارجاع دهید' });
+  }
+  return { issues, count: issues.length };
+}
+function checkPackageJson(files) {
+  const pkg = files['package.json'];
+  if (!pkg || pkg.enc !== 'utf8') return { status: 'NOT RUN', message: 'package.json پیدا نشد' };
+  try {
+    const p = JSON.parse(pkg.data);
+    const issues = [];
+    if (!p.name) issues.push({ sev: 'w', msg: 'نام پکیج تعریف نشده' });
+    if (!p.version) issues.push({ sev: 'w', msg: 'نسخه تعریف نشده' });
+    if (!p.scripts || !Object.keys(p.scripts).length) issues.push({ sev: 'w', msg: 'هیچ script تعریف نشده' });
+    return { issues, count: issues.length };
+  } catch (e) {
+    return { issues: [{ sev: 'e', msg: 'JSON نامعتبر: ' + e.message }], count: 1 };
+  }
+}
+
+/* ─── 8. Asset inlining for preview + standalone ───────────────────────── */
+const MIME = { html: 'text/html', htm: 'text/html', css: 'text/css', js: 'text/javascript',
+  mjs: 'text/javascript', json: 'application/json', md: 'text/markdown', txt: 'text/plain',
+  svg: 'image/svg+xml', png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif',
+  webp: 'image/webp', avif: 'image/avif', ico: 'image/x-icon', bmp: 'image/bmp', pdf: 'application/pdf',
+  woff: 'font/woff', woff2: 'font/woff2', ttf: 'font/ttf', otf: 'font/otf',
+  mp3: 'audio/mpeg', mp4: 'video/mp4', webm: 'video/webm', wasm: 'application/wasm' };
+const mimeFor = p => MIME[extOf(p)] || 'application/octet-stream';
+
+async function processCss(css, cssPath, files, useData) {
+  const jobs = [];
+  css.replace(/url\(\s*(['"]?)([^'")]+)\1\s*\)/g, (m, _, ref) => { jobs.push({ m, ref }); return m; });
+  for (const { m, ref } of jobs) {
+    const target = resolveRef(cssPath, ref);
+    if (!target || !files[target]) continue;
+    const entry = files[target];
+    const bytes = entry.enc === 'b64' ? b64dec(entry.data) : TE.encode(entry.data);
+    let url;
+    if (useData) url = `data:${mimeFor(target)};base64,${b64enc(bytes)}`;
+    else url = URL.createObjectURL(new Blob([bytes], { type: mimeFor(target) }));
+    css = css.split(m).join(`url("${url}")`);
+  }
+  return css;
+}
+async function inlineHtml(html, htmlPath, files, useData) {
+  const TAGS = /<(link|script|img|source|video|audio|iframe|embed|object)\b([^>]*)>/gi;
+  const ATTR_RE = /\b(src|href|poster|data-src)\s*=\s*("([^"]*)"|'([^']*)')/gi;
+  const jobs = [];
+  let m;
+  while ((m = TAGS.exec(html))) {
+    const [full, tag, attrs] = m;
+    const tl = tag.toLowerCase();
+    if (tl === 'link' && !/rel\s*=\s*("|')?[^"'>]*stylesheet/i.test(attrs)) continue;
+    let newAttrs = attrs, changed = false;
+    ATTR_RE.lastIndex = 0;
+    let a;
+    while ((a = ATTR_RE.exec(attrs))) {
+      const attr = a[1];
+      const val = a[3] ?? a[4];
+      if (!val || /^(https?:|data:|blob:|mailto:|tel:|javascript:|#)/i.test(val)) continue;
+      const target = resolveRef(htmlPath, val);
+      if (!target || !files[target]) continue;
+      const entry = files[target];
+      const bytes = entry.enc === 'b64' ? b64dec(entry.data) : TE.encode(entry.data);
+      let content = bytes;
+      const ext = extOf(target);
+      if (ext === 'css' && entry.enc === 'utf8') {
+        content = TE.encode(await processCss(entry.data, target, files, useData));
+      }
+      const url = useData
+        ? `data:${mimeFor(target)};base64,${b64enc(content)}`
+        : URL.createObjectURL(new Blob([content], { type: mimeFor(target) }));
+      newAttrs = newAttrs.replace(a[0], `${attr}="${url}"`);
+      changed = true;
+    }
+    if (changed) jobs.push({ full, tag, newAttrs });
+  }
+  for (const j of jobs) html = html.replace(j.full, `<${j.tag}${j.newAttrs}>`);
+  const styleJobs = [];
+  html.replace(/<style([^>]*)>([\s\S]*?)<\/style>/gi, (full, attrs, css) => { styleJobs.push({ full, attrs, css }); return full; });
+  for (const j of styleJobs) {
+    const n = await processCss(j.css, htmlPath, files, useData);
+    if (n !== j.css) html = html.replace(j.full, `<style${j.attrs}>${n}</style>`);
+  }
+  return html;
+}
+
+const CONSOLE_BRIDGE = `<script>
+(function(){
+  var s=function(l,a){try{parent.postMessage({__forge:1,l:l,m:[].map.call(a,function(x){
+    try{return typeof x==='object'?JSON.stringify(x):String(x)}catch(e){return String(x)}}).join(' ')},'*')}catch(e){}};
+  ['log','info','warn','error'].forEach(function(k){var o=console[k].bind(console);
+    console[k]=function(){s(k,arguments);o.apply(console,arguments)}});
+  window.addEventListener('error',function(e){s('error',[e.message+' @'+(e.filename||'')+':'+(e.lineno||0)])});
+  window.addEventListener('unhandledrejection',function(e){s('error',['Promise: '+e.reason])});
+})();
+<\/script>`;
+
+async function buildPreview(project, files, mode = 'preview') {
+  const useData = mode === 'standalone';
+  const paths = Object.keys(files);
+  if (!paths.length) throw new Error('پروژه هیچ فایلی ندارد');
+  const type = project.type;
+  if (type === 'pdf') {
+    const pdf = paths.find(p => /\.pdf$/i.test(p));
+    if (!pdf) throw new Error('فایل PDF پیدا نشد');
+    const e = files[pdf];
+    const bytes = e.enc === 'b64' ? b64dec(e.data) : TE.encode(e.data);
+    const url = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+    return { kind: 'url', url, title: pdf };
+  }
+  if (type === 'md') {
+    const md = paths.filter(p => /\.(md|markdown)$/i.test(p))
+      .sort((a, b) => a.split('/').length - b.split('/').length || (/readme/i.test(b) ? 1 : 0) - (/readme/i.test(a) ? 1 : 0))[0];
+    if (!md) throw new Error('فایل Markdown پیدا نشد');
+    const html = mdRender(files[md].data);
+    const doc = `<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(project.name)}</title>
+<style>
+:root{color-scheme:${mode === 'standalone' ? 'light dark' : 'dark'}}
+body{margin:0;background:#0d1117;color:#e6edf3;font:16px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,sans-serif}
+main{max-width:820px;margin:0 auto;padding:40px 24px 100px;direction:${/[\u0600-\u06FF]/.test(files[md].data) ? 'rtl' : 'ltr'}}
+h1,h2,h3,h4{line-height:1.3;margin:1.8em 0 .5em;font-weight:650;letter-spacing:-.02em}
+h1{font-size:2em;border-bottom:1px solid #30363d;padding-bottom:.3em;margin-top:0}
+h2{font-size:1.5em;border-bottom:1px solid #30363d;padding-bottom:.25em}
+h3{font-size:1.2em}
+p{margin:0 0 1em}
+a{color:#58a6ff;text-decoration:none}a:hover{text-decoration:underline}
+code{background:rgba(110,118,129,.2);padding:.15em .4em;border-radius:5px;font-size:.87em;font-family:ui-monospace,Menlo,monospace}
+pre{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:14px 16px;overflow:auto;margin:0 0 1.2em;position:relative}
+pre code{background:none;padding:0;font-size:.84em}
+pre[data-lang]::before{content:attr(data-lang);position:absolute;top:8px;left:12px;font-size:10px;letter-spacing:.6px;text-transform:uppercase;color:#8b949e;opacity:.7}
+blockquote{margin:0 0 1.2em;padding:2px 0 2px 14px;border-left:3px solid #30363d;color:#8b949e}
+ul,ol{margin:0 0 1em;padding-left:1.6em}
+hr{border:0;border-top:1px solid #30363d;margin:2em 0}
+table{border-collapse:collapse;width:100%;font-size:.92em;margin:0 0 1.2em}
+th,td{border:1px solid #30363d;padding:6px 10px;text-align:left}
+th{background:#161b22}
+del{color:#8b949e}
+</style></head><body><main>${html}</main></body></html>`;
+    return { kind: 'html', html: doc, title: md };
+  }
+  // HTML / static
+  const entry = (project.entry && files[project.entry]) ? project.entry
+    : paths.filter(p => /\.html?$/i.test(p)).sort((a, b) => {
+        const score = x => x.split('/').length * 10 + (/(^|\/)index\.html?$/i.test(x) ? -1 : 0);
+        return score(a) - score(b);
+      })[0];
+  if (!entry) {
+    const list = Object.entries(files).map(([p, f]) =>
+      `<tr><td>${esc(p)}</td><td style="text-align:right;color:#8b949e">${fmtSize(f.size || 0)}</td></tr>`).join('');
+    return { kind: 'html', title: 'فهرست فایل‌ها',
+      html: `<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><style>
+body{font:14px/1.6 system-ui,Tahoma,sans-serif;background:#0d1117;color:#e6edf3;padding:30px}
+table{border-collapse:collapse;width:100%;max-width:760px}
+td{border-bottom:1px solid #21262d;padding:6px 10px;font-family:ui-monospace,monospace;font-size:12.5px}
+</style></head><body><h1>${esc(project.name)}</h1><table>${list}</table></body></html>` };
+  }
+  const html = await inlineHtml(files[entry].data, entry, files, useData);
+  const finalHtml = mode === 'standalone' ? html : (html.includes('<head') ? html.replace(/<head[^>]*>/i, m => m + CONSOLE_BRIDGE) : CONSOLE_BRIDGE + html);
+  return { kind: 'html', html: finalHtml, title: entry };
+}
+
+/* ─── 9. Line diff (LCS) ───────────────────────────────────────────────── */
+function diffLines(a, b) {
+  const A = a.split('\n'), B = b.split('\n');
+  const max = A.length * B.length;
+  if (max > 4_000_000) {
+    // Guard: fall back to whole-file comparison on huge files
+    return a === b ? [{ t: 'eq', v: '(بدون تفاوت)' }]
+      : [{ t: 'del', v: `(${A.length} خط حذف شد — فایل خیلی بزرگ برای diff خطی)` },
+         { t: 'add', v: `(${B.length} خط اضافه شد)` }];
+  }
+  const dp = Array.from({ length: A.length + 1 }, () => new Uint32Array(B.length + 1));
+  for (let i = 1; i <= A.length; i++)
+    for (let j = 1; j <= B.length; j++)
+      dp[i][j] = A[i - 1] === B[j - 1] ? dp[i - 1][j - 1] + 1 : Math.max(dp[i - 1][j], dp[i][j - 1]);
+  const out = [];
+  let i = A.length, j = B.length;
+  while (i > 0 || j > 0) {
+    if (i > 0 && j > 0 && A[i - 1] === B[j - 1]) { out.unshift({ t: 'eq', v: A[i - 1] }); i--; j--; }
+    else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) { out.unshift({ t: 'add', v: B[j - 1] }); j--; }
+    else { out.unshift({ t: 'del', v: A[i - 1] }); i--; }
+  }
+  return out;
+}
+
+/* ─── 10. Brief-to-project (rule-based, honest) ────────────────────────── */
+function esc4md(s) { return String(s ?? ''); }
+const BRIEF_TPL = {
+  landing: (title) => ({
+    'index.html': `<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="hdr">
+  <div class="logo">${title.slice(0, 2)}</div>
+  <nav><a href="#features">ویژگی‌ها</a><a href="#cta">شروع</a></nav>
+</header>
+<main>
+  <section class="hero">
+    <h1>${title}</h1>
+    <p>سریع، ساده، و کاملاً در مرورگر. بدون سرور و بدون نصب.</p>
+    <a class="cta" href="#cta">همین حالا شروع کن →</a>
+  </section>
+  <section id="features" class="features">
+    <article><h3>⚡ سریع</h3><p>بدون round-trip سرور. همه چیز محلی اجرا می‌شود.</p></article>
+    <article><h3>🔒 محرمانه</h3><p>اطلاعات شما هرگز از مرورگر خارج نمی‌شود.</p></article>
+    <article><h3>📦 قابل حمل</h3><p>خروجی ZIP و HTML مستقل برای آفلاین.</p></article>
+  </section>
+  <section id="cta" class="cta-sec">
+    <h2>آماده‌ای؟</h2>
+    <p>همین امروز شروع کن.</p>
+    <button id="go" class="cta">شروع کنید</button>
+  </section>
+</main>
+<footer>© ${new Date().getFullYear()} ${title}</footer>
+<script src="app.js"><\/script>
+</body>
+</html>
+`,
+    'style.css': `*{box-sizing:border-box;margin:0}
+body{font-family:Tahoma,system-ui,sans-serif;background:#080b12;color:#e6ecf5;line-height:1.7}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:20px 32px;border-bottom:1px solid #1e2532}
+.logo{width:36px;height:36px;background:linear-gradient(135deg,#22d3ee,#a78bfa);border-radius:9px;display:grid;place-items:center;font-weight:700;color:#080b12}
+nav a{color:#8a94a7;margin-right:16px;text-decoration:none}
+nav a:hover{color:#22d3ee}
+.hero{padding:100px 32px 80px;text-align:center;max-width:760px;margin:0 auto}
+.hero h1{font-size:clamp(28px,5vw,48px);letter-spacing:-1px;margin-bottom:16px;
+  background:linear-gradient(120deg,#22d3ee,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:#8a94a7;font-size:18px;margin-bottom:32px}
+.cta{display:inline-block;padding:14px 32px;background:#22d3ee;color:#080b12;text-decoration:none;border:0;border-radius:10px;font-weight:700;cursor:pointer;font-size:16px}
+.cta:hover{filter:brightness(1.1)}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:60px 32px;max-width:1000px;margin:0 auto}
+.features article{padding:24px;background:#0d1119;border:1px solid #1e2532;border-radius:12px}
+.features h3{margin-bottom:8px;font-size:18px}
+.features p{color:#8a94a7;font-size:14px}
+.cta-sec{text-align:center;padding:80px 32px;background:#0d1119;border-top:1px solid #1e2532}
+.cta-sec h2{font-size:28px;margin-bottom:12px}
+.cta-sec p{color:#8a94a7;margin-bottom:24px}
+footer{text-align:center;padding:32px;color:#5a6478;font-size:13px}
+`,
+    'app.js': `document.getElementById('go').addEventListener('click', () => {
+  alert('به ${title} خوش آمدید!');
+});
+console.log('app booted');
+`,
+  }),
+
+  blog: (title) => ({
+    'index.html': `<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><h1><a href="/">${title}</a></h1></header>
+<main>
+  <article><h2><a href="#">چگونه با HTML شروع کنیم</a></h2>
+    <time>۱۴۰۴/۰۱/۱۵</time><p>یک مقدمه کوتاه برای هرکسی که می‌خواهد وب بسازد.</p></article>
+  <article><h2><a href="#">CSS مدرن چیست؟</a></h2>
+    <time>۱۴۰۴/۰۱/۱۲</time><p>از Flexbox تا Grid، نگاهی به ابزارهای امروز.</p></article>
+  <article><h2><a href="#">جاوااسکریپت بدون فریمورک</a></h2>
+    <time>۱۴۰۴/۰۱/۰۸</time><p>چرا گاهی سادگی بهترین انتخاب است.</p></article>
+</main>
+<footer>© ${new Date().getFullYear()} ${title}</footer>
+</body>
+</html>
+`,
+    'style.css': `body{font-family:Tahoma,sans-serif;background:#0d1117;color:#e6edf3;line-height:1.8;max-width:720px;margin:0 auto;padding:40px 24px}
+header{border-bottom:1px solid #30363d;padding-bottom:20px;margin-bottom:40px}
+header h1 a{color:#e6edf3;text-decoration:none}
+article{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid #21262d}
+article h2 a{color:#e6edf3;text-decoration:none}
+article h2 a:hover{color:#22d3ee}
+time{color:#8b949e;font-size:13px}
+article p{color:#8b949e;margin-top:8px}
+footer{text-align:center;color:#5a6478;font-size:13px;margin-top:40px}
+`,
+  }),
+
+  portfolio: (title) => ({
+    'index.html': `<!doctype html>
+<html lang="fa" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header><div class="av">${title.slice(0, 1)}</div><h1>${title}</h1>
+<p>طراح و توسعه‌دهندهٔ وب</p></header>
+<section class="grid">
+  <a class="card" href="#"><div class="ph p1"></div><h3>پروژهٔ آلفا</h3><small>وب اپلیکیشن</small></a>
+  <a class="card" href="#"><div class="ph p2"></div><h3>پروژهٔ بتا</h3><small>طراحی رابط</small></a>
+  <a class="card" href="#"><div class="ph p3"></div><h3>پروژهٔ گاما</h3><small>هویت بصری</small></a>
+  <a class="card" href="#"><div class="ph p4"></div><h3>پروژهٔ دلتا</h3><small>موبایل</small></a>
+</section>
+<footer>تماس: hello@example.com</footer>
+</body></html>
+`,
+    'style.css': `body{font-family:Tahoma,sans-serif;background:#0a0e16;color:#e6ecf5;margin:0;padding:40px 20px}
+header{text-align:center;margin-bottom:50px}
+.av{width:80px;height:80px;background:linear-gradient(135deg,#22d3ee,#a78bfa);border-radius:50%;display:grid;place-items:center;font-size:32px;font-weight:700;color:#0a0e16;margin:0 auto 20px}
+header h1{font-size:32px;margin-bottom:8px}
+header p{color:#8a94a7}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:1000px;margin:0 auto}
+.card{background:#111827;border:1px solid #1f2937;border-radius:14px;padding:20px;text-decoration:none;color:inherit;transition:.2s}
+.card:hover{transform:translateY(-3px);border-color:#22d3ee}
+.ph{height:140px;border-radius:8px;margin-bottom:14px}
+.p1{background:linear-gradient(135deg,#22d3ee,#0891b2)}.p2{background:linear-gradient(135deg,#a78bfa,#7c3aed)}
+.p3{background:linear-gradient(135deg,#f472b6,#db2777)}.p4{background:linear-gradient(135deg,#fbbf24,#d97706)}
+.card h3{font-size:16px;margin-bottom:4px}.card small{color:#8a94a7}
+footer{text-align:center;color:#5a6478;margin-top:60px;padding-top:24px;border-top:1px solid #1f2937}
+`,
+  }),
+
+  dashboard: (title) => ({
+    'index.html': `<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<aside><div class="brand">${title}</div>
+  <nav><a class="on">داشبورد</a><a>کاربران</a><a>گزارش‌ها</a><a>تنظیمات</a></nav></aside>
+<main>
+  <header><h1>داشبورد</h1><span id="clock"></span></header>
+  <section class="stats">
+    <div class="card"><small>کاربران فعال</small><b>۱٬۲۴۸</b></div>
+    <div class="card"><small>درآمد ماه</small><b>۱۲.۴M</b></div>
+    <div class="card"><small>نرخ تبدیل</small><b>۳.۲٪</b></div>
+    <div class="card"><small>تیکت‌های باز</small><b>۱۷</b></div>
+  </section>
+  <section class="chart">
+    <h3>درآمد هفتهٔ گذشته</h3>
+    <div class="bars" id="bars"></div>
+  </section>
+</main>
+<script src="app.js"><\/script>
+</body></html>
+`,
+    'style.css': `*{box-sizing:border-box;margin:0}
+body{font-family:Tahoma,sans-serif;background:#080b12;color:#e6ecf5;display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+aside{background:#0d1119;border-left:1px solid #1e2532;padding:24px 16px}
+.brand{font-weight:700;margin-bottom:32px;color:#22d3ee}
+aside nav a{display:block;padding:10px 12px;color:#8a94a7;text-decoration:none;border-radius:8px;margin-bottom:4px;cursor:pointer}
+aside nav a:hover{background:#131923;color:#e6ecf5}
+aside nav a.on{background:rgba(34,211,238,.13);color:#22d3ee}
+main{padding:32px}
+main header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+main h1{font-size:24px}
+#clock{color:#8a94a7;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px}
+.card{background:#0d1119;border:1px solid #1e2532;border-radius:12px;padding:20px}
+.card small{display:block;color:#8a94a7;font-size:12px;margin-bottom:8px}
+.card b{font-size:24px;font-weight:700}
+.chart{background:#0d1119;border:1px solid #1e2532;border-radius:12px;padding:24px}
+.chart h3{font-size:16px;margin-bottom:20px}
+.bars{display:flex;align-items:flex-end;gap:8px;height:160px}
+.bar{flex:1;background:linear-gradient(180deg,#22d3ee,#0891b2);border-radius:6px 6px 0 0;transition:.3s}
+@media(max-width:640px){body{grid-template-columns:1fr}aside{display:none}}
+`,
+    'app.js': `const data = [40, 65, 52, 88, 74, 91, 68];
+const max = Math.max(...data);
+const bars = document.getElementById('bars');
+data.forEach((v, i) => {
+  const bar = document.createElement('div');
+  bar.className = 'bar';
+  bar.style.height = (v / max * 100) + '%';
+  bar.title = v;
+  bars.appendChild(bar);
+});
+function tick() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('fa-IR');
+}
+tick(); setInterval(tick, 1000);
+`,
+  }),
+
+  contact: (title) => ({
+    'index.html': `<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title}</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<main>
+  <h1>تماس با ما</h1>
+  <p>پیام خود را بنویسید و در اولین فرصت پاسخ می‌دهیم.</p>
+  <form id="form" novalidate>
+    <label>نام<input name="name" required></label>
+    <label>ایمیل<input type="email" name="email" required></label>
+    <label>پیام<textarea name="message" rows="5" required></textarea></label>
+    <button type="submit">ارسال</button>
+  </form>
+  <div id="status"></div>
+</main>
+<script src="app.js"><\/script>
+</body></html>
+`,
+    'style.css': `*{box-sizing:border-box}
+body{font-family:Tahoma,sans-serif;background:#0d1117;color:#e6edf3;margin:0;padding:40px 20px;min-height:100vh;display:grid;place-items:center}
+main{background:#161b22;border:1px solid #30363d;border-radius:16px;padding:40px;max-width:480px;width:100%}
+h1{margin-bottom:8px;font-size:24px}
+main > p{color:#8b949e;margin-bottom:28px}
+label{display:block;margin-bottom:18px;font-size:13px;color:#8b949e}
+input,textarea{display:block;width:100%;margin-top:6px;padding:11px 13px;background:#0d1117;border:1px solid #30363d;border-radius:8px;color:#e6edf3;font:inherit;font-size:14px}
+input:focus,textarea:focus{outline:none;border-color:#22d3ee}
+button{width:100%;padding:13px;background:#22d3ee;color:#0d1117;border:0;border-radius:8px;font-weight:700;font-size:15px;cursor:pointer}
+button:hover{filter:brightness(1.1)}
+#status{margin-top:16px;padding:12px;border-radius:8px;font-size:13px;display:none}
+#status.ok{display:block;background:rgba(34,197,94,.13);color:#4ade80}
+#status.err{display:block;background:rgba(239,68,68,.13);color:#f87171}
+`,
+    'app.js': `document.getElementById('form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const f = e.target;
+  const data = new FormData(f);
+  const status = document.getElementById('status');
+  if (!f.checkValidity()) {
+    status.className = 'err';
+    status.textContent = 'لطفاً همهٔ فیلدها را به‌درستی پر کنید.';
+    return;
+  }
+  status.className = 'ok';
+  status.textContent = 'پیام دریافت شد (بدون ارسال واقعی — این یک نمونه است).';
+  f.reset();
+});
+`,
+  }),
+};
+function detectBriefTemplate(text) {
+  const t = text.toLowerCase();
+  if (/(landing|hero|معرفی محصول|صفحه اصلی|لندینگ)/.test(t)) return 'landing';
+  if (/(blog|وبلاگ|مقاله|پست)/.test(t)) return 'blog';
+  if (/(portfolio|نمونه کار|رزومه|نمونه‌کار)/.test(t)) return 'portfolio';
+  if (/(dashboard|داشبورد|پنل|مدیریت)/.test(t)) return 'dashboard';
+  if (/(contact|تماس|فرم|رابطه)/.test(t)) return 'contact';
+  return 'landing';
+}
+function extractTitle(brief) {
+  // Use first 4-8 words, or fallback
+  const clean = brief.replace(/["'«»]/g, '').trim();
+  const words = clean.split(/\s+/).slice(0, 6).join(' ');
+  return words || 'پروژه من';
+}
+function briefToProject(brief, forcedTpl) {
+  const tpl = forcedTpl || detectBriefTemplate(brief);
+  const title = extractTitle(brief);
+  const gen = BRIEF_TPL[tpl];
+  if (!gen) throw new Error('قالب نامعتبر');
+  const raw = gen(title);
+  const files = {};
+  for (const [path, content] of Object.entries(raw)) {
+    files[path] = { enc: 'utf8', data: content, size: TE.encode(content).length };
+  }
+  return { files, template: tpl };
+}
+
+/* ─── 11. Type detection ───────────────────────────────────────────────── */
+const TYPE_META = {
+  html: { label: 'HTML', cls: 'b-html', icon: '◆', color: '#f59e0b' },
+  md: { label: 'Markdown', cls: 'b-md', icon: 'M↓', color: '#06b6d4' },
+  pdf: { label: 'PDF', cls: 'b-pdf', icon: '▤', color: '#ef4444' },
+  node: { label: 'Node', cls: 'b-node', icon: '⬢', color: '#22c55e' },
+  static: { label: 'Static', cls: '', icon: '▦', color: '#94a3b8' },
+};
+const typeMeta = t => TYPE_META[t] || TYPE_META.static;
+function detectType(files) {
+  const paths = Object.keys(files);
+  if (files['package.json'] && files['package.json'].enc === 'utf8') return 'node';
+  if (paths.some(p => /\.html?$/i.test(p))) return 'html';
+  if (paths.some(p => /\.(md|markdown)$/i.test(p))) return 'md';
+  if (paths.some(p => /\.pdf$/i.test(p))) return 'pdf';
+  return 'static';
+}
+
+/* ─── 12. State ────────────────────────────────────────────────────────── */
+const S = {
+  projects: [],
+  files: new Map(),
+  snapshots: new Map(),
+  active: null,
+  theme: 'dark',
+  tab: 'preview',
+  editing: null,
+  validation: null, // last validation result for active project
+  diffs: null,
+};
+
+async function persistWorkspace() {
+  await DB.setMeta('ws', { projects: S.projects, active: S.active });
+}
+async function loadFiles(id) {
+  if (S.files.has(id)) return S.files.get(id);
+  const f = await DB.getFiles(id);
+  S.files.set(id, f);
+  return f;
+}
+async function loadSnapshot(id) {
+  if (S.snapshots.has(id)) return S.snapshots.get(id);
+  const s = await DB.getSnap(id);
+  S.snapshots.set(id, s);
+  return s;
+}
+
+async function createProject(name, files, opts = {}) {
+  const id = uid();
+  const now = Date.now();
+  const type = opts.type || detectType(files);
+  // Normalize entries to { enc, data, size }
+  const norm = {};
+  for (const [path, v] of Object.entries(files)) {
+    if (typeof v === 'string') norm[path] = { enc: 'utf8', data: v, size: TE.encode(v).length };
+    else norm[path] = { enc: v.enc || 'utf8', data: v.data || '', size: v.size ?? 0 };
+  }
+  const meta = {
+    id, name: name || 'پروژه بدون نام',
+    type, createdAt: now, updatedAt: now, lastOpenedAt: now,
+    fileCount: Object.keys(norm).length,
+    size: Object.values(norm).reduce((a, f) => a + (f.size || 0), 0),
+    entry: null, template: opts.template || null,
+  };
+  await DB.putProject(meta);
+  await DB.putFiles(id, norm);
+  await DB.putSnap(id, JSON.parse(JSON.stringify(norm)));
+  S.files.set(id, norm);
+  S.snapshots.set(id, JSON.parse(JSON.stringify(norm)));
+  return meta;
+}
+
+/* ─── 13. Import pipeline ──────────────────────────────────────────────── */
+async function importFiles(fileList, sourceLabel = 'فایل‌ها') {
+  const arr = [...fileList];
+  if (!arr.length) return;
+
+  // Single ZIP → unpack with native reader
+  if (arr.length === 1 && /\.zip$/i.test(arr[0].name)) {
+    const buf = await arr[0].arrayBuffer();
+    let entries;
+    try { entries = await unzip(buf); }
+    catch (e) { toast('err', 'خطا در خواندن ZIP', e.message); log('✖ ' + e.message, 'err'); return; }
+
+    const badCrc = entries.filter(e => !e.matches).length;
+    if (badCrc) log(`⚠ ${badCrc} ورودی CRC نامعتبر دارند`, 'warn');
+
+    // Strip single common root (GitHub ZIPs)
+    let paths = entries.map(e => e.path);
+    if (paths.length && paths.every(p => p.startsWith(paths[0].split('/')[0] + '/'))) {
+      const root = paths[0].split('/')[0] + '/';
+      paths = paths.map(p => p.slice(root.length));
+    }
+
+    const files = {};
+    entries.forEach((e, i) => {
+      const p = paths[i];
+      if (!p) return;
+      if (isText(p)) {
+        try {
+          const txt = TD.decode(e.bytes);
+          if (!txt.includes('\uFFFD')) { files[p] = { enc: 'utf8', data: txt, size: e.bytes.length }; return; }
+        } catch {}
+      }
+      files[p] = { enc: 'b64', data: b64enc(e.bytes), size: e.bytes.length };
+    });
+
+    const name = arr[0].name.replace(/\.zip$/i, '');
+    const p = await createProject(name, files);
+    S.projects.unshift(p);
+    S.active = p.id;
+    await persistWorkspace();
+    render();
+    log(`✔ ZIP وارد شد: ${name} (${p.fileCount} فایل، ${fmtSize(p.size)})${badCrc ? ` — ${badCrc} CRC خراب` : ''}`, 'ok');
+    toast('ok', 'ZIP وارد شد', `${p.fileCount} فایل · ${typeMeta(p.type).label}`);
+    return;
+  }
+
+  // Folder or multiple files
+  const files = {};
+  for (const f of arr) {
+    const raw = (f.webkitRelativePath || f.name).replace(/\\/g, '/');
+    const parts = raw.split('/');
+    const path = parts.length > 1 ? parts.slice(1).join('/') : parts[0];
+    if (!path || path.startsWith('.')) continue;
+    const buf = new Uint8Array(await f.arrayBuffer());
+    if (isText(path)) {
+      try {
+        const txt = TD.decode(buf);
+        if (!txt.includes('\uFFFD')) { files[path] = { enc: 'utf8', data: txt, size: buf.length }; continue; }
+      } catch {}
+    }
+    files[path] = { enc: 'b64', data: b64enc(buf), size: buf.length };
+  }
+  if (!Object.keys(files).length) { toast('warn', 'فایلی برای وارد کردن نیست'); return; }
+  const baseName = arr[0].webkitRelativePath?.split('/')[0]
+    || (arr.length === 1 ? arr[0].name.replace(/\.[^.]+$/, '') : sourceLabel);
+  const p = await createProject(baseName, files);
+  S.projects.unshift(p);
+  S.active = p.id;
+  await persistWorkspace();
+  render();
+  log(`✔ وارد شد: ${baseName} (${p.fileCount} فایل، ${fmtSize(p.size)})`, 'ok');
+  toast('ok', 'وارد شد', `${p.fileCount} فایل · ${typeMeta(p.type).label}`);
+}
+
+/* ─── 14. Export ───────────────────────────────────────────────────────── */
+function filesToEntries(files, prefix = '') {
+  return Object.entries(files).map(([path, f]) => ({
+    path: prefix + path,
+    bytes: f.enc === 'b64' ? b64dec(f.data) : TE.encode(f.data),
+  }));
+}
+async function exportProjectZip(id) {
+  const p = S.projects.find(x => x.id === id);
+  if (!p) { toast('warn', 'پروژه‌ای انتخاب نشده'); return null; }
+  const files = await loadFiles(id);
+  const entries = filesToEntries(files);
+  if (!entries.length) { toast('warn', 'پروژه خالی است'); return null; }
+  const blob = await zipFiles(entries);
+  download(blob, slug(p.name) + '.zip');
+  log(`✔ ZIP خروجی: ${entries.length} فایل، ${fmtSize(blob.size)}`, 'ok');
+  return blob;
+}
+async function exportWorkspaceZip() {
+  const entries = [{
+    path: 'workspace.json',
+    bytes: TE.encode(JSON.stringify({
+      format: 'nononick-forge/workspace@1',
+      exportedAt: nowISO(),
+      projects: S.projects,
+    }, null, 2)),
+  }];
+  for (const p of S.projects) {
+    const files = await loadFiles(p.id);
+    entries.push(...filesToEntries(files, `projects/${slug(p.name)}-${p.id.slice(0, 6)}/`));
+  }
+  if (entries.length === 1) { toast('warn', 'هیچ پروژه‌ای برای خروجی نیست'); return null; }
+  const blob = await zipFiles(entries);
+  download(blob, `nononick-workspace-${new Date().toISOString().slice(0, 10)}.zip`);
+  log(`✔ ZIP فضای کار: ${entries.length - 1} فایل، ${fmtSize(blob.size)}`, 'ok');
+  return blob;
+}
+async function exportProjectJSON(id) {
+  const p = S.projects.find(x => x.id === id);
+  if (!p) return;
+  const files = await loadFiles(id);
+  const payload = { format: 'nononick-forge/project@1', exportedAt: nowISO(), project: p, files };
+  download(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }), slug(p.name) + '.json');
+  log('✔ خروجی JSON', 'ok');
+}
+async function exportStandaloneHTML(id) {
+  const p = S.projects.find(x => x.id === id);
+  if (!p) return;
+  const files = await loadFiles(id);
+  try {
+    const preview = await buildPreview(p, files, 'standalone');
+    if (preview.kind !== 'html') throw new Error('این نوع پروژه از خروجی HTML پشتیبانی نمی‌کند');
+    download(new Blob([preview.html], { type: 'text/html' }), slug(p.name) + '.standalone.html');
+    log(`✔ HTML مستقل: ${fmtSize(preview.html.length)}`, 'ok');
+    toast('ok', 'HTML مستقل خروجی شد', 'تمام دارایی‌ها inline شده‌اند');
+  } catch (e) {
+    toast('err', 'خطا', e.message);
+    log('✖ ' + e.message, 'err');
+  }
+}
+async function exportValidationReport() {
+  if (!S.validation) { toast('warn', 'ابتدا اعتبارسنجی را اجرا کنید'); return; }
+  const p = S.projects.find(x => x.id === S.active);
+  const report = {
+    format: 'nononick-forge/validation@1',
+    exportedAt: nowISO(),
+    project: p ? { id: p.id, name: p.name, type: p.type, fileCount: p.fileCount } : null,
+    summary: {
+      passed: S.validation.filter(r => r.status === 'PASSED').length,
+      failed: S.validation.filter(r => r.status === 'FAILED').length,
+      notRun: S.validation.filter(r => r.status === 'NOT RUN').length,
+      notSupported: S.validation.filter(r => r.status === 'NOT SUPPORTED').length,
+    },
+    results: S.validation,
+  };
+  download(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' }), 'validation-report.json');
+  log('✔ گزارش اعتبارسنجی خروجی شد', 'ok');
+}
+async function exportManifest() {
+  const p = S.projects.find(x => x.id === S.active);
+  if (!p) return;
+  const files = await loadFiles(p.id);
+  const paths = Object.keys(files).sort();
+  const readme = `# ${p.name}
+
+Generated by Nononick HTML Forge on ${new Date().toLocaleString('fa-IR')}.
+
+## Type
+${typeMeta(p.type).label}
+
+## Files (${paths.length})
+${paths.map(p => '- `' + p + '`').join('\n')}
+
+## How to run locally
+This project is static. Any static server will work:
+
+\`\`\`
+npx serve .
+\`\`\`
+
+Or open \`index.html\` directly in a browser.
+
+## Validation
+Run the Validate tab in Nononick HTML Forge and click "Run all checks" for the
+complete report. The result does not carry over into this archive.
+`;
+  const entries = [
+    ...filesToEntries(files),
+    { path: 'README.generated.md', bytes: TE.encode(readme) },
+    { path: 'project.json', bytes: TE.encode(JSON.stringify(p, null, 2)) },
+  ];
+  const blob = await zipFiles(entries);
+  download(blob, slug(p.name) + '-with-readme.zip');
+  log('✔ ZIP با README', 'ok');
+}
+
+/* ─── 15. Validation runner ────────────────────────────────────────────── */
+async function runAllChecks(project, files, { includeZip = true } = {}) {
+  const results = [];
+
+  // 1. HTML structure
+  const htmlFiles = Object.entries(files).filter(([p, e]) => /\.html?$/i.test(p) && e.enc === 'utf8');
+  if (!htmlFiles.length) {
+    results.push({ id: 'html-structure', label: 'ساختار HTML', status: 'NOT RUN', message: 'فایل HTML یافت نشد', issues: [] });
+  } else {
+    const all = [];
+    for (const [path, e] of htmlFiles) {
+      const r = checkHtmlStructure(e.data, path);
+      r.issues.forEach(i => all.push({ ...i, file: path }));
+    }
+    results.push({
+      id: 'html-structure', label: 'ساختار HTML',
+      status: all.some(i => i.sev === 'e') ? 'FAILED' : 'PASSED',
+      message: all.length ? `${all.length} مورد` : `تمام ${htmlFiles.length} فایل بررسی شد`,
+      issues: all,
+    });
+  }
+
+  // 2. HTML a11y
+  if (!htmlFiles.length) {
+    results.push({ id: 'html-a11y', label: 'دسترس‌پذیری HTML', status: 'NOT RUN', message: 'فایل HTML یافت نشد', issues: [] });
+  } else {
+    const all = [];
+    for (const [path, e] of htmlFiles) {
+      const r = checkHtmlA11y(e.data, path);
+      r.issues.forEach(i => all.push({ ...i, file: path }));
+    }
+    results.push({
+      id: 'html-a11y', label: 'دسترس‌پذیری HTML',
+      status: all.length ? 'FAILED' : 'PASSED',
+      message: all.length ? `${all.length} هشدار` : 'بدون مشکل',
+      issues: all,
+    });
+  }
+
+  // 3. JS syntax
+  const jsFiles = Object.entries(files).filter(([p, e]) => /\.(js|mjs|cjs)$/i.test(p) && e.enc === 'utf8');
+  if (!jsFiles.length) {
+    results.push({ id: 'js-syntax', label: 'نحو JavaScript', status: 'NOT RUN', message: 'فایل JS یافت نشد', issues: [] });
+  } else {
+    const all = [];
+    let unsupported = 0;
+    for (const [path, e] of jsFiles) {
+      const r = checkJsSyntax(e.data, path);
+      if (r.unsupported) unsupported++;
+      else r.issues.forEach(i => all.push({ ...i, file: path }));
+    }
+    const status = all.length ? 'FAILED' : (unsupported === jsFiles.length ? 'NOT SUPPORTED' : 'PASSED');
+    results.push({
+      id: 'js-syntax', label: 'نحو JavaScript',
+      status,
+      message: unsupported === jsFiles.length
+        ? `همهٔ ${jsFiles.length} فایل ماژول ES هستند — بررسی فقط-تجزیه در مرورگر پشتیبانی نمی‌شود`
+        : (all.length ? `${all.length} خطا` : `${jsFiles.length - unsupported} فایل بررسی شد`),
+      issues: all,
+    });
+  }
+
+  // 4. CSS braces
+  const cssFiles = Object.entries(files).filter(([p, e]) => /\.css$/i.test(p) && e.enc === 'utf8');
+  if (!cssFiles.length) {
+    results.push({ id: 'css-braces', label: 'توازن CSS', status: 'NOT RUN', message: 'فایل CSS یافت نشد', issues: [] });
+  } else {
+    const all = [];
+    for (const [path, e] of cssFiles) {
+      const r = checkCssBraces(e.data, path);
+      r.issues.forEach(i => all.push({ ...i, file: path }));
+    }
+    results.push({
+      id: 'css-braces', label: 'توازن CSS',
+      status: all.length ? 'FAILED' : 'PASSED',
+      message: all.length ? `${all.length} خطا` : `${cssFiles.length} فایل بررسی شد`,
+      issues: all,
+    });
+  }
+
+  // 5. JSON
+  const jsonFiles = Object.entries(files).filter(([p, e]) => /\.json$/i.test(p) && e.enc === 'utf8');
+  if (!jsonFiles.length) {
+    results.push({ id: 'json', label: 'JSON معتبر', status: 'NOT RUN', message: 'فایل JSON یافت نشد', issues: [] });
+  } else {
+    const all = [];
+    for (const [path, e] of jsonFiles) {
+      const r = checkJsonValid(e.data, path);
+      r.issues.forEach(i => all.push({ ...i, file: path }));
+    }
+    results.push({
+      id: 'json', label: 'JSON معتبر',
+      status: all.length ? 'FAILED' : 'PASSED',
+      message: all.length ? `${all.length} فایل نامعتبر` : `${jsonFiles.length} فایل بررسی شد`,
+      issues: all,
+    });
+  }
+
+  // 6. Missing assets
+  const ma = checkMissingAssets(files);
+  results.push({
+    id: 'missing-assets', label: 'دارایی‌های گم‌شده',
+    status: ma.count ? 'FAILED' : 'PASSED',
+    message: ma.count ? `${ma.count} ارجاع شکسته` : 'بدون ارجاع شکسته',
+    issues: ma.issues,
+  });
+
+  // 7. Secrets
+  const sec = checkSecrets(files);
+  results.push({
+    id: 'secrets', label: 'بررسی کلیدهای حساس',
+    status: sec.count ? 'FAILED' : 'PASSED',
+    message: sec.count ? `${sec.count} مورد مشکوک` : 'موردی یافت نشد',
+    issues: sec.issues,
+  });
+
+  // 8. Duplicates
+  const dup = checkDuplicates(files);
+  results.push({
+    id: 'duplicates', label: 'فایل‌های تکراری',
+    status: 'PASSED',
+    message: dup.count ? `${dup.count} گروه با محتوای یکسان` : 'بدون تکرار',
+    issues: dup.issues,
+  });
+
+  // 9. package.json
+  const pkg = checkPackageJson(files);
+  results.push({
+    id: 'pkg-json', label: 'اعتبار package.json',
+    status: pkg.status === 'NOT RUN' ? 'NOT RUN' : (pkg.count ? 'FAILED' : 'PASSED'),
+    message: pkg.message || (pkg.count ? `${pkg.count} هشدار` : 'معتبر'),
+    issues: pkg.issues || [],
+  });
+
+  // 10. ZIP integrity (roundtrip)
+  if (includeZip && Object.keys(files).length) {
+    try {
+      const entries = filesToEntries(files);
+      const blob = await zipFiles(entries);
+      const back = await unzip(await blob.arrayBuffer());
+      const expected = new Set(entries.map(e => e.path));
+      const got = new Set(back.map(e => e.path));
+      const missing = [...expected].filter(p => !got.has(p));
+      const badCrc = back.filter(e => !e.matches);
+      const badSize = back.filter(e => !e.sizeOk);
+      const status = (missing.length || badCrc.length || badSize.length) ? 'FAILED' : 'PASSED';
+      const issues = [];
+      missing.forEach(p => issues.push({ sev: 'e', msg: 'ورودی از دست رفته: ' + p }));
+      badCrc.forEach(e => issues.push({ sev: 'e', msg: `CRC نامعتبر: ${e.path}` }));
+      badSize.forEach(e => issues.push({ sev: 'e', msg: `اندازهٔ نامطابق: ${e.path}` }));
+      results.push({
+        id: 'zip-integrity', label: 'صحت ZIP (roundtrip)',
+        status, message: status === 'PASSED' ? `${entries.length} ورودی، همه سالم (${fmtSize(blob.size)})` : `${issues.length} مشکل`,
+        issues,
+      });
+      log(`▸ آزمون roundtrip ZIP: ${status} · ${entries.length} ورودی`, status === 'PASSED' ? 'ok' : 'err');
+    } catch (e) {
+      results.push({ id: 'zip-integrity', label: 'صحت ZIP (roundtrip)', status: 'FAILED', message: e.message, issues: [{ sev: 'e', msg: e.message }] });
+    }
+  } else {
+    results.push({ id: 'zip-integrity', label: 'صحت ZIP (roundtrip)', status: 'NOT RUN', message: 'پروژه خالی است', issues: [] });
+  }
+
+  // 11. Runtime execution — honest NOT SUPPORTED
+  results.push({
+    id: 'runtime-exec', label: 'اجرای زمان اجرا',
+    status: 'NOT SUPPORTED',
+    message: 'این نسخه در محیط مرورگر تنها اجرا می‌شود؛ هیچ runtime یا test runner سرور/Node در دسترس نیست.',
+    issues: [{ sev: 'i', msg: 'برای اجرای واقعی به یک backend یا WebContainer با COOP/COEP نیاز است.' }],
+  });
+
+  // 12. Remote fetch — honest NOT SUPPORTED
+  results.push({
+    id: 'remote-fetch', label: 'واکشی مخزن از راه دور',
+    status: 'NOT SUPPORTED',
+    message: 'مرورگر اجازهٔ fetch مستقیم مخازن دلخواه را به‌دلیل محدودیت CORS نمی‌دهد.',
+    issues: [{ sev: 'i', msg: 'برای این کار به یک پروکسی با CORS نیاز است.' }],
+  });
+
+  return results;
+}
+
+/* ─── 16. UI rendering ─────────────────────────────────────────────────── */
+function activeProject() { return S.projects.find(p => p.id === S.active) || null; }
+
+function render() {
+  renderSidebar();
+  renderTab();
+  updateEnvStatus();
+  const p = activeProject();
+  const vc = $('#valCount');
+  if (S.validation) {
+    const bad = S.validation.filter(r => r.status === 'FAILED').length;
+    vc.textContent = String(bad);
+    vc.classList.toggle('hidden', bad === 0);
+    vc.classList.toggle('warn', bad > 0);
+  } else vc.classList.add('hidden');
+  const dc = $('#diffCount');
+  if (S.diffs) {
+    const n = S.diffs.filter(d => d.changed).length;
+    dc.textContent = String(n);
+    dc.classList.toggle('hidden', n === 0);
+  } else dc.classList.add('hidden');
+}
+function updateEnvStatus() {
+  const el = $('#envStatus');
+  const t = $('#envTxt');
+  const hasZip = typeof CompressionStream !== 'undefined' && typeof DecompressionStream !== 'undefined';
+  const hasIDB = !!window.indexedDB;
+  const hasDom = typeof DOMParser !== 'undefined';
+  if (hasZip && hasIDB && hasDom) {
+    el.className = 'status on';
+    t.textContent = 'آماده';
+  } else {
+    el.className = 'status warn';
+    t.textContent = 'محدود';
+  }
+}
+function renderSidebar() {
+  const q = $('#search').value.trim().toLowerCase();
+  const list = S.projects.filter(p => !q || p.name.toLowerCase().includes(q) || p.type.includes(q));
+  $('#pCount').textContent = String(S.projects.length);
+  $('#projectList').innerHTML = list.map(p => {
+    const m = typeMeta(p.type);
+    const on = p.id === S.active;
+    return `<div class="proj ${on ? 'on' : ''}" data-id="${p.id}" tabindex="0" role="button">
+      <div class="proj-ico" style="color:${m.color}">${m.icon}</div>
+      <div class="proj-body">
+        <div class="proj-name">${esc(p.name)}</div>
+        <div class="proj-meta">
+          <span class="badge ${m.cls}">${m.label}</span>
+          <span>${p.fileCount} فایل</span>
+          <span>· ${timeAgo(p.lastOpenedAt || p.updatedAt)}</span>
+        </div>
+      </div>
+      <button class="proj-menu" data-menu="${p.id}" aria-label="عملیات">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:currentColor"><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+      </button>
+    </div>`;
+  }).join('') || `<div style="padding:24px 12px;text-align:center;color:var(--tx3);font-size:12.5px">هنوز پروژه‌ای نیست.<br>از دکمه‌های پایین استفاده کنید.</div>`;
+}
+
+function renderTab() {
+  const c = $('#content');
+  const p = activeProject();
+  if (!p && S.tab !== 'export') {
+    c.innerHTML = emptyState();
+    return;
+  }
+  switch (S.tab) {
+    case 'preview': return renderPreview(p);
+    case 'files':   return renderFiles(p);
+    case 'validate':return renderValidation();
+    case 'diff':    return renderDiff();
+    case 'export':  return renderExport();
+  }
+}
+function emptyState() {
+  return `<div class="preview-empty" style="background:var(--bg)"><div style="max-width:520px;text-align:center;padding:30px">
+    <div style="width:68px;height:68px;border-radius:20px;display:grid;place-items:center;margin:0 auto 20px;background:linear-gradient(135deg,rgba(34,211,238,.15),rgba(167,139,250,.15));border:1px solid var(--bd)">
+      <svg viewBox="0 0 24 24" style="width:32px;height:32px;fill:var(--ac)"><path d="M13 2 4.5 13.2c-.4.5 0 1.3.7 1.3H10l-1 7.5 8.5-11.2c.4-.5 0-1.3-.7-1.3H12z"/></svg>
+    </div>
+    <h2 style="font-size:20px;margin-bottom:8px">خوش آمدید به Nononick HTML Forge</h2>
+    <p style="color:var(--tx2);line-height:1.7;font-size:13.5px">فایل‌ها، پوشه یا ZIP را وارد کنید، یا از توضیح یک پروژهٔ جدید بسازید. همه چیز محلی و آفلاین است.</p>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+      <button class="btn pri" id="emptyBrief">
+        <svg viewBox="0 0 24 24"><path d="M12 2 9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5z"/></svg>شروع از توضیح
+      </button>
+      <button class="btn" id="emptyImport">
+        <svg viewBox="0 0 24 24"><path d="M12 3 7 8h3v6h4V8h3zM5 18h14v2H5z"/></svg>وارد کردن فایل
+      </button>
+    </div>
+  </div></div>`;
+}
+
+async function renderPreview(p) {
+  const c = $('#content');
+  c.innerHTML = '<div class="preview-empty"><span class="spinner"></span></div>';
+  try {
+    const files = await loadFiles(p.id);
+    const preview = await buildPreview(p, files, 'preview');
+    c.innerHTML = '<div class="preview-wrap" id="pw"></div>';
+    const host = $('#pw');
+    const iframe = document.createElement('iframe');
+    iframe.title = 'پیش‌نمایش';
+    iframe.setAttribute('sandbox', 'allow-scripts allow-forms allow-popups allow-modals allow-downloads');
+    if (preview.kind === 'url') iframe.src = preview.url;
+    else iframe.srcdoc = preview.html;
+    host.appendChild(iframe);
+    log(`▸ پیش‌نمایش: ${preview.title}`, 'sys');
+  } catch (e) {
+    c.innerHTML = `<div class="preview-empty"><div style="max-width:460px;text-align:center">
+      <div style="font-size:34px;margin-bottom:10px">⚠️</div>
+      <h3 style="font-size:15px;margin-bottom:6px">پیش‌نمایش ساخته نشد</h3>
+      <p style="color:var(--tx2);font-size:13px">${esc(e.message)}</p>
+    </div></div>`;
+    log('✖ ' + e.message, 'err');
+  }
+}
+
+async function renderFiles(p) {
+  const c = $('#content');
+  const files = await loadFiles(p.id);
+  const paths = Object.keys(files).sort();
+  if (!paths.length) {
+    c.innerHTML = '<div class="empty-state">این پروژه فایلی ندارد</div>';
+    return;
+  }
+  const editing = S.editing && files[S.editing] ? S.editing : paths[0];
+  c.innerHTML = `<div class="files-wrap">
+    <div class="tree" id="tree"></div>
+    <div class="editor-wrap">
+      <div class="editor-head">
+        <span class="path" id="filePath">${esc(editing)}</span>
+        <button class="btn sm" id="saveBtn" title="ذخیره (⌘S)">ذخیره</button>
+        <button class="btn sm" id="revertBtn" title="بازگشت به نسخهٔ اصلی">بازگردانی</button>
+      </div>
+      <div class="body">
+        <div class="gutter" id="gutter"></div>
+        <div class="editor"><textarea id="editor" spellcheck="false"></textarea><div class="editor-info" id="editInfo"></div></div>
+      </div>
+    </div>
+  </div>`;
+  renderTree(paths, editing);
+  openInEditor(editing, files);
+}
+function renderTree(paths, active) {
+  const byDir = {};
+  for (const p of paths) {
+    const dir = p.includes('/') ? p.slice(0, p.lastIndexOf('/')) : '';
+    (byDir[dir] = byDir[dir] || []).push(p);
+  }
+  const dirs = Object.keys(byDir).sort();
+  let html = '';
+  for (const d of dirs) {
+    if (d) html += `<div class="tree-dir"><svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:currentColor"><path d="M4 4h7l2 2h7v14H4z"/></svg>${esc(d)}</div>`;
+    for (const p of byDir[d].sort()) {
+      const name = p.split('/').pop();
+      html += `<div class="tree-node ${p === active ? 'on' : ''}" data-path="${esc(p)}" title="${esc(p)}">
+        <svg viewBox="0 0 24 24">${fileIcon(name)}</svg>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis">${esc(name)}</span>
+      </div>`;
+    }
+  }
+  $('#tree').innerHTML = html;
+}
+function fileIcon(name) {
+  const e = extOf(name);
+  if (/^(png|jpe?g|gif|webp|svg|ico|avif|bmp)$/.test(e)) return '<path d="M5 3h14v18H5zm2 12 3-4 2.5 3L15 11l3 4v4H7z"/>';
+  if (/^(js|mjs|cjs|jsx|ts|tsx)$/.test(e)) return '<path d="M5 3h14v18H5zm3 12h2v2.5H8zM13 10h2v6h2v2h-4z"/>';
+  if (e === 'json') return '<path d="M6 3h9l4 4v14H6zm3 8h6v2H9zm0 4h4v2H9z"/>';
+  if (/^(md|markdown|txt)$/.test(e)) return '<path d="M5 3h14v18H5zm2 12h10v2H7zm0-3h10v2H7zm0-3h6v2H7z"/>';
+  if (e === 'css') return '<path d="M5 3h14v18H5zm3 6h8v2H8z"/>';
+  if (e === 'html' || e === 'htm') return '<path d="M5 3h14v18H5zm3 4 2 2-2 2 1.4 1.4L12.8 9 9.4 5.6zm5 8h4v2h-4z"/>';
+  return '<path d="M6 3h8l4 4v14H6zm8 0v4h4"/>';
+}
+async function openInEditor(path, files) {
+  S.editing = path;
+  const e = files[path];
+  const ta = $('#editor');
+  const g = $('#gutter');
+  if (!e) return;
+  const isTextFile = e.enc === 'utf8';
+  const text = isTextFile ? e.data : `[محتوای باینری — ${fmtSize(e.size)}]`;
+  ta.value = text;
+  ta.readOnly = !isTextFile;
+  ta.style.color = isTextFile ? '' : 'var(--tx3)';
+  updateGutter();
+  ta.onscroll = () => { g.scrollTop = ta.scrollTop; };
+  $('#filePath').textContent = path;
+  $('#editInfo').textContent = `${text.split('\n').length} خط · ${fmtSize(e.size)} · ${e.enc}`;
+  // Tab key inserts two spaces
+  ta.onkeydown = ev => {
+    if (ev.key === 'Tab') {
+      ev.preventDefault();
+      const s = ta.selectionStart, e2 = ta.selectionEnd;
+      ta.value = ta.value.slice(0, s) + '  ' + ta.value.slice(e2);
+      ta.selectionStart = ta.selectionEnd = s + 2;
+      updateGutter();
+    }
+  };
+  ta.oninput = () => { updateGutter(); $('#editInfo').textContent = `${ta.value.split('\n').length} خط`; };
+}
+function updateGutter() {
+  const ta = $('#editor');
+  const g = $('#gutter');
+  const lines = ta.value.split('\n').length;
+  g.innerHTML = Array.from({ length: lines }, (_, i) => `<div>${i + 1}</div>`).join('');
+}
+async function saveEdit() {
+  const p = activeProject();
+  if (!p || !S.editing) return;
+  const files = await loadFiles(p.id);
+  const e = files[S.editing];
+  if (!e || e.enc !== 'utf8') { toast('warn', 'این فایل قابل ویرایش نیست'); return; }
+  const text = $('#editor').value;
+  e.data = text;
+  e.size = TE.encode(text).length;
+  await DB.putFiles(p.id, files);
+  p.updatedAt = Date.now();
+  p.size = Object.values(files).reduce((a, f) => a + (f.size || 0), 0);
+  await DB.putProject(p);
+  await persistWorkspace();
+  toast('ok', 'ذخیره شد', S.editing);
+  log(`▸ ذخیره: ${S.editing} (${fmtSize(e.size)})`, 'sys');
+}
+async function revertEdit() {
+  const p = activeProject();
+  if (!p || !S.editing) return;
+  const snap = await loadSnapshot(p.id);
+  const files = await loadFiles(p.id);
+  if (!snap || !snap[S.editing]) { toast('warn', 'نسخهٔ اصلی موجود نیست'); return; }
+  const ok = await confirmDialog('بازگردانی فایل؟', `تغییرات «${S.editing}» به نسخهٔ اصلی برمی‌گردد.`);
+  if (!ok) return;
+  files[S.editing] = JSON.parse(JSON.stringify(snap[S.editing]));
+  await DB.putFiles(p.id, files);
+  toast('ok', 'بازگردانی شد');
+  renderTab();
+}
+
+async function renderValidation() {
+  const c = $('#content');
+  c.innerHTML = '<div class="val-wrap"><div class="val-inner"><div class="empty-state" style="height:auto;padding:40px 0"><span class="spinner"></span></div></div></div>';
+  const p = activeProject();
+  if (!p) { c.innerHTML = '<div class="empty-state">ابتدا یک پروژه انتخاب کنید</div>'; return; }
+  const files = await loadFiles(p.id);
+  log('▸ اجرای اعتبارسنجی کامل…', 'sys');
+  const results = await runAllChecks(p, files);
+  S.validation = results;
+  drawValidation(results);
+  render();
+}
+function drawValidation(results) {
+  const c = $('#content');
+  const sum = {
+    passed: results.filter(r => r.status === 'PASSED').length,
+    failed: results.filter(r => r.status === 'FAILED').length,
+    notRun: results.filter(r => r.status === 'NOT RUN').length,
+    notSup: results.filter(r => r.status === 'NOT SUPPORTED').length,
+  };
+  c.innerHTML = `<div class="val-wrap"><div class="val-inner">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <h2 style="font-size:18px">گزارش اعتبارسنجی</h2>
+      <span style="flex:1"></span>
+      <button class="btn" id="valExport">⇩ گزارش JSON</button>
+      <button class="btn pri" id="valRerun">اجرای مجدد</button>
+    </div>
+    <div class="val-sum">
+      <div class="val-chip p"><span class="num">${sum.passed}</span> موفق</div>
+      <div class="val-chip f"><span class="num">${sum.failed}</span> ناموفق</div>
+      <div class="val-chip n"><span class="num">${sum.notRun}</span> اجرا نشده</div>
+      <div class="val-chip u"><span class="num">${sum.notSup}</span> پشتیبانی نمی‌شود</div>
+    </div>
+    <div id="valRows">
+      ${results.map(r => {
+        const cls = r.status === 'PASSED' ? 'p' : r.status === 'FAILED' ? 'f' : r.status === 'NOT RUN' ? 'n' : 'u';
+        const hasIssues = r.issues?.length > 0;
+        return `<div class="val-row" data-id="${r.id}">
+          <div class="val-row-head">
+            <span class="badge-s ${cls}">${r.status}</span>
+            <b>${esc(r.label)}</b>
+            <span class="msg">${esc(r.message)}</span>
+            ${hasIssues ? `<button class="btn sm" data-toggle="${r.id}">${r.issues.length} مورد ▾</button>` : ''}
+          </div>
+          ${hasIssues ? `<div class="val-row-body">
+            ${r.issues.map(i => `<div class="val-item">
+              <span class="ico ${i.sev}">${i.sev === 'e' ? '●' : i.sev === 'w' ? '▲' : 'ℹ'}</span>
+              <div class="txt">${esc(i.msg)}${i.file ? ` <code>${esc(i.file)}</code>` : ''}${i.fix ? `<div class="fix">↳ ${esc(i.fix)}</div>` : ''}</div>
+            </div>`).join('')}
+          </div>` : ''}
+        </div>`;
+      }).join('')}
+    </div>
+  </div></div>`;
+  c.addEventListener('click', e => {
+    const t = e.target.closest('[data-toggle]');
+    if (t) {
+      const row = t.closest('.val-row');
+      row.classList.toggle('open');
+      t.textContent = t.textContent.replace(/[▾▴]/, row.classList.contains('open') ? '▴' : '▾');
+    }
+  });
+  $('#valRerun').onclick = () => renderValidation();
+  $('#valExport').onclick = exportValidationReport;
+  log(`✔ اعتبارسنجی: ${sum.passed} موفق · ${sum.failed} ناموفق · ${sum.notRun} اجرا نشده · ${sum.notSup} پشتیبانی نمی‌شود`, sum.failed ? 'warn' : 'ok');
+}
+
+async function renderDiff() {
+  const c = $('#content');
+  const p = activeProject();
+  if (!p) { c.innerHTML = '<div class="empty-state">ابتدا یک پروژه انتخاب کنید</div>'; return; }
+  const files = await loadFiles(p.id);
+  const snap = await loadSnapshot(p.id) || {};
+  const allPaths = [...new Set([...Object.keys(files), ...Object.keys(snap)])].sort();
+  const diffs = allPaths.map(path => {
+    const cur = files[path]?.enc === 'utf8' ? files[path].data : null;
+    const old = snap[path]?.enc === 'utf8' ? snap[path].data : null;
+    const changed = files[path]?.enc === 'utf8' && snap[path]?.enc === 'utf8' && cur !== old;
+    return { path, changed, cur, old, status: !snap[path] ? 'added' : !files[path] ? 'removed' : changed ? 'modified' : 'unchanged' };
+  });
+  S.diffs = diffs;
+  const changed = diffs.filter(d => d.changed || d.status === 'added' || d.status === 'removed');
+  if (!changed.length) {
+    c.innerHTML = `<div class="diff-empty" style="background:var(--bg)"><div style="text-align:center">
+      <div style="font-size:32px;margin-bottom:10px">✓</div>
+      <p style="color:var(--tx2)">هیچ تفاوتی نسبت به نسخهٔ اصلی وجود ندارد</p>
+    </div></div>`;
+    return;
+  }
+  c.innerHTML = `<div class="diff-wrap">
+    <div class="diff-list" id="diffList">
+      ${changed.map((d, i) => `<div class="diff-item ${i === 0 ? 'on' : ''}" data-i="${i}">
+        <div class="p">${esc(d.path)}</div>
+        <div class="s">${d.status === 'added' ? 'فایل جدید' : d.status === 'removed' ? 'حذف شده' : 'تغییر یافته'}</div>
+      </div>`).join('')}
+    </div>
+    <div class="diff-body" id="diffBody"></div>
+  </div>`;
+  const showDiff = idx => {
+    const d = changed[idx];
+    const body = $('#diffBody');
+    if (!d) { body.innerHTML = ''; return; }
+    const A = d.old ?? '', B = d.cur ?? '';
+    const lines = diffLines(A, B);
+    body.innerHTML = lines.map(l => `<div class="diff-line ${l.t}">${esc(l.v)}</div>`).join('');
+  };
+  $$('.diff-item').forEach(it => it.onclick = () => {
+    $$('.diff-item').forEach(x => x.classList.toggle('on', x === it));
+    showDiff(+it.dataset.i);
+  });
+  showDiff(0);
+  log(`▸ تفاوت‌ها: ${changed.length} فایل تغییر یافته`, 'sys');
+}
+
+async function renderExport() {
+  const c = $('#content');
+  const p = activeProject();
+  c.innerHTML = `<div class="export-wrap"><div class="export-inner">
+    ${!p ? '<div class="export-card"><p class="desc">برای فعال‌شدن خروجی‌های مربوط به پروژه، ابتدا یک پروژه بسازید یا وارد کنید.</p></div>' : `
+    <div class="export-card">
+      <h3>پروژهٔ فعال</h3>
+      <p class="desc">«${esc(p.name)}» · ${p.fileCount} فایل · ${fmtSize(p.size)} · ${typeMeta(p.type).label}</p>
+      <div class="row">
+        <button class="btn pri" id="expZip"><svg viewBox="0 0 24 24"><path d="M6 3h12v8h-4v4h-4v-4H6zm0 10h4v4h4v4H6z"/></svg>ZIP پروژه</button>
+        <button class="btn" id="expJson"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/></svg>JSON پروژه</button>
+        <button class="btn" id="expStandalone"><svg viewBox="0 0 24 24"><path d="M12 3v10l3-3 1.4 1.4L12 16.8 7.6 11.4 9 10l3 3V3z"/></svg>HTML مستقل</button>
+        <button class="btn" id="expReadme"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/></svg>ZIP + README</button>
+      </div>
+    </div>`}
+    <div class="export-card">
+      <h3>گزارش‌ها</h3>
+      <p class="desc">گزارش اعتبارسنجی آخرین اجرا (JSON). اگر اعتبارسنجی را اجرا نکرده باشید، ابتدا از تب مربوطه آن را اجرا کنید.</p>
+      <div class="row">
+        <button class="btn" id="expValidation" ${S.validation ? '' : 'disabled'}>⇩ گزارش اعتبارسنجی</button>
+      </div>
+    </div>
+    <div class="export-card">
+      <h3>کل فضای کار</h3>
+      <p class="desc">همهٔ پروژه‌ها به‌همراه manifest در یک ZIP. مناسب برای پشتیبان‌گیری یا انتقال بین دستگاه‌ها.</p>
+      <div class="row">
+        <button class="btn" id="expWorkspace">⇩ ZIP فضای کار</button>
+      </div>
+    </div>
+    <div class="export-card">
+      <h3>راهنمای استقرار</h3>
+      <p class="desc">پس از خروجی ZIP، پروژه‌های استاتیک با هر سرور استاتیک یا هر میزبان بدون سرور (Netlify، Vercel، GitHub Pages، Cloudflare Pages) کار می‌کنند. فقط پوشهٔ استخراج‌شده را آپلود کنید. پروژه‌های Node برای اجرا به backend نیاز دارند که در این نسخه پشتیبانی نمی‌شود.</p>
+    </div>
+  </div></div>`;
+
+  const bind = (sel, fn) => { const el = $(sel); if (el) el.onclick = fn; };
+  if (p) {
+    bind('#expZip', () => exportProjectZip(p.id));
+    bind('#expJson', () => exportProjectJSON(p.id));
+    bind('#expStandalone', () => exportStandaloneHTML(p.id));
+    bind('#expReadme', () => exportManifest());
+  }
+  bind('#expValidation', () => exportValidationReport());
+  bind('#expWorkspace', () => exportWorkspaceZip());
+}
+
+/* ─── 17. Event wiring ─────────────────────────────────────────────────── */
+function switchTab(name) {
+  S.tab = name;
+  $$('.tab').forEach(t => t.classList.toggle('on', t.dataset.tab === name));
+  renderTab();
+}
+function wire() {
+  // Tabs
+  $$('.tab').forEach(t => t.onclick = () => switchTab(t.dataset.tab));
+
+  // Sidebar
+  $('#search').oninput = debounce(renderSidebar, 100);
+  $('#projectList').addEventListener('click', async e => {
+    const menu = e.target.closest('[data-menu]');
+    if (menu) {
+      e.stopPropagation();
+      const id = menu.dataset.menu;
+      const p = S.projects.find(x => x.id === id);
+      if (!p) return;
+      const choice = await new Promise(res => {
+        const m = document.createElement('div');
+        m.className = 'modal on';
+        m.innerHTML = `<div class="modal-card" style="max-width:340px"><div class="modal-head">
+          <div class="mi"><svg viewBox="0 0 24 24"><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg></div>
+          <div><h3>${esc(p.name)}</h3></div></div>
+          <div class="modal-body" style="display:flex;flex-direction:column;gap:6px">
+            <button class="btn" data-x="rename">تغییر نام</button>
+            <button class="btn" data-x="dup">تکثیر</button>
+            <button class="btn dan" data-x="del">حذف</button>
+          </div>
+          <div class="modal-foot"><button class="btn" data-x="">انصراف</button></div></div>`;
+        document.body.appendChild(m);
+        m.addEventListener('click', ev => {
+          const x = ev.target.closest('[data-x]')?.dataset.x;
+          if (x === undefined) return;
+          m.remove(); res(x);
+        });
+      });
+      if (choice === 'rename') return doRename(p);
+      if (choice === 'dup')    return doDuplicate(p);
+      if (choice === 'del')    return doDelete(p);
+      return;
+    }
+    const proj = e.target.closest('.proj');
+    if (proj) openProject(proj.dataset.id);
+  });
+
+  $('#importFileBtn').onclick   = () => $('#fileInput').click();
+  $('#importFolderBtn').onclick = () => $('#folderInput').click();
+  $('#importZipBtn').onclick    = () => $('#zipInput').click();
+  $('#briefBtn').onclick        = openBriefModal;
+
+  $('#fileInput').onchange = async e => {
+    if (e.target.files?.length) await importFiles(e.target.files);
+    e.target.value = '';
+  };
+  $('#folderInput').onchange = async e => {
+    if (e.target.files?.length) await importFiles(e.target.files, 'پوشه');
+    e.target.value = '';
+  };
+  $('#zipInput').onchange = async e => {
+    if (e.target.files?.length) await importFiles(e.target.files);
+    e.target.value = '';
+  };
+
+  // Theme
+  $('#themeBtn').onclick = async () => {
+    S.theme = S.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = S.theme;
+    $('#themeIcon').innerHTML = S.theme === 'dark'
+      ? '<path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/>'
+      : '<path d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0-5 1.5 2.6L16 4l-.4 2.9L18 8l-1.6 2 1.6 2-2.4 1.1L16 16l-2.5-.6L12 18l-1.5-2.6L8 16l.4-2.9L6 12l1.6-2L6 8l2.4-1.1L8 4l2.5.6z"/>';
+    await DB.setMeta('theme', S.theme);
+  };
+
+  // Mobile menu
+  $('#menuBtn').onclick = () => {
+    const sb = $('#sidebar');
+    sb.classList.toggle('open');
+  };
+
+  // Click on tabs content area — delegate for empty state buttons
+  $('#content').addEventListener('click', async e => {
+    if (e.target.closest('#emptyImport')) { $('#fileInput').click(); }
+    if (e.target.closest('#emptyBrief'))  { openBriefModal(); }
+    if (e.target.closest('#saveBtn'))     { await saveEdit(); }
+    if (e.target.closest('#revertBtn'))   { await revertEdit(); }
+    const node = e.target.closest('.tree-node');
+    if (node && node.dataset.path) {
+      const p = activeProject();
+      if (!p) return;
+      const files = await loadFiles(p.id);
+      S.editing = node.dataset.path;
+      $$('.tree-node').forEach(n => n.classList.toggle('on', n === node));
+      openInEditor(node.dataset.path, files);
+    }
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', async e => {
+    const mod = e.metaKey || e.ctrlKey;
+    const edit = document.activeElement?.id === 'editor' || document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA';
+    if (mod && e.key.toLowerCase() === 's' && edit) { e.preventDefault(); await saveEdit(); return; }
+    if (mod && e.key.toLowerCase() === 'o') { e.preventDefault(); $('#fileInput').click(); return; }
+    if (mod && e.key.toLowerCase() === 'k') { e.preventDefault(); $('#search').focus(); return; }
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal.on').forEach(m => m.remove());
+      $('#sidebar').classList.remove('open');
+    }
+  });
+
+  // Preview console bridge
+  window.addEventListener('message', e => {
+    const d = e.data;
+    if (!d || !d.__forge) return;
+    const cls = d.l === 'error' ? 'err' : d.l === 'warn' ? 'warn' : 'info';
+    log(`[preview] ${d.m}`, cls);
+  });
+
+  // Drag & drop
+  const dz = $('#drop');
+  let dc = 0;
+  window.addEventListener('dragenter', e => {
+    if (!e.dataTransfer?.types?.includes('Files')) return;
+    dc++; dz.classList.add('on');
+  });
+  window.addEventListener('dragleave', () => { if (--dc <= 0) { dc = 0; dz.classList.remove('on'); } });
+  window.addEventListener('dragover', e => e.preventDefault());
+  window.addEventListener('drop', async e => {
+    e.preventDefault();
+    dc = 0; dz.classList.remove('on');
+    if (e.dataTransfer?.files?.length) await importFiles(e.dataTransfer.files);
+  });
+
+  // Modal close buttons
+  document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => $('#' + b.dataset.close).classList.remove('on'));
+}
+
+/* ─── 18. Project actions ──────────────────────────────────────────────── */
+async function openProject(id) {
+  const p = S.projects.find(x => x.id === id);
+  if (!p) return;
+  S.active = id;
+  p.lastOpenedAt = Date.now();
+  await DB.putProject(p);
+  await persistWorkspace();
+  S.editing = null;
+  S.validation = null;
+  S.diffs = null;
+  $('#sidebar').classList.remove('open');
+  render();
+  log(`▸ پروژه باز شد: ${p.name}`, 'sys');
+}
+async function doRename(p) {
+  $('#renameInput').value = p.name;
+  $('#renameModal').classList.add('on');
+  $('#renameOk').onclick = async () => {
+    const v = $('#renameInput').value.trim();
+    if (!v) return;
+    p.name = v;
+    p.updatedAt = Date.now();
+    await DB.putProject(p);
+    await persistWorkspace();
+    $('#renameModal').classList.remove('on');
+    render();
+    toast('ok', 'تغییر نام داده شد');
+  };
+}
+async function doDuplicate(p) {
+  const files = await loadFiles(p.id);
+  const copy = await createProject(p.name + ' — کپی', JSON.parse(JSON.stringify(files)), { type: p.type });
+  copy.entry = p.entry;
+  await DB.putProject(copy);
+  S.projects.unshift(copy);
+  S.active = copy.id;
+  await persistWorkspace();
+  render();
+  toast('ok', 'تکثیر شد', copy.name);
+}
+async function doDelete(p) {
+  const ok = await confirmDialog('حذف پروژه؟', `«${p.name}» برای همیشه حذف می‌شود.`);
+  if (!ok) return;
+  S.projects = S.projects.filter(x => x.id !== p.id);
+  S.files.delete(p.id);
+  S.snapshots.delete(p.id);
+  await DB.delProject(p.id);
+  await DB.delFiles(p.id);
+  await DB.delSnap(p.id);
+  if (S.active === p.id) S.active = S.projects[0]?.id || null;
+  await persistWorkspace();
+  render();
+  toast('ok', 'حذف شد', p.name);
+}
+
+/* ─── 19. Brief modal ──────────────────────────────────────────────────── */
+function openBriefModal() {
+  $('#briefText').value = '';
+  $('#briefModal').classList.add('on');
+}
+function wireBrief() {
+  $$('.brief-tpl').forEach(b => b.onclick = async () => {
+    const tpl = b.dataset.tpl;
+    const brief = $('#briefText').value || b.querySelector('b').textContent;
+    await generateFromBrief(brief, tpl);
+  });
+  $('#briefGen').onclick = async () => {
+    const brief = $('#briefText').value.trim();
+    if (!brief) { toast('warn', 'توضیح کوتاه بنویسید'); return; }
+    await generateFromBrief(brief);
+  };
+}
+async function generateFromBrief(brief, forcedTpl) {
+  let result;
+  try { result = briefToProject(brief, forcedTpl); }
+  catch (e) { toast('err', 'تولید ناموفق', e.message); return; }
+  $('#briefModal').classList.remove('on');
+  const p = await createProject(extractTitle(brief), result.files, { template: result.template });
+  S.projects.unshift(p);
+  S.active = p.id;
+  await persistWorkspace();
+  render();
+  log(`✔ پروژه از توضیح ساخته شد: قالب «${result.template}»، ${p.fileCount} فایل`, 'ok');
+  toast('ok', 'ساخته شد', `${typeMeta(p.type).label} · ${p.fileCount} فایل`);
+}
+
+/* ─── 20. Boot ─────────────────────────────────────────────────────────── */
+async function boot() {
+  // Theme
+  const t = await DB.getMeta('theme');
+  if (t) S.theme = t;
+  document.documentElement.dataset.theme = S.theme;
+
+  // Workspace
+  const ws = await DB.getMeta('ws');
+  if (ws?.projects?.length) {
+    S.projects = ws.projects;
+    S.active = (ws.active && S.projects.find(p => p.id === ws.active)) ? ws.active : S.projects[0].id;
+  }
+
+  // Responsive menu button
+  const syncMenu = () => { $('#menuBtn').style.display = innerWidth <= 820 ? '' : 'none'; };
+  syncMenu();
+  window.addEventListener('resize', debounce(syncMenu, 120));
+
+  wire();
+  wireBrief();
+  render();
+
+  log('Nononick HTML Forge آماده است', 'hdr');
+  log('IndexedDB: ' + (window.indexedDB ? 'موجود' : 'غیرفعال'), 'sys');
+  log('Compression API: ' + (typeof CompressionStream !== 'undefined' ? 'موجود' : 'غیرفعال'), 'sys');
+  log('DOM Parser: ' + (typeof DOMParser !== 'undefined' ? 'موجود' : 'غیرفعال'), 'sys');
+  log('Runtime اجرا: NOT SUPPORTED (مرورگر تنها)', 'warn');
+  log('واکشی مخزن از راه دور: NOT SUPPORTED (محدودیت CORS)', 'warn');
+}
+
+boot().catch(e => {
+  console.error(e);
+  document.body.innerHTML = `<div style="padding:40px;font-family:Tahoma;color:#e6ecf5;background:#080b12;min-height:100vh;direction:rtl">
+    <h2>خطا در راه‌اندازی</h2><p style="color:#8a94a7">${esc(e.message)}</p></div>`;
+});
+</script>
+</body>
+</html>
